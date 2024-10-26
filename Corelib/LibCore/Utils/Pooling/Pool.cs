@@ -30,9 +30,14 @@ namespace Corelib.LibCore.Utils.Pooling;
 /// A pool of objects that can be reused to avoid allocation.
 /// </summary>
 [PublicAPI]
-public class Pool< T >
+public class Pool< T > // : IPoolable< T >
 {
     public delegate T? NewObjectHandler();
+
+    public int Max  { get; }      // The maximum number of objects that will be pooled.
+    public int Peak { get; set; } // The highest number of free objects. Can be reset any time.
+
+    // ------------------------------------------------------------------------
 
     private readonly List< T? > _freeObjects;
 
@@ -55,10 +60,7 @@ public class Pool< T >
         _freeObjects = new List< T? >( initialCapacity );
         Max          = max;
     }
-
-    public int Max  { get; }      // The maximum number of objects that will be pooled.
-    public int Peak { get; set; } // The highest number of free objects. Can be reset any time.
-
+    
     public virtual NewObjectHandler? NewObject { get; set; } = null;
 
     /// <summary>
@@ -80,6 +82,47 @@ public class Pool< T >
         _freeObjects[ ^1 ] = default( T? );
 
         return item;
+    }
+
+    /// <summary>
+    /// Adds the specified number of new free objects to the pool.
+    /// Usually called early on as a pre-allocation mechanism but
+    /// can be used at any time.
+    /// </summary>
+    /// <param name="size">The number of objects to be added.</param>
+    public void Fill( int size )
+    {
+        for ( var i = 0; i < size; i++ )
+        {
+            if ( _freeObjects.Count < Max )
+            {
+                _freeObjects.Add( NewObject!() );
+            }
+        }
+
+        Peak = Math.Max( Peak, _freeObjects.Count );
+    }
+
+    /// <summary>
+    /// Called when an object is freed to clear the state of the object for possible
+    /// later reuse. The default implementation calls <see cref="IResetable.Reset"/>
+    /// if the object is Poolable.
+    /// </summary>
+    public virtual void Reset( T obj )
+    {
+        if ( obj is IResetable poolable )
+        {
+            poolable.Reset();
+        }
+    }
+
+    /// <summary>
+    /// Called when an object is discarded. This is the case when an object is
+    /// freed, but the maximum capacity of the pool is reached, and when the
+    /// pool is <see cref="Clear"/>ed.
+    /// </summary>
+    public virtual void Discard( T? obj )
+    {
     }
 
     /// <summary>
@@ -107,47 +150,6 @@ public class Pool< T >
         {
             Discard( obj );
         }
-    }
-
-    /// <summary>
-    /// Adds the specified number of new free objects to the pool.
-    /// Usually called early on as a pre-allocation mechanism but
-    /// can be used at any time.
-    /// </summary>
-    /// <param name="size">The number of objects to be added.</param>
-    public void Fill( int size )
-    {
-        for ( var i = 0; i < size; i++ )
-        {
-            if ( _freeObjects.Count < Max )
-            {
-                _freeObjects.Add( NewObject!() );
-            }
-        }
-
-        Peak = Math.Max( Peak, _freeObjects.Count );
-    }
-
-    /// <summary>
-    /// Called when an object is freed to clear the state of the object for possible
-    /// later reuse. The default implementation calls <see cref="IPoolable.Reset"/>
-    /// if the object is Poolable.
-    /// </summary>
-    public virtual void Reset( T obj )
-    {
-        if ( obj is IPoolable poolable )
-        {
-            poolable.Reset();
-        }
-    }
-
-    /// <summary>
-    /// Called when an object is discarded. This is the case when an object is
-    /// freed, but the maximum capacity of the pool is reached, and when the
-    /// pool is <see cref="Clear"/>ed.
-    /// </summary>
-    protected virtual void Discard( T? obj )
-    {
     }
 
     /// <summary>

@@ -367,7 +367,7 @@ public interface IBatch : IDisposable
     /// <param name="dstFuncAlpha">
     /// the destination alpha function, e.g. GL20.GL_ONE_MINUS_SRC_ALPHA.
     /// </param>
-    void SetBlendFunctionSeperate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha );
+    void SetBlendFunctionSeparate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha );
 
     /// <summary>
     /// Sets the projection matrix to be used by this Batch.

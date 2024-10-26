@@ -51,7 +51,7 @@ namespace Corelib.LibCore.Graphics.G2D;
 /// </para>
 /// </summary>
 [PublicAPI]
-public class GlyphLayout : IPoolable
+public class GlyphLayout : IResetable
 {
     public List< GlyphRun > Runs   { get; set; } = new( 1 );
     public float            Width  { get; set; }
@@ -1000,7 +1000,7 @@ public class GlyphLayout : IPoolable
     /// does not span multiple lines.
     /// </summary>
     [PublicAPI]
-    public class GlyphRun : IPoolable
+    public class GlyphRun : IResetable
     {
         public List< BitmapFont.Glyph > Glyphs    { get; set; } = null!;
         public List< float >            XAdvances { get; set; } = null!;

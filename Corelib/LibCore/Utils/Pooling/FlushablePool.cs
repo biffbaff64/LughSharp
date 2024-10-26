@@ -26,7 +26,7 @@
 namespace Corelib.LibCore.Utils.Pooling;
 
 /// <summary>
-/// A <see cref="Pool{T}"/> which keeps track of the obtained items
+/// A <see cref="Pool{T}"/> which keeps track of the items obtained by calling
 /// (see <see cref="Obtain()"/>), which can be freed all at once using the
 /// <see cref="Flush()"/> method.
 /// </summary>
@@ -35,6 +35,8 @@ public abstract class FlushablePool< T > : Pool< T >
 {
     private readonly List< T > _obtained = [ ];
 
+    // ------------------------------------------------------------------------
+    
     /// <inheritdoc />
     protected FlushablePool()
     {
@@ -67,7 +69,8 @@ public abstract class FlushablePool< T > : Pool< T >
     /// </summary>
     public virtual void Flush()
     {
-        base.FreeAll( _obtained );
+        FreeAll( _obtained );
+        
         _obtained.Clear();
     }
 

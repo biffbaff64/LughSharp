@@ -205,11 +205,7 @@ public class CpuSpriteBatch : SpriteBatch
                                bool flipX,
                                bool flipY )
     {
-        if ( texture == null )
-        {
-            Logger.Error( "Supplied Texture is null." );
-            return;
-        }
+        ArgumentNullException.ThrowIfNull( texture );
 
         if ( !_adjustNeeded )
         {
@@ -243,11 +239,7 @@ public class CpuSpriteBatch : SpriteBatch
                                bool flipX,
                                bool flipY )
     {
-        if ( texture == null )
-        {
-            Logger.Error( "Supplied Texture is null." );
-            return;
-        }
+        ArgumentNullException.ThrowIfNull( texture );
 
         if ( !_adjustNeeded )
         {
@@ -277,11 +269,7 @@ public class CpuSpriteBatch : SpriteBatch
     /// <inheritdoc />
     public override void Draw( Texture? texture, float x, float y, GRect src )
     {
-        if ( texture == null )
-        {
-            Logger.Error( "Supplied Texture is null." );
-            return;
-        }
+        ArgumentNullException.ThrowIfNull( texture );
 
         if ( !_adjustNeeded )
         {
@@ -316,11 +304,7 @@ public class CpuSpriteBatch : SpriteBatch
                                float u2,
                                float v2 )
     {
-        if ( texture == null )
-        {
-            Logger.Error( "Supplied Texture is null." );
-            return;
-        }
+        ArgumentNullException.ThrowIfNull( texture );
 
         if ( !_adjustNeeded )
         {
@@ -350,11 +334,7 @@ public class CpuSpriteBatch : SpriteBatch
     /// <inheritdoc />
     public override void Draw( Texture? texture, float x, float y )
     {
-        if ( texture == null )
-        {
-            Logger.Error( "Supplied Texture is null." );
-            return;
-        }
+        ArgumentNullException.ThrowIfNull( texture );
 
         if ( !_adjustNeeded )
         {
@@ -369,11 +349,7 @@ public class CpuSpriteBatch : SpriteBatch
     /// <inheritdoc />
     public override void Draw( Texture? texture, float locX, float locY, int width, int height )
     {
-        if ( texture == null )
-        {
-            Logger.Error( "Supplied Texture is null." );
-            return;
-        }
+        ArgumentNullException.ThrowIfNull( texture );
 
         if ( !_adjustNeeded )
         {
@@ -388,11 +364,7 @@ public class CpuSpriteBatch : SpriteBatch
     /// <inheritdoc />
     public override void Draw( TextureRegion? region, float x, float y )
     {
-        if ( region == null )
-        {
-            Logger.Error( "Supplied TextureRegion is null." );
-            return;
-        }
+        ArgumentNullException.ThrowIfNull( region );
 
         if ( !_adjustNeeded )
         {
@@ -407,11 +379,7 @@ public class CpuSpriteBatch : SpriteBatch
     /// <inheritdoc />
     public override void Draw( TextureRegion? region, float x, float y, float width, float height )
     {
-        if ( region == null )
-        {
-            Logger.Error( "Supplied TextureRegion is null." );
-            return;
-        }
+        ArgumentNullException.ThrowIfNull( region );
 
         if ( !_adjustNeeded )
         {
@@ -430,11 +398,7 @@ public class CpuSpriteBatch : SpriteBatch
                                Point2D scale,
                                float rotation )
     {
-        if ( textureRegion == null )
-        {
-            Logger.Error( "Supplied TextureRegion is null." );
-            return;
-        }
+        ArgumentNullException.ThrowIfNull( textureRegion );
 
         if ( !_adjustNeeded )
         {
@@ -463,11 +427,7 @@ public class CpuSpriteBatch : SpriteBatch
                                float rotation,
                                bool clockwise )
     {
-        if ( textureRegion == null )
-        {
-            Logger.Error( "Supplied TextureRegion is null." );
-            return;
-        }
+        ArgumentNullException.ThrowIfNull( textureRegion );
 
         if ( !_adjustNeeded )
         {
@@ -492,11 +452,7 @@ public class CpuSpriteBatch : SpriteBatch
     /// <inheritdoc />
     public override void Draw( Texture? texture, float[] spriteVertices, int offset, int count )
     {
-        if ( texture == null )
-        {
-            Logger.Error( "Supplied Texture is null." );
-            return;
-        }
+        ArgumentNullException.ThrowIfNull( texture );
 
         if ( ( count % Sprite.SPRITE_SIZE ) != 0 )
         {
@@ -516,11 +472,7 @@ public class CpuSpriteBatch : SpriteBatch
     /// <inheritdoc />
     public override void Draw( TextureRegion? region, float width, float height, Affine2 transform )
     {
-        if ( region == null )
-        {
-            Logger.Error( "Supplied TextureRegion is null." );
-            return;
-        }
+        ArgumentNullException.ThrowIfNull( region );
 
         if ( !_adjustNeeded )
         {
@@ -543,11 +495,7 @@ public class CpuSpriteBatch : SpriteBatch
                                float scaleY,
                                float rotation )
     {
-        if ( region == null )
-        {
-            Logger.Error( "Supplied TextureRegion is null." );
-            return;
-        }
+        ArgumentNullException.ThrowIfNull( region );
 
         // v must be flipped
         DrawAdjustedUV( region.Texture,
@@ -585,11 +533,7 @@ public class CpuSpriteBatch : SpriteBatch
                                bool flipX,
                                bool flipY )
     {
-        if ( texture == null )
-        {
-            Logger.Error( "Supplied Texture is null." );
-            return;
-        }
+        ArgumentNullException.ThrowIfNull( texture );
 
         var invWidth  = 1.0f / texture.Width;
         var invHeight = 1.0f / texture.Height;
@@ -639,12 +583,9 @@ public class CpuSpriteBatch : SpriteBatch
             throw new InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
         }
 
-        if ( texture == null )
-        {
-            Logger.Error( "Supplied Texture is null." );
-            return;
-        }
-
+        ArgumentNullException.ThrowIfNull( texture );
+        GdxRuntimeException.ThrowIfNull( LastTexture );
+        
         if ( texture != LastTexture )
         {
             SwitchTexture( texture );
@@ -786,11 +727,7 @@ public class CpuSpriteBatch : SpriteBatch
             throw new GdxRuntimeException( "CpuSpriteBatch.begin must be called before draw." );
         }
 
-        if ( region == null )
-        {
-            Logger.Error( "Supplied TextureRegion is null." );
-            return;
-        }
+        ArgumentNullException.ThrowIfNull( region );
 
         if ( region.Texture != LastTexture )
         {
@@ -938,11 +875,7 @@ public class CpuSpriteBatch : SpriteBatch
             throw new InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
         }
 
-        if ( region == null )
-        {
-            Logger.Error( "Supplied TextureRegion is null." );
-            return;
-        }
+        ArgumentNullException.ThrowIfNull( region );
 
         if ( region.Texture != LastTexture )
         {
@@ -1002,6 +935,8 @@ public class CpuSpriteBatch : SpriteBatch
         {
             throw new InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
         }
+
+        ArgumentNullException.ThrowIfNull( texture );
 
         if ( texture != LastTexture )
         {

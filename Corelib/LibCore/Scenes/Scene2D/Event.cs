@@ -22,6 +22,7 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Pooling;
 
 namespace Corelib.LibCore.Scenes.Scene2D;
@@ -43,7 +44,7 @@ namespace Corelib.LibCore.Scenes.Scene2D;
 /// </para>
 /// </summary>
 [PublicAPI]
-public class Event : IPoolable
+public class Event : IResetable
 {
     // The Stage for the Actor the event was fired on.
     public Stage? Stage { get; set; } = null!;

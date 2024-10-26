@@ -889,13 +889,13 @@ public class ShaderProgram
     {
         List< ShaderProgram >? shaderArray;
 
-        if ( !_shaders.ContainsKey( app ) || ( _shaders[ app ] == null ) )
+        if ( !_shaders.TryGetValue(app, out var value) || (value == null ) )
         {
-            shaderArray = new List< ShaderProgram >();
+            shaderArray = [ ];
         }
         else
         {
-            shaderArray = _shaders[ app ];
+            shaderArray = value;
         }
         
         foreach ( var sp in shaderArray! )

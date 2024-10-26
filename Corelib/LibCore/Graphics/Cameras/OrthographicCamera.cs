@@ -39,6 +39,7 @@ public class OrthographicCamera : Camera
     private readonly Vector3 _tmp = new();
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     
     /// <summary>
     /// Constructs a default OrthographicCamera.
@@ -101,24 +102,24 @@ public class OrthographicCamera : Camera
     /// Sets this camera to an orthographic projection using a viewport fitting
     /// the screen resolution, centered at:-
     /// <para>
-    ///     <tt>(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2)</tt>
+    /// <tt>(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2)</tt>
     /// </para>
     /// with the y-axis pointing up or down.
     /// </summary>
     /// <param name="yDown">whether y should be pointing down.</param>
     public void SetToOrtho( bool yDown )
     {
-        SetToOrtho( yDown, Gdx.Graphics.Width, Gdx.Graphics.Height );
+        SetToOrtho( Gdx.Graphics.Width, Gdx.Graphics.Height, yDown );
     }
 
     /// <summary>
     /// Sets this camera to an orthographic projection, centered at
     /// (viewportWidth/2, viewportHeight/2), with the y-axis pointing up or down.
     /// </summary>
-    /// <param name="yDown">whether y should be pointing down.</param>
     /// <param name="viewportWidth"></param>
     /// <param name="viewportHeight"></param>
-    public void SetToOrtho( bool yDown, float viewportWidth, float viewportHeight )
+    /// <param name="yDown">whether y should be pointing down.</param>
+    public void SetToOrtho( float viewportWidth, float viewportHeight, bool yDown )
     {
         if ( yDown )
         {
@@ -132,6 +133,7 @@ public class OrthographicCamera : Camera
         }
 
         Position.Set( ( Zoom * viewportWidth ) / 2.0f, ( Zoom * viewportHeight ) / 2.0f, 0 );
+        
         ViewportWidth  = viewportWidth;
         ViewportHeight = viewportHeight;
 

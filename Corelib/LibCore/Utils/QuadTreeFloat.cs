@@ -30,7 +30,7 @@ namespace Corelib.LibCore.Utils;
 /// A quad tree that stores a float for each point.
 /// </summary>
 [PublicAPI]
-public class QuadTreeFloat : IPoolable
+public class QuadTreeFloat : IResetable
 {
     public const int VALUE   = 0;
     public const int XPOS    = 1;

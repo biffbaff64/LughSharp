@@ -109,98 +109,47 @@ public class ByteArray
         Array.Copy( array, startIndex, Items, 0, count );
     }
 
-    public void Add( byte value )
+    /// <summary>
+    /// Adds a value, or values, to this array.
+    /// </summary>
+    /// <param name="values"> One, or more, values to add. </param>
+    public void Add( params byte[] values )
     {
-        var items = this.Items;
-
-        if ( Size == items.Length )
+        foreach ( var value in values )
         {
-            items = Resize( Math.Max( 8, ( int ) ( Size * 1.75f ) ) );
+            if ( Size == Items.Length )
+            {
+                Items = Resize( Math.Max( 8, ( int )( Size * 1.75f ) ) );
+            }
+
+            Items[ Size++ ] = value;
         }
-
-        items[ Size++ ] = value;
     }
 
-    public void Add( byte value1, byte value2 )
-    {
-        var items = this.Items;
-
-        if ( ( Size + 1 ) >= items.Length )
-        {
-            items = Resize( Math.Max( 8, ( int ) ( Size * 1.75f ) ) );
-        }
-
-        items[ Size ]     =  value1;
-        items[ Size + 1 ] =  value2;
-        Size              += 2;
-    }
-
-    public void Add( byte value1, byte value2, byte value3 )
-    {
-        var items = this.Items;
-
-        if ( ( Size + 2 ) >= items.Length )
-        {
-            items = Resize( Math.Max( 8, ( int ) ( Size * 1.75f ) ) );
-        }
-
-        items[ Size ]     =  value1;
-        items[ Size + 1 ] =  value2;
-        items[ Size + 2 ] =  value3;
-        Size              += 3;
-    }
-
-    public void Add( byte value1, byte value2, byte value3, byte value4 )
-    {
-        var items = this.Items;
-
-        if ( ( Size + 3 ) >= items.Length )
-        {
-            items = Resize( Math.Max( 8, ( int ) ( Size * 1.8f ) ) ); // 1.75 isn't enough when size=5.
-        }
-
-        items[ Size ]     =  value1;
-        items[ Size + 1 ] =  value2;
-        items[ Size + 2 ] =  value3;
-        items[ Size + 3 ] =  value4;
-        Size              += 4;
-    }
-
-    public void AddAll( ByteArray array )
-    {
-        AddAll( array.Items, 0, array.Size );
-    }
-
-    public void AddAll( ByteArray array, int offset, int length )
-    {
-        if ( ( offset + length ) > array.Size )
-        {
-            throw new ArgumentException( $"offset + length must be <= size: {offset} + {length} <= {array.Size}" );
-        }
-        
-        AddAll( array.Items, offset, length );
-    }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="array"></param>
     public void AddAll( params byte[] array )
     {
-        AddAll( array, 0, array.Length );
+        Add( array );
     }
 
-    public void AddAll( byte[] array, int offset, int length )
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="array"></param>
+    public void AddAll( ByteArray array )
     {
-        var items      = this.Items;
-        var sizeNeeded = Size + length;
-
-        if ( sizeNeeded > items.Length )
-        {
-            items = Resize( Math.Max( Math.Max( 8, sizeNeeded ), ( int ) ( Size * 1.75f ) ) );
-        }
-
-        Array.Copy( array, offset, items, Size, length );
-
-        Size += length;
+        Add( array.Items );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    /// <exception cref="IndexOutOfRangeException"></exception>
     public byte Get( int index )
     {
         if ( index >= Size )
@@ -211,6 +160,12 @@ public class ByteArray
         return Items[ index ];
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="value"></param>
+    /// <exception cref="IndexOutOfRangeException"></exception>
     public void Set( int index, byte value )
     {
         if ( index >= Size )
@@ -221,6 +176,12 @@ public class ByteArray
         Items[ index ] = value;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="value"></param>
+    /// <exception cref="IndexOutOfRangeException"></exception>
     public void Incr( int index, byte value )
     {
         if ( index >= Size )
@@ -231,16 +192,24 @@ public class ByteArray
         Items[ index ] += value;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
     public void Incr( byte value )
     {
-        var items = this.Items;
-
         for ( int i = 0, n = Size; i < n; i++ )
         {
-            items[ i ] += value;
+            Items[ i ] += value;
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="value"></param>
+    /// <exception cref="IndexOutOfRangeException"></exception>
     public void Mul( int index, byte value )
     {
         if ( index >= Size )
@@ -251,16 +220,24 @@ public class ByteArray
         Items[ index ] *= value;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
     public void Mul( byte value )
     {
-        var items = this.Items;
-
         for ( int i = 0, n = Size; i < n; i++ )
         {
-            items[ i ] *= value;
+            Items[ i ] *= value;
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="value"></param>
+    /// <exception cref="IndexOutOfRangeException"></exception>
     public void Insert( int index, byte value )
     {
         if ( index > Size )
@@ -268,24 +245,23 @@ public class ByteArray
             throw new IndexOutOfRangeException( $"index can't be > size: {index} > {Size}" );
         }
 
-        var items = this.Items;
-
-        if ( Size == items.Length )
+        if ( Size == Items.Length )
         {
-            items = Resize( Math.Max( 8, ( int ) ( Size * 1.75f ) ) );
+            Items = Resize( Math.Max( 8, ( int )( Size * 1.75f ) ) );
         }
 
         if ( Ordered )
         {
-            Array.Copy( items, index, items, index + 1, Size - index );
+            Array.Copy( Items, index, Items, index + 1, Size - index );
         }
         else
         {
-            items[ Size ] = items[ index ];
+            Items[ Size ] = Items[ index ];
         }
 
         Size++;
-        items[ index ] = value;
+
+        Items[ index ] = value;
     }
 
     /// <summary>
@@ -303,7 +279,7 @@ public class ByteArray
 
         if ( sizeNeeded > Items.Length )
         {
-            Items = Resize( Math.Max( Math.Max( 8, sizeNeeded ), ( int ) ( Size * 1.75f ) ) );
+            Items = Resize( Math.Max( Math.Max( 8, sizeNeeded ), ( int )( Size * 1.75f ) ) );
         }
 
         Array.Copy( Items, index, Items, index + count, Size - index );
@@ -311,6 +287,12 @@ public class ByteArray
         Size = sizeNeeded;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="first"></param>
+    /// <param name="second"></param>
+    /// <exception cref="IndexOutOfRangeException"></exception>
     public void Swap( int first, int second )
     {
         if ( first >= Size )
@@ -323,19 +305,21 @@ public class ByteArray
             throw new IndexOutOfRangeException( $"second can't be >= size: {second} >= {Size}" );
         }
 
-        var items = this.Items;
-        
-        ( items[ first ], items[ second ] ) = ( items[ second ], items[ first ] );
+        ( Items[ first ], Items[ second ] ) = ( Items[ second ], Items[ first ] );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
     public bool Contains( byte value )
     {
-        var i     = Size - 1;
-        var items = this.Items;
-        
+        var i = Size - 1;
+
         while ( i >= 0 )
         {
-            if ( items[ i-- ] == value )
+            if ( Items[ i-- ] == value )
             {
                 return true;
             }
@@ -344,13 +328,16 @@ public class ByteArray
         return false;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
     public int IndexOf( byte value )
     {
-        var items = this.Items;
-        
         for ( int i = 0, n = Size; i < n; i++ )
         {
-            if ( items[ i ] == value )
+            if ( Items[ i ] == value )
             {
                 return i;
             }
@@ -359,13 +346,16 @@ public class ByteArray
         return -1;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
     public int LastIndexOf( byte value )
     {
-        var items = this.Items;
-        
         for ( var i = Size - 1; i >= 0; i-- )
         {
-            if ( items[ i ] == value )
+            if ( Items[ i ] == value )
             {
                 return i;
             }
@@ -374,15 +364,19 @@ public class ByteArray
         return -1;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
     public bool RemoveValue( byte value )
     {
-        var items = this.Items;
-
         for ( int i = 0, n = Size; i < n; i++ )
         {
-            if ( items[ i ] == value )
+            if ( Items[ i ] == value )
             {
                 RemoveIndex( i );
+
                 return true;
             }
         }
@@ -403,18 +397,17 @@ public class ByteArray
             throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
         }
 
-        var items = this.Items;
-        int value = items[ index ];
+        int value = Items[ index ];
 
         Size--;
 
         if ( Ordered )
         {
-            Array.Copy( items, index + 1, items, index, Size - index );
+            Array.Copy( Items, index + 1, Items, index, Size - index );
         }
         else
         {
-            items[ index ] = items[ Size ];
+            Items[ index ] = Items[ Size ];
         }
 
         return value;
@@ -440,7 +433,8 @@ public class ByteArray
             throw new IndexOutOfRangeException( $"start can't be > end: {start} > {end}" );
         }
 
-        int count = ( end - start ) + 1, lastIndex = n - count;
+        var count     = ( end - start ) + 1;
+        var lastIndex = n - count;
 
         if ( Ordered )
         {
@@ -464,7 +458,6 @@ public class ByteArray
     {
         var size      = this.Size;
         var startSize = size;
-        var items     = this.Items;
 
         for ( int i = 0, n = array.Size; i < n; i++ )
         {
@@ -472,7 +465,7 @@ public class ByteArray
 
             for ( var ii = 0; ii < size; ii++ )
             {
-                if ( item == items[ ii ] )
+                if ( item == Items[ ii ] )
                 {
                     RemoveIndex( ii );
                     size--;
@@ -503,7 +496,7 @@ public class ByteArray
         {
             throw new GdxRuntimeException( "Array is empty." );
         }
-        
+
         return Items[ 0 ];
     }
 
@@ -517,6 +510,9 @@ public class ByteArray
     /// </summary>
     public bool IsEmpty() => Size == 0;
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void Clear() => Size = 0;
 
     /// <summary>
@@ -541,14 +537,14 @@ public class ByteArray
         {
             throw new ArgumentException( $"additionalCapacity must be >= 0: {additionalCapacity}" );
         }
-        
+
         var sizeNeeded = Size + additionalCapacity;
 
         if ( sizeNeeded > Items.Length )
         {
-            Resize( Math.Max( Math.Max( 8, sizeNeeded ), ( int ) ( Size * 1.75f ) ) );
+            Resize( Math.Max( Math.Max( 8, sizeNeeded ), ( int )( Size * 1.75f ) ) );
         }
-        
+
         return Items;
     }
 
@@ -561,13 +557,22 @@ public class ByteArray
     public byte[] SetSize( int newSize )
     {
         if ( newSize < 0 ) throw new ArgumentException( $"newSize must be >= 0: {newSize}" );
-        if ( newSize > Items.Length ) Resize( Math.Max( 8, newSize ) );
+
+        if ( newSize > Items.Length )
+        {
+            Resize( Math.Max( 8, newSize ) );
+        }
 
         Size = newSize;
 
         return Items;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="newSize"></param>
+    /// <returns></returns>
     protected byte[] Resize( int newSize )
     {
         var newItems = new byte[ newSize ];
@@ -580,32 +585,37 @@ public class ByteArray
         return newItems;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void Sort()
     {
         Array.Sort( Items, 0, Size );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void Reverse()
     {
-        var items = this.Items;
-
         for ( int i = 0, lastIndex = Size - 1, n = Size / 2; i < n; i++ )
         {
             var ii = lastIndex - i;
 
-            ( items[ i ], items[ ii ] ) = ( items[ ii ], items[ i ] );
+            ( Items[ i ], Items[ ii ] ) = ( Items[ ii ], Items[ i ] );
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void Shuffle()
     {
-        var items = this.Items;
-
         for ( var i = Size - 1; i >= 0; i-- )
         {
             var ii = MathUtils.Random( i );
 
-            ( items[ i ], items[ ii ] ) = ( items[ ii ], items[ i ] );
+            ( Items[ i ], Items[ ii ] ) = ( Items[ ii ], Items[ i ] );
         }
     }
 
@@ -624,25 +634,29 @@ public class ByteArray
     /// <returns></returns>
     public byte Random()
     {
-        return Size == 0 ? ( byte ) 0 : Items[ MathUtils.Random( 0, Size - 1 ) ];
+        return Size == 0 ? ( byte )0 : Items[ MathUtils.Random( 0, Size - 1 ) ];
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public byte[] ToArray()
     {
         var array = new byte[ Size ];
         Array.Copy( Items, 0, array, 0, Size );
+
         return array;
     }
 
     /// <inheritdoc />
     public override int GetHashCode()
     {
-        var items = this.Items;
-        var h     = 1;
+        var h = 1;
 
         for ( int i = 0, n = Size; i < n; i++ )
         {
-            h = ( h * 31 ) + items[ i ];
+            h = ( h * 31 ) + Items[ i ];
         }
 
         return h;
@@ -655,9 +669,7 @@ public class ByteArray
     {
         if ( obj == this ) return true;
         if ( !Ordered ) return false;
-
         if ( obj is not ByteArray array ) return false;
-
         if ( !array.Ordered ) return false;
 
         var n = Size;
@@ -670,7 +682,9 @@ public class ByteArray
         for ( var i = 0; i < n; i++ )
         {
             if ( items1[ i ] != items2[ i ] )
+            {
                 return false;
+            }
         }
 
         return true;
@@ -698,6 +712,11 @@ public class ByteArray
         return buffer.ToString();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="separator"></param>
+    /// <returns></returns>
     public string ToString( string separator )
     {
         if ( Size == 0 ) return "";

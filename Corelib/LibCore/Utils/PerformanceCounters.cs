@@ -31,15 +31,16 @@ namespace Corelib.LibCore.Utils;
 [PublicAPI]
 public class PerformanceCounters
 {
-    private const float NANO2_SECONDS = 1f / 1000000000.0f;
-
-    private long _lastTick = 0L;
-
     /// <summary>
     /// The list of <see cref="PerformanceCounter"/>s to track.
     /// </summary>
     public List< PerformanceCounter > Counters { get; set; } = [ ];
 
+    private const float NANO2_SECONDS = 1f / 1000000000.0f;
+
+    private long _lastTick = 0L;
+
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>

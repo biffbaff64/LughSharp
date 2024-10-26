@@ -34,6 +34,8 @@ public static class Pools< T >
 {
     private static readonly Dictionary< Type, Pool< T >? > _typePools = new();
 
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// Returns a new or existing pool for the specified type, stored in a Class
     /// to map. Note the max size is ignored if this is not the first time this
@@ -41,7 +43,7 @@ public static class Pools< T >
     /// </summary>
     public static Pool< T > Get( int max = 100 )
     {
-        Pool< T >? pool = _typePools[ typeof( T ) ];
+        var pool = _typePools[ typeof( T ) ];
 
         if ( pool == null )
         {

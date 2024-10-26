@@ -32,7 +32,7 @@ namespace Corelib.LibCore.Scenes.Scene2D.UI;
 /// A Cell for use with <see cref="Table"/>s.
 /// </summary>
 [PublicAPI]
-public class Cell : IPoolable
+public class Cell : IResetable
 {
     private const float ZEROF   = 0f;
     private const float ONEF    = 1f;

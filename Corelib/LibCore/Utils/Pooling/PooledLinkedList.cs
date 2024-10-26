@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-
 namespace Corelib.LibCore.Utils.Pooling;
 
 /// <summary>
@@ -31,6 +30,10 @@ namespace Corelib.LibCore.Utils.Pooling;
 [PublicAPI]
 public class PooledLinkedList< T >
 {
+    public int Size { get; set; } = 0;
+
+    // ------------------------------------------------------------------------
+
     private readonly Pool< Item< T > > _pool;
 
     private Item< T >? _curr;
@@ -38,6 +41,7 @@ public class PooledLinkedList< T >
     private Item< T >? _iter;
     private Item< T >? _tail;
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -53,10 +57,6 @@ public class PooledLinkedList< T >
             NewObject = GetNewObject,
         };
     }
-
-    // ------------------------------------------------------------------------
-
-    public int Size { get; set; } = 0;
 
     /// <summary>
     /// Creates, and returns, a new <see cref="Item{T}"/>
@@ -192,9 +192,9 @@ public class PooledLinkedList< T >
 
         Size--;
 
-        Item< T >? c = _curr;
-        Item< T >? n = _curr.Next;
-        Item< T >? p = _curr.Prev;
+        var c = _curr;
+        var n = _curr.Next;
+        var p = _curr.Prev;
 
         _pool.Free( _curr );
         _curr = null;
@@ -241,7 +241,7 @@ public class PooledLinkedList< T >
 
         Size--;
 
-        Item< T >? p = _tail.Prev;
+        var p = _tail.Prev;
 
         _pool.Free( _tail );
 
@@ -276,6 +276,9 @@ public class PooledLinkedList< T >
         }
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     [PublicAPI]
     public class Item< TT >
     {

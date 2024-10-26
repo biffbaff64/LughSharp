@@ -72,7 +72,7 @@ public interface IGLBindings
     /// <see cref="GL_FRONT"/>, <see cref="GL_BACK"/>, and <see cref="GL_FRONT_AND_BACK"/> are accepted.
     /// The initial value is <see cref="GL_BACK"/>.
     /// </param>
-    void glCullFace( Int32 mode );
+    void glCullFace( int mode );
 
     /// <summary>
     /// Define front- and back-facing polygons
@@ -81,7 +81,7 @@ public interface IGLBindings
     /// Specifies the orientation of front-facing polygons. Symbolic constants <see cref="GL_CW"/> and
     /// <see cref="GL_CCW"/> are accepted. The initial value is <see cref="GL_CCW"/>.
     /// </param>
-    void glFrontFace( Int32 mode );
+    void glFrontFace( int mode );
 
     /// <summary>
     /// Specify implementation-specific hints
@@ -95,19 +95,19 @@ public interface IGLBindings
     /// Specifies a symbolic constant indicating the desired behavior. <see cref="GL_FASTEST"/>,
     /// <see cref="GL_NICEST"/>, and <see cref="GL_DONT_CARE"/> are accepted.
     /// </param>
-    void glHint( Int32 target, Int32 mode );
+    void glHint( int target, int mode );
 
     /// <summary>
     /// Specify the width of rasterized lines
     /// </summary>
     /// <param name="width">Specifies the width of rasterized lines. The initial value is 1.0.</param>
-    void glLineWidth( Single width );
+    void glLineWidth( float width );
 
     /// <summary>
     /// Specify the diameter of rasterized points
     /// </summary>
     /// <param name="size">Specifies the diameter of rasterized points. The initial value is 1.0.</param>
-    void glPointSize( Single size );
+    void glPointSize( float size );
 
     /// <summary>
     /// Select a polygon rasterization mode
@@ -121,7 +121,7 @@ public interface IGLBindings
     /// <see cref="GL_LINE"/>, and <see cref="GL_FILL"/>. The initial value is <see cref="GL_FILL"/> for both front- and
     /// back-facing polygons.
     /// </param>
-    void glPolygonMode( Int32 face, Int32 mode );
+    void glPolygonMode( int face, int mode );
 
     /// <summary>
     /// Define the scissor box
@@ -130,7 +130,7 @@ public interface IGLBindings
     /// <param name="y">Specify the lower left corner of the scissor box. Initially (0, 0).</param>
     /// <param name="width">Specify the width of the scissor box.</param>
     /// <param name="height">Specify the height of the scissor box.</param>
-    void glScissor( Int32 x, Int32 y, Int32 width, Int32 height );
+    void glScissor( int x, int y, int width, int height );
 
     /// <summary>
     /// Set texture parameters
@@ -154,7 +154,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_SWIZZLE_RGBA"/> is also acceptable.
     /// </param>
     /// <param name="param">Specifies the value of pname.</param>
-    void glTexParameterf( Int32 target, Int32 pname, Single param );
+    void glTexParameterf( int target, int pname, float param );
 
     /// <summary>
     /// Set texture parameters
@@ -178,7 +178,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_SWIZZLE_RGBA"/> is also acceptable.
     /// </param>
     /// <param name="params">Specifies the values of pname.</param>
-    unsafe void glTexParameterfv( Int32 target, Int32 pname, Single* parameters );
+    unsafe void glTexParameterfv( int target, int pname, float* parameters );
 
     /// <summary>
     /// Set texture parameters
@@ -202,7 +202,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_SWIZZLE_RGBA"/> is also acceptable.
     /// </param>
     /// <param name="params">Specifies the values of pname.</param>
-    unsafe void glTexParameterfv( Int32 target, Int32 pname, Single[] parameters );
+    unsafe void glTexParameterfv( int target, int pname, float[] parameters );
 
     /// <summary>
     /// Set texture parameters
@@ -226,7 +226,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_SWIZZLE_RGBA"/> is also acceptable.
     /// </param>
     /// <param name="param">Specifies the value of pname.</param>
-    void glTexParameteri( Int32 target, Int32 pname, Int32 param );
+    void glTexParameteri( int target, int pname, int param );
 
     /// <summary>
     /// Set texture parameters
@@ -250,7 +250,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_SWIZZLE_RGBA"/> is also acceptable.
     /// </param>
     /// <param name="params">Specifies the values of pname.</param>
-    unsafe void glTexParameteriv( Int32 target, Int32 pname, Int32* parameters );
+    unsafe void glTexParameteriv( int target, int pname, int* parameters );
 
     /// <summary>
     /// Set texture parameters
@@ -274,7 +274,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_SWIZZLE_RGBA"/> is also acceptable.
     /// </param>
     /// <param name="params">Specifies the values of pname.</param>
-    unsafe void glTexParameteriv( Int32 target, Int32 pname, Int32[] parameters );
+    unsafe void glTexParameteriv( int target, int pname, int[] parameters );
 
     /// <summary>
     /// Specify a one-dimensional texture image
@@ -315,7 +315,7 @@ public interface IGLBindings
     /// <see cref="GL_UNSIGNED_INT_10_10_10_2"/>, and <see cref="GL_UNSIGNED_INT_2_10_10_10_REV"/>.
     /// </param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-    unsafe void glTexImage1D( Int32 target, Int32 level, Int32 internalformat, Int32 width, Int32 border, Int32 format, Int32 type, void* pixels );
+    unsafe void glTexImage1D( int target, int level, int internalformat, int width, int border, int format, int type, void* pixels );
 
     /// <summary>
     /// Specify a one-dimensional texture image
@@ -359,7 +359,7 @@ public interface IGLBindings
     /// Specifies the pixel data as an array of values. Make sure to match the generic type with the
     /// <paramref name="type"/> parameter.
     /// </param>
-    unsafe void glTexImage1D< T >( Int32 target, Int32 level, Int32 internalformat, Int32 width, Int32 border, Int32 format, Int32 type, T[] pixels )
+    unsafe void glTexImage1D< T >( int target, int level, int internalformat, int width, int border, int format, int type, T[] pixels )
         where T : unmanaged;
 
     /// <summary>
@@ -417,14 +417,14 @@ public interface IGLBindings
     /// <see cref="GL_UNSIGNED_INT_10_10_10_2"/>, and <see cref="GL_UNSIGNED_INT_2_10_10_10_REV"/>.
     /// </param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-    unsafe void glTexImage2D( Int32 target,
-                              Int32 level,
-                              Int32 internalformat,
-                              Int32 width,
-                              Int32 height,
-                              Int32 border,
-                              Int32 format,
-                              Int32 type,
+    unsafe void glTexImage2D( int target,
+                              int level,
+                              int internalformat,
+                              int width,
+                              int height,
+                              int border,
+                              int format,
+                              int type,
                               void* pixels );
 
     /// <summary>
@@ -485,14 +485,14 @@ public interface IGLBindings
     /// Specifies the pixel data as an array of values. Make sure to match the <paramref name="format"/>
     /// and <paramref name="type"/> parameters.
     /// </param>
-    unsafe void glTexImage2D< T >( Int32 target,
-                                   Int32 level,
-                                   Int32 internalformat,
-                                   Int32 width,
-                                   Int32 height,
-                                   Int32 border,
-                                   Int32 format,
-                                   Int32 type,
+    unsafe void glTexImage2D< T >( int target,
+                                   int level,
+                                   int internalformat,
+                                   int width,
+                                   int height,
+                                   int border,
+                                   int format,
+                                   int type,
                                    T[] pixels ) where T : unmanaged;
 
     /// <summary>
@@ -505,7 +505,7 @@ public interface IGLBindings
     /// <see cref="GL_RIGHT"/>, <see cref="GL_FRONT_AND_BACK"/>. The initial value is <see cref="GL_FRONT"/> for single
     /// buffered contexts, and <see cref="GL_BACK"/> for double buffered contexts.
     /// </param>
-    void glDrawBuffer( Int32 buf );
+    void glDrawBuffer( int buf );
 
     /// <summary>
     /// Clear buffers to preset values.
@@ -514,7 +514,7 @@ public interface IGLBindings
     /// Bitwise OR of masks that indicate the buffers to be cleared. The three masks are
     /// <see cref="GL_COLOR_BUFFER_BIT"/>, <see cref="GL_DEPTH_BUFFER_BIT"/>, and <see cref="GL_STENCIL_BUFFER_BIT"/>.
     /// </param>
-    void glClear( UInt32 mask );
+    void glClear( uint mask );
 
     /// <summary>
     /// Specify clear values for the color buffers.
@@ -523,19 +523,19 @@ public interface IGLBindings
     /// <param name="green">Specifies the green value used when the color buffers are cleared. The initial value is 0.</param>
     /// <param name="blue">Specifies the blue value used when the color buffers are cleared. The initial value is 0.</param>
     /// <param name="alpha">Specifies the alpha value used when the color buffers are cleared. The initial value is 0.</param>
-    void glClearColor( Single red, Single green, Single blue, Single alpha );
+    void glClearColor( float red, float green, float blue, float alpha );
 
     /// <summary>
     /// Specify the clear value for the stencil buffer.
     /// </summary>
     /// <param name="s">Specifies the index used when the stencil buffer is cleared. The initial value is 0.</param>
-    void glClearStencil( Int32 s );
+    void glClearStencil( int s );
 
     /// <summary>
     /// Specify the clear value for the depth buffer.
     /// </summary>
     /// <param name="depth">Specifies the depth value used when the depth buffer is cleared. The initial value is 1.</param>
-    void glClearDepth( Double depth );
+    void glClearDepth( double depth );
 
     /// <summary>
     /// Control the front and back writing of individual bits in the stencil planes.
@@ -544,7 +544,7 @@ public interface IGLBindings
     /// Specifies a bit mask to enable and disable writing of individual bits in the stencil planes.
     /// Initially, the mask is all 1's.
     /// </param>
-    void glStencilMask( UInt32 mask );
+    void glStencilMask( uint mask );
 
     /// <summary>
     /// Enable and disable writing of frame buffer color components.
@@ -553,7 +553,7 @@ public interface IGLBindings
     /// <param name="green">Specifies whether green can or cannot be written into the frame buffer.</param>
     /// <param name="blue">Specifies whether blue can or cannot be written into the frame buffer.</param>
     /// <param name="alpha">Specifies whether alpha can or cannot be written into the frame buffer.</param>
-    void glColorMask( Boolean red, Boolean green, Boolean blue, Boolean alpha );
+    void glColorMask( bool red, bool green, bool blue, bool alpha );
 
     /// <summary>
     /// Enable or disable writing into the depth buffer.
@@ -562,7 +562,7 @@ public interface IGLBindings
     /// Specifies whether depth buffer writing is enabled or disabled. If flag is <see langword="false"/>,
     /// depth buffer writing is disabled. Otherwise, it is enabled. Initially, depth buffer writing is enabled.
     /// </param>
-    void glDepthMask( Boolean flag );
+    void glDepthMask( bool flag );
 
     /// <summary>
     /// Disable GL capabilities.
@@ -571,7 +571,7 @@ public interface IGLBindings
     /// Specifies a symbolic constant indicating a GL capability to be disabled. Refer to
     /// <see href="https://docs.gl/gl4/glEnable"/> for a list of possible values.
     /// </param>
-    void glDisable( Int32 cap );
+    void glDisable( int cap );
 
     /// <summary>
     /// Enable GL capabilities.
@@ -580,7 +580,7 @@ public interface IGLBindings
     /// Specifies a symbolic constant indicating a GL capability to be enabled. Refer to
     /// <see href="https://docs.gl/gl4/glEnable"/> for a list of possible values.
     /// </param>
-    void glEnable( Int32 cap );
+    void glEnable( int cap );
 
     /// <summary>
     /// Block until all GL execution is complete.
@@ -613,7 +613,7 @@ public interface IGLBindings
     /// <see cref="GL_ONE_MINUS_CONSTANT_COLOR"/>, <see cref="GL_CONSTANT_ALPHA"/>, and
     /// <see cref="GL_ONE_MINUS_CONSTANT_ALPHA"/>.
     /// </param>
-    void glBlendFunc( Int32 sfactor, Int32 dfactor );
+    void glBlendFunc( int sfactor, int dfactor );
 
     /// <summary>
     /// Specify a logical pixel operation for rendering.
@@ -626,7 +626,7 @@ public interface IGLBindings
     /// <see cref="GL_AND_REVERSE"/>, <see cref="GL_AND_INVERTED"/>, <see cref="GL_OR_REVERSE"/>, and
     /// <see cref="GL_OR_INVERTED"/>. The initial value is <see cref="GL_COPY"/>.
     /// </param>
-    void glLogicOp( Int32 opcode );
+    void glLogicOp( int opcode );
 
     /// <summary>
     /// Set front and back function and reference value for stencil testing.
@@ -645,7 +645,7 @@ public interface IGLBindings
     /// Specifies a mask that is ANDed with both the reference value and the stored stencil value when the
     /// test is done. The initial value is all 1's.
     /// </param>
-    void glStencilFunc( Int32 func, Int32 @ref, UInt32 mask );
+    void glStencilFunc( int func, int @ref, uint mask );
 
     /// <summary>
     /// Set front and back stencil test actions.
@@ -666,7 +666,7 @@ public interface IGLBindings
     /// stencil test passes and either there is no depth buffer or depth testing is not enabled. <paramref name="zpass"/>
     /// accepts the same symbolic constants as <paramref name="fail"/>. The initial value is <see cref="GL_KEEP"/>.
     /// </param>
-    void glStencilOp( Int32 fail, Int32 zfail, Int32 zpass );
+    void glStencilOp( int fail, int zfail, int zpass );
 
     /// <summary>
     /// Specify the value used for depth buffer comparisons.
@@ -677,7 +677,7 @@ public interface IGLBindings
     /// <see cref="GL_NOTEQUAL"/>, <see cref="GL_GEQUAL"/>, and <see cref="GL_ALWAYS"/> are accepted. The initial value
     /// is <see cref="GL_LESS"/>.
     /// </param>
-    void glDepthFunc( Int32 func );
+    void glDepthFunc( int func );
 
     /// <summary>
     /// Set pixel storage modes.
@@ -693,7 +693,7 @@ public interface IGLBindings
     /// <see cref="GL_UNPACK_ALIGNMENT"/>.
     /// </param>
     /// <param name="param">Specifies the value that <paramref name="pname"/> is set to.</param>
-    void glPixelStoref( Int32 pname, Single param );
+    void glPixelStoref( int pname, float param );
 
     /// <summary>
     /// Set pixel storage modes.
@@ -709,7 +709,7 @@ public interface IGLBindings
     /// <see cref="GL_UNPACK_ALIGNMENT"/>.
     /// </param>
     /// <param name="param">Specifies the value that <paramref name="pname"/> is set to.</param>
-    void glPixelStorei( Int32 pname, Int32 param );
+    void glPixelStorei( int pname, int param );
 
     /// <summary>
     /// Select a color buffer source for pixels.
@@ -720,7 +720,7 @@ public interface IGLBindings
     /// <see cref="GL_BACK"/>, <see cref="GL_LEFT"/>, <see cref="GL_RIGHT"/>, and the constants
     /// <see cref="GL_COLOR_ATTACHMENT0"/> through <see cref="GL_COLOR_ATTACHMENT31"/>.
     /// </param>
-    void glReadBuffer( Int32 src );
+    void glReadBuffer( int src );
 
     /// <summary>
     /// Read a block of pixels from the frame buffer.
@@ -761,7 +761,7 @@ public interface IGLBindings
     /// <see cref="GL_UNSIGNED_INT_5_9_9_9_REV"/>, and <see cref="GL_FLOAT_32_UNSIGNED_INT_24_8_REV"/>.
     /// </param>
     /// <param name="pixels">A pointer to somewhere in memory where the pixel data will be returned.</param>
-    unsafe void glReadPixels( Int32 x, Int32 y, Int32 width, Int32 height, Int32 format, Int32 type, void* pixels );
+    unsafe void glReadPixels( int x, int y, int width, int height, int format, int type, void* pixels );
 
     /// <summary>
     /// Read a block of pixels from the frame buffer.
@@ -805,7 +805,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array of <typeparamref name="T"/>s where the pixel data will be
     /// returned. Make sure to match the type of the data with the type in <paramref name="type"/>.
     /// </param>
-    unsafe void glReadPixels< T >( Int32 x, Int32 y, Int32 width, Int32 height, Int32 format, Int32 type, ref T[] pixels ) where T : unmanaged;
+    unsafe void glReadPixels< T >( int x, int y, int width, int height, int format, int type, ref T[] pixels ) where T : unmanaged;
 
     /// <summary>
     /// Return the boolean value or values of a selected parameter.
@@ -815,7 +815,7 @@ public interface IGLBindings
     /// a list of possible values.
     /// </param>
     /// <param name="data">A pointer to where the boolean value or values will be returned.</param>
-    unsafe void glGetBooleanv( Int32 pname, Boolean* data );
+    unsafe void glGetBooleanv( int pname, bool* data );
 
     /// <summary>
     /// Return the boolean value or values of a selected parameter.
@@ -828,7 +828,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array of <see langword="bool"/>s where the boolean value or values
     /// will be returned.
     /// </param>
-    unsafe void glGetBooleanv( Int32 pname, ref Boolean[] data );
+    unsafe void glGetBooleanv( int pname, ref bool[] data );
 
     /// <summary>
     /// Return the double value or values of a selected parameter.
@@ -838,7 +838,7 @@ public interface IGLBindings
     /// a list of possible values.
     /// </param>
     /// <param name="data">A pointer to where the double value or values will be returned.</param>
-    unsafe void glGetDoublev( Int32 pname, Double* data );
+    unsafe void glGetDoublev( int pname, double* data );
 
     /// <summary>
     /// Return the double value or values of a selected parameter.
@@ -851,7 +851,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array of <see langword="double"/>s where the double value or values
     /// will be returned.
     /// </param>
-    unsafe void glGetDoublev( Int32 pname, ref Double[] data );
+    unsafe void glGetDoublev( int pname, ref double[] data );
 
     /// <summary>
     /// Return error information.
@@ -861,7 +861,7 @@ public interface IGLBindings
     /// <see cref="GL_INVALID_OPERATION"/>, <see cref="GL_INVALID_FRAMEBUFFER_OPERATION"/>,
     /// <see cref="GL_OUT_OF_MEMORY"/>, <see cref="GL_STACK_UNDERFLOW"/>, or <see cref="GL_STACK_OVERFLOW"/>.
     /// </returns>
-    Int32 glGetError();
+    int glGetError();
 
     /// <summary>
     /// Return the float value or values of a selected parameter.
@@ -871,7 +871,7 @@ public interface IGLBindings
     /// a list of possible values.
     /// </param>
     /// <param name="data">A pointer to where the float value or values will be returned.</param>
-    unsafe void glGetFloatv( Int32 pname, float* data );
+    unsafe void glGetFloatv( int pname, float* data );
 
     /// <summary>
     /// Return the float value or values of a selected parameter.
@@ -880,7 +880,7 @@ public interface IGLBindings
     /// Specifies the parameter value to be returned. Refer to <see href="https://docs.gl/gl4/glGet"/> for
     /// a list of possible values.
     /// </param>
-    unsafe void glGetFloatv( Int32 pname, ref Single[] data );
+    unsafe void glGetFloatv( int pname, ref float[] data );
 
     /// <summary>
     /// Return the integer value or values of a selected parameter.
@@ -890,7 +890,7 @@ public interface IGLBindings
     /// a list of possible values.
     /// </param>
     /// <param name="data">A pointer to where the integer value or values will be returned.</param>
-    unsafe void glGetIntegerv( Int32 pname, Int32* data );
+    unsafe void glGetIntegerv( int pname, int* data );
 
     /// <summary>
     /// Return the integer value or values of a selected parameter.
@@ -903,7 +903,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array of <see langword="int"/>s where the integer value or values
     /// will be returned.
     /// </param>
-    unsafe void glGetIntegerv( Int32 pname, ref Int32[] data );
+    unsafe void glGetIntegerv( int pname, ref int[] data );
 
     /// <summary>
     /// Return a string describing the current GL connection.
@@ -914,7 +914,7 @@ public interface IGLBindings
     /// accepts <see cref="GL_EXTENSIONS"/>.
     /// </param>
     /// <returns>The requested string as a <see cref="byte"/> pointer.</returns>
-    unsafe Byte* glGetString( Int32 name );
+    unsafe Byte* glGetString( int name );
 
     /// <summary>
     /// Return a string describing the current GL connection.
@@ -925,7 +925,7 @@ public interface IGLBindings
     /// accepts <see cref="GL_EXTENSIONS"/>.
     /// </param>
     /// <returns>The requested string as a managed string.</returns>
-    unsafe string glGetStringSafe( Int32 name );
+    unsafe string glGetStringSafe( int name );
 
     /// <summary>
     /// Return a texture image.
@@ -966,7 +966,7 @@ public interface IGLBindings
     /// <see cref="GL_UNSIGNED_INT_5_9_9_9_REV"/>, and <see cref="GL_FLOAT_32_UNSIGNED_INT_24_8_REV"/>.
     /// </param>
     /// <param name="pixels">A pointer to a memory location where the pixel data will be returned.</param>
-    unsafe void glGetTexImage( Int32 target, Int32 level, Int32 format, Int32 type, void* pixels );
+    unsafe void glGetTexImage( int target, int level, int format, int type, void* pixels );
 
     /// <summary>
     /// Return a texture image.
@@ -1010,7 +1010,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array of <typeparamref name="T"/>s where the pixel data will be
     /// returned.
     /// </param>
-    unsafe void glGetTexImage< T >( Int32 target, Int32 level, Int32 format, Int32 type, ref T[] pixels ) where T : unmanaged;
+    unsafe void glGetTexImage< T >( int target, int level, int format, int type, ref T[] pixels ) where T : unmanaged;
 
     /// <summary>
     /// Return texture parameter (float) values.
@@ -1036,7 +1036,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_WRAP_T"/> are accepted.
     /// </param>
     /// <param name="params">A pointer to a float array where the values will be returned.</param>
-    unsafe void glGetTexParameterfv( Int32 target, Int32 pname, Single* parameters );
+    unsafe void glGetTexParameterfv( int target, int pname, float* parameters );
 
     /// <summary>
     /// Return texture parameter (float) values.
@@ -1062,7 +1062,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_WRAP_T"/> are accepted.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to a float array where the values will be returned.</param>
-    unsafe void glGetTexParameterfv( Int32 target, Int32 pname, ref Single[] parameters );
+    unsafe void glGetTexParameterfv( int target, int pname, ref float[] parameters );
 
     /// <summary>
     /// Return texture parameter (integer) values.
@@ -1088,7 +1088,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_WRAP_T"/> are accepted.
     /// </param>
     /// <param name="params">A pointer to an integer array where the values will be returned.</param>
-    unsafe void glGetTexParameteriv( Int32 target, Int32 pname, Int32* parameters );
+    unsafe void glGetTexParameteriv( int target, int pname, int* parameters );
 
     /// <summary>
     /// Return texture parameter (integer) values.
@@ -1114,7 +1114,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_WRAP_T"/> are accepted.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to an integer array where the values will be returned.</param>
-    unsafe void glGetTexParameteriv( Int32 target, Int32 pname, ref Int32[] parameters );
+    unsafe void glGetTexParameteriv( int target, int pname, ref int[] parameters );
 
     /// <summary>
     /// Return texture parameter (float) values for a specific level of detail.
@@ -1137,7 +1137,7 @@ public interface IGLBindings
     /// reduction image.
     /// </param>
     /// <param name="params">A pointer to a float array in which to place the returned parameter value(s).</param>
-    unsafe void glGetTexLevelParameterfv( Int32 target, Int32 level, Int32 pname, Single* parameters );
+    unsafe void glGetTexLevelParameterfv( int target, int level, int pname, float* parameters );
 
     /// <summary>
     /// Return texture parameter (float) values for a specific level of detail.
@@ -1160,7 +1160,7 @@ public interface IGLBindings
     /// reduction image.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to a float array where the values will be returned.</param>
-    unsafe void glGetTexLevelParameterfv( Int32 target, Int32 level, Int32 pname, ref Single[] parameters );
+    unsafe void glGetTexLevelParameterfv( int target, int level, int pname, ref float[] parameters );
 
     /// <summary>
     /// Return texture parameter (integer) values for a specific level of detail.
@@ -1183,7 +1183,7 @@ public interface IGLBindings
     /// reduction image.
     /// </param>
     /// <param name="params">A pointer to an integer array in which to place the returned parameter value(s).</param>
-    unsafe void glGetTexLevelParameteriv( Int32 target, Int32 level, Int32 pname, Int32* parameters );
+    unsafe void glGetTexLevelParameteriv( int target, int level, int pname, int* parameters );
 
     /// <summary>
     /// Return texture parameter (integer) values for a specific level of detail.
@@ -1206,7 +1206,7 @@ public interface IGLBindings
     /// reduction image.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to an integer array where the values will be returned.</param>
-    unsafe void glGetTexLevelParameteriv( Int32 target, Int32 level, Int32 pname, ref Int32[] parameters );
+    unsafe void glGetTexLevelParameteriv( int target, int level, int pname, ref int[] parameters );
 
     /// <summary>
     /// Test whether a capability is enabled.
@@ -1215,14 +1215,14 @@ public interface IGLBindings
     /// Specifies a symbolic constant indicating a GL capability. Refer to
     /// <see href="https://docs.gl/gl4/glIsEnabled"/> for a list of possible capabilities.
     /// </param>
-    Boolean glIsEnabled( Int32 cap );
+    bool glIsEnabled( int cap );
 
     /// <summary>
     /// Specify mapping of depth values from normalized device coordinates to window coordinates.
     /// </summary>
     /// <param name="near">Specifies the mapping of the near clipping plane to window coordinates. The initial value is 0.</param>
     /// <param name="far">Specifies the mapping of the far clipping plane to window coordinates. The initial value is 1.</param>
-    void glDepthRange( Double near, Double far );
+    void glDepthRange( double near, double far );
 
     /// <summary>
     /// Set the viewport.
@@ -1237,7 +1237,7 @@ public interface IGLBindings
     /// Specify the width and height of the viewport. When a GL context is first attached to a window,
     /// width and height are set to the dimensions of that window.
     /// </param>
-    void glViewport( Int32 x, Int32 y, Int32 width, Int32 height );
+    void glViewport( int x, int y, int width, int height );
 
     /// <summary>
     /// Render primitives from array data.
@@ -1251,7 +1251,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="first">Specifies the starting index in the enabled arrays.</param>
     /// <param name="count">Specifies the number of indices to be rendered.</param>
-    void glDrawArrays( Int32 mode, Int32 first, Int32 count );
+    void glDrawArrays( int mode, int first, int count );
 
     /// <summary>
     /// Render primitives from array data.
@@ -1269,7 +1269,7 @@ public interface IGLBindings
     /// <see cref="GL_UNSIGNED_SHORT"/>, or <see cref="GL_UNSIGNED_INT"/>.
     /// </param>
     /// <param name="indices">Specifies a pointer to the location where the indices are stored.</param>
-    unsafe void glDrawElements( Int32 mode, Int32 count, Int32 type, void* indices );
+    unsafe void glDrawElements( int mode, int count, int type, void* indices );
 
     /// <summary>
     /// Render primitives from array data.
@@ -1290,7 +1290,7 @@ public interface IGLBindings
     /// Specifies an array of indices to be rendererd. Make sure to match the type
     /// <typeparamref name="T"/> with the type specified by <paramref name="type"/>.
     /// </param>
-    unsafe void glDrawElements< T >( Int32 mode, Int32 count, Int32 type, T[] indices ) where T : unmanaged, IUnsignedNumber< T >;
+    unsafe void glDrawElements< T >( int mode, int count, int type, T[] indices ) where T : unmanaged, IUnsignedNumber< T >;
 
     /// <summary>
     /// Set the scale and units used to calculate depth values.
@@ -1303,7 +1303,7 @@ public interface IGLBindings
     /// Is multiplied by an implementation-specific value to create a constant depth offset. The initial
     /// value is 0.
     /// </param>
-    void glPolygonOffset( Single factor, Single units );
+    void glPolygonOffset( float factor, float units );
 
     /// <summary>
     /// Copy pixels into a 1D texture image.
@@ -1327,7 +1327,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="width">Specifies the width of the texture image.</param>
     /// <param name="border">This value must be 0.</param>
-    void glCopyTexImage1D( Int32 target, Int32 level, Int32 internalformat, Int32 x, Int32 y, Int32 width, Int32 border );
+    void glCopyTexImage1D( int target, int level, int internalformat, int x, int y, int width, int border );
 
     /// <summary>
     /// Copy pixels into a 2D texture image.
@@ -1357,7 +1357,7 @@ public interface IGLBindings
     /// <param name="width">Specifies the width of the texture image.</param>
     /// <param name="height">Specifies the height of the texture image.</param>
     /// <param name="border">This value must be 0.</param>
-    void glCopyTexImage2D( Int32 target, Int32 level, Int32 internalformat, Int32 x, Int32 y, Int32 width, Int32 height, Int32 border );
+    void glCopyTexImage2D( int target, int level, int internalformat, int x, int y, int width, int height, int border );
 
     /// <summary>
     /// Copy a one-dimensional texture subimage.
@@ -1377,7 +1377,7 @@ public interface IGLBindings
     /// copied.
     /// </param>
     /// <param name="width">Specifies the width of the texture subimage.</param>
-    void glCopyTexSubImage1D( Int32 target, Int32 level, Int32 xoffset, Int32 x, Int32 y, Int32 width );
+    void glCopyTexSubImage1D( int target, int level, int xoffset, int x, int y, int width );
 
     /// <summary>
     /// Copy a two-dimensional texture subimage.
@@ -1405,7 +1405,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="width">Specifies the width of the texture subimage.</param>
     /// <param name="height">Specifies the height of the texture subimage.</param>
-    void glCopyTexSubImage2D( Int32 target, Int32 level, Int32 xoffset, Int32 yoffset, Int32 x, Int32 y, Int32 width, Int32 height );
+    void glCopyTexSubImage2D( int target, int level, int xoffset, int yoffset, int x, int y, int width, int height );
 
     /// <summary>
     /// Specify a one-dimensional texture subimage.
@@ -1434,7 +1434,7 @@ public interface IGLBindings
     /// <see cref="GL_UNSIGNED_INT_10_10_10_2"/> and <see cref="GL_UNSIGNED_INT_2_10_10_10_REV"/>.
     /// </param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-    unsafe void glTexSubImage1D( Int32 target, Int32 level, Int32 xoffset, Int32 width, Int32 format, Int32 type, void* pixels );
+    unsafe void glTexSubImage1D( int target, int level, int xoffset, int width, int format, int type, void* pixels );
 
     /// <summary>
     /// Specify a one-dimensional texture subimage.
@@ -1466,7 +1466,7 @@ public interface IGLBindings
     /// Specifies an array of <typeparamref name="T"/>s containing the image data. Make sure to match
     /// this with the type specified in <paramref name="type"/>.
     /// </param>
-    unsafe void glTexSubImage1D< T >( Int32 target, Int32 level, Int32 xoffset, Int32 width, Int32 format, Int32 type, T[] pixels )
+    unsafe void glTexSubImage1D< T >( int target, int level, int xoffset, int width, int format, int type, T[] pixels )
         where T : unmanaged;
 
     /// <summary>
@@ -1504,14 +1504,14 @@ public interface IGLBindings
     /// <see cref="GL_UNSIGNED_INT_10_10_10_2"/> and <see cref="GL_UNSIGNED_INT_2_10_10_10_REV"/>.
     /// </param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-    unsafe void glTexSubImage2D( Int32 target,
-                                 Int32 level,
-                                 Int32 xoffset,
-                                 Int32 yoffset,
-                                 Int32 width,
-                                 Int32 height,
-                                 Int32 format,
-                                 Int32 type,
+    unsafe void glTexSubImage2D( int target,
+                                 int level,
+                                 int xoffset,
+                                 int yoffset,
+                                 int width,
+                                 int height,
+                                 int format,
+                                 int type,
                                  void* pixels );
 
     /// <summary>
@@ -1552,14 +1552,14 @@ public interface IGLBindings
     /// Specifies an array of <typeparamref name="T"/>s containing the image data. Make sure to match
     /// this with the type specified in <paramref name="type"/>.
     /// </param>
-    unsafe void glTexSubImage2D< T >( Int32 target,
-                                      Int32 level,
-                                      Int32 xoffset,
-                                      Int32 yoffset,
-                                      Int32 width,
-                                      Int32 height,
-                                      Int32 format,
-                                      Int32 type,
+    unsafe void glTexSubImage2D< T >( int target,
+                                      int level,
+                                      int xoffset,
+                                      int yoffset,
+                                      int width,
+                                      int height,
+                                      int format,
+                                      int type,
                                       T[] pixels ) where T : unmanaged;
 
     /// <summary>
@@ -1573,40 +1573,40 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_2D_MULTISAMPLE"/> or <see cref="GL_TEXTURE_2D_MULTISAMPLE_ARRAY"/>.
     /// </param>
     /// <param name="texture">Specifies the name of a texture.</param>
-    void glBindTexture( Int32 target, UInt32 texture );
+    void glBindTexture( int target, uint texture );
 
     /// <summary>
     /// Delete named textures.
     /// </summary>
     /// <param name="n">Specifies the number of textures to be deleted.</param>
     /// <param name="textures">Specifies a pointer to an array of textures to be deleted.</param>
-    unsafe void glDeleteTextures( Int32 n, UInt32* textures );
+    unsafe void glDeleteTextures( int n, uint* textures );
 
     /// <summary>
     /// Delete named textures.
     /// </summary>
     /// <param name="textures">Specifies an array of textures to be deleted.</param>
-    unsafe void glDeleteTextures( params UInt32[] textures );
+    unsafe void glDeleteTextures( params uint[] textures );
 
     /// <summary>
     /// Generate texture names.
     /// </summary>
     /// <param name="n">Specifies the number of texture names to be generated.</param>
     /// <param name="textures">Specifies an array in which the generated texture names are stored.</param>
-    unsafe void glGenTextures( Int32 n, UInt32* textures );
+    unsafe void glGenTextures( int n, uint* textures );
 
     /// <summary>
     /// Generate texture names.
     /// </summary>
     /// <param name="n">Specifies the number of texture names to be generated.</param>
     /// <returns>An array containing the generated texture names.</returns>
-    unsafe UInt32[] glGenTextures( Int32 n );
+    unsafe uint[] glGenTextures( int n );
 
     /// <summary>
     /// Generate a single texture name.
     /// </summary>
     /// <returns>The generated texture name.</returns>
-    UInt32 glGenTexture();
+    uint glGenTexture();
 
     /// <summary>
     /// Determine if a name corresponds to a texture.
@@ -1616,7 +1616,7 @@ public interface IGLBindings
     /// <see langword="true"/> if <paramref name="texture"/> is currently the name of a texture. Otherwise,
     /// <see langword="false"/> is returned.
     /// </returns>
-    Boolean glIsTexture( UInt32 texture );
+    bool glIsTexture( uint texture );
 
     /// <summary>
     /// Render primitives from array data.
@@ -1633,7 +1633,7 @@ public interface IGLBindings
     /// <param name="count">Specifies the number of elements to be rendered.</param>
     /// <param name="type">Specifies the type of the values in <paramref name="indices"/>.</param>
     /// <param name="indices">Specifies a pointer to the location where the indices are stored.</param>
-    unsafe void glDrawRangeElements( Int32 mode, UInt32 start, UInt32 end, Int32 count, Int32 type, void* indices );
+    unsafe void glDrawRangeElements( int mode, uint start, uint end, int count, int type, void* indices );
 
     /// <summary>
     /// Render primitives from array data.
@@ -1653,7 +1653,7 @@ public interface IGLBindings
     /// An array of indices to render. Make sure to match the type <typeparamref name="T"/> with the
     /// type specified for <paramref name="type"/>.
     /// </param>
-    unsafe void glDrawRangeElements< T >( Int32 mode, UInt32 start, UInt32 end, Int32 count, Int32 type, T[] indices )
+    unsafe void glDrawRangeElements< T >( int mode, uint start, uint end, int count, int type, T[] indices )
         where T : unmanaged, IUnsignedNumber< T >;
 
     /// <summary>
@@ -1704,15 +1704,15 @@ public interface IGLBindings
     /// <see cref="GL_UNSIGNED_INT_10_10_10_2"/>, and <see cref="GL_UNSIGNED_INT_2_10_10_10_REV"/>.
     /// </param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-    unsafe void glTexImage3D( Int32 target,
-                              Int32 level,
-                              Int32 internalformat,
-                              Int32 width,
-                              Int32 height,
-                              Int32 depth,
-                              Int32 border,
-                              Int32 format,
-                              Int32 type,
+    unsafe void glTexImage3D( int target,
+                              int level,
+                              int internalformat,
+                              int width,
+                              int height,
+                              int depth,
+                              int border,
+                              int format,
+                              int type,
                               void* pixels );
 
     /// <summary>
@@ -1766,15 +1766,15 @@ public interface IGLBindings
     /// Specifies an array of <typeparamref name="T"/> containing the image data. Make sure to match the
     /// <paramref name="type"/> parameter with <typeparamref name="T"/>.
     /// </param>
-    unsafe void glTexImage3D< T >( Int32 target,
-                                   Int32 level,
-                                   Int32 internalformat,
-                                   Int32 width,
-                                   Int32 height,
-                                   Int32 depth,
-                                   Int32 border,
-                                   Int32 format,
-                                   Int32 type,
+    unsafe void glTexImage3D< T >( int target,
+                                   int level,
+                                   int internalformat,
+                                   int width,
+                                   int height,
+                                   int depth,
+                                   int border,
+                                   int format,
+                                   int type,
                                    T[] pixels ) where T : unmanaged;
 
     /// <summary>
@@ -1811,16 +1811,16 @@ public interface IGLBindings
     /// <see cref="GL_UNSIGNED_INT_10_10_10_2"/>, and <see cref="GL_UNSIGNED_INT_2_10_10_10_REV"/>.
     /// </param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-    unsafe void glTexSubImage3D( Int32 target,
-                                 Int32 level,
-                                 Int32 xoffset,
-                                 Int32 yoffset,
-                                 Int32 zoffset,
-                                 Int32 width,
-                                 Int32 height,
-                                 Int32 depth,
-                                 Int32 format,
-                                 Int32 type,
+    unsafe void glTexSubImage3D( int target,
+                                 int level,
+                                 int xoffset,
+                                 int yoffset,
+                                 int zoffset,
+                                 int width,
+                                 int height,
+                                 int depth,
+                                 int format,
+                                 int type,
                                  void* pixels );
 
     /// <summary>
@@ -1860,16 +1860,16 @@ public interface IGLBindings
     /// Specifies an array of <typeparamref name="T"/> containing the image data. Make sure to match the
     /// <paramref name="type"/> parameter with <typeparamref name="T"/>.
     /// </param>
-    unsafe void glTexSubImage3D< T >( Int32 target,
-                                      Int32 level,
-                                      Int32 xoffset,
-                                      Int32 yoffset,
-                                      Int32 zoffset,
-                                      Int32 width,
-                                      Int32 height,
-                                      Int32 depth,
-                                      Int32 format,
-                                      Int32 type,
+    unsafe void glTexSubImage3D< T >( int target,
+                                      int level,
+                                      int xoffset,
+                                      int yoffset,
+                                      int zoffset,
+                                      int width,
+                                      int height,
+                                      int depth,
+                                      int format,
+                                      int type,
                                       T[] pixels ) where T : unmanaged;
 
     /// <summary>
@@ -1896,15 +1896,15 @@ public interface IGLBindings
     /// </param>
     /// <param name="width">Specifies the width of the texture subimage.</param>
     /// <param name="height">Specifies the height of the texture subimage.</param>
-    void glCopyTexSubImage3D( Int32 target,
-                              Int32 level,
-                              Int32 xoffset,
-                              Int32 yoffset,
-                              Int32 zoffset,
-                              Int32 x,
-                              Int32 y,
-                              Int32 width,
-                              Int32 height );
+    void glCopyTexSubImage3D( int target,
+                              int level,
+                              int xoffset,
+                              int yoffset,
+                              int zoffset,
+                              int x,
+                              int y,
+                              int width,
+                              int height );
 
     /// <summary>
     /// Select active texture unit
@@ -1915,7 +1915,7 @@ public interface IGLBindings
     /// i ranges from 0 to the value of <see cref="GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS"/> minus one. The initial value is
     /// <see cref="GL_TEXTURE0"/>.
     /// </param>
-    void glActiveTexture( Int32 texture );
+    void glActiveTexture( int texture );
 
     /// <summary>
     /// Specify multisample coverage parameters
@@ -1928,7 +1928,7 @@ public interface IGLBindings
     /// Specify a single boolean value representing if the coverage masks should be inverted. The intial
     /// value is <see langword="false"/>.
     /// </param>
-    void glSampleCoverage( Single value, Boolean invert );
+    void glSampleCoverage( float value, bool invert );
 
     /// <summary>
     /// Specify a three-dimensional texture image in a compressed format
@@ -1964,14 +1964,14 @@ public interface IGLBindings
     /// <paramref name="data"/>.
     /// </param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-    unsafe void glCompressedTexImage3D( Int32 target,
-                                        Int32 level,
-                                        Int32 internalformat,
-                                        Int32 width,
-                                        Int32 height,
-                                        Int32 depth,
-                                        Int32 border,
-                                        Int32 imageSize,
+    unsafe void glCompressedTexImage3D( int target,
+                                        int level,
+                                        int internalformat,
+                                        int width,
+                                        int height,
+                                        int depth,
+                                        int border,
+                                        int imageSize,
                                         void* data );
 
     /// <summary>
@@ -2004,13 +2004,13 @@ public interface IGLBindings
     /// </param>
     /// <param name="border">This value must be 0.</param>
     /// <param name="data">Specifies an array of bytes containing the compressed image data.</param>
-    unsafe void glCompressedTexImage3D( Int32 target,
-                                        Int32 level,
-                                        Int32 internalformat,
-                                        Int32 width,
-                                        Int32 height,
-                                        Int32 depth,
-                                        Int32 border,
+    unsafe void glCompressedTexImage3D( int target,
+                                        int level,
+                                        int internalformat,
+                                        int width,
+                                        int height,
+                                        int depth,
+                                        int border,
                                         byte[] data );
 
     /// <summary>
@@ -2047,13 +2047,13 @@ public interface IGLBindings
     /// <paramref name="data"/>.
     /// </param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-    unsafe void glCompressedTexImage2D( Int32 target,
-                                        Int32 level,
-                                        Int32 internalformat,
-                                        Int32 width,
-                                        Int32 height,
-                                        Int32 border,
-                                        Int32 imageSize,
+    unsafe void glCompressedTexImage2D( int target,
+                                        int level,
+                                        int internalformat,
+                                        int width,
+                                        int height,
+                                        int border,
+                                        int imageSize,
                                         void* data );
 
     /// <summary>
@@ -2086,7 +2086,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="border">This value must be 0.</param>
     /// <param name="data">Specifies an array of bytes containing the compressed image data.</param>
-    unsafe void glCompressedTexImage2D( Int32 target, Int32 level, Int32 internalformat, Int32 width, Int32 height, Int32 border, byte[] data );
+    unsafe void glCompressedTexImage2D( int target, int level, int internalformat, int width, int height, int border, byte[] data );
 
     /// <summary>
     /// Specify a one-dimensional texture image in a compressed format
@@ -2114,7 +2114,7 @@ public interface IGLBindings
     /// <paramref name="data"/>.
     /// </param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-    unsafe void glCompressedTexImage1D( Int32 target, Int32 level, Int32 internalformat, Int32 width, Int32 border, Int32 imageSize, void* data );
+    unsafe void glCompressedTexImage1D( int target, int level, int internalformat, int width, int border, int imageSize, void* data );
 
     /// <summary>
     /// Specify a one-dimensional texture image in a compressed format
@@ -2138,7 +2138,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="border">This value must be 0.</param>
     /// <param name="data">Specifies an array of bytes containing the compressed image data.</param>
-    unsafe void glCompressedTexImage1D( Int32 target, Int32 level, Int32 internalformat, Int32 width, Int32 border, byte[] data );
+    unsafe void glCompressedTexImage1D( int target, int level, int internalformat, int width, int border, byte[] data );
 
     /// <summary>
     /// Specify a three-dimensional texture subimage in a compressed format
@@ -2176,16 +2176,16 @@ public interface IGLBindings
     /// <paramref name="data"/>.
     /// </param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-    unsafe void glCompressedTexSubImage3D( Int32 target,
-                                           Int32 level,
-                                           Int32 xoffset,
-                                           Int32 yoffset,
-                                           Int32 zoffset,
-                                           Int32 width,
-                                           Int32 height,
-                                           Int32 depth,
-                                           Int32 format,
-                                           Int32 imageSize,
+    unsafe void glCompressedTexSubImage3D( int target,
+                                           int level,
+                                           int xoffset,
+                                           int yoffset,
+                                           int zoffset,
+                                           int width,
+                                           int height,
+                                           int depth,
+                                           int format,
+                                           int imageSize,
                                            void* data );
 
     /// <summary>
@@ -2220,15 +2220,15 @@ public interface IGLBindings
     /// <see cref="GL_COMPRESSED_SRGB"/>, <see cref="GL_COMPRESSED_SRGB_ALPHA"/>.
     /// </param>
     /// <param name="data">Specifies an array of bytes containing the compressed image data.</param>
-    unsafe void glCompressedTexSubImage3D( Int32 target,
-                                           Int32 level,
-                                           Int32 xoffset,
-                                           Int32 yoffset,
-                                           Int32 zoffset,
-                                           Int32 width,
-                                           Int32 height,
-                                           Int32 depth,
-                                           Int32 format,
+    unsafe void glCompressedTexSubImage3D( int target,
+                                           int level,
+                                           int xoffset,
+                                           int yoffset,
+                                           int zoffset,
+                                           int width,
+                                           int height,
+                                           int depth,
+                                           int format,
                                            byte[] data );
 
     /// <summary>
@@ -2265,14 +2265,14 @@ public interface IGLBindings
     /// <paramref name="data"/>.
     /// </param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-    unsafe void glCompressedTexSubImage2D( Int32 target,
-                                           Int32 level,
-                                           Int32 xoffset,
-                                           Int32 yoffset,
-                                           Int32 width,
-                                           Int32 height,
-                                           Int32 format,
-                                           Int32 imageSize,
+    unsafe void glCompressedTexSubImage2D( int target,
+                                           int level,
+                                           int xoffset,
+                                           int yoffset,
+                                           int width,
+                                           int height,
+                                           int format,
+                                           int imageSize,
                                            void* data );
 
     /// <summary>
@@ -2305,13 +2305,13 @@ public interface IGLBindings
     /// <see cref="GL_COMPRESSED_SRGB"/>, <see cref="GL_COMPRESSED_SRGB_ALPHA"/>.
     /// </param>
     /// <param name="data">Specifies an array of bytes containing the compressed image data.</param>
-    unsafe void glCompressedTexSubImage2D( Int32 target,
-                                           Int32 level,
-                                           Int32 xoffset,
-                                           Int32 yoffset,
-                                           Int32 width,
-                                           Int32 height,
-                                           Int32 format,
+    unsafe void glCompressedTexSubImage2D( int target,
+                                           int level,
+                                           int xoffset,
+                                           int yoffset,
+                                           int width,
+                                           int height,
+                                           int format,
                                            byte[] data );
 
     /// <summary>
@@ -2337,7 +2337,7 @@ public interface IGLBindings
     /// <paramref name="data"/>.
     /// </param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-    unsafe void glCompressedTexSubImage1D( Int32 target, Int32 level, Int32 xoffset, Int32 width, Int32 format, Int32 imageSize, void* data );
+    unsafe void glCompressedTexSubImage1D( int target, int level, int xoffset, int width, int format, int imageSize, void* data );
 
     /// <summary>
     /// Specify a one-dimensional texture subimage in a compressed format
@@ -2358,7 +2358,7 @@ public interface IGLBindings
     /// <see cref="GL_COMPRESSED_SRGB"/>, <see cref="GL_COMPRESSED_SRGB_ALPHA"/>.
     /// </param>
     /// <param name="data">Specifies an array of bytes containing the compressed image data.</param>
-    unsafe void glCompressedTexSubImage1D( Int32 target, Int32 level, Int32 xoffset, Int32 width, Int32 format, byte[] data );
+    unsafe void glCompressedTexSubImage1D( int target, int level, int xoffset, int width, int format, byte[] data );
 
     /// <summary>
     /// Return a compressed texture image
@@ -2377,7 +2377,7 @@ public interface IGLBindings
     /// is the nth mipmap reduction image.
     /// </param>
     /// <param name="img">Specifies a pointer to a buffer into which the compressed image data will be placed.</param>
-    unsafe void glGetCompressedTexImage( Int32 target, Int32 level, void* img );
+    unsafe void glGetCompressedTexImage( int target, int level, void* img );
 
     /// <summary>
     /// Return a compressed texture image
@@ -2396,7 +2396,7 @@ public interface IGLBindings
     /// is the nth mipmap reduction image.
     /// </param>
     /// <param name="img">Specifies a <see langword="ref"/> byte array into which the compressed image data will be placed.</param>
-    unsafe void glGetCompressedTexImage( Int32 target, Int32 level, ref byte[] img );
+    unsafe void glGetCompressedTexImage( int target, int level, ref byte[] img );
 
     /// <summary>
     /// Specify pixel arithmetic for RGB and alpha components separately. Refer to
@@ -2418,7 +2418,7 @@ public interface IGLBindings
     /// Specifies how the alpha destination blending factor is computed. The initial value is
     /// <see cref="GL_ZERO"/>.
     /// </param>
-    void glBlendFuncSeparate( Int32 sfactorRGB, Int32 dfactorRGB, Int32 sfactorAlpha, Int32 dfactorAlpha );
+    void glBlendFuncSeparate( int sfactorRGB, int dfactorRGB, int sfactorAlpha, int dfactorAlpha );
 
     /// <summary>
     /// Render multiple sets of primitives from array data.
@@ -2433,7 +2433,7 @@ public interface IGLBindings
     /// <param name="first">Specifies an array of starting indices in the enabled arrays.</param>
     /// <param name="count">Specifies an array of the number of indices to be rendered.</param>
     /// <param name="drawcount">Specifies the size of the <paramref name="first"/> and <paramref name="count"/> arrays.</param>
-    unsafe void glMultiDrawArrays( Int32 mode, Int32* first, Int32* count, Int32 drawcount );
+    unsafe void glMultiDrawArrays( int mode, int* first, int* count, int drawcount );
 
     /// <summary>
     /// Render multiple sets of primitives from array data.
@@ -2447,7 +2447,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="first">Specifies an array of starting indices in the enabled arrays.</param>
     /// <param name="count">Specifies an array of the number of indices to be rendered.</param>
-    unsafe void glMultiDrawArrays( Int32 mode, Int32[] first, Int32[] count );
+    unsafe void glMultiDrawArrays( int mode, int[] first, int[] count );
 
     /// <summary>
     /// Render multiple sets of primitives by specifying indices of array data elements.
@@ -2466,7 +2466,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="indices">Specifies a pointer to the location where the indices are stored.</param>
     /// <param name="drawcount">Specifies the size of the <paramref name="count"/> and <paramref name="indices"/> arrays.</param>
-    unsafe void glMultiDrawElements( Int32 mode, Int32* count, Int32 type, void** indices, Int32 drawcount );
+    unsafe void glMultiDrawElements( int mode, int* count, int type, void** indices, int drawcount );
 
     /// <summary>
     /// Render multiple sets of primitives by specifying indices of array data elements.
@@ -2484,7 +2484,7 @@ public interface IGLBindings
     /// <see cref="GL_UNSIGNED_BYTE"/>, <see cref="GL_UNSIGNED_SHORT"/>, or <see cref="GL_UNSIGNED_INT"/>.
     /// </param>
     /// <param name="indices">Specifies a two-dimensional array of indices of the vertices that are to be rendered.</param>
-    unsafe void glMultiDrawElements< T >( Int32 mode, Int32[] count, Int32 type, T[][] indices ) where T : unmanaged, IUnsignedNumber< T >;
+    unsafe void glMultiDrawElements< T >( int mode, int[] count, int type, T[][] indices ) where T : unmanaged, IUnsignedNumber< T >;
 
     /// <summary>
     /// Specify point parameters.
@@ -2494,7 +2494,7 @@ public interface IGLBindings
     /// and <see cref="GL_POINT_SPRITE_COORD_ORIGIN"/> are accepted.
     /// </param>
     /// <param name="param">Specifies the value that parameter <paramref name="pname"/> will be set to.</param>
-    void glPointParameterf( Int32 pname, Single param );
+    void glPointParameterf( int pname, float param );
 
     /// <summary>
     /// Specify point parameters.
@@ -2507,7 +2507,7 @@ public interface IGLBindings
     /// Specifies a pointer to an array where the value or values to be assigned to
     /// <paramref name="pname"/> are currently stored.
     /// </param>
-    unsafe void glPointParameterfv( Int32 pname, Single* parameters );
+    unsafe void glPointParameterfv( int pname, float* parameters );
 
     /// <summary>
     /// Specify point parameters.
@@ -2517,7 +2517,7 @@ public interface IGLBindings
     /// and <see cref="GL_POINT_SPRITE_COORD_ORIGIN"/> are accepted.
     /// </param>
     /// <param name="params">Specifies an array of values that will be used to update the current point parameters.</param>
-    unsafe void glPointParameterfv( Int32 pname, Single[] parameters );
+    unsafe void glPointParameterfv( int pname, float[] parameters );
 
     /// <summary>
     /// Specify point parameters.
@@ -2527,7 +2527,7 @@ public interface IGLBindings
     /// and <see cref="GL_POINT_SPRITE_COORD_ORIGIN"/> are accepted.
     /// </param>
     /// <param name="param">Specifies the value that parameter <paramref name="pname"/> will be set to.</param>
-    void glPointParameteri( Int32 pname, Int32 param );
+    void glPointParameteri( int pname, int param );
 
     /// <summary>
     /// Specify point parameters.
@@ -2540,7 +2540,7 @@ public interface IGLBindings
     /// Specifies a pointer to an array where the value or values to be assigned to
     /// <paramref name="pname"/> are currently stored.
     /// </param>
-    unsafe void glPointParameteriv( Int32 pname, Int32* parameters );
+    unsafe void glPointParameteriv( int pname, int* parameters );
 
     /// <summary>
     /// Specify point parameters.
@@ -2550,7 +2550,7 @@ public interface IGLBindings
     /// and <see cref="GL_POINT_SPRITE_COORD_ORIGIN"/> are accepted.
     /// </param>
     /// <param name="params">Specifies an array of values that will be used to update the current point parameters.</param>
-    unsafe void glPointParameteriv( Int32 pname, Int32[] parameters );
+    unsafe void glPointParameteriv( int pname, int[] parameters );
 
     /// <summary>
     /// Set the blend color.
@@ -2559,7 +2559,7 @@ public interface IGLBindings
     /// <param name="green">Specify the green value to use as the blend color.</param>
     /// <param name="blue">Specify the blue value to use as the blend color.</param>
     /// <param name="alpha">Specify the alpha value to use as the blend color.</param>
-    void glBlendColor( Single red, Single green, Single blue, Single alpha );
+    void glBlendColor( float red, float green, float blue, float alpha );
 
     /// <summary>
     /// Specify the equation used for both the RGB blend equation and the Alpha blend equation.
@@ -2569,47 +2569,47 @@ public interface IGLBindings
     /// <see cref="GL_FUNC_SUBTRACT"/>, <see cref="GL_FUNC_REVERSE_SUBTRACT"/>, <see cref="GL_MIN"/>,
     /// <see cref="GL_MAX"/>.
     /// </param>
-    void glBlendEquation( Int32 mode );
+    void glBlendEquation( int mode );
 
     /// <summary>
     /// Generate query object names.
     /// </summary>
     /// <param name="n">Specifies the number of query object names to generate.</param>
     /// <param name="ids">Specifies an array in which the generated query object names are to be stored.</param>
-    unsafe void glGenQueries( Int32 n, UInt32* ids );
+    unsafe void glGenQueries( int n, uint* ids );
 
     /// <summary>
     /// Generate query object names.
     /// </summary>
     /// <param name="n">Specifies the number of query object names to generate.</param>
     /// <returns>Array of generated query object names.</returns>
-    unsafe UInt32[] glGenQueries( Int32 n );
+    unsafe uint[] glGenQueries( int n );
 
     /// <summary>
     /// Generate a single query object name.
     /// </summary>
     /// <returns>Generated query object name.</returns>
-    UInt32 glGenQuery();
+    uint glGenQuery();
 
     /// <summary>
     /// Delete named query objects.
     /// </summary>
     /// <param name="n">Specifies the number of query objects to be deleted.</param>
     /// <param name="ids">Specifies an array of query objects to be deleted.</param>
-    unsafe void glDeleteQueries( Int32 n, UInt32* ids );
+    unsafe void glDeleteQueries( int n, uint* ids );
 
     /// <summary>
     /// Delete named query objects.
     /// </summary>
     /// <param name="ids">Specifies an array of query objects to be deleted.</param>
-    unsafe void glDeleteQueries( params UInt32[] ids );
+    unsafe void glDeleteQueries( params uint[] ids );
 
     /// <summary>
     /// Determine if a name corresponds to a query object.
     /// </summary>
     /// <param name="id">Specifies a value that may be the name of a query object.</param>
     /// <returns><see langword="true"/> if <paramref name="id"/> is query object name, otherwise <see langword="false"/>.</returns>
-    Boolean glIsQuery( UInt32 id );
+    bool glIsQuery( uint id );
 
     /// <summary>
     /// Delimit the boundaries of a query object.
@@ -2622,7 +2622,7 @@ public interface IGLBindings
     /// <see cref="GL_TIME_ELAPSED"/>.
     /// </param>
     /// <param name="id">Specifies the name of a query object.</param>
-    void glBeginQuery( Int32 target, UInt32 id );
+    void glBeginQuery( int target, uint id );
 
     /// <summary>
     /// Delimit the boundaries of a query object.
@@ -2634,7 +2634,7 @@ public interface IGLBindings
     /// <see cref="GL_PRIMITIVES_GENERATED"/>, <see cref="GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN"/> or
     /// <see cref="GL_TIME_ELAPSED"/>.
     /// </param>
-    void glEndQuery( Int32 target );
+    void glEndQuery( int target );
 
     /// <summary>
     /// Return parameters of a query object target.
@@ -2651,7 +2651,7 @@ public interface IGLBindings
     /// <see cref="GL_QUERY_COUNTER_BITS"/> are accepted.
     /// </param>
     /// <param name="params">A pointer to the location where the integer value or values are to be returned.</param>
-    unsafe void glGetQueryiv( Int32 target, Int32 pname, Int32* parameters );
+    unsafe void glGetQueryiv( int target, int pname, int* parameters );
 
     /// <summary>
     /// Return parameters of a query object target.
@@ -2668,7 +2668,7 @@ public interface IGLBindings
     /// <see cref="GL_QUERY_COUNTER_BITS"/> are accepted.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to an integer array where the integer value or values are to be returned.</param>
-    unsafe void glGetQueryiv( Int32 target, Int32 pname, ref Int32[] parameters );
+    unsafe void glGetQueryiv( int target, int pname, ref int[] parameters );
 
     /// <summary>
     /// Return parameters of a query object.
@@ -2679,7 +2679,7 @@ public interface IGLBindings
     /// <see cref="GL_QUERY_RESULT_NO_WAIT"/> or <see cref="GL_QUERY_RESULT_AVAILABLE"/> are accepted.
     /// </param>
     /// <param name="params">A pointer to the location where the integer value or values are to be returned.</param>
-    unsafe void glGetQueryObjectiv( UInt32 id, Int32 pname, Int32* parameters );
+    unsafe void glGetQueryObjectiv( uint id, int pname, int* parameters );
 
     /// <summary>
     /// Return parameters of a query object.
@@ -2690,7 +2690,7 @@ public interface IGLBindings
     /// <see cref="GL_QUERY_RESULT_NO_WAIT"/> or <see cref="GL_QUERY_RESULT_AVAILABLE"/> are accepted.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to an integer array where the integer value or values are to be returned.</param>
-    unsafe void glGetQueryObjectiv( UInt32 id, Int32 pname, ref Int32[] parameters );
+    unsafe void glGetQueryObjectiv( uint id, int pname, ref int[] parameters );
 
     /// <summary>
     /// Return parameters of a query object.
@@ -2701,7 +2701,7 @@ public interface IGLBindings
     /// <see cref="GL_QUERY_RESULT_NO_WAIT"/> or <see cref="GL_QUERY_RESULT_AVAILABLE"/> are accepted.
     /// </param>
     /// <param name="params">A pointer to the location where the unsigned integer value or values are to be returned.</param>
-    unsafe void glGetQueryObjectuiv( UInt32 id, Int32 pname, UInt32* parameters );
+    unsafe void glGetQueryObjectuiv( uint id, int pname, uint* parameters );
 
     /// <summary>
     /// Return parameters of a query object.
@@ -2715,7 +2715,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an unsigned integer array where the integer value or values are to be
     /// returned.
     /// </param>
-    unsafe void glGetQueryObjectuiv( UInt32 id, Int32 pname, ref UInt32[] parameters );
+    unsafe void glGetQueryObjectuiv( uint id, int pname, ref uint[] parameters );
 
     /// <summary>
     /// Bind a named buffer object.
@@ -2729,40 +2729,40 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_BUFFER"/>, <see cref="GL_TRANSFORM_FEEDBACK_BUFFER"/> or <see cref="GL_UNIFORM_BUFFER"/>.
     /// </param>
     /// <param name="buffer">Specifies the name of a buffer object.</param>
-    void glBindBuffer( Int32 target, UInt32 buffer );
+    void glBindBuffer( int target, uint buffer );
 
     /// <summary>
     /// Delete named buffer objects.
     /// </summary>
     /// <param name="n">Specifies the number of buffer objects to be deleted.</param>
     /// <param name="buffers">A pointer to an array of buffer objects to be deleted.</param>
-    unsafe void glDeleteBuffers( Int32 n, UInt32* buffers );
+    unsafe void glDeleteBuffers( int n, uint* buffers );
 
     /// <summary>
     /// Delete named buffer objects.
     /// </summary>
     /// <param name="buffers">An array of buffer objects to be deleted.</param>
-    unsafe void glDeleteBuffers( params UInt32[] buffers );
+    unsafe void glDeleteBuffers( params uint[] buffers );
 
     /// <summary>
     /// Generate buffer object names.
     /// </summary>
     /// <param name="n">Specifies the number of buffer object names to generate.</param>
     /// <param name="buffers">A pointer to an array in which the generated buffer object names are to be stored.</param>
-    unsafe void glGenBuffers( Int32 n, UInt32* buffers );
+    unsafe void glGenBuffers( int n, uint* buffers );
 
     /// <summary>
     /// Generate buffer object names.
     /// </summary>
     /// <param name="n">Specifies the number of buffer object names to generate.</param>
     /// <returns>An array of generated buffer object names.</returns>
-    unsafe UInt32[] glGenBuffers( Int32 n );
+    unsafe uint[] glGenBuffers( int n );
 
     /// <summary>
     /// Generate a single buffer object name.
     /// </summary>
     /// <returns>The generated buffer object name.</returns>
-    UInt32 glGenBuffer();
+    uint glGenBuffer();
 
     /// <summary>
     /// Determine if a name corresponds to a buffer object.
@@ -2772,7 +2772,7 @@ public interface IGLBindings
     /// <see langword="true"/> if <paramref name="buffer"/> is a buffer object name. <see langword="false"/>
     /// otherwise.
     /// </returns>
-    Boolean glIsBuffer( UInt32 buffer );
+    bool glIsBuffer( uint buffer );
 
     /// <summary>
     /// Create and initialize a buffer object's data store.
@@ -2796,7 +2796,7 @@ public interface IGLBindings
     /// <see cref="GL_STATIC_DRAW"/>, <see cref="GL_STATIC_READ"/>, <see cref="GL_STATIC_COPY"/>,
     /// <see cref="GL_DYNAMIC_DRAW"/>, <see cref="GL_DYNAMIC_READ"/> or <see cref="GL_DYNAMIC_COPY"/>.
     /// </param>
-    unsafe void glBufferData( Int32 target, Int32 size, void* data, Int32 usage );
+    unsafe void glBufferData( int target, int size, void* data, int usage );
 
     /// <summary>
     /// Create and initialize a buffer object's data store.
@@ -2817,7 +2817,7 @@ public interface IGLBindings
     /// <see cref="GL_STATIC_DRAW"/>, <see cref="GL_STATIC_READ"/>, <see cref="GL_STATIC_COPY"/>,
     /// <see cref="GL_DYNAMIC_DRAW"/>, <see cref="GL_DYNAMIC_READ"/> or <see cref="GL_DYNAMIC_COPY"/>.
     /// </param>
-    unsafe void glBufferData< T >( Int32 target, T[] data, Int32 usage ) where T : unmanaged;
+    unsafe void glBufferData< T >( int target, T[] data, int usage ) where T : unmanaged;
 
     /// <summary>
     /// Update a subset of a buffer object's data store.
@@ -2836,7 +2836,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="size">Specifies the size in bytes of the data store region being replaced.</param>
     /// <param name="data">Specifies a pointer to the new data that will be copied into the data store.</param>
-    unsafe void glBufferSubData( Int32 target, Int32 offset, Int32 size, void* data );
+    unsafe void glBufferSubData( int target, int offset, int size, void* data );
 
     /// <summary>
     /// Update a subset of a buffer object's data store.
@@ -2852,7 +2852,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="offsetCount">Specifies the offset into the buffer object's data store where data replacement will begin.</param>
     /// <param name="data">An array of <typeparamref name="T"/>s that will be copied into the data store for replacement.</param>
-    unsafe void glBufferSubData< T >( Int32 target, Int32 offsetCount, T[] data ) where T : unmanaged;
+    unsafe void glBufferSubData< T >( int target, int offsetCount, T[] data ) where T : unmanaged;
 
     /// <summary>
     /// Return a subset of a buffer object's data store.
@@ -2871,7 +2871,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="size">Specifies the size in bytes of the data store region being returned.</param>
     /// <param name="data">Specifies a pointer to the location where buffer object data is returned.</param>
-    unsafe void glGetBufferSubData( Int32 target, Int32 offset, Int32 size, void* data );
+    unsafe void glGetBufferSubData( int target, int offset, int size, void* data );
 
     /// <summary>
     /// Return a subset of a buffer object's data store.
@@ -2888,7 +2888,7 @@ public interface IGLBindings
     /// <param name="offsetCount">Specifies the offset into the buffer object's data store from which data will be returned.</param>
     /// <param name="count">Specifies the number of <typeparamref name="T"/>s to be returned.</param>
     /// <param name="data">An array of <typeparamref name="T"/>s that will be filled with the data from the buffer object.</param>
-    unsafe void glGetBufferSubData< T >( Int32 target, Int32 offsetCount, Int32 count, ref T[] data ) where T : unmanaged;
+    unsafe void glGetBufferSubData< T >( int target, int offsetCount, int count, ref T[] data ) where T : unmanaged;
 
     /// <summary>
     /// Map a buffer object's data store into the client's address space.
@@ -2907,7 +2907,7 @@ public interface IGLBindings
     /// <see cref="GL_READ_WRITE"/>.
     /// </param>
     /// <returns>Returns a pointer to the beginning of the mapped range.</returns>
-    unsafe void* glMapBuffer( Int32 target, Int32 access );
+    unsafe void* glMapBuffer( int target, int access );
 
     /// <summary>
     /// Map a buffer object's data store into the client's address space.
@@ -2926,7 +2926,7 @@ public interface IGLBindings
     /// <see cref="GL_READ_WRITE"/>.
     /// </param>
     /// <returns>Returns a type-safe and memory-safe <see cref="System.Span{T}"/> of the buffers data.</returns>
-    unsafe Span< T > glMapBuffer< T >( Int32 target, Int32 access ) where T : unmanaged;
+    unsafe Span< T > glMapBuffer< T >( int target, int access ) where T : unmanaged;
 
     /// <summary>
     /// Release a mapped buffer object's data store.
@@ -2946,7 +2946,7 @@ public interface IGLBindings
     /// the contents of the buffer have become corrupt and should be considered undefined. An application must detect this
     /// rare condition and reinitialize the data store.
     /// </returns>
-    Boolean glUnmapBuffer( Int32 target );
+    bool glUnmapBuffer( int target );
 
     /// <summary>
     /// Return parameters of a buffer object.
@@ -2961,7 +2961,7 @@ public interface IGLBindings
     /// <see cref="GL_BUFFER_USAGE"/>.
     /// </param>
     /// <param name="params">A pointer to a memory location where the returned data will be placed.</param>
-    unsafe void glGetBufferParameteriv( Int32 target, Int32 pname, Int32* parameters );
+    unsafe void glGetBufferParameteriv( int target, int pname, int* parameters );
 
     /// <summary>
     /// Return parameters of a buffer object.
@@ -2976,7 +2976,7 @@ public interface IGLBindings
     /// <see cref="GL_BUFFER_USAGE"/>.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to an integer array where the returned data will be placed.</param>
-    unsafe void glGetBufferParameteriv( Int32 target, Int32 pname, ref Int32[] parameters );
+    unsafe void glGetBufferParameteriv( int target, int pname, ref int[] parameters );
 
     /// <summary>
     /// Return the pointer to a mapped buffer object's data store.
@@ -2991,7 +2991,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="pname">Specifies the pointer to be returned. Accepted values are <see cref="GL_BUFFER_MAP_POINTER"/>.</param>
     /// <param name="params">A pointer to a memory location where the returned data will be placed.</param>
-    unsafe void glGetBufferPointerv( Int32 target, Int32 pname, void** parameters );
+    unsafe void glGetBufferPointerv( int target, int pname, void** parameters );
 
     /// <summary>
     /// Return the pointer to a mapped buffer object's data store.
@@ -3009,7 +3009,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array of <see cref="IntPtr"/>s where the returned pointer(s) will
     /// be placed.
     /// </param>
-    unsafe void glGetBufferPointerv( Int32 target, Int32 pname, ref IntPtr[] parameters );
+    unsafe void glGetBufferPointerv( int target, int pname, ref IntPtr[] parameters );
 
     /// <summary>
     /// Set the RGB blend equation and alpha blend equation separately
@@ -3024,7 +3024,7 @@ public interface IGLBindings
     /// colors are combined. Must be <see cref="GL_FUNC_ADD"/>, <see cref="GL_FUNC_SUBTRACT"/>,
     /// <see cref="GL_FUNC_REVERSE_SUBTRACT"/>, <see cref="GL_MIN"/> or <see cref="GL_MAX"/>.
     /// </param>
-    void glBlendEquationSeparate( Int32 modeRGB, Int32 modeAlpha );
+    void glBlendEquationSeparate( int modeRGB, int modeAlpha );
 
     /// <summary>
     /// Specify a list of color buffers to be drawn into
@@ -3036,7 +3036,7 @@ public interface IGLBindings
     /// <see cref="GL_FRONT_LEFT"/>, <see cref="GL_FRONT_RIGHT"/>, <see cref="GL_BACK_LEFT"/>,
     /// <see cref="GL_BACK_RIGHT"/>, <see cref="GL_COLOR_ATTACHMENT0"/> through <see cref="GL_COLOR_ATTACHMENT31"/>.
     /// </param>
-    unsafe void glDrawBuffers( Int32 n, Int32* bufs );
+    unsafe void glDrawBuffers( int n, int* bufs );
 
     /// <summary>
     /// Specify a list of color buffers to be drawn into
@@ -3047,7 +3047,7 @@ public interface IGLBindings
     /// <see cref="GL_FRONT_RIGHT"/>, <see cref="GL_BACK_LEFT"/>, <see cref="GL_BACK_RIGHT"/>,
     /// <see cref="GL_COLOR_ATTACHMENT0"/> through <see cref="GL_COLOR_ATTACHMENT31"/>.
     /// </param>
-    unsafe void glDrawBuffers( params Int32[] bufs );
+    unsafe void glDrawBuffers( params int[] bufs );
 
     /// <summary>
     /// Set front and back stencil test actions
@@ -3070,7 +3070,7 @@ public interface IGLBindings
     /// stencil test passes and either there is no depth buffer or depth testing is not enabled. <paramref name="dppass"/>
     /// accepts the same symbolic constants as <paramref name="sfail"/>.
     /// </param>
-    void glStencilOpSeparate( Int32 face, Int32 sfail, Int32 dpfail, Int32 dppass );
+    void glStencilOpSeparate( int face, int sfail, int dpfail, int dppass );
 
     /// <summary>
     /// Set front and/or back function and reference value for stencil testing
@@ -3093,7 +3093,7 @@ public interface IGLBindings
     /// Specifies a mask that is ANDed with both the reference value and the stored stencil value when the
     /// test is done. The initial value is all 1's.
     /// </param>
-    void glStencilFuncSeparate( Int32 face, Int32 func, Int32 @ref, UInt32 mask );
+    void glStencilFuncSeparate( int face, int func, int @ref, uint mask );
 
     /// <summary>
     /// Control the front and back writing of individual bits in the stencil planes
@@ -3106,14 +3106,14 @@ public interface IGLBindings
     /// Specifies a bit mask to enable and disable writing of individual bits in the stencil planes.
     /// Initially, the mask is all 1's.
     /// </param>
-    void glStencilMaskSeparate( Int32 face, UInt32 mask );
+    void glStencilMaskSeparate( int face, uint mask );
 
     /// <summary>
     /// Attaches a shader object to a program object
     /// </summary>
     /// <param name="program">Specifies the program object to which a shader object will be attached.</param>
     /// <param name="shader">Specifies the shader object that is to be attached.</param>
-    void glAttachShader( UInt32 program, UInt32 shader );
+    void glAttachShader( uint program, uint shader );
 
     /// <summary>
     /// Associates a generic vertex attribute index with a named attribute variable. This is typically replaced with the
@@ -3125,7 +3125,7 @@ public interface IGLBindings
     /// Specifies a null terminated string containing the name of the vertex shader attribute variable to
     /// which index is to be bound.
     /// </param>
-    unsafe void glBindAttribLocation( UInt32 program, UInt32 index, Byte* name );
+    unsafe void glBindAttribLocation( uint program, uint index, Byte* name );
 
     /// <summary>
     /// Associates a generic vertex attribute index with a named attribute variable. This is typically replaced with the
@@ -3137,19 +3137,19 @@ public interface IGLBindings
     /// Specifies a string containing the name of the vertex shader attribute variable to which index is to
     /// be bound.
     /// </param>
-    unsafe void glBindAttribLocation( UInt32 program, UInt32 index, string name );
+    unsafe void glBindAttribLocation( uint program, uint index, string name );
 
     /// <summary>
     /// Compiles a shader object
     /// </summary>
     /// <param name="shader">Specifies the shader object to be compiled.</param>
-    void glCompileShader( UInt32 shader );
+    void glCompileShader( uint shader );
 
     /// <summary>
     /// Creates a program object
     /// </summary>
     /// <returns>The name of the program object created.</returns>
-    UInt32 glCreateProgram();
+    uint glCreateProgram();
 
     /// <summary>
     /// Creates a shader object
@@ -3160,38 +3160,38 @@ public interface IGLBindings
     /// <see cref="GL_GEOMETRY_SHADER"/> or <see cref="GL_FRAGMENT_SHADER"/>.
     /// </param>
     /// <returns>The name of the shader object created.</returns>
-    UInt32 glCreateShader( Int32 type );
+    uint glCreateShader( int type );
 
     /// <summary>
     /// Deletes a program object
     /// </summary>
     /// <param name="program">Specifies the program object to be deleted.</param>
-    void glDeleteProgram( UInt32 program );
+    void glDeleteProgram( uint program );
 
     /// <summary>
     /// Deletes a shader object
     /// </summary>
     /// <param name="shader">Specifies the shader object to be deleted.</param>
-    void glDeleteShader( UInt32 shader );
+    void glDeleteShader( uint shader );
 
     /// <summary>
     /// Detaches a shader object from a program object
     /// </summary>
     /// <param name="program">Specifies the program object from which to detach the shader object.</param>
     /// <param name="shader">Specifies the shader object to be detached.</param>
-    void glDetachShader( UInt32 program, UInt32 shader );
+    void glDetachShader( uint program, uint shader );
 
     /// <summary>
     /// Disables a generic vertex attribute array
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be disabled.</param>
-    void glDisableVertexAttribArray( UInt32 index );
+    void glDisableVertexAttribArray( uint index );
 
     /// <summary>
     /// Enables a generic vertex attribute array
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be enabled.</param>
-    void glEnableVertexAttribArray( UInt32 index );
+    void glEnableVertexAttribArray( uint index );
 
     /// <summary>
     /// Returns information about an active attribute variable for the specified program object
@@ -3215,7 +3215,7 @@ public interface IGLBindings
     /// is passed.
     /// </param>
     /// <param name="name">Returns a null-terminated string containing the name of the attribute variable.</param>
-    unsafe void glGetActiveAttrib( UInt32 program, UInt32 index, Int32 bufSize, Int32* length, Int32* size, Int32* type, Byte* name );
+    unsafe void glGetActiveAttrib( uint program, uint index, int bufSize, int* length, int* size, int* type, Byte* name );
 
     /// <summary>
     /// Returns information about an active attribute variable for the specified program object
@@ -3229,7 +3229,7 @@ public interface IGLBindings
     /// <param name="size">Returns the size of the attribute variable.</param>
     /// <param name="type">Returns the data type of the attribute variable.</param>
     /// <returns>Returns a managed string containing the name of the attribute variable.</returns>
-    unsafe string glGetActiveAttrib( UInt32 program, UInt32 index, Int32 bufSize, out Int32 size, out Int32 type );
+    unsafe string glGetActiveAttrib( uint program, uint index, int bufSize, out int size, out int type );
 
     /// <summary>
     /// Returns information about an active uniform variable for the specified program object
@@ -3253,7 +3253,7 @@ public interface IGLBindings
     /// is passed.
     /// </param>
     /// <param name="name">Returns a null-terminated string containing the name of the uniform variable.</param>
-    unsafe void glGetActiveUniform( UInt32 program, UInt32 index, Int32 bufSize, Int32* length, Int32* size, Int32* type, Byte* name );
+    unsafe void glGetActiveUniform( uint program, uint index, int bufSize, int* length, int* size, int* type, Byte* name );
 
     /// <summary>
     /// Returns information about an active uniform variable for the specified program object
@@ -3267,7 +3267,7 @@ public interface IGLBindings
     /// <param name="size">Returns the size of the uniform variable.</param>
     /// <param name="type">Returns the data type of the uniform variable.</param>
     /// <returns>Returns a managed string containing the name of the uniform variable.</returns>
-    unsafe string glGetActiveUniform( UInt32 program, UInt32 index, Int32 bufSize, out Int32 size, out Int32 type );
+    unsafe string glGetActiveUniform( uint program, uint index, int bufSize, out int size, out int type );
     
     /// <summary>
     /// Returns the shader objects attached to program
@@ -3276,7 +3276,7 @@ public interface IGLBindings
     /// <param name="maxCount">Specifies the size of the array for storing object names.</param>
     /// <param name="count">Returns the number of names actually returned in shaders.</param>
     /// <param name="shaders">Returns the names of the shader objects attached to program.</param>
-    unsafe void glGetAttachedShaders( UInt32 program, Int32 maxCount, Int32* count, UInt32* shaders );
+    unsafe void glGetAttachedShaders( uint program, int maxCount, int* count, uint* shaders );
 
     /// <summary>
     /// Returns the shader objects attached to program
@@ -3284,7 +3284,7 @@ public interface IGLBindings
     /// <param name="program">Specifies the program object to be queried.</param>
     /// <param name="maxCount">Specifies a maximum amount of shaders to return.</param>
     /// <returns>Returns an array of shader objects attached to program resized to the amount of shaders actually attached.</returns>
-    unsafe UInt32[] glGetAttachedShaders( UInt32 program, Int32 maxCount );
+    unsafe uint[] glGetAttachedShaders( uint program, int maxCount );
 
     /// <summary>
     /// Returns the location of an attribute variable
@@ -3295,7 +3295,7 @@ public interface IGLBindings
     /// Returns the location of the attribute variable name if it is found in program. If name starts with the
     /// reserved prefix "gl_", a location of -1 is returned.
     /// </returns>
-    unsafe Int32 glGetAttribLocation( UInt32 program, Byte* name );
+    unsafe int glGetAttribLocation( uint program, Byte* name );
 
     /// <summary>
     /// Returns the location of an attribute variable
@@ -3306,7 +3306,7 @@ public interface IGLBindings
     /// Returns the location of the attribute variable name if it is found in program. If name starts with the
     /// reserved prefix "gl_", a location of -1 is returned.
     /// </returns>
-    unsafe Int32 glGetAttribLocation( UInt32 program, string name );
+    unsafe int glGetAttribLocation( uint program, string name );
 
     /// <summary>
     /// Returns a parameter from a program object
@@ -3317,7 +3317,7 @@ public interface IGLBindings
     /// for a list of possible values.
     /// </param>
     /// <param name="params">Returns the requested object parameter.</param>
-    unsafe void glGetProgramiv( UInt32 program, Int32 pname, Int32* parameters );
+    unsafe void glGetProgramiv( uint program, int pname, int* parameters );
 
     /// <summary>
     /// Returns a parameter from a program object
@@ -3328,7 +3328,7 @@ public interface IGLBindings
     /// for a list of possible values.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to an integer array where the returned value(s) will be placed.</param>
-    unsafe void glGetProgramiv( UInt32 program, Int32 pname, ref Int32[] parameters );
+    unsafe void glGetProgramiv( uint program, int pname, ref int[] parameters );
 
     /// <summary>
     /// Returns the information log for a program object
@@ -3337,7 +3337,7 @@ public interface IGLBindings
     /// <param name="bufSize">Specifies the size of the character buffer for storing the returned information log.</param>
     /// <param name="length">Returns the length of the string returned in infoLog (excluding the null terminator).</param>
     /// <param name="infoLog">Specifies an array of characters that is used to return the information log.</param>
-    unsafe void glGetProgramInfoLog( UInt32 program, Int32 bufSize, Int32* length, Byte* infoLog );
+    unsafe void glGetProgramInfoLog( uint program, int bufSize, int* length, Byte* infoLog );
 
     /// <summary>
     /// Returns the information log for a program object
@@ -3345,7 +3345,7 @@ public interface IGLBindings
     /// <param name="program">Specifies the program object whose information log is to be queried.</param>
     /// <param name="bufSize">Specifies the size of the character buffer for storing the returned information log.</param>
     /// <returns>Returns the information log for <paramref name="program"/>, resized to the correct length.</returns>
-    unsafe string glGetProgramInfoLog( UInt32 program, Int32 bufSize );
+    unsafe string glGetProgramInfoLog( uint program, int bufSize );
 
     /// <summary>
     /// Returns a parameter from a shader object
@@ -3357,7 +3357,7 @@ public interface IGLBindings
     /// <see cref="GL_SHADER_SOURCE_LENGTH"/>.
     /// </param>
     /// <param name="params">Returns the requested object parameter.</param>
-    unsafe void glGetShaderiv( UInt32 shader, Int32 pname, Int32* parameters );
+    unsafe void glGetShaderiv( uint shader, int pname, int* parameters );
 
     /// <summary>
     /// Returns a parameter from a shader object
@@ -3369,7 +3369,7 @@ public interface IGLBindings
     /// <see cref="GL_SHADER_SOURCE_LENGTH"/>.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to an integer array where the returned value(s) will be placed.</param>
-    unsafe void glGetShaderiv( UInt32 shader, Int32 pname, ref Int32[] parameters );
+    unsafe void glGetShaderiv( uint shader, int pname, ref int[] parameters );
 
     /// <summary>
     /// Returns the information log for a shader object
@@ -3378,7 +3378,7 @@ public interface IGLBindings
     /// <param name="bufSize">Specifies the size of the character buffer for storing the returned information log.</param>
     /// <param name="length">Returns the length of the string returned in infoLog (excluding the null terminator).</param>
     /// <param name="infoLog">Specifies an array of characters that is used to return the information log.</param>
-    unsafe void glGetShaderInfoLog( UInt32 shader, Int32 bufSize, Int32* length, Byte* infoLog );
+    unsafe void glGetShaderInfoLog( uint shader, int bufSize, int* length, Byte* infoLog );
 
     /// <summary>
     /// Returns the information log for a shader object
@@ -3386,7 +3386,7 @@ public interface IGLBindings
     /// <param name="shader">Specifies the shader object whose information log is to be queried.</param>
     /// <param name="bufSize">Specifies the size of the character buffer for storing the returned information log.</param>
     /// <returns>Returns the information log for <paramref name="shader"/>, resized to the correct length.</returns>
-    unsafe string glGetShaderInfoLog( UInt32 shader, Int32 bufSize );
+    unsafe string glGetShaderInfoLog( uint shader, int bufSize );
 
     /// <summary>
     /// Returns the source code string from a shader object
@@ -3395,7 +3395,7 @@ public interface IGLBindings
     /// <param name="bufSize">Specifies the size of the character buffer for storing the returned source code string.</param>
     /// <param name="length">Returns the length of the string returned in source (excluding the null terminator).</param>
     /// <param name="source">Specifies an array of characters that is used to return the source code string.</param>
-    unsafe void glGetShaderSource( UInt32 shader, Int32 bufSize, Int32* length, Byte* source );
+    unsafe void glGetShaderSource( uint shader, int bufSize, int* length, Byte* source );
 
     /// <summary>
     /// Returns the source code string from a shader object
@@ -3403,7 +3403,7 @@ public interface IGLBindings
     /// <param name="shader">Specifies the shader object to be queried.</param>
     /// <param name="bufSize">Specifies the size of the character buffer for storing the returned source code string.</param>
     /// <returns>Returns the source code string for <paramref name="shader"/>, resized to the correct length.</returns>
-    unsafe string glGetShaderSource( UInt32 shader, Int32 bufSize = 4096 );
+    unsafe string glGetShaderSource( uint shader, int bufSize = 4096 );
 
     /// <summary>
     /// Returns the location of a uniform variable
@@ -3413,14 +3413,14 @@ public interface IGLBindings
     /// Points to a null terminated string containing the name of the uniform variable whose location is to
     /// be queried.
     /// </param>
-    unsafe Int32 glGetUniformLocation( UInt32 program, Byte* name );
+    unsafe int glGetUniformLocation( uint program, Byte* name );
 
     /// <summary>
     /// Returns the location of a uniform variable
     /// </summary>
     /// <param name="program">Specifies the program object to be queried.</param>
     /// <param name="name">A string containing the name of the uniform variable whose location is to be queried.</param>
-    unsafe Int32 glGetUniformLocation( UInt32 program, string name );
+    unsafe int glGetUniformLocation( uint program, string name );
 
     /// <summary>
     /// Returns the value of a uniform variable
@@ -3428,7 +3428,7 @@ public interface IGLBindings
     /// <param name="program">Specifies the program object to be queried.</param>
     /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
     /// <param name="params">Returns the value of the uniform variable at the location specified by location.</param>
-    unsafe void glGetUniformfv( UInt32 program, Int32 location, Single* parameters );
+    unsafe void glGetUniformfv( uint program, int location, float* parameters );
 
     /// <summary>
     /// Returns the value of a uniform variable
@@ -3439,7 +3439,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array to receive the value of the uniform variable at the location
     /// specified by location.
     /// </param>
-    unsafe void glGetUniformfv( UInt32 program, Int32 location, ref Single[] parameters );
+    unsafe void glGetUniformfv( uint program, int location, ref float[] parameters );
 
     /// <summary>
     /// Returns the value of a uniform variable
@@ -3447,7 +3447,7 @@ public interface IGLBindings
     /// <param name="program">Specifies the program object to be queried.</param>
     /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
     /// <param name="params">Returns the value of the uniform variable at the location specified by location.</param>
-    unsafe void glGetUniformiv( UInt32 program, Int32 location, Int32* parameters );
+    unsafe void glGetUniformiv( uint program, int location, int* parameters );
 
     /// <summary>
     /// Returns the value of a uniform variable
@@ -3458,7 +3458,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array to receive the value of the uniform variable at the location
     /// specified by location.
     /// </param>
-    unsafe void glGetUniformiv( UInt32 program, Int32 location, ref Int32[] parameters );
+    unsafe void glGetUniformiv( uint program, int location, ref int[] parameters );
 
     /// <summary>
     /// Returns the value of a generic vertex attribute parameter
@@ -3476,7 +3476,7 @@ public interface IGLBindings
     /// Returns the value of the generic vertex attribute parameter specified by pname for the vertex
     /// attribute specified by index.
     /// </param>
-    unsafe void glGetVertexAttribdv( UInt32 index, Int32 pname, Double* parameters );
+    unsafe void glGetVertexAttribdv( uint index, int pname, double* parameters );
 
     /// <summary>
     /// Returns the value of a generic vertex attribute parameter
@@ -3494,7 +3494,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array to receive the value of the generic vertex attribute
     /// parameter specified by pname for the vertex attribute specified by index.
     /// </param>
-    unsafe void glGetVertexAttribdv( UInt32 index, Int32 pname, ref Double[] parameters );
+    unsafe void glGetVertexAttribdv( uint index, int pname, ref double[] parameters );
 
     /// <summary>
     /// Returns the value of a generic vertex attribute parameter
@@ -3512,7 +3512,7 @@ public interface IGLBindings
     /// Returns the value of the generic vertex attribute parameter specified by pname for the vertex
     /// attribute specified by index.
     /// </param>
-    unsafe void glGetVertexAttribfv( UInt32 index, Int32 pname, Single* parameters );
+    unsafe void glGetVertexAttribfv( uint index, int pname, float* parameters );
 
     /// <summary>
     /// Returns the value of a generic vertex attribute parameter
@@ -3530,7 +3530,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array to receive the value of the generic vertex attribute
     /// parameter specified by pname for the vertex attribute specified by index.
     /// </param>
-    unsafe void glGetVertexAttribfv( UInt32 index, Int32 pname, ref Single[] parameters );
+    unsafe void glGetVertexAttribfv( uint index, int pname, ref float[] parameters );
 
     /// <summary>
     /// Returns the value of a generic vertex attribute parameter
@@ -3548,7 +3548,7 @@ public interface IGLBindings
     /// Returns the value of the generic vertex attribute parameter specified by pname for the vertex
     /// attribute specified by index.
     /// </param>
-    unsafe void glGetVertexAttribiv( UInt32 index, Int32 pname, Int32* parameters );
+    unsafe void glGetVertexAttribiv( uint index, int pname, int* parameters );
 
     /// <summary>
     /// Returns the value of a generic vertex attribute parameter
@@ -3566,7 +3566,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array to receive the value of the generic vertex attribute
     /// parameter specified by pname for the vertex attribute specified by index.
     /// </param>
-    unsafe void glGetVertexAttribiv( UInt32 index, Int32 pname, ref Int32[] parameters );
+    unsafe void glGetVertexAttribiv( uint index, int pname, ref int[] parameters );
 
     /// <summary>
     /// Return the address of the specified generic vertex attribute pointer
@@ -3577,7 +3577,7 @@ public interface IGLBindings
     /// are: <see cref="GL_VERTEX_ATTRIB_ARRAY_POINTER"/>
     /// </param>
     /// <param name="pointer">Returns the address of the specified generic vertex attribute pointer.</param>
-    unsafe void glGetVertexAttribPointerv( UInt32 index, Int32 pname, void** pointer );
+    unsafe void glGetVertexAttribPointerv( uint index, int pname, void** pointer );
 
     /// <summary>
     /// Return the address of the specified generic vertex attribute pointer
@@ -3591,7 +3591,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array to receive the address of the specified generic vertex
     /// attribute pointer.
     /// </param>
-    unsafe void glGetVertexAttribPointerv( UInt32 index, Int32 pname, ref uint[] pointer );
+    unsafe void glGetVertexAttribPointerv( uint index, int pname, ref uint[] pointer );
 
     /// <summary>
     /// Determines if a name corresponds to a program object
@@ -3601,7 +3601,7 @@ public interface IGLBindings
     /// <see langword="true"/> if program is currently the name of a program object. <see langword="false"/>
     /// otherwise.
     /// </returns>
-    Boolean glIsProgram( UInt32 program );
+    bool glIsProgram( uint program );
 
     /// <summary>
     /// Determines if a name corresponds to a shader object
@@ -3611,13 +3611,13 @@ public interface IGLBindings
     /// <see langword="true"/> if shader is currently the name of a shader object. <see langword="false"/>
     /// otherwise.
     /// </returns>
-    Boolean glIsShader( UInt32 shader );
+    bool glIsShader( uint shader );
 
     /// <summary>
     /// Links a program object
     /// </summary>
     /// <param name="program">Specifies the handle of the program object to be linked.</param>
-    void glLinkProgram( UInt32 program );
+    void glLinkProgram( uint program );
 
     /// <summary>
     /// Replaces the source code in a shader object
@@ -3629,14 +3629,14 @@ public interface IGLBindings
     /// </param>
     /// <param name="string">Specifies an array of pointers to strings containing the source code to be loaded into the shader.</param>
     /// <param name="length">Specifies an array of string lengths.</param>
-    unsafe void glShaderSource( UInt32 shader, Int32 count, Byte** @string, Int32* length );
+    unsafe void glShaderSource( uint shader, int count, Byte** @string, int* length );
 
     /// <summary>
     /// Replaces the source code in a shader object
     /// </summary>
     /// <param name="shader">Specifies the handle of the shader object whose source code is to be replaced.</param>
     /// <param name="string">Specifies an array of strings containing the source code to be loaded into the shader.</param>
-    unsafe void glShaderSource( UInt32 shader, params string[] @string );
+    unsafe void glShaderSource( uint shader, params string[] @string );
 
     /// <summary>
     /// Installs a program object as part of current rendering state
@@ -3645,14 +3645,14 @@ public interface IGLBindings
     /// Specifies the handle of the program object whose executables are to be used as part of current
     /// rendering state.
     /// </param>
-    void glUseProgram( UInt32 program );
+    void glUseProgram( uint program );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="v0">Specifies the new value to be used for the uniform variable at location <paramref name="location"/>.</param>
-    void glUniform1f( Int32 location, Single v0 );
+    void glUniform1f( int location, float v0 );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3666,7 +3666,7 @@ public interface IGLBindings
     /// Specifies the second new value to be used for the uniform variable at location
     /// <paramref name="location"/>.
     /// </param>
-    void glUniform2f( Int32 location, Single v0, Single v1 );
+    void glUniform2f( int location, float v0, float v1 );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3684,7 +3684,7 @@ public interface IGLBindings
     /// Specifies the third new value to be used for the uniform variable at location
     /// <paramref name="location"/>.
     /// </param>
-    void glUniform3f( Int32 location, Single v0, Single v1, Single v2 );
+    void glUniform3f( int location, float v0, float v1, float v2 );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3706,14 +3706,14 @@ public interface IGLBindings
     /// Specifies the fourth new value to be used for the uniform variable at location
     /// <paramref name="location"/>.
     /// </param>
-    void glUniform4f( Int32 location, Single v0, Single v1, Single v2, Single v3 );
+    void glUniform4f( int location, float v0, float v1, float v2, float v3 );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="v0">Specifies the new value to be used for the uniform variable at location <paramref name="location"/>.</param>
-    void glUniform1i( Int32 location, Int32 v0 );
+    void glUniform1i( int location, int v0 );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3727,7 +3727,7 @@ public interface IGLBindings
     /// Specifies the second new value to be used for the uniform variable at location
     /// <paramref name="location"/>.
     /// </param>
-    void glUniform2i( Int32 location, Int32 v0, Int32 v1 );
+    void glUniform2i( int location, int v0, int v1 );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3745,7 +3745,7 @@ public interface IGLBindings
     /// Specifies the third new value to be used for the uniform variable at location
     /// <paramref name="location"/>.
     /// </param>
-    void glUniform3i( Int32 location, Int32 v0, Int32 v1, Int32 v2 );
+    void glUniform3i( int location, int v0, int v1, int v2 );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3767,7 +3767,7 @@ public interface IGLBindings
     /// Specifies the fourth new value to be used for the uniform variable at location
     /// <paramref name="location"/>.
     /// </param>
-    void glUniform4i( Int32 location, Int32 v0, Int32 v1, Int32 v2, Int32 v3 );
+    void glUniform4i( int location, int v0, int v1, int v2, int v3 );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3778,14 +3778,14 @@ public interface IGLBindings
     /// Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the
     /// specified uniform variable.
     /// </param>
-    unsafe void glUniform1fv( Int32 location, Int32 count, Single* value );
+    unsafe void glUniform1fv( int location, int count, float* value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
-    unsafe void glUniform1fv( Int32 location, params Single[] value );
+    unsafe void glUniform1fv( int location, params float[] value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3796,14 +3796,14 @@ public interface IGLBindings
     /// Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the
     /// specified uniform variable.
     /// </param>
-    unsafe void glUniform2fv( Int32 location, Int32 count, Single* value );
+    unsafe void glUniform2fv( int location, int count, float* value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    unsafe void glUniform2fv( Int32 location, params Single[] value );
+    unsafe void glUniform2fv( int location, params float[] value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3814,14 +3814,14 @@ public interface IGLBindings
     /// Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the
     /// specified uniform variable.
     /// </param>
-    unsafe void glUniform3fv( Int32 location, Int32 count, Single* value );
+    unsafe void glUniform3fv( int location, int count, float* value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    unsafe void glUniform3fv( Int32 location, params Single[] value );
+    unsafe void glUniform3fv( int location, params float[] value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3832,14 +3832,14 @@ public interface IGLBindings
     /// Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the
     /// specified uniform variable.
     /// </param>
-    unsafe void glUniform4fv( Int32 location, Int32 count, Single* value );
+    unsafe void glUniform4fv( int location, int count, float* value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    unsafe void glUniform4fv( Int32 location, params Single[] value );
+    unsafe void glUniform4fv( int location, params float[] value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3850,14 +3850,14 @@ public interface IGLBindings
     /// Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the
     /// specified uniform variable.
     /// </param>
-    unsafe void glUniform1iv( Int32 location, Int32 count, Int32* value );
+    unsafe void glUniform1iv( int location, int count, int* value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    unsafe void glUniform1iv( Int32 location, params Int32[] value );
+    unsafe void glUniform1iv( int location, params int[] value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3868,14 +3868,14 @@ public interface IGLBindings
     /// Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the
     /// specified uniform variable.
     /// </param>
-    unsafe void glUniform2iv( Int32 location, Int32 count, Int32* value );
+    unsafe void glUniform2iv( int location, int count, int* value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    unsafe void glUniform2iv( Int32 location, params Int32[] value );
+    unsafe void glUniform2iv( int location, params int[] value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3886,14 +3886,14 @@ public interface IGLBindings
     /// Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the
     /// specified uniform variable.
     /// </param>
-    unsafe void glUniform3iv( Int32 location, Int32 count, Int32* value );
+    unsafe void glUniform3iv( int location, int count, int* value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    unsafe void glUniform3iv( Int32 location, params Int32[] value );
+    unsafe void glUniform3iv( int location, params int[] value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3904,14 +3904,14 @@ public interface IGLBindings
     /// Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the
     /// specified uniform variable.
     /// </param>
-    unsafe void glUniform4iv( Int32 location, Int32 count, Int32* value );
+    unsafe void glUniform4iv( int location, int count, int* value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    unsafe void glUniform4iv( Int32 location, params Int32[] value );
+    unsafe void glUniform4iv( int location, params int[] value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3923,7 +3923,7 @@ public interface IGLBindings
     /// Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the
     /// specified uniform variable.
     /// </param>
-    unsafe void glUniformMatrix2fv( Int32 location, Int32 count, Boolean transpose, Single* value );
+    unsafe void glUniformMatrix2fv( int location, int count, bool transpose, float* value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3934,7 +3934,7 @@ public interface IGLBindings
     /// Specifies an array of values that will be used to update the specified uniform variable. Needs 4
     /// values per matrix.
     /// </param>
-    unsafe void glUniformMatrix2fv( Int32 location, Boolean transpose, params Single[] value );
+    unsafe void glUniformMatrix2fv( int location, bool transpose, params float[] value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3946,7 +3946,7 @@ public interface IGLBindings
     /// Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the
     /// specified uniform variable.
     /// </param>
-    unsafe void glUniformMatrix3fv( Int32 location, Int32 count, Boolean transpose, Single* value );
+    unsafe void glUniformMatrix3fv( int location, int count, bool transpose, float* value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3957,7 +3957,7 @@ public interface IGLBindings
     /// Specifies an array of values that will be used to update the specified uniform variable. Needs 9
     /// values per matrix.
     /// </param>
-    unsafe void glUniformMatrix3fv( Int32 location, Boolean transpose, params Single[] value );
+    unsafe void glUniformMatrix3fv( int location, bool transpose, params float[] value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3969,7 +3969,7 @@ public interface IGLBindings
     /// Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the
     /// specified uniform variable.
     /// </param>
-    unsafe void glUniformMatrix4fv( Int32 location, Int32 count, Boolean transpose, Single* value );
+    unsafe void glUniformMatrix4fv( int location, int count, bool transpose, float* value );
 
     /// <summary>
     /// Specifies the value of a uniform variable for the current program object
@@ -3980,80 +3980,80 @@ public interface IGLBindings
     /// Specifies an array of values that will be used to update the specified uniform variable. Needs 16
     /// values per matrix.
     /// </param>
-    unsafe void glUniformMatrix4fv( Int32 location, Boolean transpose, params Single[] value );
+    unsafe void glUniformMatrix4fv( int location, bool transpose, params float[] value );
 
 //TODO: Unsupported method    
-//    unsafe void glUniformMatrix4fv( Int32 location, Int32 count, Boolean transpose, Buffer buffer );
+//    unsafe void glUniformMatrix4fv( int location, int count, bool transpose, Buffer buffer );
 
     /// <summary>
     /// Validates a program object
     /// </summary>
     /// <param name="program">Specifies the handle of the program object to be validated</param>
     /// <returns><c>true</c> if validation is successful, <c>false</c> otherwise</returns>
-    Boolean glValidateProgram( UInt32 program );
+    bool glValidateProgram( uint program );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="x">Specifies the new value for the generic vertex attribute</param>
-    void glVertexAttrib1d( UInt32 index, Double x );
+    void glVertexAttrib1d( uint index, double x );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib1dv( UInt32 index, Double* v );
+    unsafe void glVertexAttrib1dv( uint index, double* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib1dv( UInt32 index, params Double[] v );
+    unsafe void glVertexAttrib1dv( uint index, params double[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="x">Specifies the new value for the generic vertex attribute</param>
-    void glVertexAttrib1f( UInt32 index, Single x );
+    void glVertexAttrib1f( uint index, float x );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib1fv( UInt32 index, Single* v );
+    unsafe void glVertexAttrib1fv( uint index, float* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib1fv( UInt32 index, params Single[] v );
+    unsafe void glVertexAttrib1fv( uint index, params float[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="x">Specifies the new value for the generic vertex attribute</param>
-    void glVertexAttrib1s( UInt32 index, Int16 x );
+    void glVertexAttrib1s( uint index, Int16 x );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib1sv( UInt32 index, Int16* v );
+    unsafe void glVertexAttrib1sv( uint index, Int16* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib1sv( UInt32 index, params Int16[] v );
+    unsafe void glVertexAttrib1sv( uint index, params Int16[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
@@ -4061,21 +4061,21 @@ public interface IGLBindings
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="x">Specifies the first component of the generic vertex attribute</param>
     /// <param name="y">Specifies the second component of the generic vertex attribute</param>
-    void glVertexAttrib2d( UInt32 index, Double x, Double y );
+    void glVertexAttrib2d( uint index, double x, double y );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib2dv( UInt32 index, Double* v );
+    unsafe void glVertexAttrib2dv( uint index, double* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib2dv( UInt32 index, params Double[] v );
+    unsafe void glVertexAttrib2dv( uint index, params double[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
@@ -4083,21 +4083,21 @@ public interface IGLBindings
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="x">Specifies the first component of the generic vertex attribute</param>
     /// <param name="y">Specifies the second component of the generic vertex attribute</param>
-    void glVertexAttrib2f( UInt32 index, Single x, Single y );
+    void glVertexAttrib2f( uint index, float x, float y );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib2fv( UInt32 index, Single* v );
+    unsafe void glVertexAttrib2fv( uint index, float* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib2fv( UInt32 index, params Single[] v );
+    unsafe void glVertexAttrib2fv( uint index, params float[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
@@ -4105,21 +4105,21 @@ public interface IGLBindings
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="x">Specifies the first component of the generic vertex attribute</param>
     /// <param name="y">Specifies the second component of the generic vertex attribute</param>
-    void glVertexAttrib2s( UInt32 index, Int16 x, Int16 y );
+    void glVertexAttrib2s( uint index, Int16 x, Int16 y );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib2sv( UInt32 index, Int16* v );
+    unsafe void glVertexAttrib2sv( uint index, Int16* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib2sv( UInt32 index, params Int16[] v );
+    unsafe void glVertexAttrib2sv( uint index, params Int16[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
@@ -4128,21 +4128,21 @@ public interface IGLBindings
     /// <param name="x">Specifies the first component of the generic vertex attribute</param>
     /// <param name="y">Specifies the second component of the generic vertex attribute</param>
     /// <param name="z">Specifies the third component of the generic vertex attribute</param>
-    void glVertexAttrib3d( UInt32 index, Double x, Double y, Double z );
+    void glVertexAttrib3d( uint index, double x, double y, double z );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib3dv( UInt32 index, Double* v );
+    unsafe void glVertexAttrib3dv( uint index, double* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib3dv( UInt32 index, params Double[] v );
+    unsafe void glVertexAttrib3dv( uint index, params double[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
@@ -4151,21 +4151,21 @@ public interface IGLBindings
     /// <param name="x">Specifies the first component of the generic vertex attribute</param>
     /// <param name="y">Specifies the second component of the generic vertex attribute</param>
     /// <param name="z">Specifies the third component of the generic vertex attribute</param>
-    void glVertexAttrib3f( UInt32 index, Single x, Single y, Single z );
+    void glVertexAttrib3f( uint index, float x, float y, float z );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib3fv( UInt32 index, Single* v );
+    unsafe void glVertexAttrib3fv( uint index, float* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib3fv( UInt32 index, params Single[] v );
+    unsafe void glVertexAttrib3fv( uint index, params float[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
@@ -4174,63 +4174,63 @@ public interface IGLBindings
     /// <param name="x">Specifies the first component of the generic vertex attribute</param>
     /// <param name="y">Specifies the second component of the generic vertex attribute</param>
     /// <param name="z">Specifies the third component of the generic vertex attribute</param>
-    void glVertexAttrib3s( UInt32 index, Int16 x, Int16 y, Int16 z );
+    void glVertexAttrib3s( uint index, Int16 x, Int16 y, Int16 z );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib3sv( UInt32 index, Int16* v );
+    unsafe void glVertexAttrib3sv( uint index, Int16* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib3sv( UInt32 index, params Int16[] v );
+    unsafe void glVertexAttrib3sv( uint index, params Int16[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4Nbv( UInt32 index, SByte* v );
+    unsafe void glVertexAttrib4Nbv( uint index, SByte* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4Nbv( UInt32 index, params SByte[] v );
+    unsafe void glVertexAttrib4Nbv( uint index, params SByte[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4Niv( UInt32 index, Int32* v );
+    unsafe void glVertexAttrib4Niv( uint index, int* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4Niv( UInt32 index, params Int32[] v );
+    unsafe void glVertexAttrib4Niv( uint index, params int[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4Nsv( UInt32 index, Int16* v );
+    unsafe void glVertexAttrib4Nsv( uint index, Int16* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4Nsv( UInt32 index, params Int16[] v );
+    unsafe void glVertexAttrib4Nsv( uint index, params Int16[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
@@ -4240,63 +4240,63 @@ public interface IGLBindings
     /// <param name="y">Specifies the second component of the generic vertex attribute</param>
     /// <param name="z">Specifies the third component of the generic vertex attribute</param>
     /// <param name="w">Specifies the fourth component of the generic vertex attribute</param>
-    void glVertexAttrib4Nub( UInt32 index, Byte x, Byte y, Byte z, Byte w );
+    void glVertexAttrib4Nub( uint index, Byte x, Byte y, Byte z, Byte w );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4Nubv( UInt32 index, Byte* v );
+    unsafe void glVertexAttrib4Nubv( uint index, Byte* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4Nubv( UInt32 index, params Byte[] v );
+    unsafe void glVertexAttrib4Nubv( uint index, params Byte[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4Nuiv( UInt32 index, UInt32* v );
+    unsafe void glVertexAttrib4Nuiv( uint index, uint* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4Nuiv( UInt32 index, params UInt32[] v );
+    unsafe void glVertexAttrib4Nuiv( uint index, params uint[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4Nusv( UInt32 index, UInt16* v );
+    unsafe void glVertexAttrib4Nusv( uint index, UInt16* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4Nusv( UInt32 index, params UInt16[] v );
+    unsafe void glVertexAttrib4Nusv( uint index, params UInt16[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4bv( UInt32 index, SByte* v );
+    unsafe void glVertexAttrib4bv( uint index, SByte* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4bv( UInt32 index, params SByte[] v );
+    unsafe void glVertexAttrib4bv( uint index, params SByte[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
@@ -4318,21 +4318,21 @@ public interface IGLBindings
     /// Specifies the fourth component of the vector to be used when updating the current value of the generic
     /// vertex attribute
     /// </param>
-    void glVertexAttrib4d( UInt32 index, Double x, Double y, Double z, Double w );
+    void glVertexAttrib4d( uint index, double x, double y, double z, double w );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4dv( UInt32 index, Double* v );
+    unsafe void glVertexAttrib4dv( uint index, double* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4dv( UInt32 index, params Double[] v );
+    unsafe void glVertexAttrib4dv( uint index, params double[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
@@ -4354,35 +4354,35 @@ public interface IGLBindings
     /// Specifies the fourth component of the vector to be used when updating the current value of the generic
     /// vertex attribute
     /// </param>
-    void glVertexAttrib4f( UInt32 index, Single x, Single y, Single z, Single w );
+    void glVertexAttrib4f( uint index, float x, float y, float z, float w );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4fv( UInt32 index, Single* v );
+    unsafe void glVertexAttrib4fv( uint index, float* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4fv( UInt32 index, params Single[] v );
+    unsafe void glVertexAttrib4fv( uint index, params float[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4iv( UInt32 index, Int32* v );
+    unsafe void glVertexAttrib4iv( uint index, int* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4iv( UInt32 index, params Int32[] v );
+    unsafe void glVertexAttrib4iv( uint index, params int[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
@@ -4404,63 +4404,63 @@ public interface IGLBindings
     /// Specifies the fourth component of the vector to be used when updating the current value of the generic
     /// vertex attribute
     /// </param>
-    void glVertexAttrib4s( UInt32 index, Int16 x, Int16 y, Int16 z, Int16 w );
+    void glVertexAttrib4s( uint index, Int16 x, Int16 y, Int16 z, Int16 w );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4sv( UInt32 index, Int16* v );
+    unsafe void glVertexAttrib4sv( uint index, Int16* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4sv( UInt32 index, params Int16[] v );
+    unsafe void glVertexAttrib4sv( uint index, params Int16[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4ubv( UInt32 index, Byte* v );
+    unsafe void glVertexAttrib4ubv( uint index, Byte* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4ubv( UInt32 index, params Byte[] v );
+    unsafe void glVertexAttrib4ubv( uint index, params Byte[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4uiv( UInt32 index, UInt32* v );
+    unsafe void glVertexAttrib4uiv( uint index, uint* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4uiv( UInt32 index, params UInt32[] v );
+    unsafe void glVertexAttrib4uiv( uint index, params uint[] v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4usv( UInt32 index, UInt16* v );
+    unsafe void glVertexAttrib4usv( uint index, UInt16* v );
 
     /// <summary>
     /// Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    unsafe void glVertexAttrib4usv( UInt32 index, params UInt16[] v );
+    unsafe void glVertexAttrib4usv( uint index, params UInt16[] v );
 
     /// <summary>
     /// Define an array of generic vertex attribute data
@@ -4487,7 +4487,7 @@ public interface IGLBindings
     /// Specifies an offset of the first component in the first generic vertex attribute in the array in
     /// the data store of the buffer currently bound to the <see cref="GL_ARRAY_BUFFER"/> target. The initial value is 0.
     /// </param>
-    unsafe void glVertexAttribPointer( UInt32 index, Int32 size, Int32 type, Boolean normalized, Int32 stride, void* pointer );
+    unsafe void glVertexAttribPointer( uint index, int size, int type, bool normalized, int stride, void* pointer );
 
     /// <summary>
     /// Define an array of generic vertex attribute data
@@ -4514,7 +4514,7 @@ public interface IGLBindings
     /// Specifies an offset of the first component in the first generic vertex attribute in the array in
     /// the data store of the buffer currently bound to the <see cref="GL_ARRAY_BUFFER"/> target. The initial value is 0.
     /// </param>
-    unsafe void glVertexAttribPointer( UInt32 index, Int32 size, Int32 type, Boolean normalized, Int32 stride, uint pointer );
+    unsafe void glVertexAttribPointer( uint index, int size, int type, bool normalized, int stride, uint pointer );
 
 //TODO: Unsupported method    
 //    unsafe void glVertexAttribPointer( int location, int size, int type, bool normalized, int stride, Buffer buffer );
@@ -4532,7 +4532,7 @@ public interface IGLBindings
     /// Specifies a pointer to an array of values that will be used to update the specified uniform
     /// variable
     /// </param>
-    unsafe void glUniformMatrix2x3fv( Int32 location, Int32 count, Boolean transpose, Single* value );
+    unsafe void glUniformMatrix2x3fv( int location, int count, bool transpose, float* value );
 
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -4543,7 +4543,7 @@ public interface IGLBindings
     /// Specifies an array of values that will be used to update the specified uniform variable. 6 values
     /// per matrix.
     /// </param>
-    unsafe void glUniformMatrix2x3fv( Int32 location, Boolean transpose, params Single[] value );
+    unsafe void glUniformMatrix2x3fv( int location, bool transpose, params float[] value );
 
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -4558,7 +4558,7 @@ public interface IGLBindings
     /// Specifies a pointer to an array of values that will be used to update the specified uniform
     /// variable
     /// </param>
-    unsafe void glUniformMatrix3x2fv( Int32 location, Int32 count, Boolean transpose, Single* value );
+    unsafe void glUniformMatrix3x2fv( int location, int count, bool transpose, float* value );
 
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -4569,7 +4569,7 @@ public interface IGLBindings
     /// Specifies an array of values that will be used to update the specified uniform variable. 6 values
     /// per matrix.
     /// </param>
-    unsafe void glUniformMatrix3x2fv( Int32 location, Boolean transpose, params Single[] value );
+    unsafe void glUniformMatrix3x2fv( int location, bool transpose, params float[] value );
 
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -4584,7 +4584,7 @@ public interface IGLBindings
     /// Specifies a pointer to an array of values that will be used to update the specified uniform
     /// variable
     /// </param>
-    unsafe void glUniformMatrix2x4fv( Int32 location, Int32 count, Boolean transpose, Single* value );
+    unsafe void glUniformMatrix2x4fv( int location, int count, bool transpose, float* value );
 
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -4595,7 +4595,7 @@ public interface IGLBindings
     /// Specifies an array of values that will be used to update the specified uniform variable. 8 values
     /// per matrix.
     /// </param>
-    unsafe void glUniformMatrix2x4fv( Int32 location, Boolean transpose, params Single[] value );
+    unsafe void glUniformMatrix2x4fv( int location, bool transpose, params float[] value );
 
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -4610,7 +4610,7 @@ public interface IGLBindings
     /// Specifies a pointer to an array of values that will be used to update the specified uniform
     /// variable
     /// </param>
-    unsafe void glUniformMatrix4x2fv( Int32 location, Int32 count, Boolean transpose, Single* value );
+    unsafe void glUniformMatrix4x2fv( int location, int count, bool transpose, float* value );
 
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -4621,7 +4621,7 @@ public interface IGLBindings
     /// Specifies an array of values that will be used to update the specified uniform variable. 8 values
     /// per matrix.
     /// </param>
-    unsafe void glUniformMatrix4x2fv( Int32 location, Boolean transpose, params Single[] value );
+    unsafe void glUniformMatrix4x2fv( int location, bool transpose, params float[] value );
 
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -4636,7 +4636,7 @@ public interface IGLBindings
     /// Specifies a pointer to an array of values that will be used to update the specified uniform
     /// variable
     /// </param>
-    unsafe void glUniformMatrix3x4fv( Int32 location, Int32 count, Boolean transpose, Single* value );
+    unsafe void glUniformMatrix3x4fv( int location, int count, bool transpose, float* value );
 
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -4647,7 +4647,7 @@ public interface IGLBindings
     /// Specifies an array of values that will be used to update the specified uniform variable. 12 values
     /// per matrix.
     /// </param>
-    unsafe void glUniformMatrix3x4fv( Int32 location, Boolean transpose, params Single[] value );
+    unsafe void glUniformMatrix3x4fv( int location, bool transpose, params float[] value );
 
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -4662,7 +4662,7 @@ public interface IGLBindings
     /// Specifies a pointer to an array of values that will be used to update the specified uniform
     /// variable
     /// </param>
-    unsafe void glUniformMatrix4x3fv( Int32 location, Int32 count, Boolean transpose, Single* value );
+    unsafe void glUniformMatrix4x3fv( int location, int count, bool transpose, float* value );
 
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -4673,7 +4673,7 @@ public interface IGLBindings
     /// Specifies an array of values that will be used to update the specified uniform variable. 12 values
     /// per matrix.
     /// </param>
-    unsafe void glUniformMatrix4x3fv( Int32 location, Boolean transpose, params Single[] value );
+    unsafe void glUniformMatrix4x3fv( int location, bool transpose, params float[] value );
 
     /// <summary>
     /// Enable and disable writing of frame buffer color components
@@ -4683,7 +4683,7 @@ public interface IGLBindings
     /// <param name="g">Specifies whether green can or cannot be written into the frame buffer.</param>
     /// <param name="b">Specifies whether blue can or cannot be written into the frame buffer.</param>
     /// <param name="a">Specifies whether alpha can or cannot be written into the frame buffer.</param>
-    void glColorMaski( UInt32 index, Boolean r, Boolean g, Boolean b, Boolean a );
+    void glColorMaski( uint index, bool r, bool g, bool b, bool a );
 
     /// <summary>
     /// Return the boolean value of a selected indexed state variable
@@ -4694,7 +4694,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="index">Specifies the index of the indexed state variable to be queried.</param>
     /// <param name="data">Returns the requested data.</param>
-    unsafe void glGetBooleani_v( Int32 target, UInt32 index, Boolean* data );
+    unsafe void glGetBooleani_v( int target, uint index, bool* data );
 
     /// <summary>
     /// Return the boolean value of a selected indexed state variable
@@ -4705,7 +4705,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="index">Specifies the index of the indexed state variable to be queried.</param>
     /// <param name="data">A <see langword="ref"/> to an array to receive the data.</param>
-    unsafe void glGetBooleani_v( Int32 target, UInt32 index, ref Boolean[] data );
+    unsafe void glGetBooleani_v( int target, uint index, ref bool[] data );
 
     /// <summary>
     /// Return the integer value of a selected indexed state variable
@@ -4716,7 +4716,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="index">Specifies the index of the indexed state variable to be queried.</param>
     /// <param name="data">Returns the requested data.</param>
-    unsafe void glGetIntegeri_v( Int32 target, UInt32 index, Int32* data );
+    unsafe void glGetIntegeri_v( int target, uint index, int* data );
 
     /// <summary>
     /// Return the integer value of a selected indexed state variable
@@ -4727,7 +4727,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="index">Specifies the index of the indexed state variable to be queried.</param>
     /// <param name="data">A <see langword="ref"/> to an array to receive the data.</param>
-    unsafe void glGetIntegeri_v( Int32 target, UInt32 index, ref Int32[] data );
+    unsafe void glGetIntegeri_v( int target, uint index, ref int[] data );
 
     /// <summary>
     /// Enable capabilities for a specific indexed target
@@ -4737,7 +4737,7 @@ public interface IGLBindings
     /// <see href="https://docs.gl/gl4/glEnable"/> for a list of possible capabilities.
     /// </param>
     /// <param name="index">Specifies the index of the target to enable or disable.</param>
-    void glEnablei( Int32 target, UInt32 index );
+    void glEnablei( int target, uint index );
 
     /// <summary>
     /// Disable capabilities for a specific indexed target
@@ -4747,7 +4747,7 @@ public interface IGLBindings
     /// <see href="https://docs.gl/gl4/glEnable"/> for a list of possible capabilities.
     /// </param>
     /// <param name="index">Specifies the index of the target to enable or disable.</param>
-    void glDisablei( Int32 target, UInt32 index );
+    void glDisablei( int target, uint index );
 
     /// <summary>
     /// Test whether a specific indexed capability is enabled
@@ -4757,7 +4757,7 @@ public interface IGLBindings
     /// <see href="https://docs.gl/gl4/glEnable"/> for a list of possible capabilities.
     /// </param>
     /// <param name="index">Specifies the index of the target to enable or disable.</param>
-    Boolean glIsEnabledi( Int32 target, UInt32 index );
+    bool glIsEnabledi( int target, uint index );
 
     /// <summary>
     /// Start transform feedback operations
@@ -4770,7 +4770,7 @@ public interface IGLBindings
     /// <see cref="GL_TRIANGLE_STRIP_ADJACENCY"/> are accepted. Refer to
     /// <see href="https://docs.gl/gl4/glBeginTransformFeedback"/> for some quirks regarding this parameter.
     /// </param>
-    void glBeginTransformFeedback( Int32 primitiveMode );
+    void glBeginTransformFeedback( int primitiveMode );
 
     /// <summary>
     /// End transform feedback operations
@@ -4792,7 +4792,7 @@ public interface IGLBindings
     /// Specifies the amount of data in bytes from the buffer object that is to be made available for
     /// reading.
     /// </param>
-    void glBindBufferRange( Int32 target, UInt32 index, UInt32 buffer, Int32 offset, Int32 size );
+    void glBindBufferRange( int target, uint index, uint buffer, int offset, int size );
 
     /// <summary>
     /// Bind a buffer object to an indexed buffer target
@@ -4804,7 +4804,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="index">Specifies the index of the binding point within the array specified by <paramref name="target"/>.</param>
     /// <param name="buffer">Specifies the name of a buffer object whose storage to bind to the specified binding point.</param>
-    void glBindBufferBase( Int32 target, UInt32 index, UInt32 buffer );
+    void glBindBufferBase( int target, uint index, uint buffer );
 
     /// <summary>
     /// Specify values to record in transform feedback buffers
@@ -4823,7 +4823,7 @@ public interface IGLBindings
     /// <paramref name="bufferMode"/> must be one of <see cref="GL_INTERLEAVED_ATTRIBS"/> or
     /// <see cref="GL_SEPARATE_ATTRIBS"/>.
     /// </param>
-    unsafe void glTransformFeedbackVaryings( UInt32 program, Int32 count, Byte** varyings, Int32 bufferMode );
+    unsafe void glTransformFeedbackVaryings( uint program, int count, Byte** varyings, int bufferMode );
 
     /// <summary>
     /// Specify values to record in transform feedback buffers
@@ -4835,7 +4835,7 @@ public interface IGLBindings
     /// <paramref name="bufferMode"/> must be one of <see cref="GL_INTERLEAVED_ATTRIBS"/> or
     /// <see cref="GL_SEPARATE_ATTRIBS"/>.
     /// </param>
-    unsafe void glTransformFeedbackVaryings( UInt32 program, string[] varyings, Int32 bufferMode );
+    unsafe void glTransformFeedbackVaryings( uint program, string[] varyings, int bufferMode );
 
     /// <summary>
     /// Retrieve information about a varying variable from a program object's active transform feedback varyings
@@ -4850,12 +4850,12 @@ public interface IGLBindings
     /// <param name="size">Returns the size of the requested varying variable.</param>
     /// <param name="type">Returns the data type of the requested varying variable.</param>
     /// <param name="name">Returns a null-terminated string containing the name of the requested varying variable.</param>
-    unsafe void glGetTransformFeedbackVarying( UInt32 program,
-                                               UInt32 index,
-                                               Int32 bufSize,
-                                               Int32* length,
-                                               Int32* size,
-                                               Int32* type,
+    unsafe void glGetTransformFeedbackVarying( uint program,
+                                               uint index,
+                                               int bufSize,
+                                               int* length,
+                                               int* size,
+                                               int* type,
                                                Byte* name );
 
     /// <summary>
@@ -4870,7 +4870,7 @@ public interface IGLBindings
     /// <param name="size">Returns the size of the requested varying variable.</param>
     /// <param name="type">Returns the data type of the requested varying variable.</param>
     /// <returns>Returns a managed string containing the name of the requested varying variable.</returns>
-    unsafe string glGetTransformFeedbackVarying( UInt32 program, UInt32 index, Int32 bufSize, out Int32 size, out Int32 type );
+    unsafe string glGetTransformFeedbackVarying( uint program, uint index, int bufSize, out int size, out int type );
 
     /// <summary>
     /// Specify whether data read via <see cref="GLBindings.glReadPixels"/> should be clamped.
@@ -4880,7 +4880,7 @@ public interface IGLBindings
     /// Specifies whether to apply color clamping. <see langword="true"/> specifies that clamping is
     /// enabled, <see langword="false"/> specifies that clamping is disabled.
     /// </param>
-    void glClampColor( Int32 target, Boolean clamp );
+    void glClampColor( int target, bool clamp );
 
     /// <summary>
     /// Start conditional rendering
@@ -4893,7 +4893,7 @@ public interface IGLBindings
     /// Specifies how <see cref="glglBeginConditionalRender"/> interprets the results of the occlusion
     /// query.
     /// </param>
-    void glBeginConditionalRender( UInt32 id, Int32 mode );
+    void glBeginConditionalRender( uint id, int mode );
 
     /// <summary>
     /// End conditional rendering
@@ -4918,7 +4918,7 @@ public interface IGLBindings
     /// Specifies an offset of the first component of the first generic vertex attribute in the array in
     /// the data store of the buffer currently bound to the <see cref="GL_ARRAY_BUFFER"/> target. The initial value is 0.
     /// </param>
-    unsafe void glVertexAttribIPointer( UInt32 index, Int32 size, Int32 type, Int32 stride, void* pointer );
+    unsafe void glVertexAttribIPointer( uint index, int size, int type, int stride, void* pointer );
 
     /// <summary>
     /// Define an array of generic vertex attribute data
@@ -4938,7 +4938,7 @@ public interface IGLBindings
     /// Specifies an offset of the first component of the first generic vertex attribute in the array in
     /// the data store of the buffer currently bound to the <see cref="GL_ARRAY_BUFFER"/> target. The initial value is 0.
     /// </param>
-    unsafe void glVertexAttribIPointer( UInt32 index, Int32 size, Int32 type, Int32 stride, uint pointer );
+    unsafe void glVertexAttribIPointer( uint index, int size, int type, int stride, uint pointer );
 
     /// <summary>
     /// Return the integer value of a generic vertex attribute parameter
@@ -4953,7 +4953,7 @@ public interface IGLBindings
     /// <see cref="GL_CURRENT_VERTEX_ATTRIB"/>.
     /// </param>
     /// <param name="parameters">Returns the requested parameter.</param>
-    unsafe void glGetVertexAttribIiv( UInt32 index, Int32 pname, Int32* parameters );
+    unsafe void glGetVertexAttribIiv( uint index, int pname, int* parameters );
 
     /// <summary>
     /// Return the integer value of a generic vertex attribute parameter
@@ -4968,7 +4968,7 @@ public interface IGLBindings
     /// <see cref="GL_CURRENT_VERTEX_ATTRIB"/>.
     /// </param>
     /// <param name="parameters">A <see langword="ref"/> to an array into which the returned values will be placed.</param>
-    unsafe void glGetVertexAttribIiv( UInt32 index, Int32 pname, ref Int32[] parameters );
+    unsafe void glGetVertexAttribIiv( uint index, int pname, ref int[] parameters );
 
     /// <summary>
     /// Return the unsigned integer value of a generic vertex attribute parameter
@@ -4983,7 +4983,7 @@ public interface IGLBindings
     /// <see cref="GL_CURRENT_VERTEX_ATTRIB"/>.
     /// </param>
     /// <param name="parameters">Returns the requested parameter.</param>
-    unsafe void glGetVertexAttribIuiv( UInt32 index, Int32 pname, UInt32* parameters );
+    unsafe void glGetVertexAttribIuiv( uint index, int pname, uint* parameters );
 
     /// <summary>
     /// Return the unsigned integer value of a generic vertex attribute parameter
@@ -4998,22 +4998,14 @@ public interface IGLBindings
     /// <see cref="GL_CURRENT_VERTEX_ATTRIB"/>.
     /// </param>
     /// <param name="parameters">A <see langword="ref"/> to an array into which the returned values will be placed.</param>
-    unsafe void glGetVertexAttribIuiv( UInt32 index, Int32 pname, ref UInt32[] parameters );
+    unsafe void glGetVertexAttribIuiv( uint index, int pname, ref uint[] parameters );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="x">Specifies the first component of the vertex attribute.</param>
-    void glVertexAttribI1i( UInt32 index, Int32 x );
-
-    /// <summary>
-    /// Specify the value of a generic vertex attribute
-    /// </summary>
-    /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
-    /// <param name="x">Specifies the first component of the vertex attribute.</param>
-    /// <param name="y">Specifies the second component of the vertex attribute.</param>
-    void glVertexAttribI2i( UInt32 index, Int32 x, Int32 y );
+    void glVertexAttribI1i( uint index, int x );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
@@ -5021,8 +5013,7 @@ public interface IGLBindings
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="x">Specifies the first component of the vertex attribute.</param>
     /// <param name="y">Specifies the second component of the vertex attribute.</param>
-    /// <param name="z">Specifies the third component of the vertex attribute.</param>
-    void glVertexAttribI3i( UInt32 index, Int32 x, Int32 y, Int32 z );
+    void glVertexAttribI2i( uint index, int x, int y );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
@@ -5031,32 +5022,7 @@ public interface IGLBindings
     /// <param name="x">Specifies the first component of the vertex attribute.</param>
     /// <param name="y">Specifies the second component of the vertex attribute.</param>
     /// <param name="z">Specifies the third component of the vertex attribute.</param>
-    /// <param name="w">Specifies the fourth component of the vertex attribute.</param>
-    void glVertexAttribI4i( UInt32 index, Int32 x, Int32 y, Int32 z, Int32 w );
-
-    /// <summary>
-    /// Specify the value of a generic vertex attribute
-    /// </summary>
-    /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
-    /// <param name="x">Specifies the first component of the vertex attribute.</param>
-    void glVertexAttribI1ui( UInt32 index, UInt32 x );
-
-    /// <summary>
-    /// Specify the value of a generic vertex attribute
-    /// </summary>
-    /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
-    /// <param name="x">Specifies the first component of the vertex attribute.</param>
-    /// <param name="y">Specifies the second component of the vertex attribute.</param>
-    void glVertexAttribI2ui( UInt32 index, UInt32 x, UInt32 y );
-
-    /// <summary>
-    /// Specify the value of a generic vertex attribute
-    /// </summary>
-    /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
-    /// <param name="x">Specifies the first component of the vertex attribute.</param>
-    /// <param name="y">Specifies the second component of the vertex attribute.</param>
-    /// <param name="z">Specifies the third component of the vertex attribute.</param>
-    void glVertexAttribI3ui( UInt32 index, UInt32 x, UInt32 y, UInt32 z );
+    void glVertexAttribI3i( uint index, int x, int y, int z );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
@@ -5066,175 +5032,209 @@ public interface IGLBindings
     /// <param name="y">Specifies the second component of the vertex attribute.</param>
     /// <param name="z">Specifies the third component of the vertex attribute.</param>
     /// <param name="w">Specifies the fourth component of the vertex attribute.</param>
-    void glVertexAttribI4ui( UInt32 index, UInt32 x, UInt32 y, UInt32 z, UInt32 w );
+    void glVertexAttribI4i( uint index, int x, int y, int z, int w );
+
+    /// <summary>
+    /// Specify the value of a generic vertex attribute
+    /// </summary>
+    /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
+    /// <param name="x">Specifies the first component of the vertex attribute.</param>
+    void glVertexAttribI1ui( uint index, uint x );
+
+    /// <summary>
+    /// Specify the value of a generic vertex attribute
+    /// </summary>
+    /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
+    /// <param name="x">Specifies the first component of the vertex attribute.</param>
+    /// <param name="y">Specifies the second component of the vertex attribute.</param>
+    void glVertexAttribI2ui( uint index, uint x, uint y );
+
+    /// <summary>
+    /// Specify the value of a generic vertex attribute
+    /// </summary>
+    /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
+    /// <param name="x">Specifies the first component of the vertex attribute.</param>
+    /// <param name="y">Specifies the second component of the vertex attribute.</param>
+    /// <param name="z">Specifies the third component of the vertex attribute.</param>
+    void glVertexAttribI3ui( uint index, uint x, uint y, uint z );
+
+    /// <summary>
+    /// Specify the value of a generic vertex attribute
+    /// </summary>
+    /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
+    /// <param name="x">Specifies the first component of the vertex attribute.</param>
+    /// <param name="y">Specifies the second component of the vertex attribute.</param>
+    /// <param name="z">Specifies the third component of the vertex attribute.</param>
+    /// <param name="w">Specifies the fourth component of the vertex attribute.</param>
+    void glVertexAttribI4ui( uint index, uint x, uint y, uint z, uint w );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI1iv( UInt32 index, Int32* v );
+    unsafe void glVertexAttribI1iv( uint index, int* v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI1iv( UInt32 index, Int32[] v );
+    unsafe void glVertexAttribI1iv( uint index, int[] v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI2iv( UInt32 index, Int32* v );
+    unsafe void glVertexAttribI2iv( uint index, int* v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI2iv( UInt32 index, Int32[] v );
+    unsafe void glVertexAttribI2iv( uint index, int[] v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI3iv( UInt32 index, Int32* v );
+    unsafe void glVertexAttribI3iv( uint index, int* v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI3iv( UInt32 index, Int32[] v );
+    unsafe void glVertexAttribI3iv( uint index, int[] v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI4iv( UInt32 index, Int32* v );
+    unsafe void glVertexAttribI4iv( uint index, int* v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI4iv( UInt32 index, Int32[] v );
+    unsafe void glVertexAttribI4iv( uint index, int[] v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI1uiv( UInt32 index, UInt32* v );
+    unsafe void glVertexAttribI1uiv( uint index, uint* v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI1uiv( UInt32 index, UInt32[] v );
+    unsafe void glVertexAttribI1uiv( uint index, uint[] v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI2uiv( UInt32 index, UInt32* v );
+    unsafe void glVertexAttribI2uiv( uint index, uint* v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI2uiv( UInt32 index, UInt32[] v );
+    unsafe void glVertexAttribI2uiv( uint index, uint[] v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI3uiv( UInt32 index, UInt32* v );
+    unsafe void glVertexAttribI3uiv( uint index, uint* v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI3uiv( UInt32 index, UInt32[] v );
+    unsafe void glVertexAttribI3uiv( uint index, uint[] v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI4uiv( UInt32 index, UInt32* v );
+    unsafe void glVertexAttribI4uiv( uint index, uint* v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI4uiv( UInt32 index, UInt32[] v );
+    unsafe void glVertexAttribI4uiv( uint index, uint[] v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI4bv( UInt32 index, SByte* v );
+    unsafe void glVertexAttribI4bv( uint index, SByte* v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI4bv( UInt32 index, SByte[] v );
+    unsafe void glVertexAttribI4bv( uint index, SByte[] v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI4sv( UInt32 index, Int16* v );
+    unsafe void glVertexAttribI4sv( uint index, Int16* v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI4sv( UInt32 index, Int16[] v );
+    unsafe void glVertexAttribI4sv( uint index, Int16[] v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI4ubv( UInt32 index, Byte* v );
+    unsafe void glVertexAttribI4ubv( uint index, Byte* v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI4ubv( UInt32 index, Byte[] v );
+    unsafe void glVertexAttribI4ubv( uint index, Byte[] v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI4usv( UInt32 index, UInt16* v );
+    unsafe void glVertexAttribI4usv( uint index, UInt16* v );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    unsafe void glVertexAttribI4usv( UInt32 index, UInt16[] v );
+    unsafe void glVertexAttribI4usv( uint index, UInt16[] v );
 
     /// <summary>
     /// Return the value of a uniform variable of type unsigned int
@@ -5242,7 +5242,7 @@ public interface IGLBindings
     /// <param name="program">Specifies the program object containing the uniform variable to be queried.</param>
     /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
     /// <param name="params">Returns the value of the specified uniform variable.</param>
-    unsafe void glGetUniformuiv( UInt32 program, Int32 location, UInt32* parameters );
+    unsafe void glGetUniformuiv( uint program, int location, uint* parameters );
 
     /// <summary>
     /// Return the value of a uniform variable of type unsigned int
@@ -5250,7 +5250,7 @@ public interface IGLBindings
     /// <param name="program">Specifies the program object containing the uniform variable to be queried.</param>
     /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
     /// <param name="params">A <see langword="ref"/> to an array to receive the value of the specified uniform variable.</param>
-    unsafe void glGetUniformuiv( UInt32 program, Int32 location, ref UInt32[] parameters );
+    unsafe void glGetUniformuiv( uint program, int location, ref uint[] parameters );
 
     /// <summary>
     /// Bind a user-defined varying out variable to a fragment shader color number
@@ -5258,7 +5258,7 @@ public interface IGLBindings
     /// <param name="program">Specifies the program object in which the binding is to occur.</param>
     /// <param name="color">Specifies the color number to which the user-defined varying out variable is to be bound.</param>
     /// <param name="name">Specifies the name of the user-defined varying out variable to whose bound location to set.</param>
-    unsafe void glBindFragDataLocation( UInt32 program, UInt32 color, Byte* name );
+    unsafe void glBindFragDataLocation( uint program, uint color, Byte* name );
 
     /// <summary>
     /// Bind a user-defined varying out variable to a fragment shader color number
@@ -5266,7 +5266,7 @@ public interface IGLBindings
     /// <param name="program">Specifies the program object in which the binding is to occur.</param>
     /// <param name="color">Specifies the color number to which the user-defined varying out variable is to be bound.</param>
     /// <param name="name">Specifies the name of the user-defined varying out variable to whose bound location to set.</param>
-    unsafe void glBindFragDataLocation( UInt32 program, UInt32 color, string name );
+    unsafe void glBindFragDataLocation( uint program, uint color, string name );
 
     /// <summary>
     /// Return the location of a user-defined varying out variable
@@ -5274,7 +5274,7 @@ public interface IGLBindings
     /// <param name="program">Specifies the program object to be queried.</param>
     /// <param name="name">Specifies the name of the user-defined varying out variable whose location is to be queried.</param>
     /// <returns>The location of the user-defined varying out variable specified by <paramref name="name"/> is returned.</returns>
-    unsafe Int32 glGetFragDataLocation( UInt32 program, Byte* name );
+    unsafe int glGetFragDataLocation( uint program, Byte* name );
 
     /// <summary>
     /// Return the location of a user-defined varying out variable
@@ -5282,14 +5282,14 @@ public interface IGLBindings
     /// <param name="program">Specifies the program object to be queried.</param>
     /// <param name="name">Specifies the name of the user-defined varying out variable whose location is to be queried.</param>
     /// <returns>The location of the user-defined varying out variable specified by <paramref name="name"/> is returned.</returns>
-    unsafe Int32 glGetFragDataLocation( UInt32 program, string name );
+    unsafe int glGetFragDataLocation( uint program, string name );
 
     /// <summary>
     /// Specify the value of an unsigned int uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="v0">Specifies the new value to be used for the specified uniform variable.</param>
-    void glUniform1ui( Int32 location, UInt32 v0 );
+    void glUniform1ui( int location, uint v0 );
 
     /// <summary>
     /// Specify the value of an unsigned int uniform variable for the current program object
@@ -5297,7 +5297,7 @@ public interface IGLBindings
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="v0">Specifies the first value to be used for the specified uniform variable.</param>
     /// <param name="v1">Specifies the second value to be used for the specified uniform variable.</param>
-    void glUniform2ui( Int32 location, UInt32 v0, UInt32 v1 );
+    void glUniform2ui( int location, uint v0, uint v1 );
 
     /// <summary>
     /// Specify the value of an unsigned int uniform variable for the current program object
@@ -5306,7 +5306,7 @@ public interface IGLBindings
     /// <param name="v0">Specifies the first value to be used for the specified uniform variable.</param>
     /// <param name="v1">Specifies the second value to be used for the specified uniform variable.</param>
     /// <param name="v2">Specifies the third value to be used for the specified uniform variable.</param>
-    void glUniform3ui( Int32 location, UInt32 v0, UInt32 v1, UInt32 v2 );
+    void glUniform3ui( int location, uint v0, uint v1, uint v2 );
 
     /// <summary>
     /// Specify the value of an unsigned int uniform variable for the current program object
@@ -5316,7 +5316,7 @@ public interface IGLBindings
     /// <param name="v1">Specifies the second value to be used for the specified uniform variable.</param>
     /// <param name="v2">Specifies the third value to be used for the specified uniform variable.</param>
     /// <param name="v3">Specifies the fourth value to be used for the specified uniform variable.</param>
-    void glUniform4ui( Int32 location, UInt32 v0, UInt32 v1, UInt32 v2, UInt32 v3 );
+    void glUniform4ui( int location, uint v0, uint v1, uint v2, uint v3 );
 
     /// <summary>
     /// Specify the value of an unsigned int uniform variable for the current program object
@@ -5327,14 +5327,14 @@ public interface IGLBindings
     /// Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the
     /// specified uniform variable.
     /// </param>
-    unsafe void glUniform1uiv( Int32 location, Int32 count, UInt32* value );
+    unsafe void glUniform1uiv( int location, int count, uint* value );
 
     /// <summary>
     /// Specify the value of an unsigned int uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    unsafe void glUniform1uiv( Int32 location, UInt32[] value );
+    unsafe void glUniform1uiv( int location, uint[] value );
 
     /// <summary>
     /// Specify the value of an unsigned int uniform variable for the current program object
@@ -5345,14 +5345,14 @@ public interface IGLBindings
     /// Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the
     /// specified uniform variable.
     /// </param>
-    unsafe void glUniform2uiv( Int32 location, Int32 count, UInt32* value );
+    unsafe void glUniform2uiv( int location, int count, uint* value );
 
     /// <summary>
     /// Specify the value of an unsigned int uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    unsafe void glUniform2uiv( Int32 location, UInt32[] value );
+    unsafe void glUniform2uiv( int location, uint[] value );
 
     /// <summary>
     /// Specify the value of an unsigned int uniform variable for the current program object
@@ -5363,14 +5363,14 @@ public interface IGLBindings
     /// Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the
     /// specified uniform variable.
     /// </param>
-    unsafe void glUniform3uiv( Int32 location, Int32 count, UInt32* value );
+    unsafe void glUniform3uiv( int location, int count, uint* value );
 
     /// <summary>
     /// Specify the value of an unsigned int uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    unsafe void glUniform3uiv( Int32 location, UInt32[] value );
+    unsafe void glUniform3uiv( int location, uint[] value );
 
     /// <summary>
     /// Specify the value of an unsigned int uniform variable for the current program object
@@ -5381,14 +5381,14 @@ public interface IGLBindings
     /// Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the
     /// specified uniform variable.
     /// </param>
-    unsafe void glUniform4uiv( Int32 location, Int32 count, UInt32* value );
+    unsafe void glUniform4uiv( int location, int count, uint* value );
 
     /// <summary>
     /// Specify the value of an unsigned int uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    unsafe void glUniform4uiv( Int32 location, UInt32[] value );
+    unsafe void glUniform4uiv( int location, uint[] value );
 
     /// <summary>
     /// Set the value of a texture parameter for the current texture unit, with integer values
@@ -5410,7 +5410,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_WRAP_S"/>, <see cref="GL_TEXTURE_WRAP_T"/> or <see cref="GL_TEXTURE_WRAP_R"/>.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname"/>.</param>
-    unsafe void glTexParameterIiv( Int32 target, Int32 pname, Int32* param );
+    unsafe void glTexParameterIiv( int target, int pname, int* param );
 
     /// <summary>
     /// Set the value of a texture parameter for the current texture unit, with integer values
@@ -5432,7 +5432,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_WRAP_S"/>, <see cref="GL_TEXTURE_WRAP_T"/> or <see cref="GL_TEXTURE_WRAP_R"/>.
     /// </param>
     /// <param name="param">Specifies an array of values that will be used to update the specified texture parameter.</param>
-    unsafe void glTexParameterIiv( Int32 target, Int32 pname, Int32[] param );
+    unsafe void glTexParameterIiv( int target, int pname, int[] param );
 
     /// <summary>
     /// Set the value of a texture parameter for the current texture unit, with unsigned integer values
@@ -5454,7 +5454,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_WRAP_S"/>, <see cref="GL_TEXTURE_WRAP_T"/> or <see cref="GL_TEXTURE_WRAP_R"/>.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname"/>.</param>
-    unsafe void glTexParameterIuiv( Int32 target, Int32 pname, UInt32* param );
+    unsafe void glTexParameterIuiv( int target, int pname, uint* param );
 
     /// <summary>
     /// Set the value of a texture parameter for the current texture unit, with unsigned integer values
@@ -5476,7 +5476,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_WRAP_S"/>, <see cref="GL_TEXTURE_WRAP_T"/> or <see cref="GL_TEXTURE_WRAP_R"/>.
     /// </param>
     /// <param name="param">Specifies an array of values that will be used to update the specified texture parameter.</param>
-    unsafe void glTexParameterIuiv( Int32 target, Int32 pname, UInt32[] param );
+    unsafe void glTexParameterIuiv( int target, int pname, uint[] param );
 
     /// <summary>
     /// Get the value of a texture parameter for the current texture unit, with signed integer values
@@ -5498,7 +5498,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_WRAP_S"/>, <see cref="GL_TEXTURE_WRAP_T"/> or <see cref="GL_TEXTURE_WRAP_R"/>.
     /// </param>
     /// <param name="parameters">Returns the texture parameter value.</param>
-    unsafe void glGetTexParameterIiv( Int32 target, Int32 pname, Int32* parameters );
+    unsafe void glGetTexParameterIiv( int target, int pname, int* parameters );
 
     /// <summary>
     /// Get the value of a texture parameter for the current texture unit, with signed integer values
@@ -5520,7 +5520,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_WRAP_S"/>, <see cref="GL_TEXTURE_WRAP_T"/> or <see cref="GL_TEXTURE_WRAP_R"/>.
     /// </param>
     /// <param name="parameters">A <see langword="ref"/> to an array to receive the texture parameter value.</param>
-    unsafe void glGetTexParameterIiv( Int32 target, Int32 pname, ref Int32[] parameters );
+    unsafe void glGetTexParameterIiv( int target, int pname, ref int[] parameters );
 
     /// <summary>
     /// Get the value of a texture parameter for the current texture unit, with unsigned integer values
@@ -5542,7 +5542,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_WRAP_S"/>, <see cref="GL_TEXTURE_WRAP_T"/> or <see cref="GL_TEXTURE_WRAP_R"/>.
     /// </param>
     /// <param name="parameters">Returns the texture parameter value.</param>
-    unsafe void glGetTexParameterIuiv( Int32 target, Int32 pname, UInt32* parameters );
+    unsafe void glGetTexParameterIuiv( int target, int pname, uint* parameters );
 
     /// <summary>
     /// Get the value of a texture parameter for the current texture unit, with unsigned integer values
@@ -5564,7 +5564,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_WRAP_S"/>, <see cref="GL_TEXTURE_WRAP_T"/> or <see cref="GL_TEXTURE_WRAP_R"/>.
     /// </param>
     /// <param name="parameters">A <see langword="ref"/> to an array to receive the texture parameter value.</param>
-    unsafe void glGetTexParameterIuiv( Int32 target, Int32 pname, ref UInt32[] parameters );
+    unsafe void glGetTexParameterIuiv( int target, int pname, ref uint[] parameters );
 
     /// <summary>
     /// Clear a buffer to an integer value. Refer to <see href="https://docs.gl/gl4/glClearBuffer"/> for details on how to
@@ -5576,7 +5576,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="drawbuffer">Specify a partical draw buffer to clear.</param>
     /// <param name="value">Specifies the value to clear the buffer to.</param>
-    unsafe void glClearBufferiv( Int32 buffer, Int32 drawbuffer, Int32* value );
+    unsafe void glClearBufferiv( int buffer, int drawbuffer, int* value );
 
     /// <summary>
     /// Clear a buffer to an integer value. Refer to <see href="https://docs.gl/gl4/glClearBuffer"/> for details on how to
@@ -5588,7 +5588,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="drawbuffer">Specify a partical draw buffer to clear.</param>
     /// <param name="value">Specifies the value to clear the buffer to.</param>
-    unsafe void glClearBufferiv( Int32 buffer, Int32 drawbuffer, Int32[] value );
+    unsafe void glClearBufferiv( int buffer, int drawbuffer, int[] value );
 
     /// <summary>
     /// Clear a buffer to an unsigned integer value. Refer to <see href="https://docs.gl/gl4/glClearBuffer"/> for details
@@ -5600,7 +5600,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="drawbuffer">Specify a partical draw buffer to clear.</param>
     /// <param name="value">Specifies the value to clear the buffer to.</param>
-    unsafe void glClearBufferuiv( Int32 buffer, Int32 drawbuffer, UInt32* value );
+    unsafe void glClearBufferuiv( int buffer, int drawbuffer, uint* value );
 
     /// <summary>
     /// Clear a buffer to an unsigned integer value. Refer to <see href="https://docs.gl/gl4/glClearBuffer"/> for details
@@ -5612,7 +5612,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="drawbuffer">Specify a partical draw buffer to clear.</param>
     /// <param name="value">Specifies the value to clear the buffer to.</param>
-    unsafe void glClearBufferuiv( Int32 buffer, Int32 drawbuffer, UInt32[] value );
+    unsafe void glClearBufferuiv( int buffer, int drawbuffer, uint[] value );
 
     /// <summary>
     /// Clear a buffer to a floating point value. Refer to <see href="https://docs.gl/gl4/glClearBuffer"/> for details on
@@ -5624,7 +5624,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="drawbuffer">Specify a partical draw buffer to clear.</param>
     /// <param name="value">Specifies the value to clear the buffer to.</param>
-    unsafe void glClearBufferfv( Int32 buffer, Int32 drawbuffer, Single* value );
+    unsafe void glClearBufferfv( int buffer, int drawbuffer, float* value );
 
     /// <summary>
     /// Clear a buffer to a floating point value. Refer to <see href="https://docs.gl/gl4/glClearBuffer"/> for details on
@@ -5636,7 +5636,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="drawbuffer">Specify a partical draw buffer to clear.</param>
     /// <param name="value">Specifies the value to clear the buffer to.</param>
-    unsafe void glClearBufferfv( Int32 buffer, Int32 drawbuffer, Single[] value );
+    unsafe void glClearBufferfv( int buffer, int drawbuffer, float[] value );
 
     /// <summary>
     /// Clear a buffer to a floating point value. Refer to <see href="https://docs.gl/gl4/glClearBuffer"/> for details on
@@ -5649,7 +5649,7 @@ public interface IGLBindings
     /// <param name="drawbuffer">Must be zero.</param>
     /// <param name="depth">Specifies the value to clear the depth buffer to.</param>
     /// <param name="stencil">Specifies the value to clear the stencil buffer to.</param>
-    void glClearBufferfi( Int32 buffer, Int32 drawbuffer, Single depth, Int32 stencil );
+    void glClearBufferfi( int buffer, int drawbuffer, float depth, int stencil );
 
     /// <summary>
     /// Returns a string describing the current GL connection.
@@ -5660,7 +5660,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="index">Specifies the index of the string to return.</param>
     /// <returns>The requested string.</returns>
-    unsafe Byte* glGetStringi( Int32 name, UInt32 index );
+    unsafe Byte* glGetStringi( int name, uint index );
 
     /// <summary>
     /// Returns a string describing the current GL connection.
@@ -5671,7 +5671,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="index">Specifies the index of the string to return.</param>
     /// <returns>The requested string.</returns>
-    unsafe string glGetStringiSafe( Int32 name, UInt32 index );
+    unsafe string glGetStringiSafe( int name, uint index );
 
     /// <summary>
     /// Determine if a name corresponds to a renderbuffer object.
@@ -5681,7 +5681,7 @@ public interface IGLBindings
     /// <see langword="true"/> if <paramref name="renderbuffer"/> is the name of a renderbuffer object.
     /// <see langword="false"/> otherwise.
     /// </returns>
-    Boolean glIsRenderbuffer( UInt32 renderbuffer );
+    bool glIsRenderbuffer( uint renderbuffer );
 
     /// <summary>
     /// Bind a named renderbuffer object.
@@ -5691,7 +5691,7 @@ public interface IGLBindings
     /// <see cref="GL_RENDERBUFFER"/>.
     /// </param>
     /// <param name="renderbuffer">Specifies the name of the renderbuffer object to bind.</param>
-    void glBindRenderbuffer( Int32 target, UInt32 renderbuffer );
+    void glBindRenderbuffer( int target, uint renderbuffer );
 
     /// <summary>
     /// Delete named renderbuffer objects.
@@ -5701,33 +5701,33 @@ public interface IGLBindings
     /// Specifies an array of <paramref name="n"/> values, each of which contains a renderbuffer
     /// object name to be deleted.
     /// </param>
-    unsafe void glDeleteRenderbuffers( Int32 n, UInt32* renderbuffers );
+    unsafe void glDeleteRenderbuffers( int n, uint* renderbuffers );
 
     /// <summary>
     /// Delete named renderbuffer objects.
     /// </summary>
     /// <param name="renderbuffers">Specifies an array of renderbuffer object names to be deleted.</param>
-    unsafe void glDeleteRenderbuffers( params UInt32[] renderbuffers );
+    unsafe void glDeleteRenderbuffers( params uint[] renderbuffers );
 
     /// <summary>
     /// Generate renderbuffer object names.
     /// </summary>
     /// <param name="n">Specifies the number of renderbuffer object names to generate.</param>
     /// <param name="renderbuffers">Specifies an array in which the generated renderbuffer object names are to be stored.</param>
-    unsafe void glGenRenderbuffers( Int32 n, UInt32* renderbuffers );
+    unsafe void glGenRenderbuffers( int n, uint* renderbuffers );
 
     /// <summary>
     /// Generate renderbuffer object names.
     /// </summary>
     /// <param name="n">Specifies the number of renderbuffer object names to generate.</param>
     /// <returns>Array of generated renderbuffer object names.</returns>
-    unsafe UInt32[] glGenRenderbuffers( Int32 n );
+    unsafe uint[] glGenRenderbuffers( int n );
 
     /// <summary>
     /// Generate a single renderbuffer object name.
     /// </summary>
     /// <returns>The generated renderbuffer object name.</returns>
-    UInt32 glGenRenderbuffer();
+    uint glGenRenderbuffer();
 
     /// <summary>
     /// Establish data storage, format and dimensions of a renderbuffer object's image.
@@ -5739,7 +5739,7 @@ public interface IGLBindings
     /// <param name="internalformat">Specifies the internal format to use for the renderbuffer object's image.</param>
     /// <param name="width">Specifies the width of the renderbuffer, in pixels.</param>
     /// <param name="height">Specifies the height of the renderbuffer, in pixels.</param>
-    void glRenderbufferStorage( Int32 target, Int32 internalformat, Int32 width, Int32 height );
+    void glRenderbufferStorage( int target, int internalformat, int width, int height );
 
     /// <summary>
     /// Return renderbuffer object parameter values.
@@ -5757,7 +5757,7 @@ public interface IGLBindings
     /// <see cref="GL_RENDERBUFFER_DEPTH_SIZE"/>, or <see cref="GL_RENDERBUFFER_STENCIL_SIZE"/>.
     /// </param>
     /// <param name="parameters">Specifies the address of a variable to receive the value of the queried parameter.</param>
-    unsafe void glGetRenderbufferParameteriv( Int32 target, Int32 pname, Int32* parameters );
+    unsafe void glGetRenderbufferParameteriv( int target, int pname, int* parameters );
 
     /// <summary>
     /// Return renderbuffer object parameter values.
@@ -5775,7 +5775,7 @@ public interface IGLBindings
     /// <see cref="GL_RENDERBUFFER_DEPTH_SIZE"/>, or <see cref="GL_RENDERBUFFER_STENCIL_SIZE"/>.
     /// </param>
     /// <param name="parameters">A <see langword="ref"/> to an array which will receive the value of the queried parameter.</param>
-    unsafe void glGetRenderbufferParameteriv( Int32 target, Int32 pname, ref Int32[] parameters );
+    unsafe void glGetRenderbufferParameteriv( int target, int pname, ref int[] parameters );
 
     /// <summary>
     /// Determine if a name corresponds to a framebuffer object.
@@ -5785,7 +5785,7 @@ public interface IGLBindings
     /// <see langword="true"/> if <paramref name="framebuffer"/> is the name of a framebuffer object.
     /// <see langword="false"/> otherwise.
     /// </returns>
-    Boolean glIsFramebuffer( UInt32 framebuffer );
+    bool glIsFramebuffer( uint framebuffer );
 
     /// <summary>
     /// Bind a named framebuffer object.
@@ -5795,40 +5795,40 @@ public interface IGLBindings
     /// <see cref="GL_FRAMEBUFFER"/>, <see cref="GL_DRAW_FRAMEBUFFER"/> or <see cref="GL_READ_FRAMEBUFFER"/>.
     /// </param>
     /// <param name="framebuffer">Specifies the name of a framebuffer object.</param>
-    void glBindFramebuffer( Int32 target, UInt32 framebuffer );
+    void glBindFramebuffer( int target, uint framebuffer );
 
     /// <summary>
     /// Delete named framebuffer objects.
     /// </summary>
     /// <param name="n">Specifies the number of framebuffer objects to be deleted.</param>
     /// <param name="framebuffers">Specifies an array of framebuffer objects to be deleted.</param>
-    unsafe void glDeleteFramebuffers( Int32 n, UInt32* framebuffers );
+    unsafe void glDeleteFramebuffers( int n, uint* framebuffers );
 
     /// <summary>
     /// Delete named framebuffer objects.
     /// </summary>
     /// <param name="framebuffers">Specifies an array of framebuffer objects to be deleted.</param>
-    unsafe void glDeleteFramebuffers( params UInt32[] framebuffers );
+    unsafe void glDeleteFramebuffers( params uint[] framebuffers );
 
     /// <summary>
     /// Generate framebuffer object names.
     /// </summary>
     /// <param name="n">Specifies the number of framebuffer object names to generate.</param>
     /// <param name="framebuffers">Specifies an array in which the generated framebuffer object names are stored.</param>
-    unsafe void glGenFramebuffers( Int32 n, UInt32* framebuffers );
+    unsafe void glGenFramebuffers( int n, uint* framebuffers );
 
     /// <summary>
     /// Generate framebuffer object names.
     /// </summary>
     /// <param name="n">Specifies the number of framebuffer object names to generate.</param>
     /// <returns>An array in which the generated framebuffer object names are stored.</returns>
-    unsafe UInt32[] glGenFramebuffers( Int32 n );
+    unsafe uint[] glGenFramebuffers( int n );
 
     /// <summary>
     /// Generate a single framebuffer object name.
     /// </summary>
     /// <returns>The generated framebuffer object name.</returns>
-    UInt32 glGenFramebuffer();
+    uint glGenFramebuffer();
 
     /// <summary>
     /// Check the completeness status of a framebuffer object.
@@ -5841,7 +5841,7 @@ public interface IGLBindings
     /// The framebuffer completeness status of <paramref name="target"/>. Refer to
     /// <see href="https://docs.gl/gl4/glCheckFramebufferStatus"/> for a list of all possible values.
     /// </returns>
-    Int32 glCheckFramebufferStatus( Int32 target );
+    int glCheckFramebufferStatus( int target );
 
     /// <summary>
     /// Attach a level of a 1D texture object as a logical buffer to the currently bound framebuffer object.
@@ -5858,7 +5858,7 @@ public interface IGLBindings
     /// <param name="textarget">Specifies the type of texture.</param>
     /// <param name="texture">Specifies the name of an existing 1D texture object.</param>
     /// <param name="level">Specifies the mipmap level of the texture object to attach.</param>
-    void glFramebufferTexture1D( Int32 target, Int32 attachment, Int32 textarget, UInt32 texture, Int32 level );
+    void glFramebufferTexture1D( int target, int attachment, int textarget, uint texture, int level );
 
     /// <summary>
     /// Attach a level of a 2D texture object as a logical buffer to the currently bound framebuffer object.
@@ -5875,7 +5875,7 @@ public interface IGLBindings
     /// <param name="textarget">Specifies the type of texture.</param>
     /// <param name="texture">Specifies the name of an existing 2D texture object.</param>
     /// <param name="level">Specifies the mipmap level of the texture object to attach.</param>
-    void glFramebufferTexture2D( Int32 target, Int32 attachment, Int32 textarget, UInt32 texture, Int32 level );
+    void glFramebufferTexture2D( int target, int attachment, int textarget, uint texture, int level );
 
     /// <summary>
     /// Attach a level of a 3D texture object as a logical buffer to the currently bound framebuffer object.
@@ -5893,7 +5893,7 @@ public interface IGLBindings
     /// <param name="texture">Specifies the name of an existing 3D texture object.</param>
     /// <param name="level">Specifies the mipmap level of the texture object to attach.</param>
     /// <param name="zoffset">Specifies the zoffset texel to be used as the framebuffer attachment point.</param>
-    void glFramebufferTexture3D( Int32 target, Int32 attachment, Int32 textarget, UInt32 texture, Int32 level, Int32 zoffset );
+    void glFramebufferTexture3D( int target, int attachment, int textarget, uint texture, int level, int zoffset );
 
     /// <summary>
     /// Attach a renderbuffer as a logical buffer to the currently bound framebuffer object.
@@ -5915,7 +5915,7 @@ public interface IGLBindings
     /// Specifies the name of an existing renderbuffer object of type
     /// <paramref name="renderbuffertarget"/>.
     /// </param>
-    void glFramebufferRenderbuffer( Int32 target, Int32 attachment, Int32 renderbuffertarget, UInt32 renderbuffer );
+    void glFramebufferRenderbuffer( int target, int attachment, int renderbuffertarget, uint renderbuffer );
 
     /// <summary>
     /// Return parameters of a framebuffer attachment.
@@ -5934,7 +5934,7 @@ public interface IGLBindings
     /// <see href="https://docs.gl/gl4/glGetFramebufferAttachmentParameter"/> for details.
     /// </param>
     /// <param name="parameters">Specifies the address of a variable to receive the value of the queried parameter.</param>
-    unsafe void glGetFramebufferAttachmentParameteriv( Int32 target, Int32 attachment, Int32 pname, Int32* parameters );
+    unsafe void glGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, int* parameters );
 
     /// <summary>
     /// Return parameters of a framebuffer attachment.
@@ -5953,7 +5953,7 @@ public interface IGLBindings
     /// <see href="https://docs.gl/gl4/glGetFramebufferAttachmentParameter"/> for details.
     /// </param>
     /// <param name="parameters">A <see langword="ref"/> to an array which will receive the returned value(s).</param>
-    unsafe void glGetFramebufferAttachmentParameteriv( Int32 target, Int32 attachment, Int32 pname, ref Int32[] parameters );
+    unsafe void glGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, ref int[] parameters );
 
     /// <summary>
     /// Generate mipmaps for a specified texture object.
@@ -5964,7 +5964,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_3D"/>, <see cref="GL_TEXTURE_1D_ARRAY"/>, <see cref="GL_TEXTURE_2D_ARRAY"/>,
     /// <see cref="GL_TEXTURE_CUBE_MAP"/>, <see cref="GL_TEXTURE_CUBE_MAP_ARRAY"/>.
     /// </param>
-    void glGenerateMipmap( Int32 target );
+    void glGenerateMipmap( int target );
 
     /// <summary>
     /// Copy a block of pixels from the read framebuffer to the draw framebuffer.
@@ -5986,16 +5986,16 @@ public interface IGLBindings
     /// Specifies the interpolation to be applied if the image is stretched. Must be one of
     /// <see cref="GL_NEAREST"/> or <see cref="GL_LINEAR"/>.
     /// </param>
-    void glBlitFramebuffer( Int32 srcX0,
-                            Int32 srcY0,
-                            Int32 srcX1,
-                            Int32 srcY1,
-                            Int32 dstX0,
-                            Int32 dstY0,
-                            Int32 dstX1,
-                            Int32 dstY1,
-                            UInt32 mask,
-                            Int32 filter );
+    void glBlitFramebuffer( int srcX0,
+                            int srcY0,
+                            int srcX1,
+                            int srcY1,
+                            int dstX0,
+                            int dstY0,
+                            int dstX1,
+                            int dstY1,
+                            uint mask,
+                            int filter );
 
     /// <summary>
     /// Establish data storage, format and dimensions of a renderbuffer object's image.
@@ -6008,7 +6008,7 @@ public interface IGLBindings
     /// <param name="internalformat">Specifies the internal format to be used for the renderbuffer object's image.</param>
     /// <param name="width">Specifies the width of the renderbuffer, in pixels.</param>
     /// <param name="height">Specifies the height of the renderbuffer, in pixels.</param>
-    void glRenderbufferStorageMultisample( Int32 target, Int32 samples, Int32 internalformat, Int32 width, Int32 height );
+    void glRenderbufferStorageMultisample( int target, int samples, int internalformat, int width, int height );
 
     /// <summary>
     /// Attach a single layer of a texture object as a logical buffer to the currently bound framebuffer object.
@@ -6024,7 +6024,7 @@ public interface IGLBindings
     /// Specifies the layer of a 3D texture that is to be attached, if any. Must be a number in the range 0
     /// to the value of <see cref="GL_MAX_ARRAY_TEXTURE_LAYERS"/> minus 1.
     /// </param>
-    void glFramebufferTextureLayer( Int32 target, Int32 attachment, UInt32 texture, Int32 level, Int32 layer );
+    void glFramebufferTextureLayer( int target, int attachment, uint texture, int level, int layer );
 
     /// <summary>
     /// Map all or part of a buffer object's data store into the client's address space.
@@ -6042,7 +6042,7 @@ public interface IGLBindings
     /// <param name="length">Specifies the length of the range to be mapped.</param>
     /// <param name="access">Specifies a combination of access flags indicating the desired access to the range.</param>
     /// <returns>Returns a pointer to the beginning of the mapped range.</returns>
-    unsafe void* glMapBufferRange( Int32 target, Int32 offset, Int32 length, UInt32 access );
+    unsafe void* glMapBufferRange( int target, int offset, int length, uint access );
 
     /// <summary>
     /// Map all or part of a buffer object's data store into the client's address space.
@@ -6060,7 +6060,7 @@ public interface IGLBindings
     /// <param name="length">Specifies the length of the range to be mapped.</param>
     /// <param name="access">Specifies a combination of access flags indicating the desired access to the range.</param>
     /// <returns>Returns a type-safe and memory-safe <see cref="System.Span{T}"/> of the entire mapped memory.</returns>
-    unsafe Span< T > glMapBufferRange< T >( Int32 target, Int32 offset, Int32 length, UInt32 access ) where T : unmanaged;
+    unsafe Span< T > glMapBufferRange< T >( int target, int offset, int length, uint access ) where T : unmanaged;
 
     /// <summary>
     /// Invalidate portions of the buffer object's data store.
@@ -6079,46 +6079,46 @@ public interface IGLBindings
     /// invalidated.
     /// </param>
     /// <param name="length">Specifies the length of the range of bytes to be flushed and/or invalidated.</param>
-    void glFlushMappedBufferRange( Int32 target, Int32 offset, Int32 length );
+    void glFlushMappedBufferRange( int target, int offset, int length );
 
     /// <summary>
     /// Bind a vertex array object.
     /// </summary>
     /// <param name="array">Specifies the name of the vertex array to bind.</param>
-    void glBindVertexArray( UInt32 array );
+    void glBindVertexArray( uint array );
 
     /// <summary>
     /// Delete vertex array objects.
     /// </summary>
     /// <param name="n">Specifies the number of vertex array objects to be deleted.</param>
     /// <param name="arrays">Specifies an array of <paramref name="n"/> names of vertex array objects to be deleted.</param>
-    unsafe void glDeleteVertexArrays( Int32 n, UInt32* arrays );
+    unsafe void glDeleteVertexArrays( int n, uint* arrays );
 
     /// <summary>
     /// Delete vertex array objects.
     /// </summary>
     /// <param name="arrays">Specifies an array of vertex array objects to be deleted.</param>
-    unsafe void glDeleteVertexArrays( params UInt32[] arrays );
+    unsafe void glDeleteVertexArrays( params uint[] arrays );
 
     /// <summary>
     /// Generate vertex array object names.
     /// </summary>
     /// <param name="n">Specifies the number of vertex array object names to generate.</param>
     /// <param name="arrays">Specifies an array in which the generated vertex array object names are stored.</param>
-    unsafe void glGenVertexArrays( Int32 n, UInt32* arrays );
+    unsafe void glGenVertexArrays( int n, uint* arrays );
 
     /// <summary>
     /// Generate vertex array object names.
     /// </summary>
     /// <param name="n">Specifies the number of vertex array object names to generate.</param>
     /// <returns>Returns an array of <paramref name="n"/> generated vertex array object names.</returns>
-    unsafe UInt32[] glGenVertexArrays( Int32 n );
+    unsafe uint[] glGenVertexArrays( int n );
 
     /// <summary>
     /// Generate a single vertex array object name.
     /// </summary>
     /// <returns>Returns a generated vertex array object name.</returns>
-    unsafe UInt32 glGenVertexArray();
+    unsafe uint glGenVertexArray();
 
     /// <summary>
     /// Determine if a name corresponds to a vertex array object.
@@ -6128,7 +6128,7 @@ public interface IGLBindings
     /// Returns <see langword="true"/> if <paramref name="array"/> is the name of a vertex array object. Otherwise,
     /// returns <see langword="false"/>.
     /// </returns>
-    Boolean glIsVertexArray( UInt32 array );
+    bool glIsVertexArray( uint array );
 
     /// <summary>
     /// Draw multiple instances of a range of elements
@@ -6146,7 +6146,7 @@ public interface IGLBindings
     /// Specifies the number of instances of the specified range of indices to be
     /// rendered.
     /// </param>
-    void glDrawArraysInstanced( Int32 mode, Int32 first, Int32 count, Int32 instancecount );
+    void glDrawArraysInstanced( int mode, int first, int count, int instancecount );
 
     /// <summary>
     /// Draw multiple instances of a set of elements
@@ -6168,7 +6168,7 @@ public interface IGLBindings
     /// Specifies the number of instances of the specified range of indices to be
     /// rendered.
     /// </param>
-    unsafe void glDrawElementsInstanced( Int32 mode, Int32 count, Int32 type, void* indices, Int32 instancecount );
+    unsafe void glDrawElementsInstanced( int mode, int count, int type, void* indices, int instancecount );
 
     /// <summary>
     /// Draw multiple instances of a set of elements
@@ -6190,7 +6190,7 @@ public interface IGLBindings
     /// type of the indices.
     /// </param>
     /// <param name="instancecount">Specifies the number of instances of the specified range of indices to be rendered.</param>
-    unsafe void glDrawElementsInstanced< T >( Int32 mode, Int32 count, Int32 type, T[] indices, Int32 instancecount )
+    unsafe void glDrawElementsInstanced< T >( int mode, int count, int type, T[] indices, int instancecount )
         where T : unmanaged, IUnsignedNumber< T >;
 
     /// <summary>
@@ -6205,13 +6205,13 @@ public interface IGLBindings
     /// Specifies the name of an existing buffer object whose storage to attach to the specified buffer
     /// texture object.
     /// </param>
-    void glTexBuffer( Int32 target, Int32 internalformat, UInt32 buffer );
+    void glTexBuffer( int target, int internalformat, uint buffer );
 
     /// <summary>
     /// Specify the primitive restart index
     /// </summary>
     /// <param name="index">Specifies the value to be interpreted as the primitive restart index.</param>
-    void glPrimitiveRestartIndex( UInt32 index );
+    void glPrimitiveRestartIndex( uint index );
 
     /// <summary>
     /// Copy part of a buffer object's data store to the the data store of another buffer object.
@@ -6235,7 +6235,7 @@ public interface IGLBindings
     /// <param name="readOffset">Specifies the offset into the data store of the buffer object containing the data to copy.</param>
     /// <param name="writeOffset">Specifies the offset into the data store of the buffer object into which data will be copied.</param>
     /// <param name="size">Specifies the size in bytes of the data to be copied.</param>
-    void glCopyBufferSubData( Int32 readTarget, Int32 writeTarget, Int32 readOffset, Int32 writeOffset, Int32 size );
+    void glCopyBufferSubData( int readTarget, int writeTarget, int readOffset, int writeOffset, int size );
 
     /// <summary>
     /// Retrieve the indices of a number of uniforms within a program object
@@ -6244,7 +6244,7 @@ public interface IGLBindings
     /// <param name="uniformCount">Specifies the number of uniforms whose indices to retrieve.</param>
     /// <param name="uniformNames">Specifies an array of pointers to strings containing the names of the queried uniforms.</param>
     /// <param name="uniformIndices">Specifies an array to receive the indices of the uniforms specified in uniformNames.</param>
-    unsafe void glGetUniformIndices( UInt32 program, Int32 uniformCount, Byte** uniformNames, UInt32* uniformIndices );
+    unsafe void glGetUniformIndices( uint program, int uniformCount, Byte** uniformNames, uint* uniformIndices );
 
     /// <summary>
     /// Retrieve the indices of a number of uniforms within a program object
@@ -6252,7 +6252,7 @@ public interface IGLBindings
     /// <param name="program">Specifies the name of a program containing uniforms whose indices to retrieve.</param>
     /// <param name="uniformNames">Specifies an array of strings containing the names of the queried uniforms.</param>
     /// <returns>An array of indices of the uniforms specified in uniformNames.</returns>
-    unsafe UInt32[] glGetUniformIndices( UInt32 program, params string[] uniformNames );
+    unsafe uint[] glGetUniformIndices( uint program, params string[] uniformNames );
 
     /// <summary>
     /// Returns information about several active uniform variables for the specified program object
@@ -6271,7 +6271,7 @@ public interface IGLBindings
     /// Specifies an array of <paramref name="uniformCount"/> integers to receive the information
     /// requested about each uniform variable specified in <paramref name="uniformIndices"/>.
     /// </param>
-    unsafe void glGetActiveUniformsiv( UInt32 program, Int32 uniformCount, UInt32* uniformIndices, Int32 pname, Int32* parameters );
+    unsafe void glGetActiveUniformsiv( uint program, int uniformCount, uint* uniformIndices, int pname, int* parameters );
 
     /// <summary>
     /// Returns information about several active uniform variables for the specified program object
@@ -6289,7 +6289,7 @@ public interface IGLBindings
     /// An array of integers to receive the information requested about each uniform variable specified in
     /// <paramref name="uniformIndices"/>.
     /// </returns>
-    unsafe Int32[] glGetActiveUniformsiv( UInt32 program, Int32 pname, params UInt32[] uniformIndices );
+    unsafe int[] glGetActiveUniformsiv( uint program, int pname, params uint[] uniformIndices );
 
     /// <summary>
     /// Returns the name of an active uniform variable at the specified index within a program object
@@ -6308,7 +6308,7 @@ public interface IGLBindings
     /// Returns the name of the uniform variable at the specified index in the program object
     /// specified by <paramref name="program"/>.
     /// </param>
-    unsafe void glGetActiveUniformName( UInt32 program, UInt32 uniformIndex, Int32 bufSize, Int32* length, Byte* uniformName );
+    unsafe void glGetActiveUniformName( uint program, uint uniformIndex, int bufSize, int* length, Byte* uniformName );
 
     /// <summary>
     /// Returns the name of an active uniform variable at the specified index within a program object
@@ -6323,7 +6323,7 @@ public interface IGLBindings
     /// The name of the uniform variable at the specified index in the program object specified by
     /// <paramref name="program"/>, in the correct size.
     /// </returns>
-    unsafe string glGetActiveUniformName( UInt32 program, UInt32 uniformIndex, Int32 bufSize );
+    unsafe string glGetActiveUniformName( uint program, uint uniformIndex, int bufSize );
 
     /// <summary>
     /// Returns the index of a uniform block within a program
@@ -6337,14 +6337,14 @@ public interface IGLBindings
     /// The index of the uniform block named <paramref name="uniformBlockName"/> within the program object
     /// <paramref name="program"/>.
     /// </returns>
-    unsafe UInt32 glGetUniformBlockIndex( UInt32 program, Byte* uniformBlockName );
+    unsafe uint glGetUniformBlockIndex( uint program, Byte* uniformBlockName );
 
     /// <summary>
     /// Returns the index of a uniform block within a program
     /// </summary>
     /// <param name="program">Specifies the program object to be queried.</param>
     /// <param name="uniformBlockName">Contains the name of the uniform block whose index to query.</param>
-    unsafe UInt32 glGetUniformBlockIndex( UInt32 program, string uniformBlockName );
+    unsafe uint glGetUniformBlockIndex( uint program, string uniformBlockName );
 
     /// <summary>
     /// Returns information about an active uniform block
@@ -6356,7 +6356,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="pname">Specifies the specific information to query about the active uniform block.</param>
     /// <param name="parameters">Returns the requested information about the uniform block.</param>
-    unsafe void glGetActiveUniformBlockiv( UInt32 program, UInt32 uniformBlockIndex, Int32 pname, Int32* parameters );
+    unsafe void glGetActiveUniformBlockiv( uint program, uint uniformBlockIndex, int pname, int* parameters );
 
     /// <summary>
     /// Returns information about an active uniform block
@@ -6368,7 +6368,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="pname">Specifies the specific information to query about the active uniform block.</param>
     /// <param name="parameters">Returns the requested information about the uniform block.</param>
-    unsafe void glGetActiveUniformBlockiv( UInt32 program, UInt32 uniformBlockIndex, Int32 pname, ref Int32[] parameters );
+    unsafe void glGetActiveUniformBlockiv( uint program, uint uniformBlockIndex, int pname, ref int[] parameters );
 
     /// <summary>
     /// Returns the name of an active uniform block at the specified index within a program object
@@ -6387,7 +6387,7 @@ public interface IGLBindings
     /// Returns the name of the uniform block at the specified index in the program object
     /// specified by <paramref name="program"/>.
     /// </param>
-    unsafe void glGetActiveUniformBlockName( UInt32 program, UInt32 uniformBlockIndex, Int32 bufSize, Int32* length, Byte* uniformBlockName );
+    unsafe void glGetActiveUniformBlockName( uint program, uint uniformBlockIndex, int bufSize, int* length, Byte* uniformBlockName );
 
     /// <summary>
     /// Returns the name of an active uniform block at the specified index within a program object
@@ -6399,7 +6399,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="bufSize">Specifies a maximum amount of characters OpenGL is allowed to write in the character buffer.</param>
     /// <param name="length">Returns the length of the uniform block name.</param>
-    unsafe string glGetActiveUniformBlockName( UInt32 program, UInt32 uniformBlockIndex, Int32 bufSize );
+    unsafe string glGetActiveUniformBlockName( uint program, uint uniformBlockIndex, int bufSize );
 
     /// <summary>
     /// Assigns a binding point to an active uniform block
@@ -6413,7 +6413,7 @@ public interface IGLBindings
     /// Specifies the binding point to which to bind the uniform block with index
     /// <paramref name="uniformBlockIndex"/> within the program object <paramref name="program"/>.
     /// </param>
-    void glUniformBlockBinding( UInt32 program, UInt32 uniformBlockIndex, UInt32 uniformBlockBinding );
+    void glUniformBlockBinding( uint program, uint uniformBlockIndex, uint uniformBlockBinding );
 
     /// <summary>
     /// Render primitives from array data with a per-element offset.
@@ -6435,7 +6435,7 @@ public interface IGLBindings
     /// Specifies a constant that should be added to each element of <paramref name="indices"/> when
     /// choosing elements from the enabled vertex arrays.
     /// </param>
-    unsafe void glDrawElementsBaseVertex( Int32 mode, Int32 count, Int32 type, void* indices, Int32 basevertex );
+    unsafe void glDrawElementsBaseVertex( int mode, int count, int type, void* indices, int basevertex );
 
     /// <summary>
     /// Render primitives from array data with a per-element offset.
@@ -6460,7 +6460,7 @@ public interface IGLBindings
     /// Specifies a constant that should be added to each element of <paramref name="indices"/> when
     /// choosing elements from the enabled vertex arrays.
     /// </param>
-    unsafe void glDrawElementsBaseVertex< T >( Int32 mode, Int32 count, Int32 type, T[] indices, Int32 basevertex )
+    unsafe void glDrawElementsBaseVertex< T >( int mode, int count, int type, T[] indices, int basevertex )
         where T : unmanaged, IUnsignedNumber< T >;
 
     /// <summary>
@@ -6485,7 +6485,7 @@ public interface IGLBindings
     /// Specifies a constant that should be added to each element of <paramref name="indices"/> when
     /// choosing elements from the enabled vertex arrays.
     /// </param>
-    unsafe void glDrawRangeElementsBaseVertex( Int32 mode, UInt32 start, UInt32 end, Int32 count, Int32 type, void* indices, Int32 basevertex );
+    unsafe void glDrawRangeElementsBaseVertex( int mode, uint start, uint end, int count, int type, void* indices, int basevertex );
 
     /// <summary>
     /// Render primitives from array data with a per-element offset.
@@ -6512,7 +6512,7 @@ public interface IGLBindings
     /// Specifies a constant that should be added to each element of <paramref name="indices"/> when
     /// choosing elements from the enabled vertex arrays.
     /// </param>
-    unsafe void glDrawRangeElementsBaseVertex< T >( Int32 mode, UInt32 start, UInt32 end, Int32 count, Int32 type, T[] indices, Int32 basevertex )
+    unsafe void glDrawRangeElementsBaseVertex< T >( int mode, uint start, uint end, int count, int type, T[] indices, int basevertex )
         where T : unmanaged, IUnsignedNumber< T >;
 
     /// <summary>
@@ -6536,7 +6536,7 @@ public interface IGLBindings
     /// Specifies a constant that should be added to each element of <paramref name="indices"/> when
     /// choosing elements from the enabled vertex arrays.
     /// </param>
-    unsafe void glDrawElementsInstancedBaseVertex( Int32 mode, Int32 count, Int32 type, void* indices, Int32 instancecount, Int32 basevertex );
+    unsafe void glDrawElementsInstancedBaseVertex( int mode, int count, int type, void* indices, int instancecount, int basevertex );
 
     /// <summary>
     /// Render multiple instances of a set of primitives from array data with a per-element offset.
@@ -6562,7 +6562,7 @@ public interface IGLBindings
     /// Specifies a constant that should be added to each element of <paramref name="indices"/> when
     /// choosing elements from the enabled vertex arrays.
     /// </param>
-    unsafe void glDrawElementsInstancedBaseVertex< T >( Int32 mode, Int32 count, Int32 type, T[] indices, Int32 instancecount, Int32 basevertex )
+    unsafe void glDrawElementsInstancedBaseVertex< T >( int mode, int count, int type, T[] indices, int instancecount, int basevertex )
         where T : unmanaged, IUnsignedNumber< T >;
 
     /// <summary>
@@ -6586,7 +6586,7 @@ public interface IGLBindings
     /// Specifies an array of the constants that should be added to each element of
     /// <paramref name="indices"/> when choosing elements from the enabled vertex arrays.
     /// </param>
-    unsafe void glMultiDrawElementsBaseVertex( Int32 mode, Int32* count, Int32 type, void** indices, Int32 drawcount, Int32* basevertex );
+    unsafe void glMultiDrawElementsBaseVertex( int mode, int* count, int type, void** indices, int drawcount, int* basevertex );
 
     /// <summary>
     /// Render multiple sets of primitives from array data with a per-element offset.
@@ -6610,7 +6610,7 @@ public interface IGLBindings
     /// Specifies an array of the constants that should be added to each element of
     /// <paramref name="indices"/> when choosing elements from the enabled vertex arrays.
     /// </param>
-    unsafe void glMultiDrawElementsBaseVertex< T >( Int32 mode, Int32 type, T[][] indices, Int32[] basevertex ) where T : unmanaged, IUnsignedNumber< T >;
+    unsafe void glMultiDrawElementsBaseVertex< T >( int mode, int type, T[][] indices, int[] basevertex ) where T : unmanaged, IUnsignedNumber< T >;
 
     /// <summary>
     /// Specify the vertex to be used as the source of data for flat shaded varyings.
@@ -6619,7 +6619,7 @@ public interface IGLBindings
     /// Specifies the vertex to be used as the source of data for flat shaded varyings. Must be
     /// <see cref="GL_FIRST_VERTEX_CONVENTION"/> or <see cref="GL_LAST_VERTEX_CONVENTION"/>.
     /// </param>
-    void glProvokingVertex( Int32 mode );
+    void glProvokingVertex( int mode );
 
     /// <summary>
     /// Creates a new sync object and inserts it into the GL command stream.
@@ -6633,7 +6633,7 @@ public interface IGLBindings
     /// presently defined for this operation and <paramref name="flags"/> must be zero.
     /// </param>
     /// <returns>The sync object.</returns>
-    unsafe void* glFenceSync( Int32 condition, UInt32 flags );
+    unsafe void* glFenceSync( int condition, uint flags );
 
     /// <summary>
     /// Creates a new sync object and inserts it into the GL command stream.
@@ -6647,7 +6647,7 @@ public interface IGLBindings
     /// presently defined for this operation and <paramref name="flags"/> must be zero.
     /// </param>
     /// <returns>The sync object.</returns>
-    unsafe IntPtr glFenceSyncSafe( Int32 condition, UInt32 flags );
+    unsafe IntPtr glFenceSyncSafe( int condition, uint flags );
 
     /// <summary>
     /// Determines if a name corresponds to a sync object.
@@ -6657,7 +6657,7 @@ public interface IGLBindings
     /// <see langword="true"/> if <paramref name="sync"/> is a name of a sync object. Otherwise,
     /// <see langword="false"/>.
     /// </returns>
-    unsafe Boolean glIsSync( void* sync );
+    unsafe bool glIsSync( void* sync );
 
     /// <summary>
     /// Determines if a name corresponds to a sync object.
@@ -6667,7 +6667,7 @@ public interface IGLBindings
     /// <see langword="true"/> if <paramref name="sync"/> is a name of a sync object. Otherwise,
     /// <see langword="false"/>.
     /// </returns>
-    unsafe Boolean glIsSyncSafe( IntPtr sync );
+    unsafe bool glIsSyncSafe( IntPtr sync );
 
     /// <summary>
     /// Deletes a sync object.
@@ -6697,7 +6697,7 @@ public interface IGLBindings
     /// One of <see cref="GL_ALREADY_SIGNALED"/>, <see cref="GL_TIMEOUT_EXPIRED"/>,
     /// <see cref="GL_CONDITION_SATISFIED"/>, or <see cref="GL_WAIT_FAILED"/>.
     /// </returns>
-    unsafe Int32 glClientWaitSync( void* sync, UInt32 flags, UInt64 timeout );
+    unsafe int glClientWaitSync( void* sync, uint flags, UInt64 timeout );
 
     /// <summary>
     /// Causes the client to block and wait for a sync object to become signaled.
@@ -6715,7 +6715,7 @@ public interface IGLBindings
     /// One of <see cref="GL_ALREADY_SIGNALED"/>, <see cref="GL_TIMEOUT_EXPIRED"/>,
     /// <see cref="GL_CONDITION_SATISFIED"/>, or <see cref="GL_WAIT_FAILED"/>.
     /// </returns>
-    unsafe Int32 glClientWaitSyncSafe( IntPtr sync, UInt32 flags, UInt64 timeout );
+    unsafe int glClientWaitSyncSafe( IntPtr sync, uint flags, UInt64 timeout );
 
     /// <summary>
     /// Causes the server to block and wait for a sync object to become signaled.
@@ -6726,7 +6726,7 @@ public interface IGLBindings
     /// The timeout, specified in nanoseconds, for which the implementation should wait for
     /// <paramref name="sync"/> to become signaled.
     /// </param>
-    unsafe void glWaitSync( void* sync, UInt32 flags, UInt64 timeout );
+    unsafe void glWaitSync( void* sync, uint flags, UInt64 timeout );
 
     /// <summary>
     /// Causes the server to block and wait for a sync object to become signaled.
@@ -6737,7 +6737,7 @@ public interface IGLBindings
     /// The timeout, specified in nanoseconds, for which the implementation should wait for
     /// <paramref name="sync"/> to become signaled.
     /// </param>
-    unsafe void glWaitSyncSafe( IntPtr sync, UInt32 flags, UInt64 timeout );
+    unsafe void glWaitSyncSafe( IntPtr sync, uint flags, UInt64 timeout );
 
     /// <summary>
     /// Returns the 64bit integer value or values of a selected parameter.
@@ -6747,7 +6747,7 @@ public interface IGLBindings
     /// a list of possible values.
     /// </param>
     /// <param name="data">Returns the value or values of the specified parameter.</param>
-    unsafe void glGetInteger64v( Int32 pname, Int64* data );
+    unsafe void glGetInteger64v( int pname, Int64* data );
 
     /// <summary>
     /// Returns the 64bit integer value or values of a selected parameter.
@@ -6757,7 +6757,7 @@ public interface IGLBindings
     /// a list of possible values.
     /// </param>
     /// <param name="data">Returns the value or values of the specified parameter.</param>
-    unsafe void glGetInteger64v( Int32 pname, ref Int64[] data );
+    unsafe void glGetInteger64v( int pname, ref Int64[] data );
 
     /// <summary>
     /// Query the properties of a sync object.
@@ -6771,7 +6771,7 @@ public interface IGLBindings
     /// <param name="bufSize">Specifies the size of the buffer whose address is given by <paramref name="values"/>.</param>
     /// <param name="length">Returns the number of integers placed in <paramref name="values"/>.</param>
     /// <param name="values">Returns the requested parameter.</param>
-    unsafe void glGetSynciv( void* sync, Int32 pname, Int32 bufSize, Int32* length, Int32* values );
+    unsafe void glGetSynciv( void* sync, int pname, int bufSize, int* length, int* values );
 
     /// <summary>
     /// Query the properties of a sync object.
@@ -6784,7 +6784,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="bufSize">Specifies the size of the buffer whose address is given by <paramref name="values"/>.</param>
     /// <returns>Returns the requested parameter(s).</returns>
-    unsafe Int32[] glGetSynciv( IntPtr sync, Int32 pname, Int32 bufSize );
+    unsafe int[] glGetSynciv( IntPtr sync, int pname, int bufSize );
 
     /// <summary>
     /// Returns the 64bit integer value or values of a selected parameter.
@@ -6795,7 +6795,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="index">Specifies the index of the value to be returned.</param>
     /// <param name="data">Returns the value or values of the specified parameter.</param>
-    unsafe void glGetInteger64i_v( Int32 target, UInt32 index, Int64* data );
+    unsafe void glGetInteger64i_v( int target, uint index, Int64* data );
 
     /// <summary>
     /// Returns the 64bit integer value or values of a selected parameter.
@@ -6806,7 +6806,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="index">Specifies the index of the value to be returned.</param>
     /// <param name="data">Returns the value or values of the specified parameter.</param>
-    unsafe void glGetInteger64i_v( Int32 target, UInt32 index, ref Int64[] data );
+    unsafe void glGetInteger64i_v( int target, uint index, ref Int64[] data );
 
     /// <summary>
     /// Returns the value or values of a selected parameter.
@@ -6826,7 +6826,7 @@ public interface IGLBindings
     /// <see cref="GL_BUFFER_SIZE"/>, <see cref="GL_BUFFER_STORAGE_FLAGS"/>, <see cref="GL_BUFFER_USAGE"/>.
     /// </param>
     /// <param name="parameters">Returns the requested parameter.</param>
-    unsafe void glGetBufferParameteri64v( Int32 target, Int32 pname, Int64* parameters );
+    unsafe void glGetBufferParameteri64v( int target, int pname, Int64* parameters );
 
     /// <summary>
     /// Returns the value or values of a selected parameter.
@@ -6846,7 +6846,7 @@ public interface IGLBindings
     /// <see cref="GL_BUFFER_SIZE"/>, <see cref="GL_BUFFER_STORAGE_FLAGS"/>, <see cref="GL_BUFFER_USAGE"/>.
     /// </param>
     /// <param name="parameters">Returns the requested parameter.</param>
-    unsafe void glGetBufferParameteri64v( Int32 target, Int32 pname, ref Int64[] parameters );
+    unsafe void glGetBufferParameteri64v( int target, int pname, ref Int64[] parameters );
 
     /// <summary>
     /// Attaches a level of a texture object as a logical buffer to the currently bound framebuffer object.
@@ -6863,7 +6863,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="texture">Specifies the texture object whose image is to be attached.</param>
     /// <param name="level">Specifies the mipmap level of the texture object to be attached.</param>
-    void glFramebufferTexture( Int32 target, Int32 attachment, UInt32 texture, Int32 level );
+    void glFramebufferTexture( int target, int attachment, uint texture, int level );
 
     /// <summary>
     /// Establishes the data storage, format, dimensions, and number of samples of a multisample texture's image.
@@ -6881,12 +6881,12 @@ public interface IGLBindings
     /// of samples for all texels in the image, and the sample locations will not depend on the internal format or size of
     /// the image.
     /// </param>
-    void glTexImage2DMultisample( Int32 target,
-                                  Int32 samples,
-                                  Int32 internalformat,
-                                  Int32 width,
-                                  Int32 height,
-                                  Boolean fixedsamplelocations );
+    void glTexImage2DMultisample( int target,
+                                  int samples,
+                                  int internalformat,
+                                  int width,
+                                  int height,
+                                  bool fixedsamplelocations );
 
     /// <summary>
     /// Establishes the data storage, format, dimensions, and number of samples of a multisample texture's image.
@@ -6905,13 +6905,13 @@ public interface IGLBindings
     /// of samples for all texels in the image, and the sample locations will not depend on the internal format or size of
     /// the image.
     /// </param>
-    void glTexImage3DMultisample( Int32 target,
-                                  Int32 samples,
-                                  Int32 internalformat,
-                                  Int32 width,
-                                  Int32 height,
-                                  Int32 depth,
-                                  Boolean fixedsamplelocations );
+    void glTexImage3DMultisample( int target,
+                                  int samples,
+                                  int internalformat,
+                                  int width,
+                                  int height,
+                                  int depth,
+                                  bool fixedsamplelocations );
 
     /// <summary>
     /// Returns the location of a sample.
@@ -6919,7 +6919,7 @@ public interface IGLBindings
     /// <param name="pname">Specifies the sample parameter to query. Must be <see cref="GL_SAMPLE_POSITION"/>.</param>
     /// <param name="index">Specifies the index of the sample.</param>
     /// <param name="val">Specifies the address of an array to receive the location of the sample.</param>
-    unsafe void glGetMultisamplefv( Int32 pname, UInt32 index, Single* val );
+    unsafe void glGetMultisamplefv( int pname, uint index, float* val );
 
     /// <summary>
     /// Returns the location of a sample.
@@ -6927,14 +6927,14 @@ public interface IGLBindings
     /// <param name="pname">Specifies the sample parameter to query. Must be <see cref="GL_SAMPLE_POSITION"/>.</param>
     /// <param name="index">Specifies the index of the sample.</param>
     /// <param name="val">Specifies the address of an array to receive the location of the sample.</param>
-    unsafe void glGetMultisamplefvSafe( Int32 pname, UInt32 index, ref Single[] val );
+    unsafe void glGetMultisamplefvSafe( int pname, uint index, ref float[] val );
 
     /// <summary>
     /// Controls the writing of individual bits in a logical multisample color sample.
     /// </summary>
     /// <param name="maskNumber">Specifies which 32-bit sub-word of the sample mask to update.</param>
     /// <param name="mask">Specifies a mask to enable and disable sample coverage.</param>
-    void glSampleMaski( UInt32 maskNumber, UInt32 mask );
+    void glSampleMaski( uint maskNumber, uint mask );
 
     /// <summary>
     /// Bind a user-defined varying out variable to a fragment shader color number and index.
@@ -6943,7 +6943,7 @@ public interface IGLBindings
     /// <param name="colorNumber">Specifies the color number to bind the user-defined varying out variable to.</param>
     /// <param name="index">Specifies the index of the color number to bind the user-defined varying out variable to.</param>
     /// <param name="name">Specifies the name of the user-defined varying out variable whose binding to modify.</param>
-    unsafe void glBindFragDataLocationIndexed( UInt32 program, UInt32 colorNumber, UInt32 index, Byte* name );
+    unsafe void glBindFragDataLocationIndexed( uint program, uint colorNumber, uint index, Byte* name );
 
     /// <summary>
     /// Bind a user-defined varying out variable to a fragment shader color number and index.
@@ -6952,7 +6952,7 @@ public interface IGLBindings
     /// <param name="colorNumber">Specifies the color number to bind the user-defined varying out variable to.</param>
     /// <param name="index">Specifies the index of the color number to bind the user-defined varying out variable to.</param>
     /// <param name="name">Specifies the name of the user-defined varying out variable whose binding to modify.</param>
-    unsafe void glBindFragDataLocationIndexed( UInt32 program, UInt32 colorNumber, UInt32 index, string name );
+    unsafe void glBindFragDataLocationIndexed( uint program, uint colorNumber, uint index, string name );
 
     /// <summary>
     /// Return the index of a user-defined varying out variable.
@@ -6960,7 +6960,7 @@ public interface IGLBindings
     /// <param name="program">Specifies the name of the program containing varying out variable whose index to query.</param>
     /// <param name="name">Specifies the name of the user-defined varying out variable whose index to query.</param>
     /// <returns>The index of the user-defined varying out variable.</returns>
-    unsafe Int32 glGetFragDataIndex( UInt32 program, Byte* name );
+    unsafe int glGetFragDataIndex( uint program, Byte* name );
 
     /// <summary>
     /// Return the index of a user-defined varying out variable.
@@ -6968,40 +6968,40 @@ public interface IGLBindings
     /// <param name="program">Specifies the name of the program containing varying out variable whose index to query.</param>
     /// <param name="name">Specifies the name of the user-defined varying out variable whose index to query.</param>
     /// <returns>The index of the user-defined varying out variable.</returns>
-    unsafe Int32 glGetFragDataIndex( UInt32 program, string name );
+    unsafe int glGetFragDataIndex( uint program, string name );
 
     /// <summary>
     /// Generate sampler object names.
     /// </summary>
     /// <param name="count">Specifies the number of sampler object names to generate.</param>
     /// <param name="samplers">Specifies an array in which the generated sampler object names are stored.</param>
-    unsafe void glGenSamplers( Int32 count, UInt32* samplers );
+    unsafe void glGenSamplers( int count, uint* samplers );
 
     /// <summary>
     /// Generate sampler object names.
     /// </summary>
     /// <param name="count">Specifies the number of sampler object names to generate.</param>
     /// <returns>An array in which the generated sampler object names are stored.</returns>
-    unsafe UInt32[] glGenSamplers( Int32 count );
+    unsafe uint[] glGenSamplers( int count );
 
     /// <summary>
     /// Generate a single sampler object name.
     /// </summary>
     /// <returns>The generated sampler object name.</returns>
-    UInt32 glGenSampler();
+    uint glGenSampler();
 
     /// <summary>
     /// Delete named sampler objects.
     /// </summary>
     /// <param name="count">Specifies the number of sampler objects to be deleted.</param>
     /// <param name="samplers">Specifies an array of sampler objects to be deleted.</param>
-    unsafe void glDeleteSamplers( Int32 count, UInt32* samplers );
+    unsafe void glDeleteSamplers( int count, uint* samplers );
 
     /// <summary>
     /// Delete named sampler objects.
     /// </summary>
     /// <param name="samplers">Specifies an array of sampler objects to be deleted.</param>
-    unsafe void glDeleteSamplers( params UInt32[] samplers );
+    unsafe void glDeleteSamplers( params uint[] samplers );
 
     /// <summary>
     /// Determine if a name corresponds to a sampler object.
@@ -7011,14 +7011,14 @@ public interface IGLBindings
     /// <see langword="true"/> if <paramref name="sampler"/> is a value generated by OpenGL; otherwise,
     /// <see langword="false"/>.
     /// </returns>
-    Boolean glIsSampler( UInt32 sampler );
+    bool glIsSampler( uint sampler );
 
     /// <summary>
     /// Bind a named sampler to a texturing unit.
     /// </summary>
     /// <param name="unit">Specifies the index of the texture unit to which the sampler is bound.</param>
     /// <param name="sampler">Specifies the name of a sampler.</param>
-    void glBindSampler( UInt32 unit, UInt32 sampler );
+    void glBindSampler( uint unit, uint sampler );
 
     /// <summary>
     /// Set the integer value of a sampler parameter.
@@ -7032,7 +7032,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_COMPARE_MODE"/>, <see cref="GL_TEXTURE_COMPARE_FUNC"/>.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname"/>.</param>
-    void glSamplerParameteri( UInt32 sampler, Int32 pname, Int32 param );
+    void glSamplerParameteri( uint sampler, int pname, int param );
 
     /// <summary>
     /// Set the integer value of a sampler parameter.
@@ -7046,7 +7046,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_COMPARE_MODE"/>, <see cref="GL_TEXTURE_COMPARE_FUNC"/>.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname"/>.</param>
-    unsafe void glSamplerParameteriv( UInt32 sampler, Int32 pname, Int32* param );
+    unsafe void glSamplerParameteriv( uint sampler, int pname, int* param );
 
     /// <summary>
     /// Set the integer value of a sampler parameter.
@@ -7060,7 +7060,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_COMPARE_MODE"/>, <see cref="GL_TEXTURE_COMPARE_FUNC"/>.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname"/>.</param>
-    unsafe void glSamplerParameteriv( UInt32 sampler, Int32 pname, Int32[] param );
+    unsafe void glSamplerParameteriv( uint sampler, int pname, int[] param );
 
     /// <summary>
     /// Set the float value of a sampler parameter.
@@ -7074,7 +7074,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_COMPARE_MODE"/>, <see cref="GL_TEXTURE_COMPARE_FUNC"/>.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname"/>.</param>
-    void glSamplerParameterf( UInt32 sampler, Int32 pname, Single param );
+    void glSamplerParameterf( uint sampler, int pname, float param );
 
     /// <summary>
     /// Set the float value of a sampler parameter.
@@ -7088,7 +7088,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_COMPARE_MODE"/>, <see cref="GL_TEXTURE_COMPARE_FUNC"/>.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname"/>.</param>
-    unsafe void glSamplerParameterfv( UInt32 sampler, Int32 pname, Single* param );
+    unsafe void glSamplerParameterfv( uint sampler, int pname, float* param );
 
     /// <summary>
     /// Set the float value of a sampler parameter.
@@ -7102,7 +7102,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_COMPARE_MODE"/>, <see cref="GL_TEXTURE_COMPARE_FUNC"/>.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname"/>.</param>
-    unsafe void glSamplerParameterfv( UInt32 sampler, Int32 pname, Single[] param );
+    unsafe void glSamplerParameterfv( uint sampler, int pname, float[] param );
 
     /// <summary>
     /// Set the integer value of a sampler parameter.
@@ -7116,7 +7116,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_COMPARE_MODE"/>, <see cref="GL_TEXTURE_COMPARE_FUNC"/>.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname"/>.</param>
-    unsafe void glSamplerParameterIiv( UInt32 sampler, Int32 pname, Int32* param );
+    unsafe void glSamplerParameterIiv( uint sampler, int pname, int* param );
 
     /// <summary>
     /// Set the integer value of a sampler parameter.
@@ -7130,7 +7130,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_COMPARE_MODE"/>, <see cref="GL_TEXTURE_COMPARE_FUNC"/>.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname"/>.</param>
-    unsafe void glSamplerParameterIiv( UInt32 sampler, Int32 pname, Int32[] param );
+    unsafe void glSamplerParameterIiv( uint sampler, int pname, int[] param );
 
     /// <summary>
     /// Set the unsigned integer value of a sampler parameter.
@@ -7144,7 +7144,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_COMPARE_MODE"/>, <see cref="GL_TEXTURE_COMPARE_FUNC"/>.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname"/>.</param>
-    unsafe void glSamplerParameterIuiv( UInt32 sampler, Int32 pname, UInt32* param );
+    unsafe void glSamplerParameterIuiv( uint sampler, int pname, uint* param );
 
     /// <summary>
     /// Set the unsigned integer value of a sampler parameter.
@@ -7158,7 +7158,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_COMPARE_MODE"/>, <see cref="GL_TEXTURE_COMPARE_FUNC"/>.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname"/>.</param>
-    unsafe void glSamplerParameterIuiv( UInt32 sampler, Int32 pname, UInt32[] param );
+    unsafe void glSamplerParameterIuiv( uint sampler, int pname, uint[] param );
 
     /// <summary>
     /// Return the integer value of a sampler parameter.
@@ -7172,7 +7172,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_COMPARE_MODE"/>, <see cref="GL_TEXTURE_COMPARE_FUNC"/>.
     /// </param>
     /// <param name="param">Returns the value of <paramref name="pname"/>.</param>
-    unsafe void glGetSamplerParameteriv( UInt32 sampler, Int32 pname, Int32* param );
+    unsafe void glGetSamplerParameteriv( uint sampler, int pname, int* param );
 
     /// <summary>
     /// Return the value of a sampler parameter.
@@ -7186,25 +7186,25 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_COMPARE_MODE"/>, <see cref="GL_TEXTURE_COMPARE_FUNC"/>.
     /// </param>
     /// <param name="param">Returns the value of <paramref name="pname"/>.</param>
-    unsafe void glGetSamplerParameteriv( UInt32 sampler, Int32 pname, ref Int32[] param );
+    unsafe void glGetSamplerParameteriv( uint sampler, int pname, ref int[] param );
 
     /// <inheritdoc cref="GLBindings.glGetSamplerParameteriv(GLuint,GLenum,GLint*)"/>
-    unsafe void glGetSamplerParameterIiv( UInt32 sampler, Int32 pname, Int32* param );
+    unsafe void glGetSamplerParameterIiv( uint sampler, int pname, int* param );
 
     /// <inheritdoc cref="GLBindings.glGetSamplerParameteriv(GLuint,GLenum,ref GLint[])"/>
-    unsafe void glGetSamplerParameterIiv( UInt32 sampler, Int32 pname, ref Int32[] param );
+    unsafe void glGetSamplerParameterIiv( uint sampler, int pname, ref int[] param );
 
     /// <inheritdoc cref="GLBindings.glGetSamplerParameteriv(GLuint,GLenum,GLint*)"/>
-    unsafe void glGetSamplerParameterfv( UInt32 sampler, Int32 pname, Single* param );
+    unsafe void glGetSamplerParameterfv( uint sampler, int pname, float* param );
 
     /// <inheritdoc cref="GLBindings.glGetSamplerParameteriv(GLuint,GLenum,ref GLint[])"/>
-    unsafe void glGetSamplerParameterfv( UInt32 sampler, Int32 pname, ref Single[] param );
+    unsafe void glGetSamplerParameterfv( uint sampler, int pname, ref float[] param );
 
     /// <inheritdoc cref="GLBindings.glGetSamplerParameteriv(GLuint,GLenum,GLint*)"/>
-    unsafe void glGetSamplerParameterIuiv( UInt32 sampler, Int32 pname, UInt32* param );
+    unsafe void glGetSamplerParameterIuiv( uint sampler, int pname, uint* param );
 
     /// <inheritdoc cref="GLBindings.glGetSamplerParameteriv(GLuint,GLenum,ref GLint[])"/>
-    unsafe void glGetSamplerParameterIuiv( UInt32 sampler, Int32 pname, ref UInt32[] param );
+    unsafe void glGetSamplerParameterIuiv( uint sampler, int pname, ref uint[] param );
 
     /// <summary>
     /// Record the GL time into a query object after all previous commands have reached the GL server but have not yet
@@ -7212,7 +7212,7 @@ public interface IGLBindings
     /// </summary>
     /// <param name="id">Specifies the name of a query object into which to record the GL time.</param>
     /// <param name="target">Specifies the counter to use as the source of the time.</param>
-    void glQueryCounter( UInt32 id, Int32 target );
+    void glQueryCounter( uint id, int target );
 
     /// <summary>
     /// Return the 64bit integer value of a query object parameter.
@@ -7223,10 +7223,10 @@ public interface IGLBindings
     /// <see cref="GL_QUERY_RESULT_NO_WAIT"/> or <see cref="GL_QUERY_RESULT_AVAILABLE"/>.
     /// </param>
     /// <param name="param">Returns the value of <paramref name="pname"/>.</param>
-    unsafe void glGetQueryObjecti64v( UInt32 id, Int32 pname, Int64* param );
+    unsafe void glGetQueryObjecti64v( uint id, int pname, Int64* param );
 
     /// <inheritdoc cref="GLBindings.glGetQueryObjecti64v(GLuint,GLenum,GLint64*)"/>
-    unsafe void glGetQueryObjecti64v( UInt32 id, Int32 pname, ref Int64[] param );
+    unsafe void glGetQueryObjecti64v( uint id, int pname, ref Int64[] param );
 
     /// <summary>
     /// Return the 64bit unsigned integer value of a query object parameter.
@@ -7237,10 +7237,10 @@ public interface IGLBindings
     /// <see cref="GL_QUERY_RESULT_NO_WAIT"/> or <see cref="GL_QUERY_RESULT_AVAILABLE"/>.
     /// </param>
     /// <param name="param">Returns the value of <paramref name="pname"/>.</param>
-    unsafe void glGetQueryObjectui64v( UInt32 id, Int32 pname, UInt64* param );
+    unsafe void glGetQueryObjectui64v( uint id, int pname, UInt64* param );
 
     /// <inheritdoc cref="GLBindings.glGetQueryObjectui64v(GLuint,GLenum,GLuint64*)"/>
-    unsafe void glGetQueryObjectui64v( UInt32 id, Int32 pname, ref UInt64[] param );
+    unsafe void glGetQueryObjectui64v( uint id, int pname, ref UInt64[] param );
 
     /// <summary>
     /// Modify the reate at which generic vertex attributes advance during instanced rendering
@@ -7250,7 +7250,7 @@ public interface IGLBindings
     /// Specifies the number of instances that will pass between updates of the generic attribute at slot
     /// <paramref name="index"/>.
     /// </param>
-    void glVertexAttribDivisor( UInt32 index, UInt32 divisor );
+    void glVertexAttribDivisor( uint index, uint divisor );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
@@ -7262,7 +7262,7 @@ public interface IGLBindings
     /// converted directly as fixed-point values (<see langword="false"/>).
     /// </param>
     /// <param name="value">Specifies the value of the vertex attribute.</param>
-    void glVertexAttribP1ui( UInt32 index, Int32 type, Boolean normalized, UInt32 value );
+    void glVertexAttribP1ui( uint index, int type, bool normalized, uint value );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
@@ -7274,7 +7274,7 @@ public interface IGLBindings
     /// converted directly as fixed-point values (<see langword="false"/>).
     /// </param>
     /// <param name="value">Specifies a pointer to the value of the vertex attribute.</param>
-    unsafe void glVertexAttribP1uiv( UInt32 index, Int32 type, Boolean normalized, UInt32* value );
+    unsafe void glVertexAttribP1uiv( uint index, int type, bool normalized, uint* value );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
@@ -7286,7 +7286,7 @@ public interface IGLBindings
     /// converted directly as fixed-point values (<see langword="false"/>).
     /// </param>
     /// <param name="value">Specifies the value of the vertex attribute.</param>
-    unsafe void glVertexAttribP1uiv( UInt32 index, Int32 type, Boolean normalized, UInt32[] value );
+    unsafe void glVertexAttribP1uiv( uint index, int type, bool normalized, uint[] value );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
@@ -7298,7 +7298,7 @@ public interface IGLBindings
     /// converted directly as fixed-point values (<see langword="false"/>).
     /// </param>
     /// <param name="value">Specifies the value of the vertex attribute.</param>
-    void glVertexAttribP2ui( UInt32 index, Int32 type, Boolean normalized, UInt32 value );
+    void glVertexAttribP2ui( uint index, int type, bool normalized, uint value );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
@@ -7310,7 +7310,7 @@ public interface IGLBindings
     /// converted directly as fixed-point values (<see langword="false"/>).
     /// </param>
     /// <param name="value">Specifies a pointer to the value of the vertex attribute.</param>
-    unsafe void glVertexAttribP2uiv( UInt32 index, Int32 type, Boolean normalized, UInt32* value );
+    unsafe void glVertexAttribP2uiv( uint index, int type, bool normalized, uint* value );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
@@ -7322,7 +7322,7 @@ public interface IGLBindings
     /// converted directly as fixed-point values (<see langword="false"/>).
     /// </param>
     /// <param name="value">Specifies the value of the vertex attribute.</param>
-    unsafe void glVertexAttribP2uiv( UInt32 index, Int32 type, Boolean normalized, UInt32[] value );
+    unsafe void glVertexAttribP2uiv( uint index, int type, bool normalized, uint[] value );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
@@ -7334,7 +7334,7 @@ public interface IGLBindings
     /// converted directly as fixed-point values (<see langword="false"/>).
     /// </param>
     /// <param name="value">Specifies the value of the vertex attribute.</param>
-    void glVertexAttribP3ui( UInt32 index, Int32 type, Boolean normalized, UInt32 value );
+    void glVertexAttribP3ui( uint index, int type, bool normalized, uint value );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
@@ -7346,7 +7346,7 @@ public interface IGLBindings
     /// converted directly as fixed-point values (<see langword="false"/>).
     /// </param>
     /// <param name="value">Specifies a pointer to the value of the vertex attribute.</param>
-    unsafe void glVertexAttribP3uiv( UInt32 index, Int32 type, Boolean normalized, UInt32* value );
+    unsafe void glVertexAttribP3uiv( uint index, int type, bool normalized, uint* value );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
@@ -7358,7 +7358,7 @@ public interface IGLBindings
     /// converted directly as fixed-point values (<see langword="false"/>).
     /// </param>
     /// <param name="value">Specifies the value of the vertex attribute.</param>
-    unsafe void glVertexAttribP3uiv( UInt32 index, Int32 type, Boolean normalized, UInt32[] value );
+    unsafe void glVertexAttribP3uiv( uint index, int type, bool normalized, uint[] value );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
@@ -7370,7 +7370,7 @@ public interface IGLBindings
     /// converted directly as fixed-point values (<see langword="false"/>).
     /// </param>
     /// <param name="value">Specifies the value of the vertex attribute.</param>
-    void glVertexAttribP4ui( UInt32 index, Int32 type, Boolean normalized, UInt32 value );
+    void glVertexAttribP4ui( uint index, int type, bool normalized, uint value );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
@@ -7382,7 +7382,7 @@ public interface IGLBindings
     /// converted directly as fixed-point values (<see langword="false"/>).
     /// </param>
     /// <param name="value">Specifies a pointer to the value of the vertex attribute.</param>
-    unsafe void glVertexAttribP4uiv( UInt32 index, Int32 type, Boolean normalized, UInt32* value );
+    unsafe void glVertexAttribP4uiv( uint index, int type, bool normalized, uint* value );
 
     /// <summary>
     /// Specify the value of a generic vertex attribute
@@ -7394,7 +7394,7 @@ public interface IGLBindings
     /// converted directly as fixed-point values (<see langword="false"/>).
     /// </param>
     /// <param name="value">Specifies the value of the vertex attribute.</param>
-    unsafe void glVertexAttribP4uiv( UInt32 index, Int32 type, Boolean normalized, UInt32[] value );
+    unsafe void glVertexAttribP4uiv( uint index, int type, bool normalized, uint[] value );
 
     /// <summary>
     /// Loads OpenGL functions using the specified loader delegate.

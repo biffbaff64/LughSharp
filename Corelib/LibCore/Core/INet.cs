@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using Corelib.LibCore.Network;
+using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Pooling;
 using Exception = System.Exception;
 
@@ -187,7 +188,7 @@ public interface INet
     /// Represents an HTTP request.
     /// </summary>
     [PublicAPI]
-    public class HttpRequest : IPoolable
+    public class HttpRequest : IResetable
     {
         private readonly Dictionary< string, string >? _headers;
         private          bool                          _followRedirects = true;

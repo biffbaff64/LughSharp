@@ -117,8 +117,8 @@ public class SpriteBatch : IBatch
         IsDrawing = false;
 
         var vertexDataType = ( Gdx.GL.GetProjectOpenGLVersionMajor() >= 3 )
-                                 ? Mesh.VertexDataType.VertexBufferObjectWithVAO
-                                 : Mesh.VertexDataType.VertexArray;
+            ? Mesh.VertexDataType.VertexBufferObjectWithVAO
+            : Mesh.VertexDataType.VertexArray;
 
         _mesh = new Mesh( vertexDataType,
                           false,
@@ -141,10 +141,10 @@ public class SpriteBatch : IBatch
         for ( short i = 0, j = 0; i < len; i += 6, j += 4 )
         {
             indices[ i ]     = j;
-            indices[ i + 1 ] = ( short ) ( j + 1 );
-            indices[ i + 2 ] = ( short ) ( j + 2 );
-            indices[ i + 3 ] = ( short ) ( j + 2 );
-            indices[ i + 4 ] = ( short ) ( j + 3 );
+            indices[ i + 1 ] = ( short )( j + 1 );
+            indices[ i + 2 ] = ( short )( j + 2 );
+            indices[ i + 3 ] = ( short )( j + 2 );
+            indices[ i + 4 ] = ( short )( j + 3 );
             indices[ i + 5 ] = j;
         }
 
@@ -412,7 +412,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
-        Idx += 20;
+        Idx += Sprite.SPRITE_SIZE;
     }
 
     /// <summary>
@@ -477,7 +477,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
-        Idx += 20;
+        Idx += Sprite.SPRITE_SIZE;
     }
 
     /// <summary>
@@ -531,7 +531,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
-        Idx += 20;
+        Idx += Sprite.SPRITE_SIZE;
     }
 
     /// <summary>
@@ -588,7 +588,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
-        Idx += 20;
+        Idx += Sprite.SPRITE_SIZE;
     }
 
     /// <summary>
@@ -662,7 +662,7 @@ public class SpriteBatch : IBatch
 //        //TODO: Remove when drawing is fixed
 //        DebugVertices();
 
-        Idx += 20;
+        Idx += Sprite.SPRITE_SIZE;
     }
 
     /// <summary>
@@ -783,7 +783,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
-        Idx += 20;
+        Idx += Sprite.SPRITE_SIZE;
     }
 
     /// <summary>
@@ -920,7 +920,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
-        Idx += 20;
+        Idx += Sprite.SPRITE_SIZE;
     }
 
     /// <summary>
@@ -1088,7 +1088,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = u4;
         Vertices[ Idx + 19 ] = v4;
 
-        Idx += 20;
+        Idx += Sprite.SPRITE_SIZE;
     }
 
     /// <summary>
@@ -1150,7 +1150,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
-        Idx += 20;
+        Idx += Sprite.SPRITE_SIZE;
     }
 
     #endregion Drawing methods
@@ -1260,7 +1260,7 @@ public class SpriteBatch : IBatch
     /// <param name="dstFunc"> Destination Function for Color and Alpha. </param>
     public void SetBlendFunction( int srcFunc, int dstFunc )
     {
-        SetBlendFunctionSeperate( srcFunc, dstFunc, srcFunc, dstFunc );
+        SetBlendFunctionSeparate( srcFunc, dstFunc, srcFunc, dstFunc );
     }
 
     /// <summary>
@@ -1271,12 +1271,12 @@ public class SpriteBatch : IBatch
     /// <param name="dstFuncColor"> Destination Function for Color. </param>
     /// <param name="srcFuncAlpha"> Source Function for Alpha. </param>
     /// <param name="dstFuncAlpha"> Destination Function for Alpha. </param>
-    public void SetBlendFunctionSeperate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha )
+    public void SetBlendFunctionSeparate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha )
     {
         if ( ( BlendSrcFunc == srcFuncColor )
-          && ( BlendDstFunc == dstFuncColor )
-          && ( BlendSrcFuncAlpha == srcFuncAlpha )
-          && ( BlendDstFuncAlpha == dstFuncAlpha ) )
+             && ( BlendDstFunc == dstFuncColor )
+             && ( BlendSrcFuncAlpha == srcFuncAlpha )
+             && ( BlendDstFuncAlpha == dstFuncAlpha ) )
         {
             return;
         }
@@ -1374,50 +1374,51 @@ public class SpriteBatch : IBatch
     public static ShaderProgram CreateDefaultShader()
     {
         const string VERTEX_SHADER = "attribute vec4 "
-                                   + ShaderProgram.POSITION_ATTRIBUTE
-                                   + ";\n"
-                                   + "attribute vec4 "
-                                   + ShaderProgram.COLOR_ATTRIBUTE
-                                   + ";\n"
-                                   + "attribute vec2 "
-                                   + ShaderProgram.TEXCOORD_ATTRIBUTE
-                                   + "0;\n"
-                                   + "uniform mat4 u_projTrans;\n"
-                                   + "varying vec4 v_color;\n"
-                                   + "varying vec2 v_texCoords;\n"
-                                   + "\n"
-                                   + "void main()\n"
-                                   + "{\n"
-                                   + "   v_color = "
-                                   + ShaderProgram.COLOR_ATTRIBUTE
-                                   + ";\n"
-                                   + "   v_color.a = v_color.a * (255.0/254.0);\n"
-                                   + "   v_texCoords = "
-                                   + ShaderProgram.TEXCOORD_ATTRIBUTE
-                                   + "0;\n"
-                                   + "   gl_Position =  u_projTrans * "
-                                   + ShaderProgram.POSITION_ATTRIBUTE
-                                   + ";\n"
-                                   + "}\n";
-
-        const string FRAGMENT_SHADER = "#ifdef GL_ES\n"
-                                     + "#define LOWP lowp\n"
-                                     + "precision mediump float;\n"
-                                     + "#else\n"
-                                     + "#define LOWP \n"
-                                     + "#endif\n"
-                                     + "varying LOWP vec4 v_color;\n"
+                                     + ShaderProgram.POSITION_ATTRIBUTE
+                                     + ";\n"
+                                     + "attribute vec4 "
+                                     + ShaderProgram.COLOR_ATTRIBUTE
+                                     + ";\n"
+                                     + "attribute vec2 "
+                                     + ShaderProgram.TEXCOORD_ATTRIBUTE
+                                     + "0;\n"
+                                     + "uniform mat4 u_projTrans;\n"
+                                     + "varying vec4 v_color;\n"
                                      + "varying vec2 v_texCoords;\n"
-                                     + "uniform sampler2D u_texture;\n"
+                                     + "\n"
                                      + "void main()\n"
                                      + "{\n"
-                                     + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n"
-                                     + "}";
+                                     + "   v_color = "
+                                     + ShaderProgram.COLOR_ATTRIBUTE
+                                     + ";\n"
+                                     + "   v_color.a = v_color.a * (255.0/254.0);\n"
+                                     + "   v_texCoords = "
+                                     + ShaderProgram.TEXCOORD_ATTRIBUTE
+                                     + "0;\n"
+                                     + "   gl_Position =  u_projTrans * "
+                                     + ShaderProgram.POSITION_ATTRIBUTE
+                                     + ";\n"
+                                     + "}\n";
+
+        const string FRAGMENT_SHADER = "#ifdef GL_ES\n"
+                                       + "#define LOWP lowp\n"
+                                       + "precision mediump float;\n"
+                                       + "#else\n"
+                                       + "#define LOWP \n"
+                                       + "#endif\n"
+                                       + "varying LOWP vec4 v_color;\n"
+                                       + "varying vec2 v_texCoords;\n"
+                                       + "uniform sampler2D u_texture;\n"
+                                       + "void main()\n"
+                                       + "{\n"
+                                       + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n"
+                                       + "}";
 
         var shader = new ShaderProgram( VERTEX_SHADER, FRAGMENT_SHADER );
 
         if ( !shader.IsCompiled )
         {
+            Logger.Debug( shader.ShaderLog );
             throw new GdxRuntimeException( "Error compiling shader: " + shader.ShaderLog );
         }
 
@@ -1486,60 +1487,46 @@ public class SpriteBatch : IBatch
     /// the draw method.
     /// </summary>
     /// <param name="texture"> The Texture to check for null. </param>
-    private void Validate( Texture? texture )
+    private void Validate< T >( T? texture )
     {
-        ArgumentNullException.ThrowIfNull( texture );
-
-        if ( !IsDrawing )
+        if ( texture is not Texture or TextureRegion )
         {
-            throw new InvalidOperationException( "Begin() must be called before Draw()." );
+            return;
         }
-    }
+        
+        if ( texture == null )
+        {
+            Logger.Debug( $"Texture is null: {texture}" );
 
-    /// <summary>
-    /// Performs validation checks for Draw methods.
-    /// Throws an exception if the supplied TextureRegion is null.
-    /// Throws an exception if <see cref="Begin"/> was not called before entering
-    /// the draw method.
-    /// </summary>
-    /// <param name="region"> The TextureRegion to check for null. </param>
-    private void Validate( TextureRegion? region )
-    {
-        ArgumentNullException.ThrowIfNull( region );
+            throw new ArgumentException( $"Texture is null: {texture}" );
+        }
 
         if ( !IsDrawing )
         {
+            Logger.Debug( "Draw Error: Begin() must be called before Draw()" );
+
             throw new InvalidOperationException( "Begin() must be called before Draw()." );
         }
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-
-    public bool CanDebugVertices { get; set; } = true;
 
     private void DebugVertices()
     {
-        if ( CanDebugVertices )
+        Logger.Debug( "Begin DebugVertices()" );
+
+        Logger.Debug( $"ColorPacked ABGR: {Color.ToFloatBitsABGR():F1}" );
+        Logger.Debug( $"ColorPacked RGBA: {Color.ToFloatBitsRGBA():F1}" );
+        Logger.Debug( $"FloatToHexString ABGR: {NumberUtils.FloatToHexString( Color.ToFloatBitsABGR() )}" );
+        Logger.Debug( $"FloatToHexString RGBA: {NumberUtils.FloatToHexString( Color.ToFloatBitsRGBA() )}" );
+        Logger.Debug( $"Color: {Color.RGBAToString()}" );
+
+        for ( var i = 0; i < 20; i++ )
         {
-            Logger.Debug( "Begin DebugVertices()" );
-
-            Logger.Debug( $"ColorPacked ABGR: {Color.ToFloatBitsABGR():F1}" );
-            Logger.Debug( $"ColorPacked RGBA: {Color.ToFloatBitsRGBA():F1}" );
-            Logger.Debug( $"FloatToHexString ABGR: {NumberUtils.FloatToHexString( Color.ToFloatBitsABGR() )}" );
-            Logger.Debug( $"FloatToHexString RGBA: {NumberUtils.FloatToHexString( Color.ToFloatBitsRGBA() )}" );
-            Logger.Debug( $"Color: {Color.RGBAToString()}" );
-
-            for ( var i = 0; i < 20; i++ )
-            {
-                Logger.Debug( $"Vertices[{i}]: {Vertices[ i ]}" );
-            }
-
-            CanDebugVertices = false;
-
-            Logger.Debug( "End DebugVertices()" );
-
-            // ----------------------------------------------------------------
+            Logger.Debug( $"Vertices[{i}]: {Vertices[ i ]}" );
         }
+
+        Logger.Debug( "End DebugVertices()" );
     }
 }

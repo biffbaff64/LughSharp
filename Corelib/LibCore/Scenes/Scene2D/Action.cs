@@ -22,12 +22,13 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Pooling;
 
 namespace Corelib.LibCore.Scenes.Scene2D;
 
 [PublicAPI]
-public abstract class Action : IAction, IPoolable
+public abstract class Action : IAction, IResetable
 {
     private Actor? _actor;
 

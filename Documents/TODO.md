@@ -772,6 +772,7 @@ UTILS
     - DONE - DONE - ICloseable
     - DONE - DONE - IManageable
     - DONE - DONE - IReadable
+    - DONE - DONE - IResetable
     - DONE - DONE - IRunnable                       Done, but is it needed?
     - DONE - DONE - Logger
     - DONE - DONE - PerformanceCounter              Check
@@ -874,7 +875,7 @@ UTILS/COLLECTIONS
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - Array<T>                       Converted, but use List<T> for most cases.
-    - IP   - IP   - ByteArray
+    - DONE - IP   - ByteArray                      List< byte > should be fine for most cases.
     - DONE - DONE - DictionaryExtensions
     - DONE - DONE - DelayedRemovalList             Convert / Extend List<>
     - DONE - DONE - ListExtensions
@@ -893,11 +894,10 @@ UTILS/COLLECTIONS
     - **** - ArrayIterable                  -> Use IEnumerable?
     - **** - ArrayIterator                  -> Use IEnumerator?
     - **** - BoolArray                      -> Use List< bool >
-    - **** - ByteArray                      -> Use List< byte >
     - **** - CharArray                      -> Use List< char >
-    - **** - CollectionsData                -> Not needed
+    - **** - CollectionsData                -> ***** Not needed *****
     - **** - FloatArray                     -> Use List< float >
-    - **** - IdentityMap<K, V>              -> Not needed
+    - **** - IdentityMap<K, V>              -> ***** Not needed *****
     - **** - IntArray                       -> Use List< int >
     - **** - IntFloatMap                    -> Use Dictionary< int, float >
     - **** - IntIntMap                      -> Use Dictionary< int, int >

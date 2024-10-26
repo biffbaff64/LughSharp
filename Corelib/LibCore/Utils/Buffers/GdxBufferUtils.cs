@@ -29,12 +29,11 @@ namespace Corelib.LibCore.Utils.Buffers;
 public partial class BufferUtils
 {
     /// <summary>
-    /// Copies the contents of src to dst, starting from src[srcOffset], copying
-    /// numElements elements.
-    /// The <see cref="Buffer"/> instance's <see cref="Buffer.Position"/> is used
-    /// to define the offset into the Buffer itself. The position will stay the same,
-    /// the limit will be set to position + numElements. <b>The Buffer must be a direct
-    /// Buffer with extern byte order. No error checking is performed</b>.
+    /// Copies the contents of src to dst, starting from src[srcOffset], copying numElements
+    /// elements. The <see cref="Buffer"/> instance's <see cref="Buffer.Position"/> is used
+    /// to define the offset into the Buffer itself. The position will stay the same, the limit
+    /// will be set to position + numElements. <b>The Buffer must be a direct Buffer with extern
+    /// byte order. No error checking is performed</b>.
     /// </summary>
     /// <param name="src"> the source array. </param>
     /// <param name="srcOffset"> the offset into the source array. </param>
