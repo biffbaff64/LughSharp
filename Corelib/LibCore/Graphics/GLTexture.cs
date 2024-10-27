@@ -181,7 +181,7 @@ public abstract class GLTexture : IDisposable
     /// Used internally to reload after context loss. Creates a new GL handle then
     /// calls <see cref="Texture.Load"/>.
     /// </summary>
-    internal abstract void Reload();
+    public abstract void Reload();
 
     /// <summary>
     /// Binds this texture. The texture will be bound to the currently active

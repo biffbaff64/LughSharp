@@ -610,11 +610,11 @@ public class SpriteBatch : IBatch
     /// of the specified width and height.
     /// </summary>
     /// <param name="texture"> The texture. </param>
-    /// <param name="locX"> X coordinaste in pixels. </param>
-    /// <param name="locY"> Y coordinate in pixels. </param>
+    /// <param name="posX"> X coordinaste in pixels. </param>
+    /// <param name="posY"> Y coordinate in pixels. </param>
     /// <param name="width"> Width of Texture in pixels. </param>
     /// <param name="height"> Height of Texture in pixerls. </param>
-    public virtual void Draw( Texture texture, float locX, float locY, int width, int height )
+    public virtual void Draw( Texture texture, float posX, float posY, int width, int height )
     {
         Validate( texture );
 
@@ -627,21 +627,21 @@ public class SpriteBatch : IBatch
             Flush();
         }
 
-        var fx2 = locX + width;
-        var fy2 = locY + height;
+        var fx2 = posX + width;
+        var fy2 = posY + height;
 
         const float U  = 0;
         const float V  = 1;
         const float U2 = 1;
         const float V2 = 0;
 
-        Vertices[ Idx + 0 ] = locX;
-        Vertices[ Idx + 1 ] = locY;
+        Vertices[ Idx + 0 ] = posX;
+        Vertices[ Idx + 1 ] = posY;
         Vertices[ Idx + 2 ] = ColorPackedABGR;
         Vertices[ Idx + 3 ] = U;
         Vertices[ Idx + 4 ] = V;
 
-        Vertices[ Idx + 5 ] = locX;
+        Vertices[ Idx + 5 ] = posX;
         Vertices[ Idx + 6 ] = fy2;
         Vertices[ Idx + 7 ] = ColorPackedABGR;
         Vertices[ Idx + 8 ] = U;
@@ -654,7 +654,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 14 ] = V2;
 
         Vertices[ Idx + 15 ] = fx2;
-        Vertices[ Idx + 16 ] = locY;
+        Vertices[ Idx + 16 ] = posY;
         Vertices[ Idx + 17 ] = ColorPackedABGR;
         Vertices[ Idx + 18 ] = U2;
         Vertices[ Idx + 19 ] = V;

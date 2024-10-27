@@ -762,7 +762,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         Draw( texture, x, y, texture.Width, texture.Height );
     }
 
-    public void Draw( Texture texture, float locX, float locY, int width, int height )
+    public void Draw( Texture texture, float posX, float posY, int width, int height )
     {
         if ( !IsDrawing )
         {
@@ -788,20 +788,20 @@ public class PolygonSpriteBatch : IPolygonBatch
         _triangles[ _triangleIndex++ ] = ( short ) ( startVertex + 3 );
         _triangles[ _triangleIndex++ ] = ( short ) startVertex;
 
-        var   fx2 = locX + width;
-        var   fy2 = locY + height;
+        var   fx2 = posX + width;
+        var   fy2 = posY + height;
         float u   = 0;
         float v   = 1;
         float u2  = 1;
         float v2  = 0;
 
-        _vertices[ _vertexIndex++ ] = locX;
-        _vertices[ _vertexIndex++ ] = locY;
+        _vertices[ _vertexIndex++ ] = posX;
+        _vertices[ _vertexIndex++ ] = posY;
         _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u;
         _vertices[ _vertexIndex++ ] = v;
 
-        _vertices[ _vertexIndex++ ] = locX;
+        _vertices[ _vertexIndex++ ] = posX;
         _vertices[ _vertexIndex++ ] = fy2;
         _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u;
@@ -814,7 +814,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         _vertices[ _vertexIndex++ ] = v2;
 
         _vertices[ _vertexIndex++ ] = fx2;
-        _vertices[ _vertexIndex++ ] = locY;
+        _vertices[ _vertexIndex++ ] = posY;
         _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u2;
         _vertices[ _vertexIndex++ ] = v;

@@ -47,8 +47,7 @@ public class TextureRegion
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// Constructs a region that cannot be used until a texture
-    /// and texture coordinates are set.
+    /// Constructs a region that cannot be used until a texture and texture coordinates are set.
     /// </summary>
     public TextureRegion()
     {
@@ -68,7 +67,10 @@ public class TextureRegion
         SetRegion( 0, 0, texture.Width, texture.Height );
     }
 
-    /// <param name="texture"></param>
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="texture"> The texture from which to extract the region. </param>
     /// <param name="width">
     /// The width of the texture region. May be negative to flip the sprite when drawn.
     /// </param>
@@ -81,7 +83,10 @@ public class TextureRegion
         Logger.Checkpoint();
     }
 
-    /// <param name="texture"></param>
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="texture"> The texture from which to extract the region. </param>
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="width">
@@ -99,8 +104,9 @@ public class TextureRegion
     }
 
     /// <summary>
+    /// 
     /// </summary>
-    /// <param name="texture"></param>
+    /// <param name="texture"> The texture from which to extract the region. </param>
     /// <param name="u"></param>
     /// <param name="v"></param>
     /// <param name="u2"></param>
@@ -314,15 +320,15 @@ public class TextureRegion
         // artifacts on AMD GPUs when drawing very stretched.
         if ( ( this.RegionWidth == 1 ) && ( this.RegionHeight == 1 ) )
         {
-            var adjustX = 0.25f / texWidth;
+            var xAdjustment = 0.25f / texWidth;
 
-            u  += adjustX;
-            u2 -= adjustX;
+            u  += xAdjustment;
+            u2 -= xAdjustment;
 
-            var adjustY = 0.25f / texHeight;
+            var yAdjustment = 0.25f / texHeight;
 
-            v  += adjustY;
-            v2 -= adjustY;
+            v  += yAdjustment;
+            v2 -= yAdjustment;
         }
 
         this.U  = u;

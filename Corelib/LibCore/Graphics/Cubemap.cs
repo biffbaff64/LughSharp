@@ -170,7 +170,7 @@ public class Cubemap : GLTexture, IManageable
     /// Used internally to reload after context loss. Creates a new GL handle then
     /// calls <see cref="Load(ICubemapData?)"/>.
     /// </summary>
-    internal override void Reload()
+    public override void Reload()
     {
         if ( !IsManaged )
         {

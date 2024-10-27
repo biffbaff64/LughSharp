@@ -209,7 +209,7 @@ public class Texture : GLTexture, IManageable
     /// Used internally to reload after context loss. Creates a new GL handle then
     /// calls <see cref="Load(ITextureData)"/>.
     /// </summary>
-    internal override void Reload()
+    public override void Reload()
     {
         if ( !IsManaged )
         {
@@ -366,10 +366,12 @@ public class Texture : GLTexture, IManageable
 
     public void Debug()
     {
-        Logger.Debug( $"Width: {Width}, Height: {Height}" );
-        Logger.Debug( $"Format: {TextureData.Format}" );
-        Logger.Debug( $"IsManaged: {IsManaged}" );
-        Logger.Debug( $"Depth: {Depth}" );
+        Logger.Debug( $"Dimensions     : {Width} x {Height}" );
+        Logger.Debug( $"Format         : {TextureData.Format}" );
+        Logger.Debug( $"IsManaged      : {IsManaged}" );
+        Logger.Debug( $"Depth          : {Depth}" );
+        Logger.Debug( $"GLTarget       : {GLTarget}" );
+        Logger.Debug( $"GLTextureHandle: {GLTextureHandle}" );
     }
 
     /// <summary>

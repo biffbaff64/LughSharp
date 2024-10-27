@@ -347,17 +347,17 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <inheritdoc />
-    public override void Draw( Texture? texture, float locX, float locY, int width, int height )
+    public override void Draw( Texture? texture, float posX, float posY, int width, int height )
     {
         ArgumentNullException.ThrowIfNull( texture );
 
         if ( !_adjustNeeded )
         {
-            base.Draw( texture, locX, locY, width, height );
+            base.Draw( texture, posX, posY, width, height );
         }
         else
         {
-            DrawAdjusted( texture, locX, locY, 0, 0, width, height, 1, 1, 0, 0, 1, 1, 0, false, false );
+            DrawAdjusted( texture, posX, posY, 0, 0, width, height, 1, 1, 0, 0, 1, 1, 0, false, false );
         }
     }
 
