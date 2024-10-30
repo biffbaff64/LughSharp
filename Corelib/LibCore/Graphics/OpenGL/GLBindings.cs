@@ -165,19 +165,7 @@ public unsafe class GLBindings : IGLBindings
     /// The string "CORE" or "COMPAT", allowing the developer to further convert this
     /// into a proper value for their context creation API.
     /// </returns>
-    public string GetProjectOpenGLProfile()
-    {
-        var profile = "";
-#if OGL_P_CORE
-        profile = "CORE";
-#elif OGL_P_COMPAT
-        profile = "COMPAT";
-#error "COMPAT profile not supported yet"
-#else
-#error "OpenGL profile not defined"
-#endif
-        return profile;
-    }
+    public string GetProjectOpenGLProfile() => "CORE";
 
 #if OGL_P_CORE
     /// <summary>

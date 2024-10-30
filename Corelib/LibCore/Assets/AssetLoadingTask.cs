@@ -46,8 +46,6 @@ public class AssetLoadingTask
     private readonly long         _startTime;
     private readonly object       _lock = new();
 
-    private object? _loadTask;
-
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -59,7 +57,7 @@ public class AssetLoadingTask
         Logger.Checkpoint();
 
         IsAsyncLoader = _loader is AsynchronousAssetLoader;
-        _startTime    = 0;
+        _startTime    = Logger.TraceLevel.Equals( Logger.LOG_DEBUG ) ? TimeUtils.NanoTime() : 0;
 
         AssetDesc = assetDesc;
         _manager  = manager;

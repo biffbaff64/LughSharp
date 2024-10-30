@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Utils.Exceptions;
 using JetBrains.Annotations;
 
 namespace Extensions.Source.Tools.TexturePacker;
@@ -45,28 +44,17 @@ public class TexturePacker
         public int           imageHeight    { get; set; }
     }
 
-    public class Alias : IComparable< Alias >
+    [PublicAPI]
+    public class Alias( Rect rect ) : IComparable< Alias >
     {
-        public String name;
-        public int    index;
-        public int[]  splits;
-        public int[]  pads;
-        public int    offsetX;
-        public int    offsetY;
-        public int    originalWidth;
-        public int    originalHeight;
-
-        public Alias( Rect rect )
-        {
-            name           = rect.name;
-            index          = rect.index;
-            splits         = rect.splits;
-            pads           = rect.pads;
-            offsetX        = rect.offsetX;
-            offsetY        = rect.offsetY;
-            originalWidth  = rect.originalWidth;
-            originalHeight = rect.originalHeight;
-        }
+        public string name           = rect.name;
+        public int    index          = rect.index;
+        public int[]  splits         = rect.splits;
+        public int[]  pads           = rect.pads;
+        public int    offsetX        = rect.offsetX;
+        public int    offsetY        = rect.offsetY;
+        public int    originalWidth  = rect.originalWidth;
+        public int    originalHeight = rect.originalHeight;
 
         public void Apply( Rect rect )
         {
@@ -80,34 +68,39 @@ public class TexturePacker
             rect.originalHeight = originalHeight;
         }
 
-        public int CompareTo( Alias o )
+        public int CompareTo( Alias? o )
         {
-            return name.CompareTo( o.name );
+            return string.Compare( name, o?.name, StringComparison.Ordinal );
         }
     }
 
+    [PublicAPI]
     public class Rect : IComparable< Rect >
     {
-        public string       name;
-        public int          offsetX;
-        public int          offsetY;
-        public int          regionWidth;
-        public int          regionHeight;
-        public int          originalWidth;
-        public int          originalHeight;
-        public int          x,     y;
-        public int          width, height; // Portion of page taken by this region, including padding.
-        public int          index;
-        public bool         rotated;
-//        public Set< Alias > aliases = new HashSet< Alias >();
-        public int[]        splits;
-        public int[]        pads;
-        public bool         canRotate = true;
+        public string name = string.Empty;
+        public int    offsetX;
+        public int    offsetY;
+        public int    regionWidth;
+        public int    regionHeight;
+        public int    originalWidth;
+        public int    originalHeight;
+        public int    x,     y;
+        public int    width, height; // Portion of page taken by this region, including padding.
+        public int    index;
 
-        private bool          isPatch;
+        public bool rotated;
+
+//        public Set< Alias > aliases = new HashSet< Alias >();
+        public int[] splits    = null!;
+        public int[] pads      = null!;
+        public bool  canRotate = true;
+
+        private bool isPatch;
+
 //        private BufferedImage image;
-        private FileInfo      file;
-        int                   score1, score2;
+        private FileInfo file = null!;
+        private int      score1;
+        private int      score2;
 
         public Rect()
         {
@@ -138,9 +131,9 @@ public class TexturePacker
 //        }
 
         /** Clears the image for this rect, which will be loaded from the specified file by {@link #getImage(ImageProcessor)}. */
-        public void UnloadImage( FileInfo file )
+        public void UnloadImage( FileInfo fileInfo )
         {
-            this.file = file;
+            this.file = fileInfo;
 //            image     = null;
         }
 
@@ -166,7 +159,7 @@ public class TexturePacker
 
         protected void Set( Rect rect )
         {
-            name           = rect.name;
+            name = rect.name;
 //            image          = rect.image;
             offsetX        = rect.offsetX;
             offsetY        = rect.offsetY;
@@ -181,36 +174,42 @@ public class TexturePacker
             index          = rect.index;
             rotated        = rect.rotated;
 //            aliases        = rect.aliases;
-            splits         = rect.splits;
-            pads           = rect.pads;
-            canRotate      = rect.canRotate;
-            score1         = rect.score1;
-            score2         = rect.score2;
-            file           = rect.file;
-            isPatch        = rect.isPatch;
+            splits    = rect.splits;
+            pads      = rect.pads;
+            canRotate = rect.canRotate;
+            score1    = rect.score1;
+            score2    = rect.score2;
+            file      = rect.file;
+            isPatch   = rect.isPatch;
         }
 
         public int CompareTo( Rect? o )
         {
-            return name.CompareTo( o.name );
+            return string.Compare( name, o?.name, StringComparison.Ordinal );
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         public override bool Equals( object? obj )
         {
-            if ( this == obj ) return true;
-            if ( obj == null ) return false;
-//            if ( getClass() != obj.getClass() ) return false;
-
-            var other = ( Rect )obj;
-
-            if ( name == null )
-            {
-                if ( other.name != null ) return false;
-            }
-            else
-            {
-                if ( !name.Equals( other.name ) ) return false;
-            }
+//            if ( this == obj ) return true;
+//            if ( obj == null ) return false;
+////            if ( getClass() != obj.getClass() ) return false;
+//
+//            var other = ( Rect )obj;
+//
+//            if ( name == null )
+//            {
+//                if ( other.name != null ) return false;
+//            }
+//            else
+//            {
+//                if ( !name.Equals( other.name ) ) return false;
+//            }
 
             return true;
         }
@@ -220,7 +219,7 @@ public class TexturePacker
             return name + ( index != -1 ? "_" + index : "" ) + "[" + x + "," + y + " " + width + "x" + height + "]";
         }
 
-        public string GetAtlasName( string name, bool flattenPaths )
+        public static string GetAtlasName( string name, bool flattenPaths )
         {
             return flattenPaths ? new FileInfo( name ).Name : name;
         }
@@ -233,4 +232,3 @@ public class TexturePacker
 //        Bicubic  = RenderingHints.VALUE_INTERPOLATION_BICUBIC;
 //    }
 }
-

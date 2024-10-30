@@ -50,6 +50,8 @@ public abstract class AbstractGraphics : IGraphics
     public virtual bool                 ContinuousRendering { get; set; } = true;
     public virtual bool                 IsFullscreen        { get; }
 
+    public Color WindowBackgroundColor { get; set; } = Color.Blue;
+
     #endregion properties
 
     // ------------------------------------------------------------------------
@@ -60,10 +62,7 @@ public abstract class AbstractGraphics : IGraphics
     /// Returns the time span between the current frame and the last frame
     /// in seconds, without smoothing.
     /// </summary>
-    public virtual float GetRawDeltaTime()
-    {
-        return DeltaTime;
-    }
+    public virtual float GetRawDeltaTime() => DeltaTime;
 
     /// <summary>
     /// This is a scaling factor for the Density Independent Pixel unit, following
@@ -72,18 +71,12 @@ public abstract class AbstractGraphics : IGraphics
     /// would be .75; etc.
     /// </summary>
     /// <returns>the Density Independent Pixel factor of the display.</returns>
-    public virtual float GetDensity()
-    {
-        return GetPpiXY().X / 160f;
-    }
+    public virtual float GetDensity() => GetPpiXY().X / 160f;
 
     /// <summary>
     /// Returns the amount of pixels per logical pixel (point).
     /// </summary>
-    public float GetBackBufferScale()
-    {
-        return BackBufferWidth / ( float ) Width;
-    }
+    float IGraphics.GetBackBufferScale() => BackBufferWidth / ( float ) Width;
 
     #endregion implemented methods
 

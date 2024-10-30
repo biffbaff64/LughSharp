@@ -61,7 +61,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     // ------------------------------------------------------------------------
 
     public IApplicationListener GetApplicationListener() => _currentWindow.Listener;
-    public IInput               GetInput()               => _currentWindow.Input;
+    public IInput GetInput() => _currentWindow.Input;
 
     // ------------------------------------------------------------------------
 
@@ -133,7 +133,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public void Run()
     {
         Logger.Checkpoint( true, true );
-        
+
         try
         {
             Loop();
@@ -165,9 +165,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Logger.Debug( $"_running: {_running}" );
         Logger.Debug( $"Windows.Count: {Windows.Count}" );
         Logger.Debug( "Entering framework loop" );
-        
+
         List< DesktopGLWindow > closedWindows = [ ];
-        
+
         while ( _running && ( Windows.Count > 0 ) )
         {
             Audio?.Update();
@@ -320,7 +320,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         {
             // the main window is created immediately
             dlgWindow = CreateWindow( dlgWindow, config, 0 );
-            
+
             //TODO: Why isn't this window added to Windows[] ?
         }
         else
@@ -334,7 +334,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
 
         Logger.Debug( $"{dlgWindow.Config.WindowWidth}, {dlgWindow.Config.WindowHeight}" );
-        
+
         return dlgWindow;
     }
 
@@ -506,16 +506,16 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
                                    $"{glMajor}.{glMinor}.{revision}",
-                                   Gdx.GL.glGetString( IGL.GL_VENDOR ),
-                                   Gdx.GL.glGetString( IGL.GL_RENDERER ) );
+                                   null,   //Gdx.GL.glGetString( IGL.GL_VENDOR ),
+                                   null ); //Gdx.GL.glGetString( IGL.GL_RENDERER ) );
 
         if ( !GLVersion.IsVersionEqualToOrHigher( 2, 0 ) || !SupportsFBO() )
         {
             var (major, minor) = Gdx.GL.GetProjectOpenGLVersion();
 
             throw new GdxRuntimeException( $"OpenGL 2.0 or higher with the FBO extension is required. "
-                                         + $"OpenGL version: {major}.{minor}"
-                                         + $"\n{GLVersion.DebugVersionString()}" );
+                                           + $"OpenGL version: {major}.{minor}"
+                                           + $"\n{GLVersion.DebugVersionString()}" );
         }
 
         Gdx.GL.Import( Glfw.GetProcAddress );
@@ -548,7 +548,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                     Logger.Debug( "Failed to initialise GLFW" );
                     System.Environment.Exit( 1 );
                 }
-                
+
                 Logger.Debug( "GLFW Initialised successfully", true );
             }
         }
@@ -768,8 +768,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         // FBO is in core since OpenGL 3.0,
         // see https://www.opengl.org/wiki/Framebuffer_Object
         return GLVersion!.IsVersionEqualToOrHigher( 3, 0 )
-            || Glfw.ExtensionSupported( "GL_EXT_framebuffer_object" )
-            || Glfw.ExtensionSupported( "GL_ARB_framebuffer_object" );
+               || Glfw.ExtensionSupported( "GL_EXT_framebuffer_object" )
+               || Glfw.ExtensionSupported( "GL_ARB_framebuffer_object" );
     }
 
     // ------------------------------------------------------------------------
@@ -777,47 +777,48 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-//    #region GLDebug specific
-//
-//    [PublicAPI]
-//    public struct Gldms( int gl43, int khr, int arb, int amd )
-//    {
-//        public int GL43 = gl43;
-//        public int Khr  = khr;
-//        public int Arb  = arb;
-//        public int Amd  = amd;
-//    }
-//
-//    public record GLDebugMessageSeverity
-//    {
-//        public Gldms High = new( IGL.GL_DEBUG_SEVERITY_HIGH,
-//                                 KHRDebug.GL_DEBUG_SEVERITY_HIGH,
-//                                 ARBDebugOutput.GL_DEBUG_SEVERITY_HIGH_ARB,
-//                                 AMDDebugOutput.GL_DEBUG_SEVERITY_HIGH_AMD );
-//
-//        public Gldms Medium = new( IGL.GL_DEBUG_SEVERITY_MEDIUM,
-//                                   KHRDebug.GL_DEBUG_SEVERITY_MEDIUM,
-//                                   ARBDebugOutput.GL_DEBUG_SEVERITY_MEDIUM_ARB,
-//                                   AMDDebugOutput.GL_DEBUG_SEVERITY_MEDIUM_AMD );
-//        
-//        public Gldms Low = new( IGL.GL_DEBUG_SEVERITY_LOW,
-//                                KHRDebug.GL_DEBUG_SEVERITY_LOW,
-//                                ARBDebugOutput.GL_DEBUG_SEVERITY_LOW_ARB,
-//                                AMDDebugOutput.GL_DEBUG_SEVERITY_LOW_AMD );
-//        
-//        public Gldms Notification = new( IGL.GL_DEBUG_SEVERITY_NOTIFICATION,
-//                                         KHRDebug.GL_DEBUG_SEVERITY_NOTIFICATION,
-//                                         -1,
-//                                         -1 );
-//    }
+    #region GLDebug specific
+
+    [PublicAPI]
+    public struct Gldms( int gl43, int khr, int arb, int amd )
+    {
+        public int GL43 = gl43;
+        public int Khr  = khr;
+        public int Arb  = arb;
+        public int Amd  = amd;
+    }
+
+    public record GLDebugMessageSeverity
+    {
+        public Gldms High = new( IGL.GL_DEBUG_SEVERITY_HIGH,
+                                 -1,   //KHRDebug.GL_DEBUG_SEVERITY_HIGH,
+                                 -1,   //ARBDebugOutput.GL_DEBUG_SEVERITY_HIGH_ARB,
+                                 -1 ); //AMDDebugOutput.GL_DEBUG_SEVERITY_HIGH_AMD );
+
+        public Gldms Medium = new( IGL.GL_DEBUG_SEVERITY_MEDIUM,
+                                   -1,   //KHRDebug.GL_DEBUG_SEVERITY_MEDIUM,
+                                   -1,   //ARBDebugOutput.GL_DEBUG_SEVERITY_MEDIUM_ARB,
+                                   -1 ); //AMDDebugOutput.GL_DEBUG_SEVERITY_MEDIUM_AMD );
+
+        public Gldms Low = new( IGL.GL_DEBUG_SEVERITY_LOW,
+                                -1,   //KHRDebug.GL_DEBUG_SEVERITY_LOW,
+                                -1,   //ARBDebugOutput.GL_DEBUG_SEVERITY_LOW_ARB,
+                                -1 ); //AMDDebugOutput.GL_DEBUG_SEVERITY_LOW_AMD );
+
+        public Gldms Notification = new( IGL.GL_DEBUG_SEVERITY_NOTIFICATION,
+                                         -1, //KHRDebug.GL_DEBUG_SEVERITY_NOTIFICATION,
+                                         -1,
+                                         -1 );
+    }
+
 //
 //    /// <summary>
 //    /// Enables or disables GL debug messages for the specified severity level.
 //    /// Returns false if the severity level could not be set (e.g. the NOTIFICATION
 //    /// level is not supported by the ARB and AMD extensions).
 //    /// </summary>
-//    public static bool SetGLDebugMessageControl( GLDebugMessageSeverity severity, bool enabled )
-//    {
+    public static bool SetGLDebugMessageControl( GLDebugMessageSeverity severity, bool enabled )
+    {
 //        GLCapabilities caps = GL.GetCapabilities();
 //
 //        if ( caps.OpenGL43 )
@@ -847,8 +848,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 //
 //            return true;
 //        }
-//        return false;
-//    }
-//
-//    #endregion GLDebug specific
+
+        return false;
+    }
+
+    #endregion GLDebug specific
 }
+

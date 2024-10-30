@@ -54,7 +54,7 @@ namespace Corelib.LibCore.Utils.Collections.DeleteCandidates;
 /// Linear probing continues to work even when all hashCodes collide, just more slowly.
 /// </para>
 /// </summary>
-[PublicAPI]
+[PublicAPI, Obsolete( "Obsolete" )]
 public class IdentityMap< TK, TV > : ObjectMap< TK, TV > where TK : notnull
 {
     private readonly ObjectIDGenerator _objectIDGenerator = new();

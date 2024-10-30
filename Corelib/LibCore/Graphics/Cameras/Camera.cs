@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using Corelib.LibCore.Graphics.G2D;
+using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Maths;
 using Corelib.LibCore.Maths.Collision;
 using Corelib.LibCore.Utils;
@@ -37,11 +38,6 @@ namespace Corelib.LibCore.Graphics.Cameras;
 [PublicAPI]
 public abstract class Camera
 {
-    // ------------------------------------------------------------------------
-
-    private readonly Ray     _ray    = new( new Vector3(), new Vector3() );
-    private readonly Vector3 _tmpVec = new();
-
     // ------------------------------------------------------------------------
 
     public Vector3 Position       { get; set; } = new();          // the position of the camera
@@ -59,6 +55,11 @@ public abstract class Camera
     protected float    Far               { get; set; } = 100;             // the far clipping plane distance, has to be positive
     protected Vector3  Direction         { get; set; } = new( 0, 0, -1 ); // the unit length direction vector of the camera
     protected Frustrum Frustum           { get; set; } = new();
+
+    // ------------------------------------------------------------------------
+
+    private readonly Ray     _ray    = new( new Vector3(), new Vector3() );
+    private readonly Vector3 _tmpVec = new();
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -114,9 +115,9 @@ public abstract class Camera
     }
 
     /// <summary>
-    /// Normalizes the up vector by first calculating the right vector via a
-    /// cross product between direction and up, and then recalculating the up
-    /// vector via a cross product between right and direction.
+    /// Normalizes the up vector by first calculating the right vector via a cross product
+    /// between direction and up, and then recalculating the up vector via a cross product
+    /// between right and direction.
     /// </summary>
     protected void NormalizeUp()
     {
@@ -125,9 +126,8 @@ public abstract class Camera
     }
 
     /// <summary>
-    /// Rotates the direction and up vector of this camera by the given
-    /// angle around the given axis. The direction and up vector will
-    /// not be orthogonalized.
+    /// Rotates the direction and up vector of this camera by the given angle around the
+    /// given axis. The direction and up vector will not be orthogonalized.
     /// </summary>
     /// <param name="angle">the angle.</param>
     /// <param name="axisX">the x-component of the axis.</param>
@@ -157,7 +157,7 @@ public abstract class Camera
     /// matrix. The direction and up vector will not be orthogonalized.
     /// </summary>
     /// <param name="transform"> The rotation matrix  </param>
-    protected void Rotate( in Matrix4 transform )
+    protected void Rotate( Matrix4 transform )
     {
         Direction.Rot( transform );
         Up.Rot( transform );
@@ -169,7 +169,7 @@ public abstract class Camera
     /// be orthogonalized.
     /// </summary>
     /// <param name="quat">The quaternion.</param>
-    public void Rotate( in Quaternion quat )
+    public void Rotate( Quaternion quat )
     {
         quat.Transform( Direction );
         quat.Transform( Up );
@@ -200,7 +200,7 @@ public abstract class Camera
     /// Transform the position, direction and up vector by the given matrix
     /// </summary>
     /// <param name="transform"> The transform matrix</param>
-    public void Transform( in Matrix4 transform )
+    public void Transform( Matrix4 transform )
     {
         Position.Mul( transform );
         Rotate( transform );
@@ -227,16 +227,16 @@ public abstract class Camera
     }
 
     /// <summary>
-    /// Function to translate a point given in screen coordinates to world space.
-    /// It's the same as GLU gluUnProject, but does not rely on OpenGL. The x- and
-    /// y-coordinate of vec are assumed to be in screen coordinates (origin is the
-    /// top left corner, y pointing down, x pointing to the right) as reported by the
-    /// touch methods in <see cref="Input"/>. A z-coordinate of 0 will return a
-    /// point on the near plane, a z-coordinate of 1 will return a point on the far
-    /// plane.
-    /// This method allows you to specify the viewport position and dimensions in the
-    /// coordinate system expected by <see cref="GLBindings.glViewport(int, int, int, int)"/>,
-    /// with the origin in the bottom left corner of the screen.
+    /// Function to translate a point given in screen coordinates to world space. It's the same
+    /// as GLU gluUnProject, but does not rely on OpenGL. The x- and y-coordinate of vec are assumed
+    /// to be in screen coordinates (origin is the top left corner, y pointing down, x pointing to the
+    /// right) as reported by the touch methods in <see cref="Input"/>. A z-coordinate of 0 will return
+    /// a point on the near plane, a z-coordinate of 1 will return a point on the far plane.
+    /// <para>
+    /// This method allows you to specify the viewport position and dimensions in the coordinate system
+    /// expected by <see cref="GLBindings.glViewport(int, int, int, int)"/>, with the origin in the bottom
+    /// left corner of the screen.
+    /// </para>
     /// </summary>
     /// <param name="screenCoords">The point in screen coordinates (origin top left)</param>
     /// <param name="viewportX">The coord of the bottom left corner of the viewport in glViewport coords.</param>
@@ -304,7 +304,7 @@ public abstract class Camera
     /// to the right. This makes it easily useable in conjunction with <see cref="IBatch"/>
     /// and similar classes.
     /// This method allows you to specify the viewport position and dimensions in the coordinate
-    /// system expected by <see cref="GLBindings.glViewport()"/>, with the origin
+    /// system expected by <see cref="GLBindings.glViewport(int,int,int,int)"/>, with the origin
     /// in the bottom left corner of the screen.
     /// </summary>
     /// <param name="worldCoords"></param>
@@ -323,10 +323,7 @@ public abstract class Camera
                             float viewportWidth,
                             float viewportHeight )
     {
-        if ( worldCoords == null )
-        {
-            throw new NullReferenceException();
-        }
+        ArgumentNullException.ThrowIfNull( worldCoords );
 
         worldCoords.Prj( Combined );
         worldCoords.X = ( ( viewportWidth * ( worldCoords.X + 1 ) ) / 2 ) + viewportX;
@@ -337,11 +334,10 @@ public abstract class Camera
     }
 
     /// <summary>
-    /// Creates a picking <see cref="Ray"/> from the coordinates given in screen
-    /// coordinates. It is assumed that the viewport spans the whole screen. The screen
-    /// coordinates origin is assumed to be in the top left corner, its y-axis pointing
-    /// down, the x-axis pointing to the right. The returned instance is not a new
-    /// instance but an internal member only accessible via this function.
+    /// Creates a picking <see cref="Ray"/> from the coordinates given in screen coordinates. It is
+    /// assumed that the viewport spans the whole screen. The screen coordinates origin is assumed to
+    /// be in the top left corner, its y-axis pointing down, the x-axis pointing to the right. The
+    /// returned instance is not a new instance but an internal member only accessible via this function.
     /// </summary>
     /// <param name="screenX"></param>
     /// <param name="screenY"></param>
@@ -379,11 +375,10 @@ public abstract class Camera
     }
 
     /// <summary>
-    /// Creates a picking <see cref="Ray"/> from the coordinates given in screen
-    /// coordinates. It is assumed that the viewport spans the whole screen. The screen
-    /// coordinates origin is assumed to be in the top left corner, its y-axis pointing
-    /// down, the x-axis pointing to the right. The returned instance is not a new
-    /// instance but an internal member only accessible via this function.
+    /// Creates a picking <see cref="Ray"/> from the coordinates given in screen coordinates. It is
+    /// assumed that the viewport spans the whole screen. The screen coordinates origin is assumed
+    /// to be in the top left corner, its y-axis pointing down, the x-axis pointing to the right. The
+    /// returned instance is not a new instance but an internal member only accessible via this function.
     /// </summary>
     /// <returns>The picking Ray.</returns>
     public Ray GetPickRay( float screenX, float screenY )

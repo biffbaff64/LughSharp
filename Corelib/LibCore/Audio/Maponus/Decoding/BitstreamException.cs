@@ -102,8 +102,11 @@ public class BitstreamException : Mp3SharpException
     public int ErrorCode { get; set; }
 
     /// <inheritdoc />
+    [Obsolete( "This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}" )]
     public override void GetObjectData( SerializationInfo info, StreamingContext context )
     {
+        //TODO: This needs replacing!!
+        
         ArgumentNullException.ThrowIfNull( info );
 
         info.AddValue( "ErrorCode", ErrorCode );
