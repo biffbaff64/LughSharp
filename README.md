@@ -1,4 +1,4 @@
-﻿![lughlogo.png](Resources%2Flughlogo.png)
+﻿![lughlogo.png](Assets/lughlogo.png)
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -9,7 +9,7 @@ Support OpenSource Licensing https://jb.gg/OpenSourceSupport
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-![red7logo_small.png](Resources%2Fred7logo_small.png)   ![jb_beam.png](Resources%2Fjb_beam_small.png)  ![OSI_Standard_Logo_100X130.png](Resources%2FOSI_Standard_Logo_100X130.png)
+![jb_beam.png](Assets/jb_beam_small.png)  ![OSI_Standard_Logo_100X130.png](Assets/OSI_Standard_Logo_100X130.png)
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

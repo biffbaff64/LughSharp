@@ -7,14 +7,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37b16c66-7b00-439c-a185-d98ba849df85" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/ConsoleApp1.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/ConsoleApp1.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/Assets.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/Assets.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/MainGame.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/MainGame.cs" afterDir="false" />
+    <list default="true" id="37b16c66-7b00-439c-a185-d98ba849df85" name="Changes" comment="Maintenance and tidying">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLTexture.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLTexture.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplicationConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documents/File Header.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documents/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documents/LughLogo - Large.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documents/LughLogo - Small.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documents/LughLogo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documents/Reference.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documents/TODO.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documents/TODO_FILES.MD" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documents/TODO_G3D.MD" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documents/listsort.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documents/repository-open-graph-template.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +118,7 @@
       <workItem from="1730053116167" duration="6427000" />
       <workItem from="1730070917026" duration="702000" />
       <workItem from="1730205542563" duration="9888000" />
-      <workItem from="1730300723582" duration="1167000" />
+      <workItem from="1730300723582" duration="2280000" />
     </task>
     <task id="LOCAL-00001" summary="Major Restructuring">
       <option name="closed" value="true" />
@@ -186,7 +192,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730068591353</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Maintenance and tidying">
+      <option name="closed" value="true" />
+      <created>1730305065946</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1730305065946</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
