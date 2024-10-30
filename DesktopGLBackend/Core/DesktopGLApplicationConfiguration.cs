@@ -29,13 +29,12 @@ namespace DesktopGLBackend.Core;
 [PublicAPI]
 public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 {
-    public bool DisableAudio                   { get; set; } = false;
-    public int  AudioDeviceSimultaneousSources { get; set; } = 16;
-    public int  AudioDeviceBufferSize          { get; set; } = 512;
-    public int  AudioDeviceBufferCount         { get; set; } = 9;
-
-    public bool          Debug       { get; set; } = false;
-    public StreamWriter? DebugStream { get; set; }
+    public bool          DisableAudio                   { get; set; } = false;
+    public int           AudioDeviceSimultaneousSources { get; set; } = 16;
+    public int           AudioDeviceBufferSize          { get; set; } = 512;
+    public int           AudioDeviceBufferCount         { get; set; } = 9;
+    public bool          Debug                          { get; set; } = false;
+    public StreamWriter? DebugStream                    { get; set; }
 
     /// <summary>
     /// The maximum number of threads to use for network requests.
@@ -64,7 +63,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
     private const int DEFAULT_CONTEXT_MAJOR = 4;
     private const int DEFAULT_CONTEXT_MINOR = 6;
-    
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 

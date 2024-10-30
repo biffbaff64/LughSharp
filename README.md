@@ -13,3 +13,6 @@ Support OpenSource Licensing https://jb.gg/OpenSourceSupport
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+The project references the project ConsoleApp1 in my repository list, which is a temporary project
+for testing the framework.

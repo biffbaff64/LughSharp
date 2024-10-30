@@ -33,8 +33,11 @@ using Platform = Corelib.LibCore.Core.Platform;
 
 namespace DesktopGLBackend.Core;
 
+/// <summary>
+/// 
+/// </summary>
 [PublicAPI]
-public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
+public class DesktopGLApplication : IDesktopGLApplicationBase
 {
     #region public properties
 
@@ -91,11 +94,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         Preferences = new Dictionary< string, IPreferences >();
 
-        // Initialise the global environment shortcuts. 'Gdx.Audio', 'Gdx.Files',
-        // and 'Gdx.Net' are instances of classes implementing IAudio, IFiles, and
-        // INet resprectively, and are used to access LughSharp members.
-        // 'Audio', 'Files', and 'Network' are instances of classes which extend
-        // the aforementioned classes, and are used in backend code only.
+        // Initialise the global environment shortcuts. 'Gdx.Audio', 'Gdx.Files', and 'Gdx.Net'
+        // are instances of classes implementing IAudio, IFiles, and INet resprectively, and are
+        // used to access LughSharp members 'Audio', 'Files', and 'Network' are instances of classes
+        // which extend the aforementioned classes, and are used in backend code only.
         Audio   = CreateAudio( config );
         Files   = new DesktopGLFiles();
         Network = new DesktopGLNet( config );
@@ -117,8 +119,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         // Create the window(s)
         Windows.Add( CreateWindow( config, listener, 0 ) );
-
-        OutputWindowsDebug();
     }
 
     /// <summary>
@@ -164,10 +164,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         Logger.Checkpoint();
         Logger.Debug( $"_running: {_running}" );
         Logger.Debug( $"Windows.Count: {Windows.Count}" );
+        Logger.Debug( "Entering framework loop" );
         
         List< DesktopGLWindow > closedWindows = [ ];
-
-        Logger.Debug( "Entering framework loop" );
         
         while ( _running && ( Windows.Count > 0 ) )
         {
@@ -278,8 +277,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
                 _sync?.SyncFrameRate( targetFramerate );
             }
         }
-        
-        Logger.Debug( "Loop ended" );
     }
 
     /// <summary>
@@ -294,8 +291,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     /// </summary>
     public DesktopGLWindow NewWindow( IApplicationListener listener, DesktopGLWindowConfiguration config )
     {
-        Logger.Checkpoint();
-
         GdxRuntimeException.ThrowIfNull( Config );
 
         var appConfig = DesktopGLApplicationConfiguration.Copy( Config );
@@ -317,8 +312,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
                                          IApplicationListener listener,
                                          long sharedContext )
     {
-        Logger.Checkpoint();
-
         var dlgWindow = new DesktopGLWindow( listener, config, this );
 
         Logger.Debug( $"sharedContext = {sharedContext}" );
@@ -354,14 +347,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     {
         ArgumentNullException.ThrowIfNull( dglWindow );
 
-        Logger.Checkpoint();
-
         var windowHandle = CreateGLFWWindow( config, sharedContext );
 
         dglWindow.Create( windowHandle );
         dglWindow.SetVisible( config.InitialVisibility );
-
-        Logger.Checkpoint();
 
         for ( var i = 0; i < 2; i++ )
         {
@@ -385,8 +374,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     /// <exception cref="GdxRuntimeException"></exception>
     private GLFW.Window CreateGLFWWindow( DesktopGLApplicationConfiguration config, long sharedContextWindow )
     {
-        Logger.Checkpoint();
-
         GLFW.Window? windowHandle;
 
         SetWindowHints( config );
@@ -494,8 +481,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     /// <remarks> 14.07.2024 - Merged with InitGLVersion(). </remarks>
     public unsafe void InitialiseGL()
     {
-        Logger.Checkpoint();
-
         // Retrieve OpenGL version
         Glfw.GetVersion( out var glMajor, out var glMinor, out var revision );
 
@@ -521,8 +506,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
                                    $"{glMajor}.{glMinor}.{revision}",
-                                   null,   //Gdx.GL.glGetString( IGL.GL_VENDOR ),
-                                   null ); //Gdx.GL.glGetString( IGL.GL_RENDERER ) );
+                                   Gdx.GL.glGetString( IGL.GL_VENDOR ),
+                                   Gdx.GL.glGetString( IGL.GL_RENDERER ) );
 
         if ( !GLVersion.IsVersionEqualToOrHigher( 2, 0 ) || !SupportsFBO() )
         {
@@ -547,8 +532,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     /// </exception>
     public static void InitialiseGLFW()
     {
-        Logger.Checkpoint();
-
         try
         {
             if ( _errorCallback == null )
@@ -566,9 +549,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
                     System.Environment.Exit( 1 );
                 }
                 
-                Logger.Divider( '=' );
-                Logger.Debug( "GLFW Initialised successfully" );
-                Logger.Divider( '=' );
+                Logger.Debug( "GLFW Initialised successfully", true );
             }
         }
         catch ( Exception e )
@@ -689,13 +670,20 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         return new DefaultDesktopGLInput( window );
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Returns the Android API level on Android, the major OS version on iOS (5, 6, 7, ..),
+    /// or 0 on the desktop.
+    /// </summary>
     public virtual int GetVersion()
     {
         return 0;
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Schedule an exit from the application. On android, this will cause a call to Pause()
+    /// and Dispose() some time in the future. It will not immediately finish your application.
+    /// On iOS this should be avoided in production as it breaks Apples guidelines
+    /// </summary>
     public virtual void Exit()
     {
         _running = false;
@@ -784,27 +772,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
             || Glfw.ExtensionSupported( "GL_ARB_framebuffer_object" );
     }
 
-    // ------------------------------------------------------------------------
-
-    public void Dispose()
-    {
-    }
-
-    // ------------------------------------------------------------------------
-
-    private void OutputWindowsDebug()
-    {
-        Logger.Divider();
-        Logger.Debug( "Created windows sizes:" );
-        
-        foreach ( var window in Windows )
-        {
-            Logger.Debug( $"Width: {window.Config.WindowWidth}, Height: {window.Config.WindowHeight}" );
-        }
-        
-        Logger.Divider();
-    }
-    
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

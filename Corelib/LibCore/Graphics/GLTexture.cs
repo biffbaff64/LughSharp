@@ -32,8 +32,8 @@ namespace Corelib.LibCore.Graphics;
 
 /// <summary>
 /// Class representing an OpenGL texture by its target and handle. Keeps track of
-/// its state like the TextureFilter and TextureWrap. Also provides some static
-/// methods to create TextureData and upload image data.
+/// its state like the TextureFilter and TextureWrap. Also provides some methods to
+/// create TextureData and upload image data.
 /// </summary>
 [PublicAPI]
 public abstract class GLTexture : IDisposable
