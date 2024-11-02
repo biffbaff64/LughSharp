@@ -44,7 +44,7 @@
 
         <!-- Version: Any valid OpenGL version from 1.0-4.6 -->
         <OpenGLVersionMajor>3</OpenGLVersionMajor>
-        <OpenGLVersionMinor>3</OpenGLVersionMinor>
+        <OpenGLVersionMinor>4</OpenGLVersionMinor>
 
         <!-- Defining exposed wrapper API (SAFE/UNSAFE/BOTH) -->
         <!-- SAFE: Only safe functions are exposed -->
@@ -150,6 +150,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="lib\" />
         <Folder Include="native\" />
         <Folder Include="ThirdParty\" />
     </ItemGroup>

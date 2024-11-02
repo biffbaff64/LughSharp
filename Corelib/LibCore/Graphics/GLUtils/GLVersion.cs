@@ -24,10 +24,11 @@
 
 using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Exceptions;
-using LughVersion = Corelib.LibCore.Core.LughVersion;
 using Platform = Corelib.LibCore.Core.Platform;
 
 namespace Corelib.LibCore.Graphics.GLUtils;
+
+//TODO: Can this be combined with LughVersion?
 
 /// <summary>
 /// </summary>
@@ -39,14 +40,15 @@ public class GLVersion : LughVersion
     /// <param name="appType"></param>
     /// <param name="versionString"></param>
     /// <param name="vendorString"></param>
-    /// <param name="rendererString"></param>
+    /// <param name="renderString"></param>
     public unsafe GLVersion( Platform.ApplicationType appType,
                              string versionString,
                              byte* vendorString,
-                             byte* rendererString )
+                             byte* renderString )
     {
         Logger.Checkpoint();
 
+        //TODO: WHY? WHY? WHY? WHY? Don't like this, do it better!
         GLtype = appType switch
         {
             Platform.ApplicationType.Android   => GraphicsBackend.Type.OpenGLES,
@@ -57,7 +59,7 @@ public class GLVersion : LughVersion
         };
 
         VendorString   = vendorString == null ? "" : Marshal.PtrToStringUTF8( ( IntPtr )vendorString );
-        RendererString = rendererString == null ? "" : Marshal.PtrToStringUTF8( ( IntPtr )rendererString );
+        RendererString = renderString == null ? "" : Marshal.PtrToStringUTF8( ( IntPtr )renderString );
 
         if ( GLtype == GraphicsBackend.Type.OpenGLES )
         {
@@ -76,11 +78,7 @@ public class GLVersion : LughVersion
         }
         else
         {
-            MajorVersion    = -1;
-            MinorVersion    = -1;
-            RevisionVersion = -1;
-            VendorString    = "";
-            RendererString  = "";
+            throw new GdxRuntimeException( $"Unknown GraphicsBackend: {GLtype}" );
         }
     }
 

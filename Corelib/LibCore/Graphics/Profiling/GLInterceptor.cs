@@ -31,51 +31,16 @@ namespace Corelib.LibCore.Graphics.Profiling;
 /// A collection of OpenGL Profiling methods.
 /// </summary>
 [PublicAPI]
-public class GLInterceptor : BaseGLInterceptor, IGLBindings
+public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler ), IGLBindings
 {
-    public GLInterceptor( GLProfiler profiler )
-        : base( profiler )
-    {
-    }
-
     /// <inheritdoc />
-    public (int major, int minor) GetProjectOpenGLVersion()
+    public (int major, int minor, int revision) GetProjectOpenGLVersion()
     {
         Calls++;
-        var (major, minor) = Gdx.GL.GetProjectOpenGLVersion();
+        var (major, minor, revision) = Gdx.GL.GetProjectOpenGLVersion();
         CheckErrors();
 
-        return ( major, minor );
-    }
-
-    /// <inheritdoc />
-    public int GetProjectOpenGLVersionMajor()
-    {
-        Calls++;
-        var major = Gdx.GL.GetProjectOpenGLVersionMajor();
-        CheckErrors();
-
-        return major;
-    }
-
-    /// <inheritdoc />
-    public int GetProjectOpenGLVersionMinor()
-    {
-        Calls++;
-        var minor = Gdx.GL.GetProjectOpenGLVersionMinor();
-        CheckErrors();
-
-        return minor;
-    }
-
-    /// <inheritdoc />
-    public string GetProjectOpenGLProfile()
-    {
-        Calls++;
-        var profile = Gdx.GL.GetProjectOpenGLProfile();
-        CheckErrors();
-
-        return profile;
+        return ( major, minor, revision );
     }
 
     /// <inheritdoc />

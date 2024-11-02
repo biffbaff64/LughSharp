@@ -30,52 +30,81 @@
 #pragma warning disable IDE0090 // Use 'new(...)'.
 #pragma warning disable CS8500  // This takes the address of, gets the size of, or declares a pointer to a managed type
 
+//@formatter:off
+
+// ----------------------------------------------------------------------------
+
 #if !OGL_WRAPPER_API_BOTH && !OGL_WRAPPER_API_UNSAFE && !OGL_WRAPPER_API_SAFE
 #error You must define one of OGL_WRAPPER_API_BOTH, OGL_WRAPPER_API_UNSAFE, or OGL_WRAPPER_API_SAFE
 #endif
 
+// ----------------------------------------------------------------------------
+
 #if OGL_P_CORE
 
-#if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-using System.Numerics;
-using GLenum = System.Int32;
-using GLfloat = System.Single;
-using GLint = System.Int32;
-using GLsizei = System.Int32;
-using GLbitfield = System.UInt32;
-using GLdouble = System.Double;
-using GLuint = System.UInt32;
-using GLboolean = System.Boolean;
-using GLubyte = System.Byte;
+    // ----------------------------------------------------------------------------
+
+    #if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+
+        using System.Numerics;
+        using GLenum = System.Int32;
+        using GLfloat = System.Single;
+        using GLint = System.Int32;
+        using GLsizei = System.Int32;
+        using GLbitfield = System.UInt32;
+        using GLdouble = System.Double;
+        using GLuint = System.UInt32;
+        using GLboolean = System.Boolean;
+        using GLubyte = System.Byte;
+
+    #endif
+
+    // ----------------------------------------------------------------------------
+
+    #if OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+        
+        using GLsizeiptr = System.Int32;
+        using GLintptr = System.Int32;
+
+    #endif
+
+    // ----------------------------------------------------------------------------
+
+    #if OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+
+        using GLshort = System.Int16;
+        using GLbyte = System.SByte;
+        using GLushort = System.UInt16;
+        using GLchar = System.Byte;
+
+    #endif
+
+    // ----------------------------------------------------------------------------
+
+    #if OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+
+        using GLuint64 = System.UInt64;
+        using GLint64 = System.Int64;
+
+    #endif
+
+    // ----------------------------------------------------------------------------
+
 #endif
 
-#if OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-using GLsizeiptr = System.Int32;
-using GLintptr = System.Int32;
-#endif
+// ----------------------------------------------------------------------------
 
-#if OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-using GLshort = System.Int16;
-using GLbyte = System.SByte;
-using GLushort = System.UInt16;
-using GLchar = System.Byte;
-#endif
-#if OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-#endif
-
-#if OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-using GLuint64 = System.UInt64;
-using GLint64 = System.Int64;
-#endif
-
-#endif
+//@formatter:on
 
 namespace Corelib.LibCore.Graphics.OpenGL;
 
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+
 /// <summary>
-/// Bindings for OpenGL 4.6, both core and compatibility profiles.
-/// Blazing fast, low level, direct access to the OpenGL API for all versions of OpenGL,
-/// using the unmanaged delegates feature in C# 9.0,
+/// Bindings for OpenGL, both core and compatibility profiles. Blazing fast, low level,
+/// direct access to the OpenGL API for all versions of OpenGL, using the unmanaged
+/// delegates feature in C# 9.0,
 /// <para>
 ///     <a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/function-pointers"/>
 /// </para>
@@ -91,81 +120,20 @@ public unsafe class GLBindings : IGLBindings
     /// <summary>
     /// The null pointer, just like in C/C++.
     /// </summary>
-    public readonly void* NULL = ( void* ) 0;
+    public readonly void* NULL = ( void* )0;
 
     // ------------------------------------------------------------------------
 
-    public (int major, int minor) GetProjectOpenGLVersion()
+    public (int major, int minor, int revision) GetProjectOpenGLVersion()
     {
-        return ( GetProjectOpenGLVersionMajor(), GetProjectOpenGLVersionMinor() );
+        var version = glGetString( IGL.GL_VERSION );
+
+        return ( version[0], version[ 2 ], 0 );
+        
+//        return ( int.Parse( glGetString( IGL.GL_MAJOR_VERSION ) ),
+//                int.Parse( glGetString( IGL.GL_MINOR_VERSION ) ),
+//                0 );
     }
-
-    /// <summary>
-    /// Useful helper function for getting the major OpenGL version of the project as defined
-    /// by the preprocessor. In cases where no version is defined, a compile time error will
-    /// be thrown to prevent the project from compiling. This can be used as input to e.g.
-    /// GLFW where you need to specify the major and minor version the OpenGL context that you
-    /// want to create.
-    /// </summary>
-    public int GetProjectOpenGLVersionMajor()
-    {
-        var major = -1;
-
-#if OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-        major = 4;
-#elif OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3
-        major = 3;
-#elif OGL_V_2_0 || OGL_V_2_1
-        major = 2;
-#elif OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5
-        major = 1;
-#else
-#error "OpenGL version not defined"
-#endif
-        return major;
-    }
-
-    /// <summary>
-    /// Useful helper function for getting the minor OpenGL version of the project as
-    /// defined by the preprocessor. In cases where no version is defined, a compile
-    /// time error will be thrown to prevent the project from compiling. This can be
-    /// used as input to e.g. GLFW where you need to specify the major and minor version
-    /// the OpenGL context that you want to create.
-    /// </summary>
-    public int GetProjectOpenGLVersionMinor()
-    {
-        var minor = -1;
-
-#if OGL_V_4_6
-        minor = 6;
-#elif OGL_V_1_5 || OGL_V_4_5
-        minor = 5;
-#elif OGL_V_1_4 || OGL_V_4_4
-        minor = 4;
-#elif OGL_V_1_3 || OGL_V_3_3 || OGL_V_4_3
-        minor = 3;
-#elif OGL_V_1_2 || OGL_V_3_2 || OGL_V_4_2
-        minor = 2;
-#elif OGL_V_1_1 || OGL_V_2_1 || OGL_V_3_1 || OGL_V_4_1
-        minor = 1;
-#elif OGL_V_1_0 || OGL_V_2_0 || OGL_V_3_0 || OGL_V_4_0
-        minor = 0;
-#else
-#error "OpenGL version not defined"
-#endif
-        return minor;
-    }
-
-    /// <summary>
-    /// Useful helper function for getting the OpenGL profile of the project as defined
-    /// by the preprocessor. In cases where no profile is defined, a compile time error
-    /// will be thrown to prevent the project from compiling.
-    /// </summary>
-    /// <returns>
-    /// The string "CORE" or "COMPAT", allowing the developer to further convert this
-    /// into a proper value for their context creation API.
-    /// </returns>
-    public string GetProjectOpenGLProfile() => "CORE";
 
 #if OGL_P_CORE
     /// <summary>
@@ -177,7 +145,7 @@ public unsafe class GLBindings : IGLBindings
 
     // OpenGL 1.0
 
-#if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+#if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCULLFACEPROC( GLenum mode );
@@ -1467,7 +1435,7 @@ public unsafe class GLBindings : IGLBindings
             i++;
         }
 
-        return new string( ( sbyte* ) p, 0, i, Encoding.UTF8 );
+        return new string( ( sbyte* )p, 0, i, Encoding.UTF8 );
     }
 #endif
 
@@ -1896,7 +1864,7 @@ public unsafe class GLBindings : IGLBindings
 
     // OpenGL 1.1
 
-#if OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+#if OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDRAWARRAYSPROC( GLenum mode, GLint first, GLsizei count );
@@ -2387,7 +2355,7 @@ public unsafe class GLBindings : IGLBindings
     {
         fixed ( void* p = &textures[ 0 ] )
         {
-            _glDeleteTextures( textures.Length, ( GLuint* ) p );
+            _glDeleteTextures( textures.Length, ( GLuint* )p );
         }
     }
 #endif
@@ -2420,7 +2388,7 @@ public unsafe class GLBindings : IGLBindings
         fixed ( void* p =
                    &textures[ 0 ] )
         {
-            _glGenTextures( n, ( GLuint* ) p );
+            _glGenTextures( n, ( GLuint* )p );
         }
 
         return textures;
@@ -2458,8 +2426,7 @@ public unsafe class GLBindings : IGLBindings
 
     // OpenGL 1.2
 
-#if OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-
+#if OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDRAWRANGEELEMENTSPROC( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, void* indices );
 
@@ -2838,8 +2805,7 @@ public unsafe class GLBindings : IGLBindings
 
     // OpenGL 1.3
 
-#if OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-
+#if OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLACTIVETEXTUREPROC( GLenum texture );
 
@@ -3516,8 +3482,7 @@ public unsafe class GLBindings : IGLBindings
 
     // OpenGL 1.4
 
-#if OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-
+#if OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBLENDFUNCSEPARATEPROC( GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha );
 
@@ -3820,8 +3785,7 @@ public unsafe class GLBindings : IGLBindings
 
     // OpenGL 1.5
 
-#if OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-
+#if OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGENQUERIESPROC( GLsizei n, GLuint* ids );
 
@@ -4537,7 +4501,7 @@ public unsafe class GLBindings : IGLBindings
         fixed ( IntPtr* p =
                    &@params[ 0 ] )
         {
-            _glGetBufferPointerv( target, pname, ( void** ) p );
+            _glGetBufferPointerv( target, pname, ( void** )p );
         }
     }
 #endif
@@ -4546,8 +4510,7 @@ public unsafe class GLBindings : IGLBindings
 
     // OpenGL 2.0
 
-#if OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-
+#if OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBLENDEQUATIONSEPARATEPROC( GLenum modeRGB, GLenum modeAlpha );
 
@@ -4926,7 +4889,7 @@ public unsafe class GLBindings : IGLBindings
             }
         }
 
-        return new string( ( sbyte* ) name, 0, len, Encoding.UTF8 );
+        return new string( ( sbyte* )name, 0, len, Encoding.UTF8 );
     }
 #endif
 
@@ -4988,7 +4951,7 @@ public unsafe class GLBindings : IGLBindings
             }
         }
 
-        return new string( ( sbyte* ) name, 0, len, Encoding.UTF8 );
+        return new string( ( sbyte* )name, 0, len, Encoding.UTF8 );
     }
 #endif
 
@@ -5139,7 +5102,7 @@ public unsafe class GLBindings : IGLBindings
         GLsizei len;
         _glGetProgramInfoLog( program, bufSize, &len, infoLog );
 
-        return new string( ( sbyte* ) infoLog, 0, len, Encoding.UTF8 );
+        return new string( ( sbyte* )infoLog, 0, len, Encoding.UTF8 );
     }
 #endif
 
@@ -5214,7 +5177,7 @@ public unsafe class GLBindings : IGLBindings
         GLsizei len;
         _glGetShaderInfoLog( shader, bufSize, &len, infoLog );
 
-        return new string( ( sbyte* ) infoLog, 0, len, Encoding.UTF8 );
+        return new string( ( sbyte* )infoLog, 0, len, Encoding.UTF8 );
     }
 #endif
 
@@ -5248,7 +5211,7 @@ public unsafe class GLBindings : IGLBindings
         GLsizei len;
         _glGetShaderSource( shader, bufSize, &len, source );
 
-        return new string( ( sbyte* ) source, 0, len, Encoding.UTF8 );
+        return new string( ( sbyte* )source, 0, len, Encoding.UTF8 );
     }
 #endif
 
@@ -5559,7 +5522,7 @@ public unsafe class GLBindings : IGLBindings
 
         for ( var i = 0; i < pointer.Length; i++ )
         {
-            pointer[ i ] = ( uint ) ptr[ i ];
+            pointer[ i ] = ( uint )ptr[ i ];
         }
     }
 #endif
@@ -7284,7 +7247,7 @@ public unsafe class GLBindings : IGLBindings
     /// </param>
     public void glVertexAttribPointer( GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, uint pointer )
     {
-        _glVertexAttribPointer( index, size, type, normalized, stride, ( void* ) pointer );
+        _glVertexAttribPointer( index, size, type, normalized, stride, ( void* )pointer );
     }
 #endif
 
@@ -7292,8 +7255,7 @@ public unsafe class GLBindings : IGLBindings
 
     // OpenGL 2.1
 
-#if OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-
+#if OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORMMATRIX2X3FVPROC( GLint location, GLsizei count, GLboolean transpose, GLfloat* value );
 
@@ -7556,8 +7518,7 @@ public unsafe class GLBindings : IGLBindings
 
     // OpenGL 3.0
 
-#if OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-
+#if OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCOLORMASKIPROC( GLuint index, GLboolean r, GLboolean g, GLboolean b, GLboolean a );
 
@@ -7911,7 +7872,7 @@ public unsafe class GLBindings : IGLBindings
                 {
                     _glGetTransformFeedbackVarying( program, index, bufSize, &length, pSize, pType, p );
 
-                    return new string( ( sbyte* ) p, 0, length, Encoding.UTF8 );
+                    return new string( ( sbyte* )p, 0, length, Encoding.UTF8 );
                 }
             }
         }
@@ -8019,7 +7980,7 @@ public unsafe class GLBindings : IGLBindings
     /// </param>
     public void glVertexAttribIPointer( GLuint index, GLint size, GLenum type, GLsizei stride, uint pointer )
     {
-        _glVertexAttribIPointer( index, size, type, stride, ( void* ) pointer );
+        _glVertexAttribIPointer( index, size, type, stride, ( void* )pointer );
     }
 #endif
 
@@ -9346,7 +9307,7 @@ public unsafe class GLBindings : IGLBindings
             i++;
         }
 
-        return new string( ( sbyte* ) ptr, 0, i, Encoding.UTF8 );
+        return new string( ( sbyte* )ptr, 0, i, Encoding.UTF8 );
     }
 #endif
 
@@ -10130,9 +10091,7 @@ public unsafe class GLBindings : IGLBindings
 
     // OpenGL 3.1
 
-#if OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-
-
+#if OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDRAWARRAYSINSTANCEDPROC( GLenum mode, GLint first, GLsizei count, GLsizei instancecount );
 
@@ -10452,7 +10411,7 @@ public unsafe class GLBindings : IGLBindings
         GLsizei length;
         _glGetActiveUniformName( program, uniformIndex, bufSize, &length, uniformName );
 
-        return new string( ( sbyte* ) uniformName, 0, length, Encoding.UTF8 );
+        return new string( ( sbyte* )uniformName, 0, length, Encoding.UTF8 );
     }
 #endif
 
@@ -10584,7 +10543,7 @@ public unsafe class GLBindings : IGLBindings
         GLsizei length;
         _glGetActiveUniformBlockName( program, uniformBlockIndex, bufSize, &length, uniformBlockName );
 
-        return new string( ( sbyte* ) uniformBlockName, 0, length, Encoding.UTF8 );
+        return new string( ( sbyte* )uniformBlockName, 0, length, Encoding.UTF8 );
     }
 #endif
 
@@ -10614,9 +10573,7 @@ public unsafe class GLBindings : IGLBindings
 
     // OpenGL 3.2
 
-#if OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-
-
+#if OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDRAWELEMENTSBASEVERTEXPROC( GLenum mode, GLsizei count, GLenum type, void* indices, GLint basevertex );
 
@@ -10914,7 +10871,7 @@ public unsafe class GLBindings : IGLBindings
             {
                 fixed ( T** ip = &indexPtrs[ 0 ] )
                 {
-                    _glMultiDrawElementsBaseVertex( mode, cp, type, ( void** ) ip, indices.Length, bvp );
+                    _glMultiDrawElementsBaseVertex( mode, cp, type, ( void** )ip, indices.Length, bvp );
                 }
             }
         }
@@ -11454,9 +11411,7 @@ public unsafe class GLBindings : IGLBindings
 
     // OpenGL 3.3
 
-#if OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-
-
+#if OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBINDFRAGDATALOCATIONINDEXEDPROC( GLuint program, GLuint colorNumber, GLuint index, GLchar* name );
 
@@ -18863,7 +18818,7 @@ public unsafe class GLBindings : IGLBindings
     /// </summary>
     public void Import( GetProcAddressHandler loader )
     {
-#if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+#if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
         _glCullFace               = Marshal.GetDelegateForFunctionPointer< PFNGLCULLFACEPROC >( loader.Invoke( "glCullFace" ) );
         _glFrontFace              = Marshal.GetDelegateForFunctionPointer< PFNGLFRONTFACEPROC >( loader.Invoke( "glFrontFace" ) );
         _glHint                   = Marshal.GetDelegateForFunctionPointer< PFNGLHINTPROC >( loader.Invoke( "glHint" ) );
@@ -18913,7 +18868,7 @@ public unsafe class GLBindings : IGLBindings
         _glDepthRange             = Marshal.GetDelegateForFunctionPointer< PFNGLDEPTHRANGEPROC >( loader.Invoke( "glDepthRange" ) );
         _glViewport               = Marshal.GetDelegateForFunctionPointer< PFNGLVIEWPORTPROC >( loader.Invoke( "glViewport" ) );
 #endif
-#if OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+#if OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
         _glDrawArrays        = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWARRAYSPROC >( loader.Invoke( "glDrawArrays" ) );
         _glDrawElements      = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWELEMENTSPROC >( loader.Invoke( "glDrawElements" ) );
         _glPolygonOffset     = Marshal.GetDelegateForFunctionPointer< PFNGLPOLYGONOFFSETPROC >( loader.Invoke( "glPolygonOffset" ) );
@@ -18928,13 +18883,13 @@ public unsafe class GLBindings : IGLBindings
         _glGenTextures       = Marshal.GetDelegateForFunctionPointer< PFNGLGENTEXTURESPROC >( loader.Invoke( "glGenTextures" ) );
         _glIsTexture         = Marshal.GetDelegateForFunctionPointer< PFNGLISTEXTUREPROC >( loader.Invoke( "glIsTexture" ) );
 #endif
-#if OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+#if OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
         _glDrawRangeElements = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWRANGEELEMENTSPROC >( loader.Invoke( "glDrawRangeElements" ) );
         _glTexImage3D        = Marshal.GetDelegateForFunctionPointer< PFNGLTEXIMAGE3DPROC >( loader.Invoke( "glTexImage3D" ) );
         _glTexSubImage3D     = Marshal.GetDelegateForFunctionPointer< PFNGLTEXSUBIMAGE3DPROC >( loader.Invoke( "glTexSubImage3D" ) );
         _glCopyTexSubImage3D = Marshal.GetDelegateForFunctionPointer< PFNGLCOPYTEXSUBIMAGE3DPROC >( loader.Invoke( "glCopyTexSubImage3D" ) );
 #endif
-#if OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+#if OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
         _glActiveTexture           = Marshal.GetDelegateForFunctionPointer< PFNGLACTIVETEXTUREPROC >( loader.Invoke( "glActiveTexture" ) );
         _glSampleCoverage          = Marshal.GetDelegateForFunctionPointer< PFNGLSAMPLECOVERAGEPROC >( loader.Invoke( "glSampleCoverage" ) );
         _glCompressedTexImage3D    = Marshal.GetDelegateForFunctionPointer< PFNGLCOMPRESSEDTEXIMAGE3DPROC >( loader.Invoke( "glCompressedTexImage3D" ) );
@@ -18945,7 +18900,7 @@ public unsafe class GLBindings : IGLBindings
         _glCompressedTexSubImage1D = Marshal.GetDelegateForFunctionPointer< PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC >( loader.Invoke( "glCompressedTexSubImage1D" ) );
         _glGetCompressedTexImage   = Marshal.GetDelegateForFunctionPointer< PFNGLGETCOMPRESSEDTEXIMAGEPROC >( loader.Invoke( "glGetCompressedTexImage" ) );
 #endif
-#if OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+#if OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
         _glBlendFuncSeparate = Marshal.GetDelegateForFunctionPointer< PFNGLBLENDFUNCSEPARATEPROC >( loader.Invoke( "glBlendFuncSeparate" ) );
         _glMultiDrawArrays   = Marshal.GetDelegateForFunctionPointer< PFNGLMULTIDRAWARRAYSPROC >( loader.Invoke( "glMultiDrawArrays" ) );
         _glMultiDrawElements = Marshal.GetDelegateForFunctionPointer< PFNGLMULTIDRAWELEMENTSPROC >( loader.Invoke( "glMultiDrawElements" ) );
@@ -18956,7 +18911,7 @@ public unsafe class GLBindings : IGLBindings
         _glBlendColor        = Marshal.GetDelegateForFunctionPointer< PFNGLBLENDCOLORPROC >( loader.Invoke( "glBlendColor" ) );
         _glBlendEquation     = Marshal.GetDelegateForFunctionPointer< PFNGLBLENDEQUATIONPROC >( loader.Invoke( "glBlendEquation" ) );
 #endif
-#if OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+#if OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
         _glGenQueries           = Marshal.GetDelegateForFunctionPointer< PFNGLGENQUERIESPROC >( loader.Invoke( "glGenQueries" ) );
         _glDeleteQueries        = Marshal.GetDelegateForFunctionPointer< PFNGLDELETEQUERIESPROC >( loader.Invoke( "glDeleteQueries" ) );
         _glIsQuery              = Marshal.GetDelegateForFunctionPointer< PFNGLISQUERYPROC >( loader.Invoke( "glIsQuery" ) );
@@ -18977,7 +18932,7 @@ public unsafe class GLBindings : IGLBindings
         _glGetBufferParameteriv = Marshal.GetDelegateForFunctionPointer< PFNGLGETBUFFERPARAMETERIVPROC >( loader.Invoke( "glGetBufferParameteriv" ) );
         _glGetBufferPointerv    = Marshal.GetDelegateForFunctionPointer< PFNGLGETBUFFERPOINTERVPROC >( loader.Invoke( "glGetBufferPointerv" ) );
 #endif
-#if OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+#if OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
         _glBlendEquationSeparate = Marshal.GetDelegateForFunctionPointer< PFNGLBLENDEQUATIONSEPARATEPROC >( loader.Invoke( "glBlendEquationSeparate" ) );
         _glDrawBuffers           = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWBUFFERSPROC >( loader.Invoke( "glDrawBuffers" ) );
         _glStencilOpSeparate     = Marshal.GetDelegateForFunctionPointer< PFNGLSTENCILOPSEPARATEPROC >( loader.Invoke( "glStencilOpSeparate" ) );
@@ -19075,7 +19030,7 @@ public unsafe class GLBindings : IGLBindings
         _glVertexAttrib4usv        = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4USVPROC >( loader.Invoke( "glVertexAttrib4usv" ) );
         _glVertexAttribPointer     = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBPOINTERPROC >( loader.Invoke( "glVertexAttribPointer" ) );
 #endif
-#if OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+#if OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
         _glUniformMatrix2x3fv = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX2X3FVPROC >( loader.Invoke( "glUniformMatrix2x3fv" ) );
         _glUniformMatrix3x2fv = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX3X2FVPROC >( loader.Invoke( "glUniformMatrix3x2fv" ) );
         _glUniformMatrix2x4fv = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX2X4FVPROC >( loader.Invoke( "glUniformMatrix2x4fv" ) );
@@ -19083,7 +19038,7 @@ public unsafe class GLBindings : IGLBindings
         _glUniformMatrix3x4fv = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX3X4FVPROC >( loader.Invoke( "glUniformMatrix3x4fv" ) );
         _glUniformMatrix4x3fv = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX4X3FVPROC >( loader.Invoke( "glUniformMatrix4x3fv" ) );
 #endif
-#if OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+#if OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
         _glColorMaski             = Marshal.GetDelegateForFunctionPointer< PFNGLCOLORMASKIPROC >( loader.Invoke( "glColorMaski" ) );
         _glGetBooleani_v          = Marshal.GetDelegateForFunctionPointer< PFNGLGETBOOLEANI_VPROC >( loader.Invoke( "glGetBooleani_v" ) );
         _glGetIntegeri_v          = Marshal.GetDelegateForFunctionPointer< PFNGLGETINTEGERI_VPROC >( loader.Invoke( "glGetIntegeri_v" ) );
@@ -19183,7 +19138,7 @@ public unsafe class GLBindings : IGLBindings
         _glGenVertexArrays         = Marshal.GetDelegateForFunctionPointer< PFNGLGENVERTEXARRAYSPROC >( loader.Invoke( "glGenVertexArrays" ) );
         _glIsVertexArray           = Marshal.GetDelegateForFunctionPointer< PFNGLISVERTEXARRAYPROC >( loader.Invoke( "glIsVertexArray" ) );
 #endif
-#if OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+#if OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
         _glDrawArraysInstanced     = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWARRAYSINSTANCEDPROC >( loader.Invoke( "glDrawArraysInstanced" ) );
         _glDrawElementsInstanced   = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWELEMENTSINSTANCEDPROC >( loader.Invoke( "glDrawElementsInstanced" ) );
         _glTexBuffer               = Marshal.GetDelegateForFunctionPointer< PFNGLTEXBUFFERPROC >( loader.Invoke( "glTexBuffer" ) );
@@ -19200,7 +19155,7 @@ public unsafe class GLBindings : IGLBindings
 
         _glUniformBlockBinding = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMBLOCKBINDINGPROC >( loader.Invoke( "glUniformBlockBinding" ) );
 #endif
-#if OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+#if OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
         _glDrawElementsBaseVertex = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWELEMENTSBASEVERTEXPROC >( loader.Invoke( "glDrawElementsBaseVertex" ) );
 
         _glDrawRangeElementsBaseVertex =
@@ -19228,7 +19183,7 @@ public unsafe class GLBindings : IGLBindings
         _glGetMultisamplefv       = Marshal.GetDelegateForFunctionPointer< PFNGLGETMULTISAMPLEFVPROC >( loader.Invoke( "glGetMultisamplefv" ) );
         _glSampleMaski            = Marshal.GetDelegateForFunctionPointer< PFNGLSAMPLEMASKIPROC >( loader.Invoke( "glSampleMaski" ) );
 #endif
-#if OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+#if OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
         _glBindFragDataLocationIndexed =
             Marshal.GetDelegateForFunctionPointer< PFNGLBINDFRAGDATALOCATIONINDEXEDPROC >( loader.Invoke( "glBindFragDataLocationIndexed" ) );
 

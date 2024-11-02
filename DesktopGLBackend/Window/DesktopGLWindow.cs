@@ -22,6 +22,8 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System;
+using System.Collections.Generic;
 using Corelib.LibCore.Graphics;
 using Corelib.LibCore.Maths;
 using Corelib.LibCore.Utils;
@@ -31,6 +33,9 @@ using Platform = Corelib.LibCore.Core.Platform;
 
 namespace DesktopGLBackend.Window;
 
+/// <summary>
+/// Wrapper/Manager class for a <see cref="GLFW.Window"/>.
+/// </summary>
 [PublicAPI]
 public class DesktopGLWindow : IDisposable
 {
@@ -42,16 +47,31 @@ public class DesktopGLWindow : IDisposable
     public DesktopGLGraphics                 Graphics            { get; set; } = null!;
     public bool                              ListenerInitialised { get; set; } = false;
 
+    /// <summary>
+    /// Return the window X position in logical coordinates. All monitors span a virtual
+    /// surface together. The coordinates are relative to the first monitor in the
+    /// virtual surface.
+    /// </summary>
+    public int PositionX => ( int ) GetPosition().X;
+
+    /// <summary>
+    /// Return the window Y position in logical coordinates. All monitors span a virtual
+    /// surface together. The coordinates are relative to the first monitor in the
+    /// virtual surface.
+    /// </summary>
+    public int PositionY => ( int ) GetPosition().Y;
+
     // ------------------------------------------------------------------------
 
     private readonly IDesktopGLApplicationBase  _application;
-    private readonly List< IRunnable.Runnable > _executedRunnables = new();
+    private readonly List< IRunnable.Runnable > _executedRunnables = [ ];
     private readonly bool                       _iconified         = false;
-    private readonly List< IRunnable.Runnable > _runnables         = new();
+    private readonly List< IRunnable.Runnable > _runnables         = [ ];
     private readonly Vector2                    _tmpV2             = new();
 
     private bool _requestRendering = false;
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -67,7 +87,7 @@ public class DesktopGLWindow : IDisposable
         
         Listener       = listener;
         WindowListener = config.WindowListener;
-        Config         = config;
+        Config         = DesktopGLApplicationConfiguration.Copy( config );
         _application   = application;
     }
 
@@ -95,19 +115,6 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    /// Post a <see cref="IRunnable.Runnable"/> to this window's event queue. Use this if
-    /// you access statics like <see cref="Gdx.Graphics"/> in your runnable instead
-    /// of <see cref="DesktopGLApplication.PostRunnable(IRunnable.Runnable)"/>".
-    /// </summary>
-    public void PostRunnable( IRunnable.Runnable runnable )
-    {
-        lock ( _runnables )
-        {
-            _runnables.Add( runnable );
-        }
-    }
-
-    /// <summary>
     /// Update this window.
     /// </summary>
     /// <returns> True if the window should render itself. </returns>
@@ -120,7 +127,11 @@ public class DesktopGLWindow : IDisposable
 
         lock ( _runnables )
         {
-            _executedRunnables.AddAll( _runnables );
+            foreach ( var runnable in _runnables )
+            {
+                _executedRunnables.Add( runnable );
+            }
+
             _runnables.Clear();
         }
 
@@ -161,6 +172,124 @@ public class DesktopGLWindow : IDisposable
         return shouldRender;
     }
 
+    /// <summary>
+    /// Post a <see cref="IRunnable.Runnable"/> to this window's event queue. Use this if
+    /// you access statics like <see cref="Gdx.Graphics"/> in your runnable instead
+    /// of <see cref="DesktopGLApplication.PostRunnable(IRunnable.Runnable)"/>".
+    /// </summary>
+    public void PostRunnable( IRunnable.Runnable runnable )
+    {
+        lock ( _runnables )
+        {
+            _runnables.Add( runnable );
+        }
+    }
+
+    /// <summary>
+    /// Makes this the currently active window.
+    /// </summary>
+    public void MakeCurrent()
+    {
+        Gdx.Graphics = Graphics;
+        Gdx.Input    = Input;
+
+        Glfw.MakeContextCurrent( GlfwWindow );
+    }
+
+    /// <summary>
+    /// Reguest the window to be drawn.
+    /// </summary>
+    public void RequestRendering()
+    {
+        lock ( this )
+        {
+            _requestRendering = true;
+        }
+    }
+
+    /// <summary>
+    /// Returns <b>true</b> if this window should close. It establishes this
+    /// via <see cref="Glfw.WindowShouldClose(Window)"/>
+    /// </summary>
+    /// <returns></returns>
+    public bool ShouldClose()
+    {
+        return Glfw.WindowShouldClose( GlfwWindow );
+    }
+
+    /// <inheritdoc cref="Glfw.SetWindowPos(Window,int,int)"/>
+    public void SetPosition( int x, int y )
+    {
+        Glfw.SetWindowPos( GlfwWindow, x, y );
+    }
+
+    /// <summary>
+    /// Gets the current window position in logical coordinates. All monitors span a
+    /// virtual surface together. The coordinates are relative to the first monitor
+    /// in the virtual surface.
+    /// </summary>
+    /// <returns>A Vector2 holding the window X and Y.</returns>
+    public Vector2 GetPosition()
+    {
+        Glfw.GetWindowPos( GlfwWindow, out var xPos, out var yPos );
+
+        return _tmpV2.Set( xPos, yPos );
+    }
+
+    /// <summary>
+    /// Sets the visibility of the window.
+    /// Invisible windows will still call their <see cref="IApplicationListener"/>
+    /// </summary>
+    public void SetVisible( bool visible )
+    {
+        if ( visible )
+        {
+            Glfw.ShowWindow( GlfwWindow );
+        }
+        else
+        {
+            Glfw.HideWindow( GlfwWindow );
+        }
+    }
+
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Closes this window and pauses and disposes the associated <see cref="IApplicationListener"/>.
+    /// This function sets the value of the close flag of the specified window. This can be used to
+    /// override the user's attempt to close the window, or to signal that it should be closed.
+    /// </summary>
+    public void CloseWindow() => Glfw.SetWindowShouldClose( GlfwWindow, true );
+
+    /// <summary>
+    /// Minimizes (iconifies) the window. Iconified windows do not call their
+    /// <see cref="IApplicationListener"/> until the window is restored.
+    /// </summary>
+    public void IconifyWindow() => Glfw.IconifyWindow( GlfwWindow );
+
+    /// <summary>
+    /// This function restores the specified window if it was previously iconified
+    /// (minimized) or maximized. If the window is already restored, this function
+    /// does nothing. If the specified window is a full screen window, the resolution
+    /// chosen for the window is restored on the selected monitor.
+    /// </summary>
+    public void RestoreWindow() => Glfw.RestoreWindow( GlfwWindow );
+
+    /// <summary>
+    /// This function maximizes the specified window if it was previously not maximized.
+    /// If the window is already maximized, this function does nothing. If the specified
+    /// window is a full screen window, this function does nothing.
+    /// </summary>
+    public void MaximizeWindow() => Glfw.MaximizeWindow( GlfwWindow );
+
+    /// <summary>
+    /// Brings the window to front and sets input focus. The window should
+    /// already be visible and not iconified.
+    /// </summary>
+    public void FocusWindow() => Glfw.FocusWindow( GlfwWindow );
+
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// Sets the windows title.
     /// </summary>
@@ -305,124 +434,8 @@ public class DesktopGLWindow : IDisposable
             ListenerInitialised = true;
         }
     }
-
-    /// <summary>
-    /// Makes this the currently active window.
-    /// </summary>
-    public void MakeCurrent()
-    {
-        Gdx.Graphics = Graphics;
-        Gdx.Input    = Input;
-
-        Glfw.MakeContextCurrent( GlfwWindow );
-    }
-
-    /// <summary>
-    /// Reguest the window to be drawn.
-    /// </summary>
-    public void RequestRendering()
-    {
-        lock ( this )
-        {
-            _requestRendering = true;
-        }
-    }
-
-    /// <summary>
-    /// Returns <b>true</b> if this window should close. It establishes this
-    /// via <see cref="Glfw.WindowShouldClose(Window)"/>
-    /// </summary>
-    /// <returns></returns>
-    public bool ShouldClose()
-    {
-        return Glfw.WindowShouldClose( GlfwWindow );
-    }
-
-    /// <inheritdoc cref="Glfw.SetWindowPos(Window,int,int)"/>
-    public void SetPosition( int x, int y )
-    {
-        Glfw.SetWindowPos( GlfwWindow, x, y );
-    }
-
-    /// <summary>
-    /// Gets the current window position in logical coordinates. All monitors span a
-    /// virtual surface together. The coordinates are relative to the first monitor
-    /// in the virtual surface.
-    /// </summary>
-    /// <returns>A Vector2 holding the window X and Y.</returns>
-    public Vector2 GetPosition()
-    {
-        Glfw.GetWindowPos( GlfwWindow, out var xPos, out var yPos );
-
-        return _tmpV2.Set( xPos, yPos );
-    }
-
-    /// <summary>
-    /// Return the window X position in logical coordinates. All monitors span a virtual
-    /// surface together. The coordinates are relative to the first monitor in the
-    /// virtual surface.
-    /// </summary>
-    public int PositionX => ( int ) GetPosition().X;
-
-    /// <summary>
-    /// Return the window Y position in logical coordinates. All monitors span a virtual
-    /// surface together. The coordinates are relative to the first monitor in the
-    /// virtual surface.
-    /// </summary>
-    public int PositionY => ( int ) GetPosition().Y;
-
-    /// <summary>
-    /// Sets the visibility of the window.
-    /// Invisible windows will still call their <see cref="IApplicationListener"/>
-    /// </summary>
-    public void SetVisible( bool visible )
-    {
-        if ( visible )
-        {
-            Glfw.ShowWindow( GlfwWindow );
-        }
-        else
-        {
-            Glfw.HideWindow( GlfwWindow );
-        }
-    }
-
+    
     // ------------------------------------------------------------------------
-
-    /// <summary>
-    /// Closes this window and pauses and disposes the associated <see cref="IApplicationListener"/>.
-    /// This function sets the value of the close flag of the specified window. This can be used to
-    /// override the user's attempt to close the window, or to signal that it should be closed.
-    /// </summary>
-    public void CloseWindow() => Glfw.SetWindowShouldClose( GlfwWindow, true );
-
-    /// <summary>
-    /// Minimizes (iconifies) the window. Iconified windows do not call their
-    /// <see cref="IApplicationListener"/> until the window is restored.
-    /// </summary>
-    public void IconifyWindow() => Glfw.IconifyWindow( GlfwWindow );
-
-    /// <summary>
-    /// This function restores the specified window if it was previously iconified
-    /// (minimized) or maximized. If the window is already restored, this function
-    /// does nothing. If the specified window is a full screen window, the resolution
-    /// chosen for the window is restored on the selected monitor.
-    /// </summary>
-    public void RestoreWindow() => Glfw.RestoreWindow( GlfwWindow );
-
-    /// <summary>
-    /// This function maximizes the specified window if it was previously not maximized.
-    /// If the window is already maximized, this function does nothing. If the specified
-    /// window is a full screen window, this function does nothing.
-    /// </summary>
-    public void MaximizeWindow() => Glfw.MaximizeWindow( GlfwWindow );
-
-    /// <summary>
-    /// Brings the window to front and sets input focus. The window should
-    /// already be visible and not iconified.
-    /// </summary>
-    public void FocusWindow() => Glfw.FocusWindow( GlfwWindow );
-
     // ------------------------------------------------------------------------
 
     #region dispose pattern

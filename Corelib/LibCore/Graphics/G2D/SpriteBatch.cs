@@ -116,7 +116,7 @@ public class SpriteBatch : IBatch
 
         IsDrawing = false;
 
-        var vertexDataType = ( Gdx.GL.GetProjectOpenGLVersionMajor() >= 3 )
+        var vertexDataType = ( Gdx.GL.GetProjectOpenGLVersion().major >= 3 ) //TODO:
             ? Mesh.VertexDataType.VertexBufferObjectWithVAO
             : Mesh.VertexDataType.VertexArray;
 

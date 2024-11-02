@@ -27,9 +27,6 @@ namespace DesktopGLBackend.Core;
 [PublicAPI]
 public interface IDesktopGLApplicationBase : IApplication
 {
-    IApplicationListener GetApplicationListener();
-    IInput               GetInput();
-
     /// <summary>
     /// Creates the Audio device.
     /// </summary>
@@ -39,4 +36,7 @@ public interface IDesktopGLApplicationBase : IApplication
     /// Creates an Input device.
     /// </summary>
     IDesktopGLInput CreateInput( DesktopGLWindow window );
+
+    IApplicationListener GetApplicationListener();
+    IInput               GetInput();
 }

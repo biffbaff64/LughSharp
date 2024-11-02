@@ -22,17 +22,18 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-// ReSharper disable RedundantUsingDirective.Global
 // ----------------------------------------------------------------------------
 // General System
 
 global using System;
 global using System.Collections;
+global using System.Collections.Generic;
 global using System.Diagnostics;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.IO;
 global using System.IO.Compression;
+global using System.Linq;
 global using System.Reflection;
 global using System.Runtime.InteropServices;
 global using System.Runtime.Serialization;
@@ -41,18 +42,11 @@ global using System.Text.RegularExpressions;
 
 // ----------------------------------------------------------------------------
 // Json
-global using System.Text.Json;
 global using System.Text.Json.Serialization;
 
 // ----------------------------------------------------------------------------
 // XML
 global using System.Xml;
-global using System.Xml.Linq;
-global using System.Xml.Resolvers;
-global using System.Xml.Schema;
-global using System.Xml.Serialization;
-global using System.Xml.XPath;
-global using System.Xml.Xsl;
 
 // ----------------------------------------------------------------------------
 // Jetbrains
@@ -63,18 +57,7 @@ global using JetBrains.Annotations;
 
 // ----------------------------------------------------------------------------
 // OpenGL / Glfw support
-global using DotGLFW;
 global using GLFW = DotGLFW;
-//
-//global using GLenum = int;
-//global using GLfloat = float;
-//global using GLint = int;
-//global using GLsizei = int;
-//global using GLbitfield = uint;
-//global using GLdouble = double;
-//global using GLuint = uint;
-//global using GLboolean = bool;
-//global using GLubyte = byte;
 
 // ----------------------------------------------------------------------------
 // LughSharp

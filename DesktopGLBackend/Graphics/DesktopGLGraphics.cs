@@ -22,6 +22,7 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System;
 using Corelib.LibCore.Graphics;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Graphics.OpenGL;
@@ -46,10 +47,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     private long _frameId;
     private int  _frames;
     private int  _fps;
-    private int  _windowHeightBeforeFullscreen;
     private int  _windowPosXBeforeFullscreen;
     private int  _windowPosYBeforeFullscreen;
     private int  _windowWidthBeforeFullscreen;
+    private int  _windowHeightBeforeFullscreen;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

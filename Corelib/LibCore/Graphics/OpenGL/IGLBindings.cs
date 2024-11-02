@@ -33,36 +33,7 @@ public interface IGLBindings
     /// and <see cref="GetProjectOpenGLVersionMinor"/> in one method call.
     /// </summary>
     /// <returns> A tuple holding the major and minor version numbers. </returns>
-    ( int major, int minor ) GetProjectOpenGLVersion();
-
-    /// <summary>
-    /// Useful helper function for getting the major OpenGL version of the project as defined
-    /// by the preprocessor. In cases where no version is defined, a compile time error will
-    /// be thrown to prevent the project from compiling. This can be used as input to e.g.
-    /// GLFW where you need to specify the major and minor version the OpenGL context that you
-    /// want to create.
-    /// </summary>
-    int GetProjectOpenGLVersionMajor();
-
-    /// <summary>
-    /// Useful helper function for getting the minor OpenGL version of the project as
-    /// defined by the preprocessor. In cases where no version is defined, a compile
-    /// time error will be thrown to prevent the project from compiling. This can be
-    /// used as input to e.g. GLFW where you need to specify the major and minor version
-    /// the OpenGL context that you want to create.
-    /// </summary>
-    int GetProjectOpenGLVersionMinor();
-
-    /// <summary>
-    /// Useful helper function for getting the OpenGL profile of the project as defined
-    /// by the preprocessor. In cases where no profile is defined, a compile time error
-    /// will be thrown to prevent the project from compiling.
-    /// </summary>
-    /// <returns>
-    /// The string "CORE" or "COMPAT", allowing the developer to further convert this
-    /// into a proper value for their context creation API.
-    /// </returns>
-    string GetProjectOpenGLProfile();
+    ( int major, int minor, int revision ) GetProjectOpenGLVersion();
 
     /// <summary>
     /// Specify whether front- or back-facing facets can be culled

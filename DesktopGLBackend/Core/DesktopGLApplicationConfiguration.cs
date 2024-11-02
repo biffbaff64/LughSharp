@@ -22,47 +22,53 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Text;
 using Corelib.LibCore.Graphics.GLUtils;
 
 namespace DesktopGLBackend.Core;
 
+/// <summary>
+/// Configuration data and methods for the Desktop OpenGL backend.
+/// </summary>
 [PublicAPI]
 public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 {
+    #region properties
+
     public bool          DisableAudio                   { get; set; } = false;
     public int           AudioDeviceSimultaneousSources { get; set; } = 16;
     public int           AudioDeviceBufferSize          { get; set; } = 512;
     public int           AudioDeviceBufferCount         { get; set; } = 9;
     public bool          Debug                          { get; set; } = false;
-    public StreamWriter? DebugStream                    { get; set; }
+    public StreamWriter? DebugStream                    { get; set; } = new( Console.OpenStandardOutput(), Encoding.UTF8 );
+    public bool          TransparentFramebuffer         { get; set; } = false;
+    public HdpiMode      HdpiMode                       { get; set; } = HdpiMode.Logical;
+    public int           Depth                          { get; set; } = 16;
+    public int           Stencil                        { get; set; } = 0;
+    public int           Samples                        { get; set; } = 0;
+    public int           IdleFPS                        { get; set; } = 60;
+    public int           ForegroundFPS                  { get; set; } = 0;
+    public int           GLContextMajorVersion          { get; set; } = DEFAULT_CONTEXT_MAJOR;
+    public int           GLContextMinorVersion          { get; set; } = DEFAULT_CONTEXT_MINOR;
+    public int           GLContextRevision              { get; set; } = 0;
+    public int           Red                            { get; set; } = 8;
+    public int           Green                          { get; set; } = 8;
+    public int           Blue                           { get; set; } = 8;
+    public int           Alpha                          { get; set; } = 8;
+    public string        PreferencesDirectory           { get; set; } = ".prefs/";
+    public PathTypes     PreferencesFileType            { get; set; } = PathTypes.External;
 
     /// <summary>
-    /// The maximum number of threads to use for network requests.
-    /// Default is <see cref="int.MaxValue"/>.
+    /// The maximum number of threads to use for network requests. Default is <see cref="int.MaxValue"/>.
     /// </summary>
     public int MaxNetThreads { get; set; } = int.MaxValue;
 
-    public bool     TransparentFramebuffer { get; set; }
-    public HdpiMode HdpiMode               { get; set; } = HdpiMode.Logical;
-    public int      Depth                  { get; set; } = 16;
-    public int      Stencil                { get; set; }
-    public int      Samples                { get; set; }
-    public int      IdleFPS                { get; set; } = 60;
-    public int      ForegroundFPS          { get; set; }
+    #endregion properties
 
-    public int GLContextMajorVersion { get; set; } = DEFAULT_CONTEXT_MAJOR;
-    public int GLContextMinorVersion { get; set; } = DEFAULT_CONTEXT_MINOR;
+    // ------------------------------------------------------------------------
 
-    public int Red   { get; set; } = 8;
-    public int Green { get; set; } = 8;
-    public int Blue  { get; set; } = 8;
-    public int Alpha { get; set; } = 8;
-
-    public string    PreferencesDirectory { get; set; } = ".prefs/";
-    public PathTypes PreferencesFileType  { get; set; } = PathTypes.External;
-
-    private const int DEFAULT_CONTEXT_MAJOR = 4;
-    private const int DEFAULT_CONTEXT_MINOR = 6;
+    private const int DEFAULT_CONTEXT_MAJOR = 3;
+    private const int DEFAULT_CONTEXT_MINOR = 3;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -81,8 +87,8 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    /// Sets this DesktopApplicationConfiguration settings, using settings
-    /// from the supplied DesktopApplicationConfiguratrion object.
+    /// Sets this DesktopApplicationConfiguration settings, using settings from the supplied
+    /// DesktopApplicationConfiguratrion object.
     /// </summary>
     private void Set( DesktopGLApplicationConfiguration config )
     {
@@ -92,21 +98,24 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
         AudioDeviceSimultaneousSources = config.AudioDeviceSimultaneousSources;
         AudioDeviceBufferSize          = config.AudioDeviceBufferSize;
         AudioDeviceBufferCount         = config.AudioDeviceBufferCount;
+        Debug                          = config.Debug;
+        DebugStream                    = config.DebugStream;
+        TransparentFramebuffer         = config.TransparentFramebuffer;
+        HdpiMode                       = config.HdpiMode;
+        Depth                          = config.Depth;
+        Stencil                        = config.Stencil;
+        Samples                        = config.Samples;
+        IdleFPS                        = config.IdleFPS;
+        ForegroundFPS                  = config.ForegroundFPS;
+        GLContextMajorVersion          = config.GLContextMajorVersion;
+        GLContextMinorVersion          = config.GLContextMinorVersion;
+        GLContextRevision              = config.GLContextRevision;
         Red                            = config.Red;
         Green                          = config.Green;
         Blue                           = config.Blue;
         Alpha                          = config.Alpha;
-        Depth                          = config.Depth;
-        Stencil                        = config.Stencil;
-        Samples                        = config.Samples;
-        TransparentFramebuffer         = config.TransparentFramebuffer;
-        IdleFPS                        = config.IdleFPS;
-        ForegroundFPS                  = config.ForegroundFPS;
         PreferencesDirectory           = config.PreferencesDirectory;
         PreferencesFileType            = config.PreferencesFileType;
-        HdpiMode                       = config.HdpiMode;
-        Debug                          = config.Debug;
-        DebugStream                    = config.DebugStream;
     }
 
     /// <summary>
@@ -161,16 +170,6 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     {
         PreferencesDirectory = preferencesDirectory;
         PreferencesFileType  = preferencesFileType;
-    }
-
-    /// <summary>
-    /// Sets the vorrect values for <see cref="GLContextMajorVersion"/> and
-    /// <see cref="GLContextMinorVersion"/>. Defaults to 4 (major) and 6 (minor)
-    /// </summary>
-    public void SetGLContextVersion()
-    {
-        GLContextMajorVersion = DEFAULT_CONTEXT_MAJOR;
-        GLContextMinorVersion = DEFAULT_CONTEXT_MINOR;
     }
 
     /// <summary>

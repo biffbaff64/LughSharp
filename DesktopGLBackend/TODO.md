@@ -1,4 +1,11 @@
 
+1. Create a DesktopGLApplication
+2. Create one or more DesktopGLWindows
+3. Each window should create:-
+        - Input Manager
+        - DesktopGLGraphics
+
+
 BACKENDS/DESKTOPGL
 ------------------
 
