@@ -22,9 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Utils;
@@ -87,8 +84,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         // This MUST be the first call in this constructor
         Gdx.Initialise( this );
 
-        InitialiseGLFW();
-
         Preferences = new Dictionary< string, IPreferences >();
 
         // Initialise the global environment shortcuts. 'Gdx.Audio', 'Gdx.Files', and 'Gdx.Net' are instances
@@ -109,8 +104,13 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         _sync          = new Sync();
         _currentWindow = null!;
 
-        ( _glMajor, _glMinor, _glRevision ) = Gdx.GL.GetProjectOpenGLVersion();
-        
+        Logger.Checkpoint();
+
+        ( _glMajor, _glMinor ) = Gdx.GL.GetProjectOpenGLVersion();
+
+        Logger.Debug( $"version: {_glMajor}.{_glMinor}.{_glRevision}" );
+        Logger.Checkpoint();
+
         config.GLContextMajorVersion = _glMajor;
         config.GLContextMinorVersion = _glMinor;
         config.GLContextRevision     = _glRevision;
@@ -118,11 +118,13 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         // Initialise 'Config' here to allow for any mods to 'config' during setup.
         Config = DesktopGLApplicationConfiguration.Copy( config );
 
+        InitialiseGLFW();
+
         SetWindowHints( Config );
         InitGLVersion();
 
         // Create the window(s)
-        Windows.Add( CreateWindow( config, listener, 0 ) );
+        Windows.Add( CreateWindow( Config, listener, 0 ) );
     }
 
     /// <summary>
@@ -502,6 +504,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     {
         try
         {
+            Logger.Checkpoint();
+            
             if ( !_glfwInitialised && ( _errorCallback == null ) )
             {
                 DesktopGLNativesLoader.Load();
@@ -577,12 +581,14 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         if ( !GLVersion.IsVersionEqualToOrHigher( 2, 0 ) || !SupportsFBO() )
         {
-            var (major, minor, revision) = Gdx.GL.GetProjectOpenGLVersion();
+            var (major, minor) = Gdx.GL.GetProjectOpenGLVersion();
 
             throw new GdxRuntimeException( $"OpenGL 2.0 or higher with the FBO extension is required. "
-                                           + $"OpenGL version: {major}.{minor}.{revision}"
+                                           + $"OpenGL version: {major}.{minor}"
                                            + $"\n{GLVersion.DebugVersionString()}" );
         }
+        
+        Gdx.GL.Import( Glfw.GetProcAddress );
     }
 
     #endregion GL and GLFW initialisation

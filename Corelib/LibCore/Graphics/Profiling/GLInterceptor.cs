@@ -34,13 +34,13 @@ namespace Corelib.LibCore.Graphics.Profiling;
 public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler ), IGLBindings
 {
     /// <inheritdoc />
-    public (int major, int minor, int revision) GetProjectOpenGLVersion()
+    public (int major, int minor) GetProjectOpenGLVersion()
     {
         Calls++;
-        var (major, minor, revision) = Gdx.GL.GetProjectOpenGLVersion();
+        var (major, minor) = Gdx.GL.GetProjectOpenGLVersion();
         CheckErrors();
 
-        return ( major, minor, revision );
+        return ( major, minor );
     }
 
     /// <inheritdoc />

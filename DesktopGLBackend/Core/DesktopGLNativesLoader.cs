@@ -22,6 +22,7 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Corelib.LibCore.Utils;
 
 namespace DesktopGLBackend.Core;
 
@@ -32,5 +33,6 @@ public class DesktopGLNativesLoader
 {
     public static void Load()
     {
+        Logger.Checkpoint();
     }
 }

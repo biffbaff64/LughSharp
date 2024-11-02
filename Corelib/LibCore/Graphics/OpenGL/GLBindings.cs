@@ -124,15 +124,11 @@ public unsafe class GLBindings : IGLBindings
 
     // ------------------------------------------------------------------------
 
-    public (int major, int minor, int revision) GetProjectOpenGLVersion()
+    public (int major, int minor) GetProjectOpenGLVersion()
     {
         var version = glGetString( IGL.GL_VERSION );
-
-        return ( version[0], version[ 2 ], 0 );
         
-//        return ( int.Parse( glGetString( IGL.GL_MAJOR_VERSION ) ),
-//                int.Parse( glGetString( IGL.GL_MINOR_VERSION ) ),
-//                0 );
+        return ( version[0], version[ 2 ] );
     }
 
 #if OGL_P_CORE

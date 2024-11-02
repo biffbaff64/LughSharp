@@ -33,7 +33,7 @@ public interface IGLBindings
     /// and <see cref="GetProjectOpenGLVersionMinor"/> in one method call.
     /// </summary>
     /// <returns> A tuple holding the major and minor version numbers. </returns>
-    ( int major, int minor, int revision ) GetProjectOpenGLVersion();
+    ( int major, int minor ) GetProjectOpenGLVersion();
 
     /// <summary>
     /// Specify whether front- or back-facing facets can be culled
