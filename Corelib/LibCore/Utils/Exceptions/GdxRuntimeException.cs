@@ -74,30 +74,30 @@ public class GdxRuntimeException : ApplicationException
     /// Throws an GdxRuntimeException if argument is null.
     /// </summary>
     /// <param name="argument">The reference type argument to validate as non-null.</param>
-    /// <param name="paramName">
-    /// The name of the parameter with which argument corresponds. If you omit this
-    /// parameter, the name of argument is used.
-    /// </param>
+    /// <param name="message"> A message to display when/if the exception is thrown </param>
     public static void ThrowIfNull( [NotNull] object? argument,
                                     [CallerArgumentExpression( "argument" )]
-                                    string? paramName = null )
+                                    string? message = null )
     {
-        if ( argument is null ) Throw( paramName );
+        if ( argument is null )
+        {
+            Throw( message );
+        }
     }
 
     /// <summary>
     /// Throws an GdxRuntimeException if the supplied condition is TRUE.
     /// </summary>
     /// <param name="condition">The condition to validate as true.</param>
-    /// <param name="paramName">
-    /// The name of the parameter with which condition corresponds. If you omit this
-    /// parameter, the name of argument is used.
-    /// </param>
+    /// <param name="message"> A message to display when/if the exception is thrown </param>
     public static void ThrowIfTrue( bool condition,
                                     [CallerArgumentExpression( "condition" )]
-                                    string? paramName = null )
+                                    string? message = null )
     {
-        if ( condition ) Throw( paramName );
+        if ( condition )
+        {
+            Throw( message );
+        }
     }
 
     [DoesNotReturn]

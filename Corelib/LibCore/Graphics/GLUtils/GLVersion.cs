@@ -22,33 +22,41 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Exceptions;
 using Platform = Corelib.LibCore.Core.Platform;
 
 namespace Corelib.LibCore.Graphics.GLUtils;
 
-//TODO: Can this be combined with LughVersion?
-
 /// <summary>
+/// Wrapper for the current OpenGL Version used by this library.
 /// </summary>
-[PublicAPI]
-public class GLVersion : LughVersion
+[PublicAPI, DebuggerDisplay( "DebugVersionString" )]
+public class GLVersion
 {
+    public string?              VendorString   { get; set; }
+    public string?              RendererString { get; set; }
+    public GraphicsBackend.Type GLtype         { get; set; }
+
+    // ------------------------------------------------------------------------
+
+    private int _majorVersion;
+    private int _minorVersion;
+    private int _revisionVersion;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     /// </summary>
     /// <param name="appType"></param>
-    /// <param name="versionString"></param>
     /// <param name="vendorString"></param>
     /// <param name="renderString"></param>
     public unsafe GLVersion( Platform.ApplicationType appType,
-                             string versionString,
                              byte* vendorString,
                              byte* renderString )
     {
-        Logger.Checkpoint();
-
-        //TODO: WHY? WHY? WHY? WHY? Don't like this, do it better!
         GLtype = appType switch
         {
             Platform.ApplicationType.Android   => GraphicsBackend.Type.OpenGLES,
@@ -60,72 +68,17 @@ public class GLVersion : LughVersion
 
         VendorString   = vendorString == null ? "" : Marshal.PtrToStringUTF8( ( IntPtr )vendorString );
         RendererString = renderString == null ? "" : Marshal.PtrToStringUTF8( ( IntPtr )renderString );
-
-        if ( GLtype == GraphicsBackend.Type.OpenGLES )
-        {
-            //OpenGL<space>ES<space><version number><space><vendor-specific information>.
-            ExtractVersion( @"OpenGL ES (\d(\.\d){0,2})", versionString );
-        }
-        else if ( GLtype == GraphicsBackend.Type.WebGL )
-        {
-            //WebGL<space><version number><space><vendor-specific information>
-            ExtractVersion( @"WebGL (\d(\.\d){0,2})", versionString );
-        }
-        else if ( GLtype == GraphicsBackend.Type.OpenGL )
-        {
-            //<version number><space><vendor-specific information>
-            ExtractVersion( @"(\d(\.\d){0,2})", versionString );
-        }
-        else
-        {
-            throw new GdxRuntimeException( $"Unknown GraphicsBackend: {GLtype}" );
-        }
     }
 
     /// <summary>
+    /// 
     /// </summary>
-    /// <param name="patternString"></param>
-    /// <param name="versionString"></param>
-    private void ExtractVersion( string patternString, string versionString )
+    /// <returns></returns>
+    public (int major, int minor, int revision) Get()
     {
-        var rx = new Regex( patternString );
+        ExtractVersion( @"(\d(\.\d){0,2})", Gdx.GL.glGetStringSafe( IGL.GL_VERSION ) );
 
-        var matches = rx.Matches( versionString );
-
-        if ( matches.Count > 0 )
-        {
-            var resultSplit = rx.Split( "\\." );
-
-            MajorVersion    = ParseInt( resultSplit[ 0 ], 2 );
-            MinorVersion    = resultSplit.Length < 2 ? 0 : ParseInt( resultSplit[ 1 ], 0 );
-            RevisionVersion = resultSplit.Length < 3 ? 0 : ParseInt( resultSplit[ 2 ], 0 );
-        }
-        else
-        {
-            Logger.Error( $"Invalid version string: {versionString}" );
-
-            MajorVersion    = 2;
-            MinorVersion    = 0;
-            RevisionVersion = 0;
-        }
-    }
-
-    /// <summary>
-    /// Forgiving parsing of gl major, minor and release versions as
-    /// some manufacturers don't adhere to spec
-    /// </summary>
-    private int ParseInt( string v, int defaultValue )
-    {
-        try
-        {
-            return int.Parse( v );
-        }
-        catch ( FormatException )
-        {
-            Logger.Error( $"Error parsing number: {v}, assuming: {defaultValue}" );
-
-            return defaultValue;
-        }
+        return ( _majorVersion, _minorVersion, _revisionVersion );
     }
 
     /// <summary>
@@ -137,8 +90,10 @@ public class GLVersion : LughVersion
     /// <returns> true if the current version is higher or equal to the test version </returns>
     public bool IsVersionEqualToOrHigher( int testMajorVersion, int testMinorVersion )
     {
-        return ( MajorVersion > testMajorVersion )
-               || ( ( MajorVersion == testMajorVersion ) && ( MinorVersion >= testMinorVersion ) );
+        ExtractVersion( @"(\d(\.\d){0,2})", Gdx.GL.glGetStringSafe( IGL.GL_VERSION ) );
+
+        return ( _majorVersion > testMajorVersion )
+               || ( ( _majorVersion == testMajorVersion ) && ( _minorVersion >= testMinorVersion ) );
     }
 
     /// <summary>
@@ -146,9 +101,61 @@ public class GLVersion : LughVersion
     /// </summary>
     public string DebugVersionString()
     {
+        ExtractVersion( @"(\d(\.\d){0,2})", Gdx.GL.glGetStringSafe( IGL.GL_VERSION ) );
+
         return $"Type: {GLtype}\n"
-               + $"Version: {MajorVersion}:{MinorVersion}:{RevisionVersion}\n"
+               + $"Version: {_majorVersion}:{_minorVersion}\n"
                + $"Vendor: {VendorString}\n"
                + $"Renderer: {RendererString}";
+    }
+
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// </summary>
+    /// <param name="patternString"></param>
+    /// <param name="versionString"></param>
+    private void ExtractVersion( string patternString, string? versionString )
+    {
+        ArgumentNullException.ThrowIfNull( versionString );
+
+        var rx = new Regex( patternString );
+
+        var matches = rx.Matches( versionString );
+
+        if ( matches.Count > 0 )
+        {
+            var resultSplit = rx.Split( "\\." );
+
+            _majorVersion    = ParseInt( resultSplit[ 0 ], 2 );
+            _minorVersion    = resultSplit.Length < 2 ? 0 : GLVersion.ParseInt( resultSplit[ 1 ], 0 );
+            _revisionVersion = resultSplit.Length < 3 ? 0 : GLVersion.ParseInt( resultSplit[ 2 ], 0 );
+        }
+        else
+        {
+            Logger.Error( $"Invalid version string: {versionString}" );
+
+            _majorVersion    = 2;
+            _minorVersion    = 0;
+            _revisionVersion = 0;
+        }
+    }
+
+    /// <summary>
+    /// Forgiving parsing of gl major, minor and release versions as
+    /// some manufacturers don't adhere to spec
+    /// </summary>
+    private static int ParseInt( string v, int defaultValue )
+    {
+        try
+        {
+            return int.Parse( v );
+        }
+        catch ( FormatException )
+        {
+            Logger.Error( $"Error parsing number: {v}, assuming: {defaultValue}" );
+
+            return defaultValue;
+        }
     }
 }

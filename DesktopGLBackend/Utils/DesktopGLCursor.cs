@@ -24,6 +24,8 @@
 
 using Corelib.LibCore.Graphics;
 using Corelib.LibCore.Utils.Exceptions;
+using DesktopGLBackend.Window;
+using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Utils;
 

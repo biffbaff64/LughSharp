@@ -22,13 +22,20 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Collections;
 using Corelib.LibCore.Utils.Exceptions;
+using DesktopGLBackend.Audio;
+using DesktopGLBackend.Audio.Mock;
+using DesktopGLBackend.Files;
+using DesktopGLBackend.Input;
+using DesktopGLBackend.Utils;
+using DesktopGLBackend.Window;
+using JetBrains.Annotations;
 using Exception = System.Exception;
-using Monitor = DotGLFW.Monitor;
 using Platform = Corelib.LibCore.Core.Platform;
 
 namespace DesktopGLBackend.Core;
@@ -53,7 +60,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public INet          Network    { get; set; }
     public IFiles        Files      { get; set; }
     public GLVersion?    GLVersion  { get; set; }
-    public OpenGLProfile OGLProfile { get; set; } = OpenGLProfile.CoreProfile;
+    public OpenGLProfile OGLProfile { get; private set; } = OpenGLProfile.CoreProfile;
 
     #endregion public properties
 
@@ -63,12 +70,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
     private static   GlfwErrorCallback? _errorCallback;
     private readonly Sync?              _sync;
-    private          DesktopGLWindow    _currentWindow;
+    private          DesktopGLWindow    _desktopGLWindow;
+    private          GLFW.Window?       _currentGLWindow;
     private          bool               _running         = true;
     private          bool               _glfwInitialised = false;
-    private          int                _glMajor;
-    private          int                _glMinor;
-    private          int                _glRevision;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -81,9 +86,15 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public DesktopGLApplication( IApplicationListener listener,
                                  DesktopGLApplicationConfiguration config )
     {
-        // This MUST be the first call in this constructor
+        // This MUST be the first call, so that the Logger class is initialised correctly.
         Gdx.Initialise( this );
 
+        // Config.Title becomes the name of the ApplicationListener if
+        // it has no value at this point.
+        Config       =   DesktopGLApplicationConfiguration.Copy( config );
+        Config.Title ??= listener.GetType().Name;
+
+        // Initialise the persistant data manager
         Preferences = new Dictionary< string, IPreferences >();
 
         // Initialise the global environment shortcuts. 'Gdx.Audio', 'Gdx.Files', and 'Gdx.Net' are instances
@@ -91,9 +102,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         // members 'Audio', 'Files', and 'Network' are instances of classes which extend the aforementioned
         // classes, and are used in backend code only.
         // Note: Gdx.Graphics is set later, during window creation.
-        Audio     = CreateAudio( config );
+        Audio     = CreateAudio( Config );
         Files     = new DesktopGLFiles();
-        Network   = new DesktopGLNet( config );
+        Network   = new DesktopGLNet( Config );
         Clipboard = new DesktopGLClipboard();
 
         Gdx.Audio = Audio;
@@ -101,30 +112,15 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Gdx.Net   = Network;
         Gdx.GL    = new GLBindings();
 
-        _sync          = new Sync();
-        _currentWindow = null!;
-
-        Logger.Checkpoint();
-
-        ( _glMajor, _glMinor ) = Gdx.GL.GetProjectOpenGLVersion();
-
-        Logger.Debug( $"version: {_glMajor}.{_glMinor}.{_glRevision}" );
-        Logger.Checkpoint();
-
-        config.GLContextMajorVersion = _glMajor;
-        config.GLContextMinorVersion = _glMinor;
-        config.GLContextRevision     = _glRevision;
-
-        // Initialise 'Config' here to allow for any mods to 'config' during setup.
-        Config = DesktopGLApplicationConfiguration.Copy( config );
+        _sync            = new Sync();
+        _desktopGLWindow = null!;
 
         InitialiseGLFW();
 
-        SetWindowHints( Config );
-        InitGLVersion();
-
         // Create the window(s)
         Windows.Add( CreateWindow( Config, listener, 0 ) );
+
+//        OutputWindowsDebug();
     }
 
     /// <summary>
@@ -186,8 +182,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             {
                 window.MakeCurrent();
 
-                _currentWindow                    = window;
-                _currentWindow.Graphics.GLVersion = GLVersion;
+                _desktopGLWindow                    = window;
+                _desktopGLWindow.Graphics.GLVersion = GLVersion;
 
                 if ( targetFramerate == FR_UNINITIALISED )
                 {
@@ -336,14 +332,12 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
         else
         {
-            throw new GdxRuntimeException( "Not ready for multi windows yet!!!" );
-
             // creation of additional windows is deferred to avoid GL context trouble
-//            PostRunnable( () =>
-//            {
-//                dlgWindow = CreateWindow( dlgWindow, config, sharedContext );
-//                Windows.Add( dlgWindow );
-//            } );
+            PostRunnable( () =>
+            {
+                dlgWindow = CreateWindow( dlgWindow, config, sharedContext );
+                Windows.Add( dlgWindow );
+            } );
         }
 
         Logger.Debug( $"{dlgWindow.Config.WindowWidth}, {dlgWindow.Config.WindowHeight}" );
@@ -359,6 +353,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public DesktopGLWindow CreateWindow( DesktopGLWindow? dglWindow, DesktopGLApplicationConfiguration config, long sharedContext )
     {
         ArgumentNullException.ThrowIfNull( dglWindow );
+
+        Logger.Checkpoint();
 
         var windowHandle = CreateGLFWWindow( config, sharedContext );
 
@@ -387,45 +383,79 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     /// <exception cref="GdxRuntimeException"></exception>
     private GLFW.Window CreateGLFWWindow( DesktopGLApplicationConfiguration config, long sharedContextWindow )
     {
-        GLFW.Window? windowHandle;
+        Logger.Checkpoint();
+
+        SetWindowHints( config );
+
+        GLFW.Monitor monitor;
 
         if ( config.FullscreenMode != null )
         {
+            // Create a fullscreen window
+            
             Glfw.WindowHint( WindowHint.RefreshRate, config.FullscreenMode.RefreshRate );
 
-            Logger.Debug( "FullScreen" );
+            Logger.Debug( "Fullscreen" );
             Logger.Debug( $"windowWidth : {config.FullscreenMode.Width}" );
             Logger.Debug( $"windowHeight: {config.FullscreenMode.Height}" );
 
-            windowHandle = Glfw.CreateWindow( config.FullscreenMode.Width,
-                                              config.FullscreenMode.Height,
-                                              config.Title ?? "",
-                                              config.FullscreenMode.MonitorHandle,
-                                              GLFW.Window.NULL );
+            monitor = config.FullscreenMode.MonitorHandle;
+
+            var mode = Glfw.GetVideoMode( monitor );
+
+            _currentGLWindow = Glfw.CreateWindow( mode.Width,
+                                                  mode.Height,
+                                                  config.Title ?? "",
+                                                  monitor,
+                                                  GLFW.Window.NULL );
         }
         else
         {
+            // Create a 'windowed' window
+            
             Logger.Debug( "Windowed" );
             Logger.Debug( $"windowWidth : {config.WindowWidth}" );
             Logger.Debug( $"windowHeight: {config.WindowHeight}" );
 
-            windowHandle = Glfw.CreateWindow( config.WindowWidth,
-                                              config.WindowHeight,
-                                              config.Title ?? "",
-                                              Monitor.NULL,
-                                              GLFW.Window.NULL );
+            monitor = Glfw.GetPrimaryMonitor();
+
+            _currentGLWindow = Glfw.CreateWindow( config.WindowWidth,
+                                                  config.WindowHeight,
+                                                  config.Title ?? "",
+                                                  monitor,
+                                                  GLFW.Window.NULL );
         }
 
-        DesktopGLWindow.SetSizeLimits( windowHandle ?? throw new GdxRuntimeException( "Couldn't create window!" ),
-                                       config.WindowMinWidth,
-                                       config.WindowMinHeight,
-                                       config.WindowMaxWidth,
-                                       config.WindowMaxHeight );
+        Logger.Checkpoint();
+
+        if ( _currentGLWindow == null )
+        {
+            throw new NullReferenceException( "Failed to create window!" );
+        }
+
+        Glfw.MakeContextCurrent( _currentGLWindow );
+
+        Logger.Checkpoint();
+
+//        DesktopGLWindow.SetSizeLimits( _currentGLWindow,
+//                                       config.WindowMinWidth,
+//                                       config.WindowMinHeight,
+//                                       config.WindowMaxWidth,
+//                                       config.WindowMaxHeight );
+
+        Logger.Debug( $"config.WindowMinWidth  : {config.WindowMinWidth}" );
+        Logger.Debug( $"config.WindowMinHeight : {config.WindowMinHeight}" );
+        Logger.Debug( $"config.WindowMaxWidth  : {config.WindowMaxWidth}" );
+        Logger.Debug( $"config.WindowMaxHeight : {config.WindowMaxHeight}" );
 
         if ( config.FullscreenMode == null )
         {
+            Logger.Checkpoint();
+
             if ( config is { WindowX: -1, WindowY: -1 } )
             {
+                Logger.Checkpoint();
+
                 var windowWidth  = Math.Max( config.WindowWidth, config.WindowMinWidth );
                 var windowHeight = Math.Max( config.WindowHeight, config.WindowMinHeight );
 
@@ -446,37 +476,50 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                     monitorHandle = config.MaximizedMonitor.MonitorHandle;
                 }
 
-                Glfw.GetMonitorWorkarea( monitorHandle,
-                                         out var areaXPos,
-                                         out var areaYPos,
-                                         out var areaWidth,
-                                         out var areaHeight );
+                Logger.Checkpoint();
+                Logger.Debug( $"monitorHandle : {monitorHandle}" );
+                Logger.Debug( $"windowHandle  : {_currentGLWindow}" );
+                Logger.Debug( $"config        : {config}" );
+                Logger.Debug( $"windowWidth   : {windowWidth}" );
+                Logger.Debug( $"windowHeight  : {windowHeight}" );
 
-                Glfw.SetWindowPos( windowHandle,
-                                   ( areaXPos + ( areaWidth / 2 ) ) - ( windowWidth / 2 ),
-                                   ( areaYPos + ( areaHeight / 2 ) ) - ( windowHeight / 2 ) );
+                Glfw.GetMonitorWorkarea( monitorHandle, out var areaX, out var areaY, out var areaW, out var areaH );
+
+                Logger.Debug( $"areaXPos   : {areaX}" );
+                Logger.Debug( $"areaYPos   : {areaY}" );
+                Logger.Debug( $"areaWidth  : {areaW}" );
+                Logger.Debug( $"areaHeight : {areaH}" );
+
+                Glfw.SetWindowPos( _currentGLWindow,
+                                   ( areaX + ( areaW / 2 ) ) - ( windowWidth / 2 ),
+                                   ( areaY + ( areaH / 2 ) ) - ( windowHeight / 2 ) );
             }
             else
             {
-                Glfw.SetWindowPos( windowHandle, config.WindowX, config.WindowY );
+                Logger.Checkpoint();
+
+                Logger.Debug( $"windowHandle  : {_currentGLWindow}" );
+                Logger.Debug( $"config        : {config}" );
+                Logger.Debug( $"config.WindowX: {config.WindowX}" );
+                Logger.Debug( $"config.WindowY: {config.WindowY}" );
+
+                Glfw.SetWindowPos( _currentGLWindow, config.WindowX, config.WindowY );
             }
 
             if ( config.WindowMaximized )
             {
-                Glfw.MaximizeWindow( windowHandle );
+                Glfw.MaximizeWindow( _currentGLWindow );
             }
         }
 
         if ( config.WindowIconPaths != null )
         {
-            _currentWindow.SetIcon( windowHandle, config.WindowIconPaths, config.WindowIconFileType );
+            _desktopGLWindow.SetIcon( _currentGLWindow, config.WindowIconPaths, config.WindowIconFileType );
         }
 
-        Glfw.ShowWindow( windowHandle );
-        Glfw.MakeContextCurrent( windowHandle );
         Glfw.SwapInterval( config.VSyncEnabled ? 1 : 0 );
 
-//        InitialiseGL();
+        InitGLVersion();
 
         if ( config.Debug )
         {
@@ -485,7 +528,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 //            SetGLDebugMessageControl( GLDebugMessageSeverity.Notification, false );
         }
 
-        return windowHandle;
+        return _currentGLWindow;
     }
 
     #endregion window creation handlers
@@ -493,7 +536,44 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    #region GL and GLFW initialisation
+    /// <summary>
+    /// 
+    /// </summary>
+    private unsafe void InitGLVersion()
+    {
+        Logger.Checkpoint();
+
+        // Retrieve OpenGL version
+        Glfw.GetVersion( out var glMajor, out var glMinor, out var revision );
+
+        Logger.Debug( $"GL : {glMajor}.{glMinor}.{revision} : glProfile: {OpenGLProfile.CoreProfile}" );
+
+        // Set the client API to use OpenGL.
+        Glfw.WindowHint( WindowHint.ClientAPI, ClientAPI.OpenGLAPI );
+
+        // Set the OpenGL context version based on the retrieved major and minor version numbers.
+        Glfw.WindowHint( WindowHint.ContextVersionMajor, glMajor );
+        Glfw.WindowHint( WindowHint.ContextVersionMinor, glMinor );
+
+        // Determine the OpenGL profile to use based on the profile string retrieved.
+        OGLProfile = OpenGLProfile.CoreProfile; // Use the core profile.
+
+        GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
+                                   null,   //Gdx.GL.glGetString( IGL.GL_VENDOR ),
+                                   null ); //Gdx.GL.glGetString( IGL.GL_RENDERER ) );
+
+        if ( !GLVersion.IsVersionEqualToOrHigher( 2, 0 ) || !SupportsFBO() )
+        {
+            var (major, minor) = Gdx.GL.GetProjectOpenGLVersion();
+
+            throw new GdxRuntimeException( $"OpenGL 2.0 or higher with the FBO extension is required. "
+                                           + $"OpenGL version: {major}.{minor}"
+                                           + $"\n{GLVersion.DebugVersionString()}" );
+        }
+
+        // Set the flag indicating that OpenGL has been initialized.
+        _glfwInitialised = true;
+    }
 
     /// <summary>
     /// Sets up an OpenGL context using GLFW, retrieves OpenGL version and profile information
@@ -505,13 +585,12 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         try
         {
             Logger.Checkpoint();
-            
-            if ( !_glfwInitialised && ( _errorCallback == null ) )
+
+            if ( !_glfwInitialised )
             {
-                DesktopGLNativesLoader.Load();
+                DesktopGLNativesLoader.Load(); // This may no longer be needed
 
                 _errorCallback = ErrorCallback;
-
                 Glfw.SetErrorCallback( _errorCallback );
                 Glfw.InitHint( InitHint.JoystickHatButtons, false );
 
@@ -521,77 +600,21 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                     System.Environment.Exit( 1 );
                 }
 
-                _glfwInitialised = true;
+                Logger.Debug( $"Success: GLFW Version: {Glfw.GetVersionString()}", true );
 
-                Logger.Debug( "GLFW Initialised successfully", true );
+                _glfwInitialised = true;
             }
         }
         catch ( Exception e )
         {
             throw new ApplicationException( $"Failure in InitialiseGLFW() : {e}" );
         }
-
-        return;
-
-        // --------------------------------------------------------------------
-
-        static void ErrorCallback( ErrorCode error, string description )
-        {
-            Logger.Error( $"ErrorCode: {error}, {description}" );
-        }
-
-        // --------------------------------------------------------------------
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    private unsafe void InitGLVersion()
+    private static void ErrorCallback( ErrorCode error, string description )
     {
-        if ( !_glfwInitialised )
-        {
-            throw new GdxRuntimeException( "GLFW must be initialised first!" );
-        }
-
-        // Retrieve OpenGL version
-//        Glfw.GetVersion( out var glMajor, out var glMinor, out var revision );
-
-        // Retrieve the OpenGL profile
-//        var glProfile = Gdx.GL.GetProjectOpenGLProfile();
-
-//        Logger.Debug( $"GL : {glMajor}.{glMinor}.{revision} : glProfile: {glProfile}" );
-
-        // Set the client API to use OpenGL.
-//        Glfw.WindowHint( WindowHint.ClientAPI, ClientAPI.OpenGLAPI );
-
-        // Set the OpenGL context version based on the retrieved major and minor version numbers.
-//        Glfw.WindowHint( WindowHint.ContextVersionMajor, glMajor );
-//        Glfw.WindowHint( WindowHint.ContextVersionMinor, glMinor );
-
-        Logger.Debug( $"OGL Version: {_glMajor}.{_glMinor}.{_glRevision}" );
-        
-        GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
-                                   $"{_glMajor}.{_glMinor}.{_glRevision}",
-                                   null,   //Gdx.GL.glGetString( IGL.GL_VENDOR ),
-                                   null ); //Gdx.GL.glGetString( IGL.GL_RENDERER ) );
-
-        Logger.Debug( $"Supports FBO?: {SupportsFBO()}" );
-        Logger.Debug( $"Glfw.ExtensionSupported( GL_EXT_framebuffer_object )?: {Glfw.ExtensionSupported( "GL_EXT_framebuffer_object" )}" );
-        Logger.Debug( $"Glfw.ExtensionSupported( GL_ARB_framebuffer_object )?: {Glfw.ExtensionSupported( "GL_ARB_framebuffer_object" )}" );
-
-        if ( !GLVersion.IsVersionEqualToOrHigher( 2, 0 ) || !SupportsFBO() )
-        {
-            var (major, minor) = Gdx.GL.GetProjectOpenGLVersion();
-
-            throw new GdxRuntimeException( $"OpenGL 2.0 or higher with the FBO extension is required. "
-                                           + $"OpenGL version: {major}.{minor}"
-                                           + $"\n{GLVersion.DebugVersionString()}" );
-        }
-        
-        Gdx.GL.Import( Glfw.GetProcAddress );
+        Logger.Error( $"ErrorCode: {error}, {description}" );
     }
-
-    #endregion GL and GLFW initialisation
 
     // ------------------------------------------------------------------------
 
@@ -735,9 +758,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     /// elsewhere, but this is where most are initialised.
     /// </summary>
     /// <param name="config"> The current <see cref="DesktopGLApplicationConfiguration"/>. </param>
-    private void SetWindowHints( DesktopGLApplicationConfiguration config )
+    private static void SetWindowHints( DesktopGLApplicationConfiguration config )
     {
-        Logger.Checkpoint();
+        ArgumentNullException.ThrowIfNull( config );
 
         Glfw.DefaultWindowHints();
 
@@ -789,8 +812,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
     // ------------------------------------------------------------------------
 
-    public IApplicationListener GetApplicationListener() => _currentWindow.Listener;
-    public IInput GetInput() => _currentWindow.Input;
+    public IApplicationListener GetApplicationListener() => _desktopGLWindow.Listener;
+    public IInput GetInput() => _desktopGLWindow.Input;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

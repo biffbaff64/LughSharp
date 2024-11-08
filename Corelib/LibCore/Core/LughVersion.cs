@@ -36,12 +36,9 @@ namespace Corelib.LibCore.Core;
 [PublicAPI]
 public partial class LughVersion
 {
-    public int                  MajorVersion    { get; set; }
-    public int                  MinorVersion    { get; set; }
-    public int                  RevisionVersion { get; set; }
-    public string?              VendorString    { get; set; }
-    public string?              RendererString  { get; set; }
-    public GraphicsBackend.Type GLtype          { get; set; }
+    public int LughMajorVersion    { get; private set; }
+    public int LughMinorVersion    { get; private set; }
+    public int LughRevisionVersion { get; private set; }
 
     private readonly Version? _version;
 
@@ -71,11 +68,11 @@ public partial class LughVersion
                 v += match;
             }
 
-            MajorVersion    = v.Length < 1 ? 0 : int.Parse( v[ ..1 ] );
-            MinorVersion    = v.Length < 2 ? 0 : int.Parse( v[ 1.. ] );
-            RevisionVersion = v.Length < 3 ? 0 : int.Parse( v[ 2.. ] );
+            LughMajorVersion    = v.Length < 1 ? 0 : int.Parse( v[ ..1 ] );
+            LughMinorVersion    = v.Length < 2 ? 0 : int.Parse( v[ 1.. ] );
+            LughRevisionVersion = v.Length < 3 ? 0 : int.Parse( v[ 2.. ] );
 
-            Logger.Debug( $"Lib Version : {MajorVersion}.{MinorVersion}.{RevisionVersion}" );
+            Logger.Debug( $"CUrrent LughSharp Version : {LughMajorVersion}.{LughMinorVersion}.{LughRevisionVersion}" );
         }
         catch ( Exception e )
         {
@@ -104,17 +101,17 @@ public partial class LughVersion
     /// <param name="revision">The Revision version component.</param>
     public bool IsHigherEqual( int major, int minor, int revision )
     {
-        if ( MajorVersion != major )
+        if ( LughMajorVersion != major )
         {
-            return MajorVersion > major;
+            return LughMajorVersion > major;
         }
 
-        if ( MinorVersion != minor )
+        if ( LughMinorVersion != minor )
         {
-            return MinorVersion > minor;
+            return LughMinorVersion > minor;
         }
 
-        return RevisionVersion >= revision;
+        return LughRevisionVersion >= revision;
     }
 
     /// <summary>
@@ -138,17 +135,17 @@ public partial class LughVersion
     /// <param name="revision">The Revision version component.</param>
     public bool IsLowerEqual( int major, int minor, int revision )
     {
-        if ( MajorVersion != major )
+        if ( LughMajorVersion != major )
         {
-            return MajorVersion < major;
+            return LughMajorVersion < major;
         }
 
-        if ( MinorVersion != minor )
+        if ( LughMinorVersion != minor )
         {
-            return MinorVersion < minor;
+            return LughMinorVersion < minor;
         }
 
-        return RevisionVersion <= revision;
+        return LughRevisionVersion <= revision;
     }
 
     /// <summary>

@@ -353,8 +353,8 @@ public partial class Gdx2DPixmap : IDisposable
     /// </summary>
     public void Dispose()
     {
-        GC.SuppressFinalize( this );
         Dispose( true );
+        GC.SuppressFinalize( this );
     }
 
     /// <summary>

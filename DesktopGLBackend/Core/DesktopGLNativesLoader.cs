@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using Corelib.LibCore.Utils;
+using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Core;
 

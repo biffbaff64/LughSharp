@@ -27,7 +27,7 @@
         <PackageTags>CSharp;2D;Framework;OpenGL;</PackageTags>
         <Copyright>Copyright 2024 Richard Ikin</Copyright>
         <Company>Richard Ikin</Company>
-        <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
+        <TargetFramework>net7.0</TargetFramework>
         <PackageReleaseNotes>Gl Window crash fixed</PackageReleaseNotes>
         <UserSecretsId>15077a63-55d3-46e9-b882-0b5cf985e7cc</UserSecretsId>
     </PropertyGroup>

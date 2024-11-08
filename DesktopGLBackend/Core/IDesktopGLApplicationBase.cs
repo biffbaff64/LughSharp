@@ -22,6 +22,12 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Corelib.LibCore.Core;
+using DesktopGLBackend.Audio;
+using DesktopGLBackend.Input;
+using DesktopGLBackend.Window;
+using JetBrains.Annotations;
+
 namespace DesktopGLBackend.Core;
 
 [PublicAPI]

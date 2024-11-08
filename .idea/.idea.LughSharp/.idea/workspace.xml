@@ -8,12 +8,52 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37b16c66-7b00-439c-a185-d98ba849df85" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/MainGame.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/MainGame.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidBackend/AndroidBackend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidBackend/AndroidBackend.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Corelib.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Corelib.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/LughVersion.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Core/LughVersion.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/Gdx2DPixmap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/Gdx2DPixmap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/GLVersion.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/GLVersion.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/IndexArray.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/IndexArray.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GraphicsData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GraphicsData.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/IGLBindings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/IGLBindings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Profiling/GLInterceptor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Profiling/GLInterceptor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/IGL.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/IGL.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Pixmap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Pixmap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Exceptions/GdxRuntimeException.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Utils/Exceptions/GdxRuntimeException.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/IGLAudio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/IGLAudio.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockAudio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockAudio.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockAudioDevice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockAudioDevice.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockAudioRecorder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockAudioRecorder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockMusic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockMusic.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockSound.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockSound.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mp3.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mp3.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/Ogg.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/Ogg.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/OpenALAudio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/OpenALAudio.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/OpenALSound.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/OpenALSound.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/Wav.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/Wav.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplicationConfiguration.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLNativesLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLNativesLoader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLNet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLNet.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/IDesktopGLApplicationBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/IDesktopGLApplicationBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/Sync.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/Sync.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/DesktopGLBackend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/DesktopGLBackend.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Files/DesktopGLFileHandle.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Files/DesktopGLFileHandle.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Files/DesktopGLFiles.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Files/DesktopGLFiles.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/GlobalUsings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/GlobalUsings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Graphics/DesktopGLGraphics.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Graphics/DesktopGLGraphics.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Input/DefaultDesktopGLInput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Input/DefaultDesktopGLInput.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Input/IDesktopGLInput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Input/IDesktopGLInput.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Utils/DesktopGLClipboard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Utils/DesktopGLClipboard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Utils/DesktopGLCursor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Utils/DesktopGLCursor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Utils/DesktopGLPreferences.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Utils/DesktopGLPreferences.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindow.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindowAdapter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindowAdapter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindowConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindowConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopWindowCallbacks.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopWindowCallbacks.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Window/IDesktopGLWindowListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Window/IDesktopGLWindowListener.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/Extensions.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Extensions.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,8 +85,11 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/../Archive/LughSharp/Backends/DesktopGL/DesktopGLApplication.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Archive/LughSharp/LibCore/Graphics/GLUtils/GLVersion.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/IGLBindings.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Frameworks/LughSharpFramework/DesktopGLBackend/Core/DesktopGLApplication.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Frameworks/LughSharpFramework/DesktopGLBackend/Window/DesktopGLWindowConfiguration.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/0fb6ac59fb1edbe4ed3ad62661df0eb7eacd7903/src/libraries/System.Private.CoreLib/src/System/String.Comparison.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c7959eeb5551412ca099f9cce026c00d2000/0e/d803b0e5/StbiImageBase.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c7959eeb5551412ca099f9cce026c00d2000/80/94d73dc6/Stbi.cs" root0="FORCE_HIGHLIGHTING" />
@@ -60,7 +103,7 @@
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="SWEA" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -120,7 +163,16 @@
       <workItem from="1730398026388" duration="17385000" />
       <workItem from="1730475371313" duration="25811000" />
       <workItem from="1730544328037" duration="584000" />
-      <workItem from="1730544982653" duration="8587000" />
+      <workItem from="1730544982653" duration="8615000" />
+      <workItem from="1730828763569" duration="14828000" />
+      <workItem from="1730914211974" duration="2724000" />
+      <workItem from="1730916992885" duration="74000" />
+      <workItem from="1730917106564" duration="820000" />
+      <workItem from="1730918027896" duration="201000" />
+      <workItem from="1730921097099" duration="12117000" />
+      <workItem from="1730992879032" duration="14042000" />
+      <workItem from="1731015240745" duration="3232000" />
+      <workItem from="1731078791379" duration="14937000" />
     </task>
     <task id="LOCAL-00001" summary="Major Restructuring">
       <option name="closed" value="true" />
@@ -234,7 +286,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730505808859</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Casually destroying things by reorganising the Desktop Backend">
+      <option name="closed" value="true" />
+      <created>1730571498889</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1730571498889</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

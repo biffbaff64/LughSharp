@@ -22,22 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-global using JetBrains.Annotations;
-
-global using DesktopGLBackend.Audio;
-global using DesktopGLBackend.Audio.Mock;
-global using DesktopGLBackend.Files;
-global using DesktopGLBackend.Graphics;
-global using DesktopGLBackend.Input;
-global using DesktopGLBackend.Utils;
-global using DesktopGLBackend.Window;
-
-// ----------------------------------------------------------------------------
-// LughSharp
-global using Corelib.LibCore.Core;
-
-// ----------------------------------------------------------------------------
-// OpenGL / Glfw support
 global using DotGLFW;
 global using GLFW = DotGLFW;
 

@@ -165,8 +165,8 @@ public class IndexArray : IIndexData
     /// </summary>
     public void Dispose()
     {
-        GC.SuppressFinalize( this );
         Dispose( true );
+        GC.SuppressFinalize( this );
     }
 
     /// <summary>

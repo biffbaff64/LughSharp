@@ -23,12 +23,16 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System;
+using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Exceptions;
 using DesktopGLBackend.Core;
+using DesktopGLBackend.Utils;
+using DesktopGLBackend.Window;
+using JetBrains.Annotations;
 using Platform = Corelib.LibCore.Core.Platform;
 
 namespace DesktopGLBackend.Graphics;
@@ -67,7 +71,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         UpdateFramebufferInfo();
 
-        InitiateGL();
+        UpdateGLVersion();
         
         Glfw.SetWindowSizeCallback( GLWindow.GlfwWindow, ResizeCallback );
     }
@@ -470,15 +474,12 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         _displayModeBeforeFullscreen  = GetDisplayMode();
     }
 
-    private unsafe void InitiateGL()
+    private unsafe void UpdateGLVersion()
     {
-        Glfw.GetVersion( out var glMajor, out var glMinor, out var revision );
-
         var vendorString   = Gdx.GL.glGetString( IGL.GL_VENDOR );
         var rendererString = Gdx.GL.glGetString( IGL.GL_RENDERER );
 
         GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
-                                   $"{glMajor}.{glMinor}.{revision}",
                                    vendorString,
                                    rendererString );
 

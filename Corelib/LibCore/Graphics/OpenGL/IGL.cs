@@ -43,6 +43,7 @@ public interface IGL
     // ------------------------------------------------------------------------
     const int  GL_INVALID_INDEX   = -1;
     const long GL_TIMEOUT_IGNORED = -1;
+    const int  GL_UNRESTRICTED    = -1;
 
     // ------------------------------------------------------------------------
     const int GL_CONTEXT_CORE_PROFILE_BIT          = 0x00000001;
@@ -1476,8 +1477,8 @@ public interface IGL
     const int GL_ACTIVE_ATOMIC_COUNTER_BUFFERS                              = 0x92D9;
     const int GL_UNIFORM_ATOMIC_COUNTER_BUFFER_INDEX                        = 0x92DA;
     const int GL_UNSIGNED_INT_ATOMIC_COUNTER                                = 0x92DB;
-    const int GL_ALL_BARRIER_BITS                                           = unchecked( ( int ) 0xFFFFFFFF );
-    const int GL_ALL_SHADER_BITS                                            = unchecked( ( int ) 0xFFFFFFFF );
+    const int GL_ALL_BARRIER_BITS                                           = unchecked( ( int )0xFFFFFFFF );
+    const int GL_ALL_SHADER_BITS                                            = unchecked( ( int )0xFFFFFFFF );
 
     #endregion unordered
 }

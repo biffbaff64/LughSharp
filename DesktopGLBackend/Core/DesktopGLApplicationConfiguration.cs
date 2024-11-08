@@ -23,7 +23,12 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Text;
+using Corelib.LibCore.Core;
+using Corelib.LibCore.Graphics;
 using Corelib.LibCore.Graphics.GLUtils;
+using DesktopGLBackend.Graphics;
+using DesktopGLBackend.Window;
+using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Core;
 
@@ -48,8 +53,8 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     public int           Samples                        { get; set; } = 0;
     public int           IdleFPS                        { get; set; } = 60;
     public int           ForegroundFPS                  { get; set; } = 0;
-    public int           GLContextMajorVersion          { get; set; } = DEFAULT_CONTEXT_MAJOR;
-    public int           GLContextMinorVersion          { get; set; } = DEFAULT_CONTEXT_MINOR;
+    public int           GLContextMajorVersion          { get; set; } = GraphicsData.DEFAULT_GL_MAJOR;
+    public int           GLContextMinorVersion          { get; set; } = GraphicsData.DEFAULT_GL_MINOR;
     public int           GLContextRevision              { get; set; } = 0;
     public int           Red                            { get; set; } = 8;
     public int           Green                          { get; set; } = 8;
@@ -64,11 +69,6 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     public int MaxNetThreads { get; set; } = int.MaxValue;
 
     #endregion properties
-
-    // ------------------------------------------------------------------------
-
-    private const int DEFAULT_CONTEXT_MAJOR = 3;
-    private const int DEFAULT_CONTEXT_MINOR = 3;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -170,6 +170,16 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     {
         PreferencesDirectory = preferencesDirectory;
         PreferencesFileType  = preferencesFileType;
+    }
+
+    /// <summary>
+    /// Sets the vorrect values for <see cref="GLContextMajorVersion"/> and
+    /// <see cref="GLContextMinorVersion"/>. Defaults to 4 (major) and 6 (minor)
+    /// </summary>
+    public void SetGLContextVersion()
+    {
+        GLContextMajorVersion = GraphicsData.DEFAULT_GL_MAJOR;
+        GLContextMinorVersion = GraphicsData.DEFAULT_GL_MINOR;
     }
 
     /// <summary>

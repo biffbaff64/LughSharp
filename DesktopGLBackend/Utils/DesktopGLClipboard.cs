@@ -22,7 +22,10 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Corelib.LibCore.Core;
 using Corelib.LibCore.Utils;
+using DesktopGLBackend.Graphics;
+using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Utils;
 

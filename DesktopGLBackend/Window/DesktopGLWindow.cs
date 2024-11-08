@@ -24,11 +24,17 @@
 
 using System;
 using System.Collections.Generic;
+using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics;
+using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Maths;
 using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Collections;
 using DesktopGLBackend.Core;
+using DesktopGLBackend.Graphics;
+using DesktopGLBackend.Input;
+using DesktopGLBackend.Utils;
+using JetBrains.Annotations;
 using Platform = Corelib.LibCore.Core.Platform;
 
 namespace DesktopGLBackend.Window;
@@ -52,14 +58,14 @@ public class DesktopGLWindow : IDisposable
     /// surface together. The coordinates are relative to the first monitor in the
     /// virtual surface.
     /// </summary>
-    public int PositionX => ( int ) GetPosition().X;
+    public int PositionX => ( int )GetPosition().X;
 
     /// <summary>
     /// Return the window Y position in logical coordinates. All monitors span a virtual
     /// surface together. The coordinates are relative to the first monitor in the
     /// virtual surface.
     /// </summary>
-    public int PositionY => ( int ) GetPosition().Y;
+    public int PositionY => ( int )GetPosition().Y;
 
     // ------------------------------------------------------------------------
 
@@ -84,7 +90,7 @@ public class DesktopGLWindow : IDisposable
                             IDesktopGLApplicationBase application )
     {
         Logger.Checkpoint();
-        
+
         Listener       = listener;
         WindowListener = config.WindowListener;
         Config         = DesktopGLApplicationConfiguration.Copy( config );
@@ -97,7 +103,7 @@ public class DesktopGLWindow : IDisposable
     public void Create( GLFW.Window window )
     {
         Logger.Checkpoint();
-        
+
         this.GlfwWindow = window;
         this.Input      = _application.CreateInput( this );
         this.Graphics   = new DesktopGLGraphics( this );
@@ -168,7 +174,7 @@ public class DesktopGLWindow : IDisposable
         {
             Input.PrepareNext();
         }
-        
+
         return shouldRender;
     }
 
@@ -289,7 +295,7 @@ public class DesktopGLWindow : IDisposable
     public void FocusWindow() => Glfw.FocusWindow( GlfwWindow );
 
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// Sets the windows title.
     /// </summary>
@@ -311,8 +317,8 @@ public class DesktopGLWindow : IDisposable
 
     /// <summary>
     /// Sets minimum and maximum size limits for the given window. If the window
-    /// is full screen or not resizable, these limits are ignored. Use -1  to
-    /// indicate an unrestricted dimension.
+    /// is full screen or not resizable, these limits are ignored.
+    /// Use <see cref="IGL.GL_UNRESTRICTED"/> to indicate an unrestricted dimension.
     /// </summary>
     /// <param name="handle"> The window. </param>
     /// <param name="minWidth"> The minimum window width. </param>
@@ -321,7 +327,11 @@ public class DesktopGLWindow : IDisposable
     /// <param name="maxHeight"> The maximum window height. </param>
     public static void SetSizeLimits( GLFW.Window handle, int minWidth, int minHeight, int maxWidth, int maxHeight )
     {
-        Glfw.SetWindowSizeLimits( handle, minWidth, minHeight, maxWidth, maxHeight );
+        Glfw.SetWindowSizeLimits( handle,
+                                  minWidth > IGL.GL_UNRESTRICTED ? minWidth : IGL.GL_DONT_CARE,
+                                  minHeight > IGL.GL_UNRESTRICTED ? minHeight : IGL.GL_DONT_CARE,
+                                  maxWidth > IGL.GL_UNRESTRICTED ? maxWidth : IGL.GL_DONT_CARE,
+                                  maxHeight > IGL.GL_UNRESTRICTED ? maxHeight : IGL.GL_DONT_CARE );
     }
 
     /// <summary>
@@ -382,7 +392,7 @@ public class DesktopGLWindow : IDisposable
     private void SetIcon( GLFW.Window window, Pixmap[] images )
     {
         Logger.Checkpoint();
-        
+
         if ( Platform.IsMac )
         {
             return;
@@ -410,7 +420,7 @@ public class DesktopGLWindow : IDisposable
                 Height = images[ i ].Height,
                 Pixels = images[ i ].PixelData,
             };
-            
+
             buffer.Add( icon );
         }
 
@@ -434,7 +444,7 @@ public class DesktopGLWindow : IDisposable
             ListenerInitialised = true;
         }
     }
-    
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 

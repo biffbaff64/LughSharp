@@ -38,15 +38,16 @@
 #error You must define one of OGL_WRAPPER_API_BOTH, OGL_WRAPPER_API_UNSAFE, or OGL_WRAPPER_API_SAFE
 #endif
 
+using Corelib.LibCore.Utils;
+
 // ----------------------------------------------------------------------------
 
 #if OGL_P_CORE
 
     // ----------------------------------------------------------------------------
 
-    #if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
-
-        using System.Numerics;
+#if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
+    using System.Numerics;
         using GLenum = System.Int32;
         using GLfloat = System.Single;
         using GLint = System.Int32;
@@ -124,11 +125,30 @@ public unsafe class GLBindings : IGLBindings
 
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public (int major, int minor) GetProjectOpenGLVersion()
     {
+#if OGL_WRAPPER_API_UNSAFE || OGL_WRAPPER_API_BOTH
         var version = glGetString( IGL.GL_VERSION );
+#elif OGL_WRAPPER_API_SAFE
+        var version = glGetStringSafe( IGL.GL_VERSION );
+#else
+#error ogl wrapper api type is not set, should be 'safe', 'unsafe', or 'both'
+#endif
+
+        Logger.Checkpoint();
         
-        return ( version[0], version[ 2 ] );
+        if ( version == null )
+        {
+            Logger.Debug( "NULL GL Version returned!" );
+        }
+
+        return version == null
+            ? ( GraphicsData.DEFAULT_GL_MAJOR, GraphicsData.DEFAULT_GL_MINOR )
+            : ( version[ 0 ], version[ 2 ] );
     }
 
 #if OGL_P_CORE
@@ -18814,6 +18834,8 @@ public unsafe class GLBindings : IGLBindings
     /// </summary>
     public void Import( GetProcAddressHandler loader )
     {
+        ArgumentNullException.ThrowIfNull( loader );
+        
 #if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
         _glCullFace               = Marshal.GetDelegateForFunctionPointer< PFNGLCULLFACEPROC >( loader.Invoke( "glCullFace" ) );
         _glFrontFace              = Marshal.GetDelegateForFunctionPointer< PFNGLFRONTFACEPROC >( loader.Invoke( "glFrontFace" ) );

@@ -22,9 +22,12 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Exceptions;
+using DesktopGLBackend.Window;
+using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Input;
 

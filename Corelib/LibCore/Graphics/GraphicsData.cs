@@ -25,4 +25,8 @@
 namespace Corelib.LibCore.Graphics;
 
 [PublicAPI]
-public static class GraphicsData;
+public static class GraphicsData
+{
+    public const int DEFAULT_GL_MAJOR = 3;
+    public const int DEFAULT_GL_MINOR = 4;
+}
