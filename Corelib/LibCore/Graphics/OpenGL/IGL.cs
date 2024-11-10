@@ -24,6 +24,9 @@
 
 namespace Corelib.LibCore.Graphics.OpenGL;
 
+/// <summary>
+/// OpenGL functions.
+/// </summary>
 [PublicAPI]
 public interface IGL
 {

@@ -151,7 +151,8 @@
 
     <ItemGroup>
         <Folder Include="lib\" />
-        <Folder Include="native\" />
+        <Folder Include="native\Glfw\" />
+        <Folder Include="native\OpenGL\" />
         <Folder Include="ThirdParty\" />
     </ItemGroup>
 

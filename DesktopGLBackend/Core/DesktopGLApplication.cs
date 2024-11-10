@@ -358,8 +358,12 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         var windowHandle = CreateGLFWWindow( config, sharedContext );
 
-        dglWindow.Create( windowHandle );
+        Logger.Checkpoint();
+
+        dglWindow.Initialise( windowHandle, this );
         dglWindow.SetVisible( config.InitialVisibility );
+
+        Logger.Checkpoint();
 
         for ( var i = 0; i < 2; i++ )
         {
@@ -371,6 +375,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             Gdx.GL.glClear( IGL.GL_COLOR_BUFFER_BIT );
             Glfw.SwapBuffers( windowHandle );
         }
+
+        Logger.Checkpoint();
 
         return dglWindow;
     }
@@ -437,16 +443,20 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         Logger.Checkpoint();
 
-//        DesktopGLWindow.SetSizeLimits( _currentGLWindow,
-//                                       config.WindowMinWidth,
-//                                       config.WindowMinHeight,
-//                                       config.WindowMaxWidth,
-//                                       config.WindowMaxHeight );
+        Gdx.GL.Import( Glfw.GetProcAddress );
+        
+        Logger.Checkpoint();
 
         Logger.Debug( $"config.WindowMinWidth  : {config.WindowMinWidth}" );
         Logger.Debug( $"config.WindowMinHeight : {config.WindowMinHeight}" );
         Logger.Debug( $"config.WindowMaxWidth  : {config.WindowMaxWidth}" );
         Logger.Debug( $"config.WindowMaxHeight : {config.WindowMaxHeight}" );
+
+//        DesktopGLWindow.SetSizeLimits( _currentGLWindow,
+//                                       config.WindowMinWidth,
+//                                       config.WindowMinHeight,
+//                                       config.WindowMaxWidth,
+//                                       config.WindowMaxHeight );
 
         if ( config.FullscreenMode == null )
         {
@@ -546,7 +556,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         // Retrieve OpenGL version
         Glfw.GetVersion( out var glMajor, out var glMinor, out var revision );
 
-        Logger.Debug( $"GL : {glMajor}.{glMinor}.{revision} : glProfile: {OpenGLProfile.CoreProfile}" );
+        Logger.Debug( $"GLFW : {glMajor}.{glMinor}.{revision} : glProfile: {OpenGLProfile.CoreProfile}" );
 
         // Set the client API to use OpenGL.
         Glfw.WindowHint( WindowHint.ClientAPI, ClientAPI.OpenGLAPI );
@@ -562,14 +572,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                                    null,   //Gdx.GL.glGetString( IGL.GL_VENDOR ),
                                    null ); //Gdx.GL.glGetString( IGL.GL_RENDERER ) );
 
-        if ( !GLVersion.IsVersionEqualToOrHigher( 2, 0 ) || !SupportsFBO() )
-        {
-            var (major, minor) = Gdx.GL.GetProjectOpenGLVersion();
-
-            throw new GdxRuntimeException( $"OpenGL 2.0 or higher with the FBO extension is required. "
-                                           + $"OpenGL version: {major}.{minor}"
-                                           + $"\n{GLVersion.DebugVersionString()}" );
-        }
+        Logger.Checkpoint();
 
         // Set the flag indicating that OpenGL has been initialized.
         _glfwInitialised = true;
@@ -596,7 +599,13 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
                 if ( !Glfw.Init() )
                 {
+                    Glfw.GetError( out var error );
+
+                    Logger.Divider();
                     Logger.Debug( "Failed to initialise GLFW" );
+                    Logger.Debug( error );
+                    Logger.Divider();
+                    
                     System.Environment.Exit( 1 );
                 }
 
@@ -793,21 +802,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         {
             Glfw.WindowHint( WindowHint.OpenGLDebugContext, true );
         }
-    }
-
-    /// <summary>
-    /// Returns <b>true</b> if <b><i>F</i></b>rame<b><i>B</i></b>uffer <b><i>O</i></b>bjects
-    /// are supported. 
-    /// </summary>
-    private bool SupportsFBO()
-    {
-        GdxRuntimeException.ThrowIfNull( GLVersion );
-
-        // FBO is in core since OpenGL 3.0,
-        // see https://www.opengl.org/wiki/Framebuffer_Object
-        return GLVersion!.IsVersionEqualToOrHigher( 3, 0 )
-               || Glfw.ExtensionSupported( "GL_EXT_framebuffer_object" )
-               || Glfw.ExtensionSupported( "GL_ARB_framebuffer_object" );
     }
 
     // ------------------------------------------------------------------------

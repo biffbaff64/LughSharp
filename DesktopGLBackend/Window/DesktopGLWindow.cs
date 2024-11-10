@@ -69,7 +69,6 @@ public class DesktopGLWindow : IDisposable
 
     // ------------------------------------------------------------------------
 
-    private readonly IDesktopGLApplicationBase  _application;
     private readonly List< IRunnable.Runnable > _executedRunnables = [ ];
     private readonly bool                       _iconified         = false;
     private readonly List< IRunnable.Runnable > _runnables         = [ ];
@@ -94,19 +93,20 @@ public class DesktopGLWindow : IDisposable
         Listener       = listener;
         WindowListener = config.WindowListener;
         Config         = DesktopGLApplicationConfiguration.Copy( config );
-        _application   = application;
     }
 
     /// <summary>
-    /// Creates a new DesktopGLWindow and sets up the various related callbacks.
+    /// 
     /// </summary>
-    public void Create( GLFW.Window window )
+    public void Initialise( GLFW.Window? window, IDesktopGLApplicationBase app )
     {
         Logger.Checkpoint();
 
         this.GlfwWindow = window;
-        this.Input      = _application.CreateInput( this );
+        this.Input      = app.CreateInput( this );
         this.Graphics   = new DesktopGLGraphics( this );
+
+        Logger.Checkpoint();
 
         //@formatter:off
         Glfw.SetWindowFocusCallback     ( window, DesktopWindowCallbacks.GdxFocusCallback );
@@ -117,7 +117,11 @@ public class DesktopGLWindow : IDisposable
         Glfw.SetWindowRefreshCallback   ( window, DesktopWindowCallbacks.GdxRefreshCallback );
         //@formatter:on
 
+        Logger.Checkpoint();
+
         WindowListener?.Created( this );
+        
+        Logger.Checkpoint();
     }
 
     /// <summary>
@@ -318,7 +322,7 @@ public class DesktopGLWindow : IDisposable
     /// <summary>
     /// Sets minimum and maximum size limits for the given window. If the window
     /// is full screen or not resizable, these limits are ignored.
-    /// Use <see cref="IGL.GL_UNRESTRICTED"/> to indicate an unrestricted dimension.
+    /// Use -1 to indicate an unrestricted dimension.
     /// </summary>
     /// <param name="handle"> The window. </param>
     /// <param name="minWidth"> The minimum window width. </param>
@@ -328,10 +332,10 @@ public class DesktopGLWindow : IDisposable
     public static void SetSizeLimits( GLFW.Window handle, int minWidth, int minHeight, int maxWidth, int maxHeight )
     {
         Glfw.SetWindowSizeLimits( handle,
-                                  minWidth > IGL.GL_UNRESTRICTED ? minWidth : IGL.GL_DONT_CARE,
-                                  minHeight > IGL.GL_UNRESTRICTED ? minHeight : IGL.GL_DONT_CARE,
-                                  maxWidth > IGL.GL_UNRESTRICTED ? maxWidth : IGL.GL_DONT_CARE,
-                                  maxHeight > IGL.GL_UNRESTRICTED ? maxHeight : IGL.GL_DONT_CARE );
+                                  minWidth > -1 ? minWidth : IGL.GL_DONT_CARE,
+                                  minHeight > -1 ? minHeight : IGL.GL_DONT_CARE,
+                                  maxWidth > -1 ? maxWidth : IGL.GL_DONT_CARE,
+                                  maxHeight > -1 ? maxHeight : IGL.GL_DONT_CARE );
     }
 
     /// <summary>

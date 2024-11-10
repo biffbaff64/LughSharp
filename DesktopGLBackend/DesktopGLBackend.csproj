@@ -12,6 +12,10 @@
         <ProjectReference Include="..\Corelib\Corelib.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="DotGLFW" Version="1.2.0" />
+    </ItemGroup>
+
     <PropertyGroup>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
