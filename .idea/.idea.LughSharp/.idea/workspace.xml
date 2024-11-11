@@ -8,16 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37b16c66-7b00-439c-a185-d98ba849df85" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/ConsoleApp1.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/ConsoleApp1.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidBackend/AndroidBackend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidBackend/AndroidBackend.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/Corelib.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Corelib.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/IGL.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/IGL.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/DesktopGLBackend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/DesktopGLBackend.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Extensions/Extensions.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Extensions.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +42,11 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/../Archive/LughSharp/Backends/DesktopGL/DesktopGLApplication.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Archive/LughSharp/LibCore/Graphics/GLUtils/GLVersion.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Development/Projects/CSharp/LughSharp/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Development/Projects/CSharp/LughSharp/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Development/Projects/CSharp/LughSharp/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Development/Projects/CSharp/LughSharp/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/IGLBindings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Frameworks/LughSharpFramework/DesktopGLBackend/Core/DesktopGLApplication.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Frameworks/LughSharpFramework/DesktopGLBackend/Window/DesktopGLWindowConfiguration.cs" root0="SKIP_HIGHLIGHTING" />
@@ -141,7 +137,8 @@
       <workItem from="1731106611810" duration="424000" />
       <workItem from="1731174718199" duration="3904000" />
       <workItem from="1731257298073" duration="6249000" />
-      <workItem from="1731265041955" duration="11684000" />
+      <workItem from="1731265041955" duration="11780000" />
+      <workItem from="1731341016354" duration="21379000" />
     </task>
     <task id="LOCAL-00001" summary="Major Restructuring">
       <option name="closed" value="true" />
@@ -271,7 +268,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731101825483</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Start of GLBindings rewrite">
+      <option name="closed" value="true" />
+      <created>1731280192846</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1731280192846</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -292,6 +297,7 @@
     <MESSAGE value="Maintenance and tidying" />
     <MESSAGE value="Casually destroying things by reorganising the Desktop Backend" />
     <MESSAGE value="Essential backup" />
-    <option name="LAST_COMMIT_MESSAGE" value="Essential backup" />
+    <MESSAGE value="Start of GLBindings rewrite" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start of GLBindings rewrite" />
   </component>
 </project>
