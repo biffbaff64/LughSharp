@@ -45,7 +45,7 @@
     <setting file="mock://C:/Development/Projects/CSharp/LughSharp/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Development/Projects/CSharp/LughSharp/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Development/Projects/CSharp/LughSharp/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Development/Projects/CSharp/LughSharp/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/IGLBindings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Frameworks/LughSharpFramework/DesktopGLBackend/Core/DesktopGLApplication.cs" root0="SKIP_HIGHLIGHTING" />
@@ -138,7 +138,8 @@
       <workItem from="1731174718199" duration="3904000" />
       <workItem from="1731257298073" duration="6249000" />
       <workItem from="1731265041955" duration="11780000" />
-      <workItem from="1731341016354" duration="21379000" />
+      <workItem from="1731341016354" duration="21725000" />
+      <workItem from="1731432263663" duration="16422000" />
     </task>
     <task id="LOCAL-00001" summary="Major Restructuring">
       <option name="closed" value="true" />
@@ -276,7 +277,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731280192846</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Continuation of GLBindings rewrite">
+      <option name="closed" value="true" />
+      <created>1731366762237</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1731366762237</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -298,6 +307,7 @@
     <MESSAGE value="Casually destroying things by reorganising the Desktop Backend" />
     <MESSAGE value="Essential backup" />
     <MESSAGE value="Start of GLBindings rewrite" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start of GLBindings rewrite" />
+    <MESSAGE value="Continuation of GLBindings rewrite" />
+    <option name="LAST_COMMIT_MESSAGE" value="Continuation of GLBindings rewrite" />
   </component>
 </project>
