@@ -3595,12 +3595,12 @@ public interface IGLBindings
     /// </summary>
     /// <param name="shader">Specifies the handle of the shader object whose source code is to be replaced.</param>
     /// <param name="count">
-    /// Specifies the number of elements in the <paramref name="string"/> and <paramref name="length"/>
+    /// Specifies the number of elements in the <paramref name="str"/> and <paramref name="length"/>
     /// arrays.
     /// </param>
-    /// <param name="string">Specifies an array of pointers to strings containing the source code to be loaded into the shader.</param>
+    /// <param name="str">Specifies an array of pointers to strings containing the source code to be loaded into the shader.</param>
     /// <param name="length">Specifies an array of string lengths.</param>
-    unsafe void glShaderSource( uint shader, int count, Byte** @string, int* length );
+    unsafe void glShaderSource( uint shader, int count, Byte** str, int* length );
 
     /// <summary>
     /// Replaces the source code in a shader object
@@ -7367,8 +7367,8 @@ public interface IGLBindings
     /// <param name="value">Specifies the value of the vertex attribute.</param>
     unsafe void glVertexAttribP4uiv( uint index, int type, bool normalized, uint[] value );
 
-    /// <summary>
-    /// Loads OpenGL functions using the specified loader delegate.
-    /// </summary>
-    void Import( GLBindings.GetProcAddressHandler loader );
+//    /// <summary>
+//    /// Loads OpenGL functions using the specified loader delegate.
+//    /// </summary>
+//    void Import( GLBindings.GetProcAddressHandler loader );
 }

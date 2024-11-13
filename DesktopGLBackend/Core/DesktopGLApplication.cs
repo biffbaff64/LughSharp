@@ -443,7 +443,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         Logger.Checkpoint();
 
-        Gdx.GL.Import( Glfw.GetProcAddress );
+//        Gdx.GL.Import( Glfw.GetProcAddress );
         
         Logger.Checkpoint();
 

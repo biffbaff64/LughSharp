@@ -1837,10 +1837,10 @@ public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler 
     }
 
     /// <inheritdoc />
-    public unsafe void glShaderSource( uint shader, int count, byte** @string, int* length )
+    public unsafe void glShaderSource( uint shader, int count, byte** str, int* length )
     {
         Calls++;
-        Gdx.GL.glShaderSource( shader, count, @string, length );
+        Gdx.GL.glShaderSource( shader, count, str, length );
         CheckErrors();
     }
 
