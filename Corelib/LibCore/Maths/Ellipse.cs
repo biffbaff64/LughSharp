@@ -31,7 +31,7 @@ namespace Corelib.LibCore.Maths;
 [PublicAPI]
 public class Ellipse : IShape2D
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Construct a new ellipse with all values set to zero

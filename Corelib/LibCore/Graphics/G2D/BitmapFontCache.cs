@@ -63,7 +63,7 @@ public class BitmapFontCache
     /// </summary>
     private int[] _tempGlyphCount;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public BitmapFontCache( BitmapFont font )
         : this( font, font.UseIntegerPositions )

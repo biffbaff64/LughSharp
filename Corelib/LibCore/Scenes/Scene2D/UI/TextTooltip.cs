@@ -85,7 +85,7 @@ public class TextTooltip : Tooltip< Label >
         Container.MaxWidth = style.WrapWidth;
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     [PublicAPI]
     public class TextTooltipStyle

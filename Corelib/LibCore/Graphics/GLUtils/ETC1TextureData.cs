@@ -42,13 +42,13 @@ public class ETC1TextureData : ITextureData
     /// <inheritdoc />
     public bool IsPrepared { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private readonly FileInfo?      _file;
     private          ETC1.ETC1Data? _data;
     private          ETC1           _etc1;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public ETC1TextureData( FileInfo file, bool useMipMaps = false )
     {

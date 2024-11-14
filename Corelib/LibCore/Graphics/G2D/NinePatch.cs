@@ -64,7 +64,7 @@ public class NinePatch
     private float _padRight  = -1;
     private float _padTop    = -1;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Create a ninepatch by cutting up the given texture into nine patches.
@@ -702,7 +702,7 @@ public class NinePatch
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region properties
 

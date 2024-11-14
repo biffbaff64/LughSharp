@@ -36,7 +36,7 @@ namespace Corelib.LibCore.Graphics.Viewport;
 [PublicAPI]
 public class ExtendViewport : Viewport
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a new viewport using a new <see cref="OrthographicCamera"/>

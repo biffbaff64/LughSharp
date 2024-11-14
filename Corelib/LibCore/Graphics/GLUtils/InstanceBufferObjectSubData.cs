@@ -49,7 +49,7 @@ public class InstanceBufferObjectSubData : IInstanceData
     private          bool _isDirty = false;
     private          bool _isStatic;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <summary>
     /// Constructs a new interleaved InstanceBufferObject.

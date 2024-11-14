@@ -37,7 +37,7 @@ public class PixmapTextureData : ITextureData
     public bool               UseMipMaps    { get; set; }
     public bool               IsPrepared    { get; set; } = true;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public PixmapTextureData( Pixmap pixmap,
                               Pixmap.ColorFormat? format,
@@ -76,7 +76,7 @@ public class PixmapTextureData : ITextureData
         set { }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public void ConsumeCustomData( int target )
     {

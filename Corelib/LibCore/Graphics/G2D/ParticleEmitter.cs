@@ -35,7 +35,7 @@ namespace Corelib.LibCore.Graphics.G2D;
 [PublicAPI]
 public class ParticleEmitter
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public enum SpawnEllipseSide
     {
@@ -44,7 +44,7 @@ public class ParticleEmitter
         Bottom,
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public enum SpawnShape
     {
@@ -54,7 +54,7 @@ public class ParticleEmitter
         Ellipse,
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public enum SpriteModes
     {
@@ -100,7 +100,7 @@ public class ParticleEmitter
     private RangedNumericValue[]? _xSizeValues;
     private RangedNumericValue[]? _ySizeValues;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public ParticleEmitter( StreamReader? reader = null )
     {
@@ -1534,7 +1534,7 @@ public class ParticleEmitter
         return float.Parse( ReadString( reader, name ) );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     [PublicAPI]
     public class Particle : Sprite
@@ -1566,7 +1566,7 @@ public class ParticleEmitter
         public int     Frame            { get; set; }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     [PublicAPI]
     public class ParticleValue
@@ -1603,7 +1603,7 @@ public class ParticleEmitter
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     [PublicAPI]
     public class NumericValue : ParticleValue
@@ -1641,7 +1641,7 @@ public class ParticleEmitter
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     [PublicAPI]
     public class RangedNumericValue : ParticleValue
@@ -1715,7 +1715,7 @@ public class ParticleEmitter
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     [PublicAPI]
     public class ScaledNumericValue : RangedNumericValue
@@ -1890,7 +1890,7 @@ public class ParticleEmitter
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     [PublicAPI]
     public class IndependentScaledNumericValue : ScaledNumericValue
@@ -1980,7 +1980,7 @@ public class ParticleEmitter
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     [PublicAPI]
     public class GradientColorValue : ParticleValue
@@ -2105,7 +2105,7 @@ public class ParticleEmitter
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     [PublicAPI]
     public class ParticleSpawnShapeValue : ParticleValue
@@ -2160,7 +2160,7 @@ public class ParticleEmitter
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region properties
 

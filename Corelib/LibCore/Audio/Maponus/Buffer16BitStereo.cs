@@ -34,7 +34,7 @@ namespace Corelib.LibCore.Audio.Maponus;
 [PublicAPI]
 public class Buffer16BitStereo : AudioBase
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private const int OUTPUT_CHANNELS = 2;
 
@@ -49,7 +49,7 @@ public class Buffer16BitStereo : AudioBase
     // Read offset used to read from the stream, in bytes.
     private int _offset;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public Buffer16BitStereo()
     {

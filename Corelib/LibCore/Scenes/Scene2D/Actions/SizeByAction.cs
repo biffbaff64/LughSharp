@@ -35,7 +35,7 @@ public class SizeByAction : RelativeTemporalAction
     public float AmountWidth  { get; set; }
     public float AmountHeight { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <inheritdoc />
     protected override void UpdateRelative( float percentDelta )

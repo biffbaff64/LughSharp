@@ -34,7 +34,7 @@ public class Tooltip< T > : InputListener where T : Actor
 {
     private readonly Vector2 _tmp = new();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public Tooltip( T? contents ) : this( contents, new TooltipManager< T >() )
     {
@@ -164,8 +164,8 @@ public class Tooltip< T > : InputListener where T : Actor
         Manager.Hide( this );
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     [PublicAPI]
     public class TooltipContainer : Container< T >

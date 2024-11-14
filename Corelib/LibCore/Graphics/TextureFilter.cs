@@ -40,12 +40,12 @@ public class TextureFilter
         MipMapLinearLinear,
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public int GLEnum  { get; }
     public int Ordinal { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private static readonly List< TextureFilter > _valueList = new();
     private readonly        string                _nameValue;
@@ -53,7 +53,7 @@ public class TextureFilter
 
     internal readonly InnerEnum InnerEnumValue;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Fetch the nearest texel that best maps to the pixel on screen.
@@ -107,8 +107,8 @@ public class TextureFilter
                                                                    InnerEnum.MipMapLinearLinear,
                                                                    IGL.GL_LINEAR_MIPMAP_LINEAR );
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     static TextureFilter()
     {
@@ -130,7 +130,7 @@ public class TextureFilter
         InnerEnumValue = innerEnum;
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public bool IsMipMap()
     {

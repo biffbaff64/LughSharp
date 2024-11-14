@@ -47,7 +47,7 @@ public class Equalizer
 
     private readonly float[] _settings = new float[ BANDS ];
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a new Equalizer instance.
@@ -215,7 +215,7 @@ public class Equalizer
         return f;
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     [PublicAPI]
     public abstract class EQFunction

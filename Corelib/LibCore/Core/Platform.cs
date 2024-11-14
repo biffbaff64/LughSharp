@@ -118,7 +118,7 @@ public static class Platform
         Console, // XBox
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public static bool IsWindows { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.Windows );
     public static bool Is64Bit   { get; private set; } = Environment.Is64BitOperatingSystem;
@@ -126,18 +126,18 @@ public static class Platform
     public static bool IsMac     { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.OSX );
     public static bool IsARM     { get; private set; } = IsArmArchitecture();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public static bool IsIos     { get; private set; } = false; //TODO: For the future, concentrating on desktop for now. 
     public static bool IsAndroid { get; private set; } = false; //TODO: For the future, concentrating on desktop for now.
     public static bool IsXBox    { get; private set; } = false; //TODO: For the future, concentrating on desktop for now.
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private static ApplicationType _targetPlatform;
     private static Family          _familyGroup;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// The target platform for the app.

@@ -31,7 +31,7 @@ public class InputMultiplexer : IInputProcessor
 {
     public SnapshotArray< IInputProcessor > Processors { get; set; } = new( 4 );
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <summary>
     /// Constructor.

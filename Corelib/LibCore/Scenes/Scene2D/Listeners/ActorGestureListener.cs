@@ -47,7 +47,7 @@ public class ActorGestureListener : IEventListener
     private Actor?      _actor;
     private InputEvent? _inputEvent;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Constructs a new GestureListener for Actors.
@@ -204,7 +204,7 @@ public class ActorGestureListener : IEventListener
     {
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     [PublicAPI]
     public class ActorGestureDetector : GestureDetector

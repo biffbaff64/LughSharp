@@ -53,7 +53,7 @@ public class SelectBox< T > : Widget, IDisableable
     public SelectBoxStyle BoxStyle      { get; set; }
     public bool           IsDisabled    { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     private readonly List< T >           _items;
     private readonly SelectBoxList?      _selectBoxList;
@@ -65,7 +65,7 @@ public class SelectBox< T > : Widget, IDisableable
     private float _prefWidth;
     private bool  _selectedPrefWidth;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public SelectBox( Skin skin ) : this( skin.Get< SelectBoxStyle >() )
     {
@@ -571,7 +571,7 @@ public class SelectBox< T > : Widget, IDisableable
             );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     [PublicAPI]
     public class SelectBoxList : ScrollPane
@@ -580,13 +580,13 @@ public class SelectBox< T > : Widget, IDisableable
         public ListBox< T >   ListBox      { get; set; }
         public SelectBox< T > SelectBox    { get; set; }
 
-        // --------------------------------------------------------------------
+        // ====================================================================
 
         private readonly InputListener _hideListener;
         private readonly Vector2       _stagePosition = new();
         private          Actor?        _previousScrollFocus;
 
-        // --------------------------------------------------------------------
+        // ====================================================================
         
         public SelectBoxList( SelectBox< T > selectBox )
             : base( null, selectBox.BoxStyle.ScrollStyle )
@@ -777,8 +777,8 @@ public class SelectBox< T > : Widget, IDisableable
         }
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     [PublicAPI]
     public class SelectBoxArraySelection : ArraySelection< T >
@@ -801,8 +801,8 @@ public class SelectBox< T > : Widget, IDisableable
         }
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     [PublicAPI]
     public class SelectBoxClickListener : ClickListener
@@ -839,8 +839,8 @@ public class SelectBox< T > : Widget, IDisableable
         }
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     [PublicAPI]
     public class SelectBoxListClickListener : ClickListener
@@ -951,8 +951,8 @@ public class SelectBox< T > : Widget, IDisableable
         }
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// The Style for a <see cref="SelectBox{T}"/>.

@@ -34,7 +34,7 @@ public class MapProperties
 {
     private Dictionary< string, object? > _properties = new();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Gets the property matching the specified key.

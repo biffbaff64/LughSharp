@@ -41,7 +41,7 @@ public class InstanceBufferObject : IInstanceData
     private bool        _ownsBuffer;
     private int         _usage;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     public InstanceBufferObject( bool isStatic, int numVertices, params VertexAttribute[] attributes )
         : this( isStatic, numVertices, new VertexAttributes( attributes ) )

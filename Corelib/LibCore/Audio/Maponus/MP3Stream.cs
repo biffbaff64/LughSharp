@@ -34,7 +34,7 @@ namespace Corelib.LibCore.Audio.Maponus;
 [PublicAPI]
 public class Mp3Stream : Stream
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private const int BACK_STREAM_BYTE_COUNT_REP = 0;
 

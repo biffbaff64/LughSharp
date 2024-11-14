@@ -54,7 +54,7 @@ public class IndexBufferObject : IIndexData
     private          bool        _isBound = false;
     private          bool        _isDirty = true;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Constructs a new IndexBufferObject, setting <see cref="_usage"/> to

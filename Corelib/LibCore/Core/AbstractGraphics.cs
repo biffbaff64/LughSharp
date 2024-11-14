@@ -31,7 +31,7 @@ namespace Corelib.LibCore.Core;
 [PublicAPI]
 public abstract class AbstractGraphics : IGraphics
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region properties
 
@@ -54,7 +54,7 @@ public abstract class AbstractGraphics : IGraphics
 
     #endregion properties
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region implemented methods
 
@@ -80,11 +80,11 @@ public abstract class AbstractGraphics : IGraphics
 
     #endregion implemented methods
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region abstract methods
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     // Abstract methods because C# insists this is done to fulfill the contract
     // between the class and interface, which just makes everything annoying tbh.
 
@@ -93,7 +93,7 @@ public abstract class AbstractGraphics : IGraphics
     public abstract IGraphics.DisplayMode[] GetDisplayModes( GLFW.Monitor monitor );
     public abstract IGraphics.DisplayMode   GetDisplayMode( GLFW.Monitor monitor );
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     public abstract bool SetWindowedMode( int width, int height );
     public abstract void SetUndecorated( bool undecorated );
     public abstract void SetResizable( bool resizable );
@@ -101,7 +101,7 @@ public abstract class AbstractGraphics : IGraphics
     public abstract void SetForegroundFps( int fps );
     public abstract bool SetFullscreenMode( IGraphics.DisplayMode displayMode );
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     public abstract bool SupportsExtension( string extension );
     public abstract bool SupportsDisplayModeChange();
     public abstract void RequestRendering();
@@ -112,12 +112,12 @@ public abstract class AbstractGraphics : IGraphics
     public abstract long GetFrameID();
     public abstract int  GetFramesPerSecond();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     public abstract ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot );
     public abstract void    SetCursor( ICursor cursor );
     public abstract void    SetSystemCursor( ICursor.SystemCursor systemCursor );
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     public abstract (float X, float Y) GetPpcXY();
     public abstract (float X, float Y) GetPpiXY();
 

@@ -71,7 +71,7 @@ public class OutputChannels
 
     private readonly int _outputChannels;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     // private constructor for use when declaring new static instances.
     private OutputChannels( int channels )

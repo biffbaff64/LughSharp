@@ -35,7 +35,7 @@ public abstract class TemporalAction : Action
 {
     private bool _began;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     protected TemporalAction()
     {

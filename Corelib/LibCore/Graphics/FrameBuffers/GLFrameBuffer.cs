@@ -75,8 +75,8 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
 
     protected GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > BufferBuilder { get; set; }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Creates a new GLFrameBuffer. No <see cref="GLFrameBufferBuilder{TU}"/> specifications
@@ -98,7 +98,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
         BuildBuffer();
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Wrapper to allow calling of virtual method <see cref="Build"/>
@@ -614,7 +614,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
         return builder;
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <summary>
     /// Releases all resources associated with the FrameBuffer.

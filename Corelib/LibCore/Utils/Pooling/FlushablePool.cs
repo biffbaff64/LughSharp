@@ -35,7 +35,7 @@ public abstract class FlushablePool< T > : Pool< T >
 {
     private readonly List< T > _obtained = [ ];
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <inheritdoc />
     protected FlushablePool()

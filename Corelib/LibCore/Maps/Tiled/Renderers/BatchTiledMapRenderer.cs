@@ -45,7 +45,7 @@ public class BatchTileMapRenderer : ITiledMapRenderer
 
     protected const int NUM_VERTICES = 20;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public BatchTileMapRenderer()
         : this( new TiledMap() )

@@ -39,8 +39,8 @@ public class ParticleEffectActor : Actor, IDisposable
 
     protected float lastDelta;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     public ParticleEffectActor( ParticleEffect particleEffect, bool resetOnStart )
     {
@@ -146,7 +146,7 @@ public class ParticleEffectActor : Actor, IDisposable
         ParticleEffect.AllowCompletion();
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region dispose pattern
 

@@ -29,7 +29,7 @@ public class PNGFormatStructs
 {
     // Bytes 0 - 7 : Signature. Will always be 0x89504E470D0A1A0A
     // Bytes 8 -   : A series of chunks //TODO:
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <summary>
     /// The PNG signature is eight bytes in length and contains information

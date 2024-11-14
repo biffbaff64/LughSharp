@@ -43,7 +43,7 @@ public class PushbackStream
     private readonly byte[]             _temporaryBuffer;
     private          int                _numForwardBytesInBuffer;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PushbackStream"/> class with a specified

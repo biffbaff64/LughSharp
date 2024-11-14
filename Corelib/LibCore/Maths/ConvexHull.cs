@@ -40,7 +40,7 @@ public class ConvexHull
 
     private float[]? _sortedPoints;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public List< float > ComputePolygon( List< float > points, bool sorted )
     {
@@ -62,7 +62,7 @@ public class ConvexHull
         return ComputeIndices( polygon, 0, polygon.Length, sorted, yDown );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Returns the convex hull polygon for the given point cloud.

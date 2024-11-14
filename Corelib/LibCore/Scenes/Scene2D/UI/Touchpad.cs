@@ -53,7 +53,7 @@ public class Touchpad : Widget
 
     private TouchpadStyle _style = null!;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Constructor
@@ -93,7 +93,7 @@ public class Touchpad : Widget
         ConstructorHelper( deadzoneRadius, style );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private void ConstructorHelper( float deadzoneRadius, TouchpadStyle style )
     {
@@ -113,7 +113,7 @@ public class Touchpad : Widget
         AddListener( new TouchpadInputListener( this ) );
     }
     
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Returns the x-position of the knob relative to the center of the widget.
@@ -139,7 +139,7 @@ public class Touchpad : Widget
     /// </summary>
     public float KnobPercentY => _knobPercent.Y;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private void CalculatePositionAndValue( float x, float y, bool isTouchUp )
     {
@@ -268,8 +268,8 @@ public class Touchpad : Widget
         Invalidate();
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     internal class TouchpadInputListener : InputListener
     {
@@ -305,8 +305,8 @@ public class Touchpad : Widget
         }
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     [PublicAPI]
     public class TouchpadStyle
@@ -333,7 +333,7 @@ public class Touchpad : Widget
         public IDrawable? Knob { get; set; }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region properties
 

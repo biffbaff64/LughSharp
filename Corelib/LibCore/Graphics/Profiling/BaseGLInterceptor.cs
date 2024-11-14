@@ -38,8 +38,8 @@ public abstract class BaseGLInterceptor
 
     protected readonly GLProfiler GLProfiler;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Constructs a new BaseGLInterceptor instance, setting the <see cref="GLProfiler"/>

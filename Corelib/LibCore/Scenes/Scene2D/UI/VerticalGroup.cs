@@ -51,7 +51,7 @@ namespace Corelib.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class VerticalGroup : WidgetGroup
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private int            _columnAlign;
     private List< float >? _columnSizes;
@@ -62,7 +62,7 @@ public class VerticalGroup : WidgetGroup
     private bool           _round       = true;
     private bool           _sizeInvalid = true;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public VerticalGroup()
     {

@@ -151,7 +151,7 @@ public class CumulativeDistribution< T >
         return _values[ imin ].Value;
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <returns> the value whose interval contains a random probability in [0,1] </returns>
     public virtual T Value()
@@ -177,7 +177,7 @@ public class CumulativeDistribution< T >
         return _values[ index ].Value;
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Set the interval size on the passed in object.

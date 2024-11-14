@@ -31,6 +31,8 @@
 #pragma warning disable CS8500     // This takes the address of, gets the size of, or declares a pointer to a managed type
 #pragma warning disable SYSLIB1054 // 
 
+using System.Numerics;
+
 using GLenum = System.Int32;
 using GLfloat = System.Single;
 using GLint = System.Int32;
@@ -53,7 +55,7 @@ namespace Corelib.LibCore.Graphics.OpenGL;
 
 public unsafe partial class GLBindings : IGLBindings
 {
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glCreateQueries( GLenum target, GLsizei n, GLuint* ids )
@@ -61,7 +63,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glCreateQueries( target, n, ids );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLuint[] glCreateQueries( GLenum target, GLsizei n )
@@ -73,7 +75,7 @@ public unsafe partial class GLBindings : IGLBindings
         return ids;
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLuint glCreateQuery( GLenum target )
@@ -81,7 +83,7 @@ public unsafe partial class GLBindings : IGLBindings
         return glCreateQueries( target, 1 )[ 0 ];
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetQueryBufferObjecti64v( GLuint id, GLuint buffer, GLenum pname, GLintptr offset )
@@ -89,7 +91,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetQueryBufferObjecti64v( id, buffer, pname, offset );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetQueryBufferObjectiv( GLuint id, GLuint buffer, GLenum pname, GLintptr offset )
@@ -97,7 +99,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetQueryBufferObjectiv( id, buffer, pname, offset );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetQueryBufferObjectui64v( GLuint id, GLuint buffer, GLenum pname, GLintptr offset )
@@ -105,7 +107,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetQueryBufferObjectui64v( id, buffer, pname, offset );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetQueryBufferObjectuiv( GLuint id, GLuint buffer, GLenum pname, GLintptr offset )
@@ -113,7 +115,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetQueryBufferObjectuiv( id, buffer, pname, offset );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glMemoryBarrierByRegion( GLbitfield barriers )
@@ -121,7 +123,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glMemoryBarrierByRegion( barriers );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetTextureSubImage( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type,
@@ -131,7 +133,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetTextureSubImage( texture, level, xoffset, yoffset, zoffset, width, height, depth, format, type, bufSize, pixels );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public byte[] glGetTextureSubImage( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type,
@@ -145,7 +147,7 @@ public unsafe partial class GLBindings : IGLBindings
         return pixels;
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetCompressedTextureSubImage( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize, void* pixels )
@@ -153,7 +155,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetCompressedTextureSubImage( texture, level, xoffset, yoffset, zoffset, width, height, depth, bufSize, pixels );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public byte[] glGetCompressedTextureSubImage( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize )
@@ -166,7 +168,7 @@ public unsafe partial class GLBindings : IGLBindings
         return pixels;
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLenum glGetGraphicsResetStatus()
@@ -174,7 +176,7 @@ public unsafe partial class GLBindings : IGLBindings
         return _glGetGraphicsResetStatus();
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetnCompressedTexImage( GLenum target, GLint lod, GLsizei bufSize, void* pixels )
@@ -182,7 +184,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetnCompressedTexImage( target, lod, bufSize, pixels );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public byte[] glGetnCompressedTexImage( GLenum target, GLint lod, GLsizei bufSize )
@@ -194,7 +196,7 @@ public unsafe partial class GLBindings : IGLBindings
         return pixels;
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetnTexImage( GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize, void* pixels )
@@ -202,7 +204,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetnTexImage( target, level, format, type, bufSize, pixels );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public byte[] glGetnTexImage( GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize )
@@ -214,7 +216,7 @@ public unsafe partial class GLBindings : IGLBindings
         return pixels;
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetnUniformdv( GLuint program, GLint location, GLsizei bufSize, GLdouble* parameters )
@@ -222,7 +224,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetnUniformdv( program, location, bufSize, parameters );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetnUniformdv( GLuint program, GLint location, GLsizei bufSize, ref GLdouble[] parameters )
@@ -231,7 +233,7 @@ public unsafe partial class GLBindings : IGLBindings
                    &parameters[ 0 ] ) _glGetnUniformdv( program, location, bufSize, ( GLdouble* )ptr_parameters );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetnUniformfv( GLuint program, GLint location, GLsizei bufSize, GLfloat* parameters )
@@ -239,7 +241,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetnUniformfv( program, location, bufSize, parameters );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetnUniformfv( GLuint program, GLint location, GLsizei bufSize, ref GLfloat[] parameters )
@@ -248,7 +250,7 @@ public unsafe partial class GLBindings : IGLBindings
                    &parameters[ 0 ] ) _glGetnUniformfv( program, location, bufSize, ( GLfloat* )ptr_parameters );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetnUniformiv( GLuint program, GLint location, GLsizei bufSize, GLint* parameters )
@@ -256,7 +258,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetnUniformiv( program, location, bufSize, parameters );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetnUniformiv( GLuint program, GLint location, GLsizei bufSize, ref GLint[] parameters )
@@ -265,7 +267,7 @@ public unsafe partial class GLBindings : IGLBindings
                    &parameters[ 0 ] ) _glGetnUniformiv( program, location, bufSize, ( GLint* )ptr_parameters );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetnUniformuiv( GLuint program, GLint location, GLsizei bufSize, GLuint* parameters )
@@ -273,7 +275,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetnUniformuiv( program, location, bufSize, parameters );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetnUniformuiv( GLuint program, GLint location, GLsizei bufSize, ref GLuint[] parameters )
@@ -284,7 +286,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glReadnPixels( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, void* data )
@@ -292,7 +294,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glReadnPixels( x, y, width, height, format, type, bufSize, data );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public byte[] glReadnPixels( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize )
     {
@@ -306,21 +308,21 @@ public unsafe partial class GLBindings : IGLBindings
         return data;
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public void glTextureBarrier()
     {
         _glTextureBarrier();
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public void glSpecializeShader( GLuint shader, GLchar* pEntryPoint, GLuint numSpecializationConstants, GLuint* pConstantIndex, GLuint* pConstantValue )
     {
         _glSpecializeShader( shader, pEntryPoint, numSpecializationConstants, pConstantIndex, pConstantValue );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public void glSpecializeShader( GLuint shader, string pEntryPoint, GLuint numSpecializationConstants, GLuint[] pConstantIndex, GLuint[] pConstantValue )
     {
@@ -333,42 +335,42 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public void glMultiDrawArraysIndirectCount( GLenum mode, void* indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride )
     {
         _glMultiDrawArraysIndirectCount( mode, indirect, drawcount, maxdrawcount, stride );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public void glMultiDrawArraysIndirectCount( GLenum mode, DrawArraysIndirectCommand indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride )
     {
         _glMultiDrawArraysIndirectCount( mode, &indirect, drawcount, maxdrawcount, stride );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public void glMultiDrawElementsIndirectCount( GLenum mode, GLenum type, void* indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride )
     {
         _glMultiDrawElementsIndirectCount( mode, type, indirect, drawcount, maxdrawcount, stride );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public void glMultiDrawElementsIndirectCount( GLenum mode, GLenum type, DrawElementsIndirectCommand indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride )
     {
         _glMultiDrawElementsIndirectCount( mode, type, &indirect, drawcount, maxdrawcount, stride );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public void glPolygonOffsetClamp( GLfloat factor, GLfloat units, GLfloat clamp )
     {
         _glPolygonOffsetClamp( factor, units, clamp );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glTransformFeedbackVaryings( GLuint program, GLsizei count, GLchar** varyings, GLenum bufferMode )
@@ -376,7 +378,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glTransformFeedbackVaryings( program, count, varyings, bufferMode );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glTransformFeedbackVaryings( GLuint program, string[] varyings, GLenum bufferMode )
@@ -404,7 +406,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetTransformFeedbackVarying( GLuint program,
@@ -418,7 +420,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetTransformFeedbackVarying( program, index, bufSize, length, size, type, name );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public string glGetTransformFeedbackVarying( GLuint program, GLuint index, GLsizei bufSize, out GLsizei size, out GLenum type )
@@ -440,7 +442,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glClampColor( GLenum target, GLboolean clamp )
@@ -448,7 +450,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glClampColor( target, clamp ? IGL.GL_TRUE : IGL.GL_FALSE );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glBeginConditionalRender( GLuint id, GLenum mode )
@@ -456,7 +458,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glBeginConditionalRender( id, mode );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glEndConditionalRender()
@@ -464,7 +466,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glEndConditionalRender();
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribIPointer( GLuint index, GLint size, GLenum type, GLsizei stride, void* pointer )
@@ -472,7 +474,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribIPointer( index, size, type, stride, pointer );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribIPointer( GLuint index, GLint size, GLenum type, GLsizei stride, uint pointer )
@@ -480,7 +482,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribIPointer( index, size, type, stride, ( void* )pointer );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetVertexAttribIiv( GLuint index, GLenum pname, GLint* parameters )
@@ -488,7 +490,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetVertexAttribIiv( index, pname, parameters );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetVertexAttribIiv( GLuint index, GLenum pname, ref GLint[] parameters )
@@ -500,7 +502,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetVertexAttribIuiv( GLuint index, GLenum pname, GLuint* parameters )
@@ -508,7 +510,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetVertexAttribIuiv( index, pname, parameters );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetVertexAttribIuiv( GLuint index, GLenum pname, ref GLuint[] parameters )
@@ -520,7 +522,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI1i( GLuint index, GLint x )
@@ -528,7 +530,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI1i( index, x );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI2i( GLuint index, GLint x, GLint y )
@@ -536,7 +538,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI2i( index, x, y );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI3i( GLuint index, GLint x, GLint y, GLint z )
@@ -544,7 +546,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI3i( index, x, y, z );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI4i( GLuint index, GLint x, GLint y, GLint z, GLint w )
@@ -552,7 +554,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI4i( index, x, y, z, w );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI1ui( GLuint index, GLuint x )
@@ -560,7 +562,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI1ui( index, x );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI2ui( GLuint index, GLuint x, GLuint y )
@@ -568,7 +570,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI2ui( index, x, y );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI3ui( GLuint index, GLuint x, GLuint y, GLuint z )
@@ -576,7 +578,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI3ui( index, x, y, z );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI4ui( GLuint index, GLuint x, GLuint y, GLuint z, GLuint w )
@@ -584,7 +586,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI4ui( index, x, y, z, w );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI1iv( GLuint index, GLint* v )
@@ -592,7 +594,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI1iv( index, v );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI1iv( GLuint index, GLint[] v )
@@ -603,7 +605,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI2iv( GLuint index, GLint* v )
@@ -611,7 +613,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI2iv( index, v );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI2iv( GLuint index, GLint[] v )
@@ -622,7 +624,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI3iv( GLuint index, GLint* v )
@@ -630,7 +632,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI3iv( index, v );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI3iv( GLuint index, GLint[] v )
@@ -641,7 +643,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI4iv( GLuint index, GLint* v )
@@ -649,7 +651,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI4iv( index, v );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI4iv( GLuint index, GLint[] v )
@@ -660,7 +662,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI1uiv( GLuint index, GLuint* v )
@@ -668,7 +670,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI1uiv( index, v );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI1uiv( GLuint index, GLuint[] v )
@@ -679,7 +681,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI2uiv( GLuint index, GLuint* v )
@@ -687,7 +689,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI2uiv( index, v );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI2uiv( GLuint index, GLuint[] v )
@@ -698,7 +700,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI3uiv( GLuint index, GLuint* v )
@@ -706,7 +708,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI3uiv( index, v );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI3uiv( GLuint index, GLuint[] v )
@@ -717,7 +719,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI4uiv( GLuint index, GLuint* v )
@@ -725,7 +727,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI4uiv( index, v );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI4uiv( GLuint index, GLuint[] v )
@@ -736,7 +738,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI4bv( GLuint index, GLbyte* v )
@@ -744,7 +746,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI4bv( index, v );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI4bv( GLuint index, GLbyte[] v )
@@ -755,7 +757,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI4sv( GLuint index, GLshort* v )
@@ -763,7 +765,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI4sv( index, v );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI4sv( GLuint index, GLshort[] v )
@@ -774,7 +776,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI4ubv( GLuint index, GLubyte* v )
@@ -782,7 +784,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI4ubv( index, v );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI4ubv( GLuint index, GLubyte[] v )
@@ -793,7 +795,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI4usv( GLuint index, GLushort* v )
@@ -801,7 +803,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glVertexAttribI4usv( index, v );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glVertexAttribI4usv( GLuint index, GLushort[] v )
@@ -812,7 +814,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetUniformuiv( GLuint program, GLint location, GLuint* parameters )
@@ -820,7 +822,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetUniformuiv( program, location, parameters );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetUniformuiv( GLuint program, GLint location, ref GLuint[] parameters )
@@ -832,7 +834,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glBindFragDataLocation( GLuint program, GLuint color, GLchar* name )
@@ -840,7 +842,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glBindFragDataLocation( program, color, name );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glBindFragDataLocation( GLuint program, GLuint color, string name )
@@ -854,7 +856,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLint glGetFragDataLocation( GLuint program, GLchar* name )
@@ -862,7 +864,7 @@ public unsafe partial class GLBindings : IGLBindings
         return _glGetFragDataLocation( program, name );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLint glGetFragDataLocation( GLuint program, string name )
@@ -876,7 +878,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glUniform1ui( GLint location, GLuint v0 )
@@ -884,7 +886,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glUniform1ui( location, v0 );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glUniform2ui( GLint location, GLuint v0, GLuint v1 )
@@ -892,7 +894,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glUniform2ui( location, v0, v1 );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glUniform3ui( GLint location, GLuint v0, GLuint v1, GLuint v2 )
@@ -900,7 +902,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glUniform3ui( location, v0, v1, v2 );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glUniform4ui( GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3 )
@@ -908,7 +910,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glUniform4ui( location, v0, v1, v2, v3 );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glUniform1uiv( GLint location, GLsizei count, GLuint* value )
@@ -916,7 +918,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glUniform1uiv( location, count, value );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glUniform1uiv( GLint location, GLuint[] value )
@@ -927,7 +929,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glUniform2uiv( GLint location, GLsizei count, GLuint* value )
@@ -935,7 +937,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glUniform2uiv( location, count, value );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glUniform2uiv( GLint location, GLuint[] value )
@@ -946,7 +948,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glUniform3uiv( GLint location, GLsizei count, GLuint* value )
@@ -954,7 +956,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glUniform3uiv( location, count, value );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glUniform3uiv( GLint location, GLuint[] value )
@@ -965,7 +967,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glUniform4uiv( GLint location, GLsizei count, GLuint* value )
@@ -973,7 +975,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glUniform4uiv( location, count, value );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glUniform4uiv( GLint location, GLuint[] value )
@@ -984,7 +986,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glTexParameterIiv( GLenum target, GLenum pname, GLint* param )
@@ -992,7 +994,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glTexParameterIiv( target, pname, param );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glTexParameterIiv( GLenum target, GLenum pname, GLint[] param )
@@ -1003,7 +1005,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glTexParameterIuiv( GLenum target, GLenum pname, GLuint* param )
@@ -1011,7 +1013,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glTexParameterIuiv( target, pname, param );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glTexParameterIuiv( GLenum target, GLenum pname, GLuint[] param )
@@ -1023,7 +1025,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetTexParameterIiv( GLenum target, GLenum pname, GLint* parameters )
@@ -1031,7 +1033,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetTexParameterIiv( target, pname, parameters );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetTexParameterIiv( GLenum target, GLenum pname, ref GLint[] parameters )
@@ -1043,7 +1045,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetTexParameterIuiv( GLenum target, GLenum pname, GLuint* parameters )
@@ -1051,7 +1053,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetTexParameterIuiv( target, pname, parameters );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetTexParameterIuiv( GLenum target, GLenum pname, ref GLuint[] parameters )
@@ -1063,7 +1065,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glClearBufferiv( GLenum buffer, GLint drawbuffer, GLint* value )
@@ -1071,7 +1073,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glClearBufferiv( buffer, drawbuffer, value );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glClearBufferiv( GLenum buffer, GLint drawbuffer, GLint[] value )
@@ -1083,7 +1085,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glClearBufferuiv( GLenum buffer, GLint drawbuffer, GLuint* value )
@@ -1091,7 +1093,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glClearBufferuiv( buffer, drawbuffer, value );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glClearBufferuiv( GLenum buffer, GLint drawbuffer, GLuint[] value )
@@ -1103,7 +1105,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glClearBufferfv( GLenum buffer, GLint drawbuffer, GLfloat* value )
@@ -1111,7 +1113,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glClearBufferfv( buffer, drawbuffer, value );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glClearBufferfv( GLenum buffer, GLint drawbuffer, GLfloat[] value )
@@ -1123,7 +1125,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glClearBufferfi( GLenum buffer, GLint drawbuffer, GLfloat depth, GLint stencil )
@@ -1131,7 +1133,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glClearBufferfi( buffer, drawbuffer, depth, stencil );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLubyte* glGetStringi( GLenum name, GLuint index )
@@ -1139,7 +1141,7 @@ public unsafe partial class GLBindings : IGLBindings
         return _glGetStringi( name, index );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public string glGetStringiSafe( GLenum name, GLuint index )
@@ -1161,7 +1163,7 @@ public unsafe partial class GLBindings : IGLBindings
         return new string( ( sbyte* )ptr, 0, i, Encoding.UTF8 );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLboolean glIsRenderbuffer( GLuint renderbuffer )
@@ -1169,7 +1171,7 @@ public unsafe partial class GLBindings : IGLBindings
         return _glIsRenderbuffer( renderbuffer );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glBindRenderbuffer( GLenum target, GLuint renderbuffer )
@@ -1177,7 +1179,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glBindRenderbuffer( target, renderbuffer );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glDeleteRenderbuffers( GLsizei n, GLuint* renderbuffers )
@@ -1185,7 +1187,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glDeleteRenderbuffers( n, renderbuffers );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glDeleteRenderbuffers( params GLuint[] renderbuffers )
@@ -1197,7 +1199,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGenRenderbuffers( GLsizei n, GLuint* renderbuffers )
@@ -1205,7 +1207,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGenRenderbuffers( n, renderbuffers );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLuint[] glGenRenderbuffers( GLsizei n )
@@ -1221,7 +1223,7 @@ public unsafe partial class GLBindings : IGLBindings
         return renderbuffers;
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLuint glGenRenderbuffer()
@@ -1229,7 +1231,7 @@ public unsafe partial class GLBindings : IGLBindings
         return glGenRenderbuffers( 1 )[ 0 ];
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glRenderbufferStorage( GLenum target, GLenum internalformat, GLsizei width, GLsizei height )
@@ -1237,7 +1239,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glRenderbufferStorage( target, internalformat, width, height );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetRenderbufferParameteriv( GLenum target, GLenum pname, GLint* parameters )
@@ -1245,7 +1247,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetRenderbufferParameteriv( target, pname, parameters );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetRenderbufferParameteriv( GLenum target, GLenum pname, ref GLint[] parameters )
@@ -1257,7 +1259,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLboolean glIsFramebuffer( GLuint framebuffer )
@@ -1265,7 +1267,7 @@ public unsafe partial class GLBindings : IGLBindings
         return _glIsFramebuffer( framebuffer );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glBindFramebuffer( GLenum target, GLuint framebuffer )
@@ -1273,7 +1275,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glBindFramebuffer( target, framebuffer );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glDeleteFramebuffers( GLsizei n, GLuint* framebuffers )
@@ -1281,7 +1283,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glDeleteFramebuffers( n, framebuffers );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glDeleteFramebuffers( params GLuint[] framebuffers )
@@ -1293,7 +1295,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGenFramebuffers( GLsizei n, GLuint* framebuffers )
@@ -1301,7 +1303,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGenFramebuffers( n, framebuffers );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLuint[] glGenFramebuffers( GLsizei n )
@@ -1317,7 +1319,7 @@ public unsafe partial class GLBindings : IGLBindings
         return framebuffers;
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLuint glGenFramebuffer()
@@ -1325,7 +1327,7 @@ public unsafe partial class GLBindings : IGLBindings
         return glGenFramebuffers( 1 )[ 0 ];
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLenum glCheckFramebufferStatus( GLenum target )
@@ -1333,7 +1335,7 @@ public unsafe partial class GLBindings : IGLBindings
         return _glCheckFramebufferStatus( target );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glFramebufferTexture1D( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level )
@@ -1341,7 +1343,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glFramebufferTexture1D( target, attachment, textarget, texture, level );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glFramebufferTexture2D( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level )
@@ -1349,7 +1351,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glFramebufferTexture2D( target, attachment, textarget, texture, level );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glFramebufferTexture3D( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset )
@@ -1357,7 +1359,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glFramebufferTexture3D( target, attachment, textarget, texture, level, zoffset );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glFramebufferRenderbuffer( GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer )
@@ -1365,7 +1367,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glFramebufferRenderbuffer( target, attachment, renderbuffertarget, renderbuffer );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetFramebufferAttachmentParameteriv( GLenum target, GLenum attachment, GLenum pname, GLint* parameters )
@@ -1373,7 +1375,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetFramebufferAttachmentParameteriv( target, attachment, pname, parameters );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetFramebufferAttachmentParameteriv( GLenum target, GLenum attachment, GLenum pname, ref GLint[] parameters )
@@ -1384,7 +1386,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGenerateMipmap( GLenum target )
@@ -1392,7 +1394,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGenerateMipmap( target );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glBlitFramebuffer( GLint srcX0,
@@ -1409,7 +1411,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glBlitFramebuffer( srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glRenderbufferStorageMultisample( GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height )
@@ -1417,7 +1419,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glRenderbufferStorageMultisample( target, samples, internalformat, width, height );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glFramebufferTextureLayer( GLenum target, GLenum attachment, GLuint texture, GLint level, GLint layer )
@@ -1425,7 +1427,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glFramebufferTextureLayer( target, attachment, texture, level, layer );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void* glMapBufferRange( GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access )
@@ -1433,7 +1435,7 @@ public unsafe partial class GLBindings : IGLBindings
         return _glMapBufferRange( target, offset, length, access );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public Span< T > glMapBufferRange< T >( GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access ) where T : unmanaged
@@ -1443,7 +1445,7 @@ public unsafe partial class GLBindings : IGLBindings
         return new Span< T >( ret, length );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glFlushMappedBufferRange( GLenum target, GLintptr offset, GLsizeiptr length )
@@ -1451,7 +1453,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glFlushMappedBufferRange( target, offset, length );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glBindVertexArray( GLuint array )
@@ -1459,7 +1461,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glBindVertexArray( array );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glDeleteVertexArrays( GLsizei n, GLuint* arrays )
@@ -1467,7 +1469,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glDeleteVertexArrays( n, arrays );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glDeleteVertexArrays( params GLuint[] arrays )
@@ -1478,7 +1480,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGenVertexArrays( GLsizei n, GLuint* arrays )
@@ -1486,7 +1488,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGenVertexArrays( n, arrays );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLuint[] glGenVertexArrays( GLsizei n )
@@ -1501,7 +1503,7 @@ public unsafe partial class GLBindings : IGLBindings
         return arrays;
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLuint glGenVertexArray()
@@ -1512,7 +1514,7 @@ public unsafe partial class GLBindings : IGLBindings
         return array;
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLboolean glIsVertexArray( GLuint array )
@@ -1520,7 +1522,7 @@ public unsafe partial class GLBindings : IGLBindings
         return _glIsVertexArray( array );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glDrawArraysInstanced( GLenum mode, GLint first, GLsizei count, GLsizei instancecount )
@@ -1528,7 +1530,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glDrawArraysInstanced( mode, first, count, instancecount );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glDrawElementsInstanced( GLenum mode, GLsizei count, GLenum type, void* indices, GLsizei instancecount )
@@ -1536,7 +1538,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glDrawElementsInstanced( mode, count, type, indices, instancecount );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glDrawElementsInstanced< T >( GLenum mode, GLsizei count, GLenum type, T[] indices, GLsizei instancecount )
@@ -1548,7 +1550,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glTexBuffer( GLenum target, GLenum internalformat, GLuint buffer )
@@ -1556,7 +1558,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glTexBuffer( target, internalformat, buffer );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glPrimitiveRestartIndex( GLuint index )
@@ -1564,7 +1566,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glPrimitiveRestartIndex( index );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glCopyBufferSubData( GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size )
@@ -1572,7 +1574,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glCopyBufferSubData( readTarget, writeTarget, readOffset, writeOffset, size );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetUniformIndices( GLuint program, GLsizei uniformCount, GLchar** uniformNames, GLuint* uniformIndices )
@@ -1580,7 +1582,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetUniformIndices( program, uniformCount, uniformNames, uniformIndices );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLuint[] glGetUniformIndices( GLuint program, params string[] uniformNames )
@@ -1613,7 +1615,7 @@ public unsafe partial class GLBindings : IGLBindings
         return uniformIndices;
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetActiveUniformsiv( GLuint program, GLsizei uniformCount, GLuint* uniformIndices, GLenum pname, GLint* parameters )
@@ -1621,7 +1623,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetActiveUniformsiv( program, uniformCount, uniformIndices, pname, parameters );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLint[] glGetActiveUniformsiv( GLuint program, GLenum pname, params GLuint[] uniformIndices )
@@ -1640,7 +1642,7 @@ public unsafe partial class GLBindings : IGLBindings
         return parameters;
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public void glGetActiveUniformName( GLuint program, GLuint uniformIndex, GLsizei bufSize, GLsizei* length, GLchar* uniformName )
@@ -1648,7 +1650,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetActiveUniformName( program, uniformIndex, bufSize, length, uniformName );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public string glGetActiveUniformName( GLuint program, GLuint uniformIndex, GLsizei bufSize )
@@ -1660,7 +1662,7 @@ public unsafe partial class GLBindings : IGLBindings
         return new string( ( sbyte* )uniformName, 0, length, Encoding.UTF8 );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLuint glGetUniformBlockIndex( GLuint program, GLchar* uniformBlockName )
@@ -1668,7 +1670,7 @@ public unsafe partial class GLBindings : IGLBindings
         return _glGetUniformBlockIndex( program, uniformBlockName );
     }
 
-// ------------------------------------------------------------------------
+// ========================================================================
 
     /// <inheritdoc/>
     public GLuint glGetUniformBlockIndex( GLuint program, string uniformBlockName )
@@ -1681,15 +1683,13 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <inheritdoc/>
     public void glGetActiveUniformBlockiv( GLuint program, GLuint uniformBlockIndex, GLenum pname, GLint* parameters )
     {
         _glGetActiveUniformBlockiv( program, uniformBlockIndex, pname, parameters );
     }
-
-// ------------------------------------------------------------------------
 
     /// <inheritdoc/>
     public void glGetActiveUniformBlockiv( GLuint program, GLuint uniformBlockIndex, GLenum pname, ref GLint[] parameters )
@@ -1701,7 +1701,7 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <inheritdoc/>
     public void glGetActiveUniformBlockName( GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei* length, GLchar* uniformBlockName )
@@ -1709,7 +1709,7 @@ public unsafe partial class GLBindings : IGLBindings
         _glGetActiveUniformBlockName( program, uniformBlockIndex, bufSize, length, uniformBlockName );
     }
 
-// ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <inheritdoc/>
     public string glGetActiveUniformBlockName( GLuint program, GLuint uniformBlockIndex, GLsizei bufSize )
@@ -1721,7 +1721,7 @@ public unsafe partial class GLBindings : IGLBindings
         return new string( ( sbyte* )uniformBlockName, 0, length, Encoding.UTF8 );
     }
 
-// ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <inheritdoc/>
     public void glUniformBlockBinding( GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding )
@@ -1729,15 +1729,13 @@ public unsafe partial class GLBindings : IGLBindings
         _glUniformBlockBinding( program, uniformBlockIndex, uniformBlockBinding );
     }
 
-// ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <inheritdoc/>
     public void glDrawElementsBaseVertex( GLenum mode, GLsizei count, GLenum type, void* indices, GLint basevertex )
     {
         _glDrawElementsBaseVertex( mode, count, type, indices, basevertex );
     }
-
-// ------------------------------------------------------------------------
 
     /// <inheritdoc/>
     public void glDrawElementsBaseVertex< T >( GLenum mode, GLsizei count, GLenum type, T[] indices, GLint basevertex )
@@ -1750,15 +1748,13 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <inheritdoc/>
     public void glDrawRangeElementsBaseVertex( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, void* indices, GLint basevertex )
     {
         _glDrawRangeElementsBaseVertex( mode, start, end, count, type, indices, basevertex );
     }
-
-// ------------------------------------------------------------------------
 
     /// <inheritdoc/>
     public void glDrawRangeElementsBaseVertex< T >( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, T[] indices, GLint basevertex )
@@ -1771,15 +1767,13 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <inheritdoc/>
     public void glDrawElementsInstancedBaseVertex( GLenum mode, GLsizei count, GLenum type, void* indices, GLsizei instancecount, GLint basevertex )
     {
         _glDrawElementsInstancedBaseVertex( mode, count, type, indices, instancecount, basevertex );
     }
-
-// ------------------------------------------------------------------------
 
     /// <inheritdoc/>
     public void glDrawElementsInstancedBaseVertex< T >( GLenum mode, GLsizei count, GLenum type, T[] indices, GLsizei instancecount, GLint basevertex )
@@ -1792,15 +1786,21 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+    [DllImport( LIBGL, EntryPoint = "glDrawElementsInstancedBaseVertex", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLboolean _glDrawElementsInstancedBaseVertex( GLenum mode,
+                                                                        GLsizei count,
+                                                                        GLenum type,
+                                                                        void* indices,
+                                                                        GLsizei instancecount,
+                                                                        GLint basevertex );
+
+    // ========================================================================
 
     /// <inheritdoc/>
     public void glMultiDrawElementsBaseVertex( GLenum mode, GLsizei* count, GLenum type, void** indices, GLsizei drawcount, GLint* basevertex )
     {
         _glMultiDrawElementsBaseVertex( mode, count, type, indices, drawcount, basevertex );
     }
-
-// ------------------------------------------------------------------------
 
     /// <inheritdoc/>
     public void glMultiDrawElementsBaseVertex< T >( GLenum mode, GLenum type, T[][] indices, GLint[] basevertex ) where T : unmanaged, IUnsignedNumber< T >
@@ -1835,7 +1835,15 @@ public unsafe partial class GLBindings : IGLBindings
         }
     }
 
-// ------------------------------------------------------------------------
+    [DllImport( LIBGL, EntryPoint = "glMultiDrawElementsBaseVertex", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLboolean _glMultiDrawElementsBaseVertex( GLenum mode,
+                                                                    GLsizei* count,
+                                                                    GLenum type,
+                                                                    void** indices,
+                                                                    GLsizei drawcount,
+                                                                    GLint* basevertex );
+
+    // ========================================================================
 
     /// <inheritdoc/>
     public void glProvokingVertex( GLenum mode )
@@ -1843,7 +1851,10 @@ public unsafe partial class GLBindings : IGLBindings
         _glProvokingVertex( mode );
     }
 
-// ------------------------------------------------------------------------
+    [DllImport( LIBGL, EntryPoint = "glProvokingVertex", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLboolean _glProvokingVertex( GLenum mode );
+
+    // ========================================================================
 
     /// <inheritdoc/>
     public void* glFenceSync( GLenum condition, GLbitfield flags )
@@ -1851,15 +1862,16 @@ public unsafe partial class GLBindings : IGLBindings
         return _glFenceSync( condition, flags );
     }
 
-// ------------------------------------------------------------------------
-
     /// <inheritdoc/>
     public IntPtr glFenceSyncSafe( GLenum condition, GLbitfield flags )
     {
         return new IntPtr( _glFenceSync( condition, flags ) );
     }
 
-    // ------------------------------------------------------------------------
+    [DllImport( LIBGL, EntryPoint = "glFenceSync", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void* _glFenceSync( GLenum condition, GLbitfield flags );
+
+    // ========================================================================
 
     /// <inheritdoc/>
     public GLboolean glIsSync( void* sync )
@@ -1867,15 +1879,16 @@ public unsafe partial class GLBindings : IGLBindings
         return _glIsSync( sync );
     }
 
-    // ------------------------------------------------------------------------
-
     /// <inheritdoc/>
     public GLboolean glIsSyncSafe( IntPtr sync )
     {
         return _glIsSync( sync.ToPointer() );
     }
 
-    // ------------------------------------------------------------------------
+    [DllImport( LIBGL, EntryPoint = "glIsSync", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLboolean _glIsSync( void* sync );
+
+    // ========================================================================
 
     /// <inheritdoc/>
     public void glDeleteSync( void* sync )
@@ -1883,15 +1896,16 @@ public unsafe partial class GLBindings : IGLBindings
         _glDeleteSync( sync );
     }
 
-    // ------------------------------------------------------------------------
-
     /// <inheritdoc/>
     public void glDeleteSyncSafe( IntPtr sync )
     {
         _glDeleteSync( sync.ToPointer() );
     }
 
-    // ------------------------------------------------------------------------
+    [DllImport( LIBGL, EntryPoint = "glDeleteSync", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLenum _glDeleteSync( void* sync );
+
+    // ========================================================================
 
     /// <inheritdoc/>
     public GLenum glClientWaitSync( void* sync, GLbitfield flags, GLuint64 timeout )
@@ -1899,13 +1913,14 @@ public unsafe partial class GLBindings : IGLBindings
         return _glClientWaitSync( sync, flags, timeout );
     }
 
-    // ------------------------------------------------------------------------
-
     /// <inheritdoc/>
     public GLenum glClientWaitSyncSafe( IntPtr sync, GLbitfield flags, GLuint64 timeout )
     {
         return _glClientWaitSync( sync.ToPointer(), flags, timeout );
     }
+
+    [DllImport( LIBGL, EntryPoint = "glClientWaitSync", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLenum _glClientWaitSync( void* sync, GLbitfield flags, GLuint64 timeout );
 }
 
 #pragma warning restore IDE0079    // Remove unnecessary suppression

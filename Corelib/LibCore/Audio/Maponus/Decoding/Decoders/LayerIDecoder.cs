@@ -44,7 +44,7 @@ public class LayerIDecoder : IFrameDecoder
     protected ASubband[]       Subbands = null!;
     protected int              WhichChannels;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Decodes the current audio frame.

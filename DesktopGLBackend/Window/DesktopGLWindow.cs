@@ -67,7 +67,7 @@ public class DesktopGLWindow : IDisposable
     /// </summary>
     public int PositionY => ( int )GetPosition().Y;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private readonly List< IRunnable.Runnable > _executedRunnables = [ ];
     private readonly bool                       _iconified         = false;
@@ -76,8 +76,8 @@ public class DesktopGLWindow : IDisposable
 
     private bool _requestRendering = false;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Creates a new DesktopGLWindow instance, using the given <see cref="IApplicationListener"/>,
@@ -262,7 +262,7 @@ public class DesktopGLWindow : IDisposable
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Closes this window and pauses and disposes the associated <see cref="IApplicationListener"/>.
@@ -298,7 +298,7 @@ public class DesktopGLWindow : IDisposable
     /// </summary>
     public void FocusWindow() => Glfw.FocusWindow( GlfwWindow );
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Sets the windows title.
@@ -449,8 +449,8 @@ public class DesktopGLWindow : IDisposable
         }
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     #region dispose pattern
 

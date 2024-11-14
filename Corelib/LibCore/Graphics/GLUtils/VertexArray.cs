@@ -34,8 +34,8 @@ public class VertexArray : IVertexData
     private readonly FloatBuffer _buffer;
     private readonly ByteBuffer  _byteBuffer;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Constructs a new interleaved VertexArray

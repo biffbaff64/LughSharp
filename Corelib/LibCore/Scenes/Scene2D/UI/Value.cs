@@ -43,11 +43,11 @@ public abstract class Value
     public static          Value PrefWidth  { get; set; } = new ValuePrefWidthInnerClass();
     public static          Value PrefHeight { get; set; } = new ValuePrefHeightInnerClass();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public abstract float Get( Actor? context = null );
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public static Value PercentWidth( float percent )
     {
@@ -69,8 +69,8 @@ public abstract class Value
         return new ValuePercentHeight( percent, actor );
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// A fixed value that is not computed each time it is used.

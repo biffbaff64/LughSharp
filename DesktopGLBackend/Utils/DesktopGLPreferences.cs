@@ -42,8 +42,8 @@ public class DesktopGLPreferences : IPreferences
     private readonly string                        _propertiesFile;
     private readonly XDocument?                    _xDocument;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
     
     /// <summary>
     /// Initializes a new instance of the <see cref="DesktopGLPreferences"/> class.

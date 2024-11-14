@@ -32,12 +32,12 @@ namespace Corelib.LibCore.Maths;
 [PublicAPI]
 public class Quaternion
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private static readonly Quaternion _tmp1 = new( 0, 0, 0, 0 );
     private static readonly Quaternion _tmp2 = new( 0, 0, 0, 0 );
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Constructor, sets the four components of the quaternion.

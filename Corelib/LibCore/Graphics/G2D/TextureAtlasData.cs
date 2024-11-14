@@ -32,7 +32,7 @@ public partial record TextureAtlasData
 {
     internal static readonly bool[] HasIndexes = [ false ];
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region Constructors
 
@@ -55,7 +55,7 @@ public partial record TextureAtlasData
     public List< Region > Regions { get; set; } = [ ];
     public string[]       Entry   { get; set; } = new string[ 5 ];
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private void Load( FileInfo? packFile, DirectoryInfo? imagesDir, bool flip )
     {
@@ -286,7 +286,7 @@ public partial record TextureAtlasData
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     protected interface IField< in T >
     {

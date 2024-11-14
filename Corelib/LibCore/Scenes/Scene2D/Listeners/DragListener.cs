@@ -57,8 +57,8 @@ public class DragListener : InputListener
     private float _dragLastY;
     private int   _pressedPointer = -1;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <inheritdoc />
     public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )

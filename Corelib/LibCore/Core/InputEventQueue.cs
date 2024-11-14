@@ -46,16 +46,16 @@ public class InputEventQueue
 
     #endregion constants
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public long CurrentEventTime { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private readonly List< int > _processingQueue = new();
     private readonly List< int > _queue           = new();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Processes and drains the events in the queue using the specified input processor.

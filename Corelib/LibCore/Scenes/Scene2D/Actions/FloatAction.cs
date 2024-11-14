@@ -36,7 +36,7 @@ public class FloatAction : TemporalAction
     public float EndValue { get; }
     public float Value    { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <summary>
     /// Creates a FloatAction that transitions from 0.0f to 1.0f.

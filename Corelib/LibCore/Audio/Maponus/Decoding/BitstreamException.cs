@@ -45,7 +45,7 @@ namespace Corelib.LibCore.Audio.Maponus.Decoding;
 [Serializable, PublicAPI]
 public class BitstreamException : Mp3SharpException
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Initializes a new Mp3SharpException with a specified error message and a

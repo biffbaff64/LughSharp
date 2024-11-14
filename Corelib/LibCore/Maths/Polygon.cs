@@ -31,14 +31,14 @@ namespace Corelib.LibCore.Maths;
 [PublicAPI]
 public class Polygon : IShape2D
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private RectangleShape? _bounds;
     private bool            _dirty = true;
     private float[]?        _localVertices;
     private float[]?        _worldVertices;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Constructs a new polygon with no vertices.

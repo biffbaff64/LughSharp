@@ -46,7 +46,7 @@ namespace Corelib.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class WidgetGroup : Group, ILayout
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     protected WidgetGroup()
     {

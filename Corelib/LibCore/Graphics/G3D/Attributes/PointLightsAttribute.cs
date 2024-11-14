@@ -32,7 +32,7 @@ public class PointLightsAttribute : Attribute
 {
     public readonly List< PointLight > Lights;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public PointLightsAttribute() : base( Type )
     {

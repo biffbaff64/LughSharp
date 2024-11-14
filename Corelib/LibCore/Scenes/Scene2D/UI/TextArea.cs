@@ -38,7 +38,7 @@ namespace Corelib.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class TextArea : TextField
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     // Last text processed. This attribute is used to avoid unnecessary
     // computations while calculating offsets
@@ -50,7 +50,7 @@ public class TextArea : TextField
 
     private float _prefRows;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public TextArea( string text, Skin skin )
         : base( text, skin )
@@ -605,8 +605,8 @@ public class TextArea : TextField
         return -( ( CursorLine - FirstLineShowing ) + 1 ) * Style!.Font!.GetLineHeight();
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Input listener for the text area.

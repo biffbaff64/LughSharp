@@ -46,8 +46,8 @@ public abstract class BaseTmxMapLoader< TP >( IFileHandleResolver resolver )
     public int      MapHeightInPixels { get; set; }
     public TiledMap Map               { get; set; } = null!;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     protected const uint FLAG_FLIP_HORIZONTALLY = 0x80000000;
     protected const uint FLAG_FLIP_VERTICALLY   = 0x40000000;
@@ -60,8 +60,8 @@ public abstract class BaseTmxMapLoader< TP >( IFileHandleResolver resolver )
     private XmlNodeList? _objectGroupList;
     private XmlNodeList? _tilesetList;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     protected bool ConvertObjectToTileSpace;
     protected bool FlipY = true;
@@ -69,8 +69,8 @@ public abstract class BaseTmxMapLoader< TP >( IFileHandleResolver resolver )
     protected XmlDocument XmlDocument = new();
     protected XmlNode?    XmlRootNode;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Loads the map data, given the XML root element.
@@ -81,14 +81,14 @@ public abstract class BaseTmxMapLoader< TP >( IFileHandleResolver resolver )
     /// <returns>The <see cref="TiledMap"/>.</returns>
     protected TiledMap LoadTiledMap( FileInfo tmxFile, TP? parameter, IImageResolver imageResolver )
     {
-        // --------------------------------------------------------------------
+        // ====================================================================
 
         if ( !XmlDocument.HasChildNodes )
         {
             XmlDocument.LoadXml( tmxFile.Name );
         }
 
-        // --------------------------------------------------------------------
+        // ====================================================================
 
         // Extract the main Map node. Everything else is a child of this node.
         XmlRootNode = XmlDocument.SelectSingleNode( "map" );
@@ -254,8 +254,8 @@ public abstract class BaseTmxMapLoader< TP >( IFileHandleResolver resolver )
         return default( List< AssetDescriptor >? );
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
     // Load map components - layers, tilesets, groups etc
 
     /// <summary>
@@ -1294,8 +1294,8 @@ public abstract class BaseTmxMapLoader< TP >( IFileHandleResolver resolver )
         tileSet.PutTile( tileId, tile );
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     [PublicAPI]
     public class BaseTmxLoaderParameters : AssetLoaderParameters
@@ -1323,8 +1323,8 @@ public abstract class BaseTmxMapLoader< TP >( IFileHandleResolver resolver )
     }
 }
 
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
+// ========================================================================
+// ========================================================================
 
 internal class MapData
 {

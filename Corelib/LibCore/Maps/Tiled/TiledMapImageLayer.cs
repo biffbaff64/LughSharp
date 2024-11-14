@@ -36,7 +36,7 @@ public class TiledMapImageLayer : MapLayer
     public float          X      { get; set; }
     public float          Y      { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <summary>
     /// Creates a new TiledMapImageLayer, using the supplied TextureRegion as its

@@ -44,7 +44,7 @@ public class MapLayer
     public  float         Opacity    { get; set; }
     public  bool          Visible    { get; set; } = true;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// The layers X offset.

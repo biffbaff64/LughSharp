@@ -47,7 +47,7 @@ public class RotateToAction : TemporalAction
     public float Rotation             { get; set; }
     public bool  UseShortestDirection { get; set; } = false;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <summary>
     /// </summary>

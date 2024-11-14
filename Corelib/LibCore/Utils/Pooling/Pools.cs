@@ -34,7 +34,7 @@ public static class Pools< T >
 {
     private static readonly Dictionary< Type, Pool< T >? > _typePools = new();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <summary>
     /// Returns a new or existing pool for the specified type, stored in a Class

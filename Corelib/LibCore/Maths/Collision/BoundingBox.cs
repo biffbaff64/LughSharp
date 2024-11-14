@@ -33,14 +33,14 @@ namespace Corelib.LibCore.Maths.Collision;
 [Serializable, PublicAPI]
 public class BoundingBox
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private static readonly Vector3 _tmpVector = new();
 
     private readonly Vector3 _cnt = new();
     private readonly Vector3 _dim = new();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Constructs a new bounding box with the minimum and maximum vector set to zeros.
@@ -72,7 +72,7 @@ public class BoundingBox
     public Vector3 Max { get; set; } = new();
     public Vector3 Min { get; set; } = new();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public float CenterX => _cnt.X;
     public float CenterY => _cnt.Y;
@@ -82,7 +82,7 @@ public class BoundingBox
     public float Height => _dim.Y;
     public float Depth  => _dim.Z;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Returns whether this bounding box is valid.

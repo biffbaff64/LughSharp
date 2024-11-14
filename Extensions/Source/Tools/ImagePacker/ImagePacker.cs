@@ -65,7 +65,7 @@ public class ImagePacker
     private readonly bool _duplicateBorder;
     private readonly Node _root;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a new ImagePacker which will insert all supplied images into a <tt>width</tt>
@@ -212,8 +212,8 @@ public class ImagePacker
         return new Image< Rgba32 >( width, height, color );
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Entry point for the application.
@@ -241,8 +241,8 @@ public class ImagePacker
         packer.Image.Save( "packed.png" );
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Represents a node used in the image packing process.
@@ -259,7 +259,7 @@ public class ImagePacker
         public Node?     RightChild { get; private set; }
         public string?   LeaveName  { get; set; }
 
-        // --------------------------------------------------------------------
+        // ====================================================================
 
         /// <summary>
         /// Splits the current node into two children based on the specified rectangle dimensions.

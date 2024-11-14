@@ -44,7 +44,7 @@ public class PerformanceCounter
     private long _lastTick  = 0L;
     private long _startTime = 0L;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a new PerformanceCounter instance, giving it the siupplied name.

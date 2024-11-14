@@ -49,7 +49,7 @@ public class DelayedRemovalList< T > : List< T >
     private int _clear;
     private int _iterating;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a new DelayedRemovalList from the supplied <see cref="IEnumerable{T}"/>

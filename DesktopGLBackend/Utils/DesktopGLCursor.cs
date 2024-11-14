@@ -40,8 +40,8 @@ public class DesktopGLCursor : ICursor, IDisposable
     public Image           GLFWImage  { get; set; }
     public Cursor          GLFWCursor { get; set; }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
     
     public DesktopGLCursor( DesktopGLWindow window, Pixmap pixmap, int xHotspot, int yHotspot )
     {
@@ -117,7 +117,7 @@ public class DesktopGLCursor : ICursor, IDisposable
         Glfw.SetCursor( window, glCursor );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     #region Dispose methods
     

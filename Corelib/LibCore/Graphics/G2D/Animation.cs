@@ -42,7 +42,7 @@ public class Animation< T >
         LoopRandom,
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private float _animationDuration;
     private float _frameDuration;
@@ -53,7 +53,7 @@ public class Animation< T >
     private int   _lastFrameNumber;
     private float _lastStateTime;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Constructor, storing the frame duration and key frames.

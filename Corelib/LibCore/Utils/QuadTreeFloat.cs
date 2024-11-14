@@ -57,7 +57,7 @@ public class QuadTreeFloat : IResetable
 
     private readonly Pool< QuadTreeFloat > _pool = new( 128, 4096 );
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a quad tree with 16 for maxValues and 8 for maxDepth.

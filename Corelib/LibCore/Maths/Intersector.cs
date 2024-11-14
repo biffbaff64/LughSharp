@@ -2214,7 +2214,7 @@ public class Intersector
         public int     FrontOffset  { get; set; } = 0;
         public int     BackOffset   { get; set; } = 0;
 
-        // --------------------------------------------------------------------
+        // ====================================================================
         
         /// <summary>
         /// Creates a new instance, assuming numAttributes attributes

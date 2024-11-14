@@ -160,7 +160,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         [ [ 8, 8, 5, 0 ], [ 15, 12, 9, 0 ], [ 6, 18, 9, 0 ] ],
     ];
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public readonly int[] V = [ 0 ];
     public readonly int[] W = [ 0 ];
@@ -170,7 +170,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     public ScaleFactorTable Sftable   { get; set; }
     public float[]          TsOutCopy { get; set; } = null!;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private readonly AudioBase?        _buffer;
     private readonly int               _channels;
@@ -206,7 +206,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     private float[] _samples1 = null!;
     private float[] _samples2 = null!;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// </summary>

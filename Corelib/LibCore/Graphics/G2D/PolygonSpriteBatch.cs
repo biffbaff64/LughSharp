@@ -85,7 +85,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     // Number of rendering calls, ever. Will not be reset unless set manually.
     public int TotalRenderCalls { get; set; } = 0;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private readonly Color          _color          = new( 1, 1, 1, 1 );
     private readonly Matrix4        _combinedMatrix = new();
@@ -104,8 +104,8 @@ public class PolygonSpriteBatch : IPolygonBatch
     private int            _triangleIndex;
     private int            _vertexIndex;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Constructs a PolygonSpriteBatch with the default shader, size vertices,

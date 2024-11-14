@@ -41,7 +41,7 @@ public class TextureMapObject : MapObject
     public float          Rotation      { get; set; } = 0.0f;
     public TextureRegion? TextureRegion { get; set; } = null;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates an empty texture map object

@@ -46,7 +46,7 @@ public class Sync
     // The time to sleep/yield until the next frame.
     private long _nextFrame = 0;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// An accurate sync method that will attempt to run at a constant frame rate.
@@ -142,8 +142,8 @@ public class Sync
         return ( long ) Glfw.GetTime() * NANOS_IN_SECOND;
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     private sealed class RunningAvg( int slotCount )
     {

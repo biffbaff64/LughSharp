@@ -35,7 +35,7 @@ namespace Corelib.LibCore.Graphics.G2D;
 [PublicAPI]
 public class TextureRegion
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private int   _regionHeight;
     private int   _regionWidth;
@@ -44,7 +44,7 @@ public class TextureRegion
     private float _v;
     private float _v2;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Constructs a region that cannot be used until a texture and texture coordinates are set.

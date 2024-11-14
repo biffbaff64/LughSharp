@@ -50,7 +50,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     private int  _mouseX;
     private int  _mouseY;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <inheritdoc />
     public DefaultDesktopGLInput( DesktopGLWindow? window )
@@ -62,7 +62,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         WindowHandleChanged( _window.GlfwWindow );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region From IDesktopGLInput
 
@@ -119,7 +119,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
 
     #endregion From IDesktopGLInput
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region From Abstract Input
 
@@ -391,7 +391,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         };
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <inheritdoc />
     public void Dispose()
@@ -406,9 +406,9 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     // Callbacks
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public void KeyCallback( GLFW.Window window, Key key, int scancode, InputState action, ModifierKey mods )
     {
@@ -560,9 +560,9 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     // Stubs
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public override float GetAccelerometerX() => 0;
 

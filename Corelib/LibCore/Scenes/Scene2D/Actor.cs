@@ -55,12 +55,12 @@ public class Actor : IActor, IComparable< Actor >
     public DelayedRemovalList< IEventListener > CaptureListeners { get; }      = [ ];
     public List< Action >                       Actions          { get; set; } = [ ];
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     protected float OriginX { get; set; }
     protected float OriginY { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     // Backing values for properties
     private float _x;
@@ -73,7 +73,7 @@ public class Actor : IActor, IComparable< Actor >
     private Color _color    = new( 1, 1, 1, 1 );
     private bool  _debug    = false;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Default Constructor.

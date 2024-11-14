@@ -35,7 +35,7 @@ public class MipMapTextureData : ITextureData
 {
     private readonly ITextureData[] _mips;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// </summary>

@@ -31,7 +31,7 @@ namespace Corelib.LibCore.Maths;
 [PublicAPI]
 public class Circle : IShape2D
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Constructs a new circle with all values set to zero

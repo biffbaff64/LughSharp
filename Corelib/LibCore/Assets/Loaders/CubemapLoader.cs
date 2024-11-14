@@ -108,7 +108,7 @@ public class CubemapLoader : AsynchronousAssetLoader
         return cubemap;
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Contains information about the Cubemap being loaded.
@@ -121,7 +121,7 @@ public class CubemapLoader : AsynchronousAssetLoader
         public ICubemapData? CubemapData { get; init; }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     [PublicAPI]
     public class CubemapParameter : AssetLoaderParameters

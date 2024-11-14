@@ -54,7 +54,7 @@ public class VertexBufferObjectSubData : IVertexData
     private bool _isDirty;
     private bool _isStatic;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <summary>
     /// Constructs a new interleaved VertexBufferObject.

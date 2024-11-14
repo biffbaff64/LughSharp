@@ -40,7 +40,7 @@ public class BaseDrawable : IDrawable
     public float   MinWidth     { get; set; }
     public float   MinHeight    { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a new, empty, BaseDrawable object.

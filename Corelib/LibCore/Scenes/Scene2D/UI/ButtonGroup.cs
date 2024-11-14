@@ -45,7 +45,7 @@ public class ButtonGroup< T > where T : Button
     private int  _minCheckCount;
     private bool _uncheckLast = true;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public ButtonGroup()
     {

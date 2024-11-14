@@ -49,8 +49,8 @@ public class AtlasTmxMapLoader( IFileHandleResolver resolver )
     protected readonly List< Texture > TrackedTextures = [ ];
     protected          IAtlasResolver? AtlasResolver;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
     
     public AtlasTmxMapLoader()
         : this( new InternalFileHandleResolver() )
@@ -279,8 +279,8 @@ public class AtlasTmxMapLoader( IFileHandleResolver resolver )
         TrackedTextures.Clear();
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     [PublicAPI]
     public class AtlasTiledMapLoaderParameters : BaseTmxLoaderParameters
@@ -288,8 +288,8 @@ public class AtlasTmxMapLoader( IFileHandleResolver resolver )
         public bool ForceTextureFilters { get; set; } = false;
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     [PublicAPI]
     protected interface IAtlasResolver : IImageResolver

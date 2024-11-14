@@ -35,7 +35,7 @@ public class TextButton : Button
     private Label?           _label;
     private TextButtonStyle? _style;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a new TextButton using the supplied <see cref="Skin"/>, and
@@ -217,7 +217,7 @@ public class TextButton : Button
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <inheritdoc />
     public override string ToString()
@@ -238,8 +238,8 @@ public class TextButton : Button
         return $"{( className.IndexOf( '$' ) != -1 ? "TextButton " : "" )}{className}: {_label?.Text}";
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// The style for a text button, see <see cref="TextButton"/>.

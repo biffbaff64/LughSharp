@@ -38,7 +38,7 @@ namespace Corelib.LibCore.Graphics.Cameras;
 [PublicAPI]
 public abstract class Camera
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public Vector3 Position       { get; set; } = new();          // the position of the camera
     public Vector3 Up             { get; set; } = new( 0, 1, 0 ); // the unit length up vector of the camera
@@ -46,7 +46,7 @@ public abstract class Camera
     public float   ViewportWidth  { get; set; } = 0;
     public float   ViewportHeight { get; set; } = 0;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     protected Matrix4  Projection        { get; set; } = new();
     protected Matrix4  View              { get; set; } = new();
@@ -56,13 +56,13 @@ public abstract class Camera
     protected Vector3  Direction         { get; set; } = new( 0, 0, -1 ); // the unit length direction vector of the camera
     protected Frustrum Frustum           { get; set; } = new();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private readonly Ray     _ray    = new( new Vector3(), new Vector3() );
     private readonly Vector3 _tmpVec = new();
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Recalculates the projection and view matrix of this camera and the Frustum

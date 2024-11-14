@@ -30,7 +30,7 @@ namespace Corelib.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class Stack : WidgetGroup
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public Stack()
     {

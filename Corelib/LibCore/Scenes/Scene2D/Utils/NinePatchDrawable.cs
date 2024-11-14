@@ -46,7 +46,7 @@ public class NinePatchDrawable : BaseDrawable, ITransformDrawable
 {
     public NinePatch? Patch { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates an uninitialized NinePatchDrawable. The ninepatch must be set before use.

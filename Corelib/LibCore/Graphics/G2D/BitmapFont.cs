@@ -59,7 +59,7 @@ public class BitmapFont
     private const int    PAGE_SIZE          = 1 << LOG2_PAGE_SIZE;
     private const int    PAGES              = 0x10000 / PAGE_SIZE;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public bool Flipped     { get; set; }
     public bool OwnsTexture { get; set; }
@@ -76,14 +76,14 @@ public class BitmapFont
     /// </summary>
     public BitmapFontData Data { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private readonly PathTypes             _fileType;
     private readonly List< TextureRegion > _regions;
 
     private bool _integer;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a BitmapFont using the default 15pt Arial font included in the library.
@@ -251,7 +251,7 @@ public class BitmapFont
         InitialLoad( data );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Specifies whether to use integer positions.
@@ -277,7 +277,7 @@ public class BitmapFont
     /// </summary>
     public float GetScaleY() => Data.ScaleY;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Helper method, allowing a call to <see cref="Load(BitmapFontData)"/>,
@@ -323,7 +323,7 @@ public class BitmapFont
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region font drawing
 
@@ -416,7 +416,7 @@ public class BitmapFont
 
     #endregion font drawing
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Returns the color of text drawn with this font.
@@ -583,8 +583,8 @@ public class BitmapFont
         }
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Represents a single character in a font page.
@@ -662,7 +662,7 @@ public class BitmapFont
         public bool        MarkupEnabled { get; set; }
         public Glyph?[]?[] Glyphs        { get; set; } = new Glyph[ PAGES ][];
 
-        // --------------------------------------------------------------------
+        // ====================================================================
 
         /// <summary>
         /// Additional characters besides whitespace where text is wrapped.
@@ -762,7 +762,7 @@ public class BitmapFont
         /// </summary>
         public float XHeight { get; set; } = 1;
 
-        // --------------------------------------------------------------------
+        // ====================================================================
 
         /// <summary>
         /// </summary>

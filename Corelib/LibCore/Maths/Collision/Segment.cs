@@ -31,12 +31,12 @@ namespace Corelib.LibCore.Maths.Collision;
 [Serializable]
 public class Segment
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private readonly Vector3 _vecA = new();
     private readonly Vector3 _vecB = new();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Constructs a new Segment from the two points given.

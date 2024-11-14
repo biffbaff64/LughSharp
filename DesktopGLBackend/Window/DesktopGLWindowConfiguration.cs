@@ -46,8 +46,8 @@ public class DesktopGLWindowConfiguration
 
     public DesktopGLGraphics.DesktopGLMonitor? MaximizedMonitor { get; set; }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// whether the window will be visible on creation. (default true)

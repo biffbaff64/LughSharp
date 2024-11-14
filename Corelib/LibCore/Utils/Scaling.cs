@@ -39,7 +39,7 @@ public abstract class Scaling
     public static readonly Scaling StretchY = new StretchYScaling();
     public static readonly Scaling None     = new NoScaling();
 
-    // ----------------------------------------------------------------------------
+    // ============================================================================
 
     /// <summary>
     /// Returns the size of the source scaled to the target.
@@ -49,7 +49,7 @@ public abstract class Scaling
     public abstract Vector2 Apply( float sourceWidth, float sourceHeight, float targetWidth, float targetHeight );
 }
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 /// <summary>
 /// Scales the source to fit the target while keeping the same aspect ratio.
@@ -71,7 +71,7 @@ internal class FitScaling : Scaling
     }
 }
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 /// <summary>
 /// Scales the source to fill the target while keeping the same aspect ratio.
@@ -93,7 +93,7 @@ internal class FillScaling : Scaling
     }
 }
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 /// <summary>
 /// Scales the source to fill the target in the x direction while keeping the same aspect
@@ -113,7 +113,7 @@ internal class FillXScaling : Scaling
     }
 }
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 /// <summary>
 /// Scales the source to fill the target in the y direction while keeping the
@@ -134,7 +134,7 @@ internal class FillYScaling : Scaling
     }
 }
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 /// <summary>
 /// Scales the source to fill the target.
@@ -152,7 +152,7 @@ internal class StretchScaling : Scaling
     }
 }
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 /// <summary>
 /// Scales the source to fill the target in the x direction, without changing the
@@ -170,7 +170,7 @@ internal class StretchXScaling : Scaling
     }
 }
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 /// <summary>
 /// Scales the source to fill the target in the y direction, without changing the
@@ -188,7 +188,7 @@ internal class StretchYScaling : Scaling
     }
 }
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 /// <summary>
 /// The source is not scaled.

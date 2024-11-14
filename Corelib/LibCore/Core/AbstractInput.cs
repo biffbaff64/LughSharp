@@ -54,11 +54,11 @@ public abstract class AbstractInput : IInput
     /// </summary>
     protected int PressedKeyCount { get; set; } = 0;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private readonly List< int > _keysToCatch = new();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Returns TRUE if the key identified by the supplied <see cref="IInput.Keys"/>
@@ -88,7 +88,7 @@ public abstract class AbstractInput : IInput
         return ( key is >= 0 and <= IInput.Keys.MAX_KEYCODE ) && JustPressedKeys[ key ];
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region catch keys
 
@@ -159,9 +159,9 @@ public abstract class AbstractInput : IInput
 
     #endregion catch keys
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     // Abstract methods to be implemented by any inheriting classes.
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region abstract methods
 
@@ -211,5 +211,5 @@ public abstract class AbstractInput : IInput
 
     #endregion abstract methods
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 }

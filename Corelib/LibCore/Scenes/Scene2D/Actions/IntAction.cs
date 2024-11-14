@@ -35,7 +35,7 @@ public class IntAction : TemporalAction
     public int EndValue { get; }
     public int Value    { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <summary>
     /// Creates a IntAction that transitions from 0 to 1.

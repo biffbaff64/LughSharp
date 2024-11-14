@@ -32,7 +32,7 @@ public class ParallelAction : Action
     private readonly List< Action > _actions = new( 4 );
     private          bool           _complete;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     protected ParallelAction()
     {

@@ -45,7 +45,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     private T[]? _snapshot;
     private int  _snapshotCount;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a new SnapshotArray with the specified initial capacity.
@@ -600,7 +600,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     }
 }
 
-// ----------------------------------------------------------------------------
+// ====================================================================--------
 
 [PublicAPI]
 public class SnapshotEnumerator< T > : IEnumerator< T >

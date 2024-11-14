@@ -38,7 +38,7 @@ public class PerspectiveCamera : Camera
     // the field of view of the height, in degrees.
     public readonly float FieldOfView = 67;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public PerspectiveCamera()
     {

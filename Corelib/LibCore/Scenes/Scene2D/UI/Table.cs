@@ -47,13 +47,13 @@ public class Table : WidgetGroup
         Actor,
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public static readonly Color DebugTableColor = new( 0, 0, 1, 1 );
     public static readonly Color DebugCellColor  = new( 1, 0, 0, 1 );
     public static readonly Color DebugActorColor = new( 0, 1, 0, 1 );
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private static float[]? _columnWeightedWidth;
     private static float[]? _rowWeightedHeight;
@@ -88,7 +88,7 @@ public class Table : WidgetGroup
     private float   _tablePrefHeight;
     private float   _tablePrefWidth;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public Table() : this( null )
     {
@@ -118,7 +118,7 @@ public class Table : WidgetGroup
     public Pool< Cell > CellPool     { get; } = new();
     public Cell         CellDefaults { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private Cell ObtainCell()
     {
@@ -1830,7 +1830,7 @@ public class Table : WidgetGroup
         return new Cell();
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     internal class DebugRect : RectangleShape
     {
@@ -1838,7 +1838,7 @@ public class Table : WidgetGroup
         internal        Color             Color { get; set; } = null!;
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region Debugging
 
@@ -2086,7 +2086,7 @@ public class Table : WidgetGroup
 
     #endregion Debugging
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region Properties
 

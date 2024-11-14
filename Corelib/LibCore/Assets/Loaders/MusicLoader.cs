@@ -36,7 +36,7 @@ public class MusicLoader : AsynchronousAssetLoader, IDisposable
 {
     public IMusic LoadedMusic { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a new Music loader using the provided <see cref="IFileHandleResolver"/>

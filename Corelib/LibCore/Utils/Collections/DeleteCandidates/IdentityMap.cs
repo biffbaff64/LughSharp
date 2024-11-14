@@ -61,7 +61,7 @@ public class IdentityMap< TK, TV > : ObjectMap< TK, TV > where TK : notnull
 
     private bool _firstPlaceGen = true;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a new map with an initial capacity of 51 and a load factor of 0.8.

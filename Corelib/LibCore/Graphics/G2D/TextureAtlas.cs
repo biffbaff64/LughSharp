@@ -33,7 +33,7 @@ public class TextureAtlas
     public List< AtlasRegion? > Regions  { get; set; } = new();
     public List< Texture >      Textures { get; set; } = new( 4 );
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates an empty atlas to which regions can be added.

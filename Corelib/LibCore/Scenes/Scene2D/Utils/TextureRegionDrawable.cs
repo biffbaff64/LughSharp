@@ -37,7 +37,7 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
 {
     private readonly TextureRegion? _region;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates an uninitialized TextureRegionDrawable.

@@ -44,7 +44,7 @@ public class Cell : IResetable
     private const int   LEFTI   = Align.LEFT;
     private const int   RIGHTI  = Align.RIGHT;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public Value? MinWidth    { get; set; }
     public Value? MinHeight   { get; set; }
@@ -67,7 +67,7 @@ public class Cell : IResetable
     public bool   UniformX    { get; set; }
     public bool   UniformY    { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public Actor? Actor       { get; set; }
     public float  ActorX      { get; set; }
@@ -77,7 +77,7 @@ public class Cell : IResetable
     public float  FillX       { get; set; }
     public float  FillY       { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public Table? Table             { get; set; }
     public bool   EndRow            { get; set; }
@@ -89,13 +89,13 @@ public class Cell : IResetable
     public float  ComputedPadBottom { get; set; }
     public float  ComputedPadRight  { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private Cell?   _defaults;
     private IFiles? _files;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Default constructor. Creates a new Cell with properties set to
@@ -1202,7 +1202,7 @@ public class Cell : IResetable
         ActorHeight = height;
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     //@formatter:off
     public float GetMinWidth()    => MinWidth!.Get( Actor );
@@ -1221,7 +1221,7 @@ public class Cell : IResetable
     public float GetPadRight()    => PadRight!.Get( Actor );
     //@formatter:on
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Gets the X-padding for this Cell, by adding together <see cref="PadLeft"/>

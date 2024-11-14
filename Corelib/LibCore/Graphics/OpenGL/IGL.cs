@@ -32,23 +32,23 @@ public interface IGL
 {
     #region ordered
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_NO_ERROR = 0;
     const int GL_FALSE    = 0;
     const int GL_ZERO     = 0;
     const int GL_NONE     = 0;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_ES_VERSION_2_0 = 1;
     const int GL_TRUE           = 1;
     const int GL_ONE            = 1;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int  GL_INVALID_INDEX   = -1;
     const long GL_TIMEOUT_IGNORED = -1;
     const int  GL_UNRESTRICTED    = -1;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_CONTEXT_CORE_PROFILE_BIT          = 0x00000001;
     const int GL_VERTEX_SHADER_BIT                 = 0x00000001;
     const int GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT   = 0x00000001;
@@ -80,7 +80,7 @@ public interface IGL
     const int GL_COLOR_BUFFER_BIT                  = 0x00004000;
     const int GL_QUERY_BUFFER_BARRIER_BIT          = 0x00008000;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_POINTS                              = 0x0000;
     const int GL_LINES                               = 0x0001;
     const int GL_MAP_READ_BIT                        = 0x0001;
@@ -100,16 +100,16 @@ public interface IGL
     const int GL_TRIANGLE_STRIP_ADJACENCY            = 0x000D;
     const int GL_PATCHES                             = 0x000E;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_MAP_FLUSH_EXPLICIT_BIT = 0x0010;
     const int GL_MAP_UNSYNCHRONIZED_BIT = 0x0020;
     const int GL_MAP_PERSISTENT_BIT     = 0x0040;
     const int GL_MAP_COHERENT_BIT       = 0x0080;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_DYNAMIC_STORAGE_BIT = 0x0100;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_CLIENT_STORAGE_BIT = 0x0200;
     const int GL_NEVER              = 0x0200;
     const int GL_LESS               = 0x0201;
@@ -120,7 +120,7 @@ public interface IGL
     const int GL_GEQUAL             = 0x0206;
     const int GL_ALWAYS             = 0x0207;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_SRC_COLOR           = 0x0300;
     const int GL_ONE_MINUS_SRC_COLOR = 0x0301;
     const int GL_SRC_ALPHA           = 0x0302;
@@ -131,7 +131,7 @@ public interface IGL
     const int GL_ONE_MINUS_DST_COLOR = 0x0307;
     const int GL_SRC_ALPHA_SATURATE  = 0x0308;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_FRONT_LEFT     = 0x0400;
     const int GL_FRONT_RIGHT    = 0x0401;
     const int GL_BACK_LEFT      = 0x0402;
@@ -142,7 +142,7 @@ public interface IGL
     const int GL_RIGHT          = 0x0407;
     const int GL_FRONT_AND_BACK = 0x0408;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_INVALID_ENUM                  = 0x0500;
     const int GL_INVALID_VALUE                 = 0x0501;
     const int GL_INVALID_OPERATION             = 0x0502;
@@ -152,11 +152,11 @@ public interface IGL
     const int GL_INVALID_FRAMEBUFFER_OPERATION = 0x0506;
     const int GL_CONTEXT_LOST                  = 0x0507;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_CW  = 0x0900;
     const int GL_CCW = 0x0901;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_POINT_SIZE                    = 0x0B11;
     const int GL_POINT_SIZE_RANGE              = 0x0B12;
     const int GL_POINT_SIZE_GRANULARITY        = 0x0B13;
@@ -195,7 +195,7 @@ public interface IGL
     const int GL_SMOOTH_LINE_WIDTH_RANGE       = 0x0B22;
     const int GL_SMOOTH_LINE_WIDTH_GRANULARITY = 0x0B23;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_DRAW_BUFFER         = 0x0C01;
     const int GL_READ_BUFFER         = 0x0C02;
     const int GL_SCISSOR_BOX         = 0x0C10;
@@ -213,7 +213,7 @@ public interface IGL
     const int GL_UNPACK_SKIP_PIXELS  = 0x0CF4;
     const int GL_UNPACK_ALIGNMENT    = 0x0CF5;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_PACK_SWAP_BYTES    = 0x0D00;
     const int GL_PACK_LSB_FIRST     = 0x0D01;
     const int GL_PACK_ROW_LENGTH    = 0x0D02;
@@ -233,19 +233,19 @@ public interface IGL
     const int GL_TEXTURE_2D         = 0x0DE1;
     const int GL_TEXTURE_1D         = 0x0DE0;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_TEXTURE_WIDTH           = 0x1000;
     const int GL_TEXTURE_HEIGHT          = 0x1001;
     const int GL_TEXTURE_BORDER_COLOR    = 0x1004;
     const int GL_TEXTURE_INTERNAL_FORMAT = 0x1003;
     const int GL_TEXTURE_TARGET          = 0x1006;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_DONT_CARE = 0x1100;
     const int GL_FASTEST   = 0x1101;
     const int GL_NICEST    = 0x1102;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_BYTE           = 0x1400;
     const int GL_UNSIGNED_BYTE  = 0x1401;
     const int GL_SHORT          = 0x1402;
@@ -257,7 +257,7 @@ public interface IGL
     const int GL_FIXED          = 0x140C;
     const int GL_DOUBLE         = 0x140A;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_INVERT        = 0x150A;
     const int GL_CLEAR         = 0x1500;
     const int GL_AND           = 0x1501;
@@ -275,15 +275,15 @@ public interface IGL
     const int GL_NAND          = 0x150E;
     const int GL_SET           = 0x150F;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_TEXTURE = 0x1702;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_COLOR   = 0x1800;
     const int GL_DEPTH   = 0x1801;
     const int GL_STENCIL = 0x1802;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_STENCIL_INDEX   = 0x1901;
     const int GL_DEPTH_COMPONENT = 0x1902;
     const int GL_RED             = 0x1903;
@@ -295,49 +295,49 @@ public interface IGL
     const int GL_LUMINANCE       = 0x1909;
     const int GL_LUMINANCE_ALPHA = 0x190A;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_POINT = 0x1B00;
     const int GL_LINE  = 0x1B01;
     const int GL_FILL  = 0x1B02;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_KEEP    = 0x1E00;
     const int GL_REPLACE = 0x1E01;
     const int GL_INCR    = 0x1E02;
     const int GL_DECR    = 0x1E03;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_VENDOR     = 0x1F00;
     const int GL_RENDERER   = 0x1F01;
     const int GL_VERSION    = 0x1F02;
     const int GL_EXTENSIONS = 0x1F03;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_NEAREST = 0x2600;
     const int GL_LINEAR  = 0x2601;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_NEAREST_MIPMAP_NEAREST = 0x2700;
     const int GL_LINEAR_MIPMAP_NEAREST  = 0x2701;
     const int GL_NEAREST_MIPMAP_LINEAR  = 0x2702;
     const int GL_LINEAR_MIPMAP_LINEAR   = 0x2703;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_TEXTURE_MAG_FILTER = 0x2800;
     const int GL_TEXTURE_MIN_FILTER = 0x2801;
     const int GL_TEXTURE_WRAP_S     = 0x2802;
     const int GL_TEXTURE_WRAP_T     = 0x2803;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_REPEAT = 0x2901;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_POLYGON_OFFSET_UNITS = 0x2A00;
     const int GL_POLYGON_OFFSET_POINT = 0x2A01;
     const int GL_POLYGON_OFFSET_LINE  = 0x2A02;
     const int GL_R3_G3_B2             = 0x2A10;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_CLIP_DISTANCE0 = 0x3000;
     const int GL_CLIP_DISTANCE1 = 0x3001;
     const int GL_CLIP_DISTANCE2 = 0x3002;
@@ -347,7 +347,7 @@ public interface IGL
     const int GL_CLIP_DISTANCE6 = 0x3006;
     const int GL_CLIP_DISTANCE7 = 0x3007;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_COVERAGE_BUFFER_BIT_NV                             = 0x8000;
     const int GL_CONSTANT_COLOR                                     = 0x8001;
     const int GL_ONE_MINUS_CONSTANT_COLOR                           = 0x8002;
@@ -1232,7 +1232,7 @@ public interface IGL
     const int GL_TRANSFORM_FEEDBACK_OVERFLOW                        = 0x82EC;
     const int GL_TRANSFORM_FEEDBACK_STREAM_OVERFLOW                 = 0x82ED;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     const int GL_MAX_GEOMETRY_INPUT_COMPONENTS                              = 0x9123;
     const int GL_MAX_GEOMETRY_OUTPUT_COMPONENTS                             = 0x9124;
     const int GL_CONTEXT_PROFILE_MASK                                       = 0x9126;

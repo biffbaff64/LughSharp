@@ -69,7 +69,7 @@ public class ResolutionFileResolver : IFileHandleResolver
     protected readonly IFileHandleResolver BaseResolver;
     protected readonly Resolution[]        Descriptors;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a <see cref="ResolutionFileResolver"/> based on a given
@@ -173,8 +173,8 @@ public class ResolutionFileResolver : IFileHandleResolver
         return best;
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Represents a resolution for an application.

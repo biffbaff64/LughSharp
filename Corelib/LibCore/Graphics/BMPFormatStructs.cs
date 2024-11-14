@@ -27,7 +27,7 @@ namespace Corelib.LibCore.Graphics;
 [PublicAPI]
 public class BMPFormatStructs
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
     /// <summary>
     /// BMP Header Structure.
     /// </summary>
@@ -41,7 +41,7 @@ public class BMPFormatStructs
         public uint   OffsetToPixelArray { get; set; }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     /// <summary>
     /// BMP Info Header Structure.
     /// </summary>
@@ -61,7 +61,7 @@ public class BMPFormatStructs
         public uint   ColorsImportant { get; set; }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     /// <summary>
     /// BMP Color Header Structure.
     /// </summary>
@@ -79,7 +79,7 @@ public class BMPFormatStructs
         public uint GammaBlue           { get; set; }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     /// <summary>
     /// BMP Pixel Array Structure.
     /// </summary>

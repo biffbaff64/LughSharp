@@ -34,7 +34,7 @@ public class RepeatAction : DelegateAction
     public int  ExecutedCount { get; set; }
     public bool Finished      { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     protected override bool Delegate( float delta )
     {

@@ -45,7 +45,7 @@ public class InputStream : Stream
     /// <inheritdoc />
     public override long Position { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <inheritdoc />
     public override void Flush()

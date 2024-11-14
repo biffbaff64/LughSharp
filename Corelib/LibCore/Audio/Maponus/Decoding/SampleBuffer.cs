@@ -56,7 +56,7 @@ public class SampleBuffer : AudioBase
     private readonly int[]   _bufferp;
     private readonly int     _channels;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SampleBuffer"/> class with the

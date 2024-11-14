@@ -32,7 +32,7 @@ public class DirectionalLightsAttribute : Attribute
 {
     public readonly List< DirectionalLight > Lights;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public DirectionalLightsAttribute() : base( Type )
     {

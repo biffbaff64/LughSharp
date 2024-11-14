@@ -38,7 +38,7 @@ public class DelaunayTriangulator
     private const int   COMPLETE   = 1;
     private const int   INCOMPLETE = 2;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private readonly Vector2      _centroid        = new();
     private readonly List< bool > _complete        = new( 16 );
@@ -50,7 +50,7 @@ public class DelaunayTriangulator
 
     private float[]? _sortedPoints;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public List< int > ComputeTriangles( List< float > points, bool sorted )
     {
@@ -62,7 +62,7 @@ public class DelaunayTriangulator
         return ComputeTriangles( polygon, 0, polygon.Length, sorted );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Triangulates the given point cloud to a list of triangle indices that

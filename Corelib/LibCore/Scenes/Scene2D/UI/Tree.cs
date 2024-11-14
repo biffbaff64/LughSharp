@@ -49,7 +49,7 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
     public float          IndentSpacing { get; set; }
     public TNode?         OverNode      { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private readonly TreeSelection _selection;
     private readonly Vector2       _tmp = new();
@@ -62,7 +62,7 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
     private          float         _prefWidth;
     private          bool          _sizeInvalid = true;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Construct a new Tree using the supplied <see cref="Skin"/>
@@ -713,7 +713,7 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public TValue? GetOverValue()
     {
@@ -764,8 +764,8 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
         return _prefHeight;
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <inheritdoc />
     [PublicAPI]
@@ -790,8 +790,8 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
         }
     }
 
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
+// ========================================================================
+// ========================================================================
 
     /// <summary>
     /// The style for a <see cref="Tree{TN,TV}"/>.
@@ -828,8 +828,8 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
         public IDrawable? Background { get; set; } = null;
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// A <see cref="Tree{TNode,TValue}"/> node which has an actor and value.
@@ -1333,8 +1333,8 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
         }
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     public class TreeClickListener : ClickListener
     {

@@ -50,7 +50,7 @@ public class FloatTextureData : ITextureData
     private readonly bool _isGpuOnly;
     private readonly int  _type;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public FloatTextureData( int w, int h, int internalFormat, int format, int type, bool isGpuOnly )
     {
@@ -169,8 +169,8 @@ public class FloatTextureData : ITextureData
         set { }
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     public Pixmap.ColorFormat Format
     {

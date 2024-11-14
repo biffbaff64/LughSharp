@@ -48,7 +48,7 @@ public class CpuSpriteBatch : SpriteBatch
     private bool _adjustNeeded;
     private bool _haveIdentityRealMatrix = true;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Constructs a CpuSpriteBatch with a size of 1000 and the default shader.

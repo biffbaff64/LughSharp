@@ -42,7 +42,7 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
     private T? _tmp2 = default( T );
     private T? _tmp3 = default( T );
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <summary>
     /// Initializes a new instance of the <see cref="Bezier{T}"/> class.

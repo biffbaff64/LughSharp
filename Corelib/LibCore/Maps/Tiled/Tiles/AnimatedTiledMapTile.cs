@@ -47,8 +47,8 @@ public class AnimatedTiledMapTile : ITiledMapTile
     private MapObjects?    _mapObjects;
     private MapProperties? _properties;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Creates an animated tile with the given animation interval and frame tiles.

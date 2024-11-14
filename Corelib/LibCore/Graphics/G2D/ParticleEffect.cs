@@ -397,7 +397,7 @@ public class ParticleEffect : IDisposable
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     protected ParticleEmitter NewEmitter( StreamReader reader )
     {
@@ -414,7 +414,7 @@ public class ParticleEffect : IDisposable
         return new Texture( file, false );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Disposes the texture for each sprite for each ParticleEmitter.
@@ -440,7 +440,7 @@ public class ParticleEffect : IDisposable
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Returns the bounding box for all active particles. z axis will always be zero.

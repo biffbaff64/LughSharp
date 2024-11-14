@@ -42,7 +42,7 @@ public class DecoderException : Mp3SharpException
     /// </summary>
     public int ErrorCode { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DecoderException"/> class with a specified

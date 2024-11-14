@@ -38,7 +38,7 @@ public class EarClippingTriangulator
     private          int           _vertexCount;
     private          float[]?      _vertices;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public List< short > ComputeTriangles( List< float > vertices )
     {

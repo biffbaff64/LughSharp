@@ -43,7 +43,7 @@ public class Array< T >
 
     private PredicateIterable< T >? _predicateIEnumerable;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a new Array with the specified initial capacity. Default is 16.

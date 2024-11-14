@@ -37,7 +37,7 @@ public class AlphaAction : TemporalAction
     private float _start;
     public  float Alpha { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <inheritdoc />
     protected override void Begin()

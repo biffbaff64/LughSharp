@@ -38,7 +38,7 @@ public class TextureArray : GLTexture, IManageable
 
     private ITextureArrayData _data;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Returns a string representation of the managed status of all
@@ -151,7 +151,7 @@ public class TextureArray : GLTexture, IManageable
         _managedTextureArrays[ app ] = managedTextureArray;
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region constructors
 
@@ -209,7 +209,7 @@ public class TextureArray : GLTexture, IManageable
 
     #endregion constructors
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     #region aliases
 
@@ -225,7 +225,7 @@ public class TextureArray : GLTexture, IManageable
 
     #endregion aliases
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region internal methods
 

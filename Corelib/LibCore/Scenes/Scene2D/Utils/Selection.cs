@@ -59,8 +59,8 @@ public class Selection< T > : IDisableable, IDisposable
     public bool IsEmpty    => Selected.Count == 0;
     public bool IsDisabled { get; set; }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Selects or deselects the specified item based on how the selection is
@@ -474,7 +474,7 @@ public class Selection< T > : IDisableable, IDisposable
         return Selected.ToString();
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region dispose pattern
 

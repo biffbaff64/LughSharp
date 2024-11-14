@@ -78,8 +78,8 @@ public abstract class FloatBuffer : Buffer
 {
     public new float[]? Hb { get; set; }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FloatBuffer"/> class with the
@@ -256,7 +256,7 @@ public abstract class FloatBuffer : Buffer
     /// <returns> The new, read-only float buffer </returns>
     public abstract FloatBuffer asReadOnlyBuffer();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     // -- Singleton get/put methods --
 
     /// <summary>
@@ -311,7 +311,7 @@ public abstract class FloatBuffer : Buffer
     /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
     public abstract FloatBuffer Put( int index, float f );
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     // -- Bulk get operations --
 
     /// <summary>
@@ -403,7 +403,7 @@ public abstract class FloatBuffer : Buffer
         return Get( dst, 0, dst.Length );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     // -- Bulk put operations --
 
     /// <summary>
@@ -551,7 +551,7 @@ public abstract class FloatBuffer : Buffer
         return Put( src, 0, src.Length );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     // -- Other stuff --
 
     /// <summary>
@@ -798,8 +798,8 @@ public abstract class FloatBuffer : Buffer
         }
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <inheritdoc cref="IDisposable"/>>
     protected override void Dispose( bool disposing )

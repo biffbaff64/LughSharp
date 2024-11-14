@@ -40,7 +40,7 @@ public class GLProfiler
     public IGraphics         Graphics    { get; set; }
     public BaseGLInterceptor Interceptor { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Create a new instance of GLProfiler to monitor a <see cref="IGraphics"/>
@@ -82,7 +82,7 @@ public class GLProfiler
     /// </summary>
     public FloatCounter VertexCount => Interceptor.VertexCount;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Will reset the statistical information which has been collected so far.

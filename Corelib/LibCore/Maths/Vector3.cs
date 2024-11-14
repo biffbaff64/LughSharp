@@ -38,7 +38,7 @@ public class Vector3 : IVector< Vector3 >
 
     private static readonly Matrix4 _tmpMat = new();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Default constructor.

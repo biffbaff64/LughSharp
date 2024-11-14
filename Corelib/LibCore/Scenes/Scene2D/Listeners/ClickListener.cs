@@ -50,7 +50,7 @@ public class ClickListener : InputListener
     private long _tapCountInterval = ( long ) ( 0.4f * 1000000000L );
     private long _visualPressedTime;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a new ClickListener.

@@ -36,7 +36,7 @@ public class ArraySelection< T > : Selection< T >
     private readonly List< T >? _array;
     private          T?         _rangeStart;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public ArraySelection( List< T >? array )
     {

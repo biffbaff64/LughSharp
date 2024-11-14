@@ -36,7 +36,7 @@ public class FPSLogger
     private readonly int  _bound;
     private          long _lastLogTime;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <summary>
     /// Constructs a new FPSLogger instance.

@@ -46,7 +46,7 @@ public class GLOnlyTextureData : ITextureData
     public bool               IsPrepared     { get; set; } = false;
     public bool               UseMipMaps     { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// See <a href="https://www.khronos.org/opengles/sdk/docs/man/xhtml/glTexImage2D.xml">glTexImage2D</a>
@@ -130,8 +130,8 @@ public class GLOnlyTextureData : ITextureData
     /// </summary>
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     public Pixmap ConsumePixmap()
     {

@@ -70,8 +70,8 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
     #endregion properties
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Creates, and returns, a new DesktopApplicationConfiguration, using settings

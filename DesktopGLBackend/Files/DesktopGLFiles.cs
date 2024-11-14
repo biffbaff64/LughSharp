@@ -37,8 +37,8 @@ public class DesktopGLFiles : IFiles
     public static readonly string InternalPath = System.IO.Directory.GetCurrentDirectory();
     public static readonly string LocalPath    = $"{Path.PathSeparator}";
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
     
     /// <summary>
     /// Returns a <see cref="FileHandle"/> representing a file or directory.

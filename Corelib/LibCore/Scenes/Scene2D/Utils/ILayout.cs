@@ -39,7 +39,7 @@ public interface ILayout
     float PrefWidth  { get; }
     float PrefHeight { get; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <summary>
     /// If true, this actor will be sized to the parent in <see cref="Validate()"/>. If the

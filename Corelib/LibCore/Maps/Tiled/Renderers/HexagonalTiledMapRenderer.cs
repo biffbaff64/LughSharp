@@ -51,7 +51,7 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
     /// </summary>
     private bool _staggerIndexEven = false;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public HexagonalTiledMapRenderer( TiledMap map ) : base( map )
     {
@@ -76,7 +76,7 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
         Init( map );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private void Init( TiledMap map )
     {

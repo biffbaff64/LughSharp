@@ -34,7 +34,7 @@ public class TiledMapTileLayer : MapLayer
     public int       TileHeight { get; private set; }
     public Cell[ , ] Cells      { get; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates TiledMap layer

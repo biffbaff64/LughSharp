@@ -39,7 +39,7 @@ public class TiledDrawable : TextureRegionDrawable
     public Color Color { get; set; } = new( 1, 1, 1, 1 );
     public float Scale { set; get; } = 1;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a new TiledDrawable, using the given <see cref="TextureRegion"/>

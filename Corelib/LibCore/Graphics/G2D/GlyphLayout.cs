@@ -57,14 +57,14 @@ public class GlyphLayout : IResetable
     public float            Width  { get; set; }
     public float            Height { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private static readonly float            _epsilon      = 0.0001f;
     private readonly        Pool< Color >    _colorPool    = Pools< Color >.Get();
     private readonly        List< Color >    _colorStack   = new( 4 );
     private readonly        Pool< GlyphRun > _glyphRunPool = Pools< GlyphRun >.Get();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates an empty GlyphLayout.
@@ -992,8 +992,8 @@ public class GlyphLayout : IResetable
         return -1; // Unclosed color tag.
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Stores glyphs and positions for a piece of text which is a single color and

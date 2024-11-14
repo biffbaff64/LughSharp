@@ -30,8 +30,8 @@ using Corelib.LibCore.Utils.Exceptions;
 
 namespace Corelib.LibCore.Assets.Loaders;
 
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
+// ========================================================================
+// ========================================================================
 
 /// <summary>
 /// <see cref="AssetLoader"/> for <see cref="BitmapFont"/> instances. Loads the font
@@ -44,8 +44,8 @@ public class BitmapFontLoader : AsynchronousAssetLoader, IDisposable
 {
     private BitmapFont.BitmapFontData? _data;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Creates a new BitmapFontLoader using the specified <see cref="IFileHandleResolver"/>

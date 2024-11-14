@@ -44,12 +44,12 @@ public class FileTextureData : ITextureData
     /// <returns> whether to generate mipmaps or not. </returns>
     public bool UseMipMaps { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private Pixmap? _pixmap;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     public FileTextureData( FileInfo file, Pixmap preloadedPixmap, Pixmap.ColorFormat format, bool useMipMaps )
     {

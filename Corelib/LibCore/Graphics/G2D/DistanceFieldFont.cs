@@ -42,7 +42,7 @@ public class DistanceFieldFont : BitmapFont
 {
     private float _distanceFieldSmoothing;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// </summary>

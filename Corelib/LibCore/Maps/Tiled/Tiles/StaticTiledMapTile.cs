@@ -38,13 +38,13 @@ public class StaticTiledMapTile : ITiledMapTile
     public TextureRegion           TextureRegion { get; set; }
     public ITiledMapTile.Blendmode BlendMode     { get; set; } = ITiledMapTile.Blendmode.Alpha;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private MapObjects?    _mapObjects;
     private MapProperties? _properties;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Creates a static tile with the given region

@@ -40,8 +40,8 @@ public class PolygonRegionLoader( IFileHandleResolver resolver )
     private readonly PolygonRegionParameters _defaultParameters = new();
     private readonly EarClippingTriangulator _triangulator      = new();
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     public PolygonRegionLoader()
         : this( new InternalFileHandleResolver() )
@@ -184,7 +184,7 @@ public class PolygonRegionLoader( IFileHandleResolver resolver )
         throw new GdxRuntimeException( "Polygon shape not found: " + file );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     [PublicAPI]
     public class PolygonRegionParameters : AssetLoaderParameters

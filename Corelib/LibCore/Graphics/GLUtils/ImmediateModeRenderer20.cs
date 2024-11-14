@@ -37,8 +37,8 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     public int MaxVertices { get; set; }
     public int NumVertices { get; set; }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     private readonly int      _colorOffset;
     private readonly Mesh     _mesh;
@@ -56,8 +56,8 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     private ShaderProgram? _shader;
     private int            _vertexIdx;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     public ImmediateModeRenderer20( bool hasNormals, bool hasColors, int numTexCoords )
         : this( 5000, hasNormals, hasColors, numTexCoords, CreateDefaultShader( hasNormals, hasColors, numTexCoords ) )

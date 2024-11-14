@@ -36,7 +36,7 @@ public static class Colors
 {
     public static Dictionary< string, Color > Map { get; set; } = new();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     /// <summary>
     /// Looks up a color by its name.

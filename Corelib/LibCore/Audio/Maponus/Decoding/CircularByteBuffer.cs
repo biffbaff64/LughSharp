@@ -35,7 +35,7 @@ public class CircularByteBuffer
     private int    _length;
     private int    _numValid;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Creates a new CircularByteBuffer with size set to the

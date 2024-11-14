@@ -56,14 +56,14 @@ public class Group : Actor, ICullable
     /// </summary>
     public bool Transform { get; set; } = true;
     
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private readonly Matrix4 _computedTransform = new();
     private readonly Matrix4 _oldTransform      = new();
     private readonly Vector2 _tmp               = new();
     private readonly Affine2 _worldTransform    = new();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <inheritdoc />
     public override void Act( float delta )

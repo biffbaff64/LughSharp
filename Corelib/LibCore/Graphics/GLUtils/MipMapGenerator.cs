@@ -33,7 +33,7 @@ public class MipMapGenerator
 {
     public static bool UseHwMipMap { get; set; } = true;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     private MipMapGenerator()
     {

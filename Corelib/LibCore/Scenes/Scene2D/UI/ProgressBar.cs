@@ -60,7 +60,7 @@ public class ProgressBar : Widget, IDisableable
     public Interpolator AnimateInterpolation { get; set; } = Interpolation.Linear;
     public Interpolator VisualInterpolation  { get; set; } = Interpolation.Linear;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
     
     private const    float DEFAULT_PREF_WIDTH        = 140f;
     private const    float DEFAULT_PREF_HEIGHT       = 140f;
@@ -73,8 +73,8 @@ public class ProgressBar : Widget, IDisableable
     private float _animateFromValue;
     private float _animateTime;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
     
     public ProgressBar( float min, float max, float stepSize, bool vertical, Skin skin )
         : this( min,
@@ -130,7 +130,7 @@ public class ProgressBar : Widget, IDisableable
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public bool IsAnimating => _animateTime > 0;
 
@@ -607,8 +607,8 @@ public class ProgressBar : Widget, IDisableable
         return Style.KnobAfter;
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// The style for a progress bar, see <see cref="ProgressBar"/>.

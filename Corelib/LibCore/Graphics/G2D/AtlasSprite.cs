@@ -36,8 +36,8 @@ public class AtlasSprite : Sprite
     public float       OriginalOffsetX { get; set; }
     public float       OriginalOffsetY { get; set; }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
     
     /// <summary>
     /// Creates a new AtlasSprite using the atlas region from the

@@ -28,7 +28,7 @@ namespace Corelib.LibCore.Maths;
 [PublicAPI]
 public class BSpline< T > : IPath< T > where T : IVector< T >
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private const float D6 = 1f / 6f;
 
@@ -36,7 +36,7 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
     private T? _tmp2;
     private T? _tmp3;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public BSpline()
     {

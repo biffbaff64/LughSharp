@@ -60,7 +60,7 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
     protected float[]        Vertices   = new float[ 20 ];
     protected RectangleShape ViewBounds = new();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// </summary>

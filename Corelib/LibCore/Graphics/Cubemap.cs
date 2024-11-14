@@ -51,11 +51,11 @@ public class Cubemap : GLTexture, IManageable
         set { }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private static readonly Dictionary< IApplication, List< Cubemap >? > _managedCubemaps = new();
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Construct a Cubemap based on the given CubemapData.
@@ -333,7 +333,7 @@ public class Cubemap : GLTexture, IManageable
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     #region cubemapside
 
@@ -353,7 +353,7 @@ public class Cubemap : GLTexture, IManageable
             NegativeZ,
         }
 
-        // --------------------------------------------------------------------
+        // ====================================================================
 
         /// <summary>
         /// The positive X and first side of the cubemap
@@ -414,14 +414,14 @@ public class Cubemap : GLTexture, IManageable
         /// </summary>
         public Vector3 Direction { get; set; }
 
-        // --------------------------------------------------------------------
+        // ====================================================================
 
         private static List< CubemapSide > _valueList   = new();
         private static int                 _nextOrdinal = 0;
 
         private string _nameValue;
 
-        // --------------------------------------------------------------------
+        // ====================================================================
 
         static CubemapSide()
         {

@@ -35,7 +35,7 @@ public class Sphere
     public readonly Vector3 Center; // the center of the sphere
     public readonly float   Radius; // the radius of the sphere
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Constructs a sphere with the given center and radius

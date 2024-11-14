@@ -28,7 +28,7 @@ namespace Corelib.LibCore.Maths;
 [PublicAPI]
 public class Polyline : IShape2D
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private bool     _calculateLength       = true;
     private bool     _calculateScaledLength = true;
@@ -37,7 +37,7 @@ public class Polyline : IShape2D
     private float    _scaledLength;
     private float[]? _worldVertices;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public Polyline()
     {

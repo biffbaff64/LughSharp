@@ -48,7 +48,7 @@ public class PixmapFormat
     public const int DEFAULT_BLEND  = GDX_2D_BLEND_SRC_OVER;
     public const int DEFAULT_SCALE  = GDX_2D_SCALE_BILINEAR;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// </summary>

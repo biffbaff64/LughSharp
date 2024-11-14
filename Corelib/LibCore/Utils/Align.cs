@@ -31,7 +31,7 @@ namespace Corelib.LibCore.Utils;
 [PublicAPI]
 public sealed class Align
 {
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     public const int NONE   = 0;
     public const int CENTER = 1 << 0;
@@ -45,7 +45,7 @@ public sealed class Align
     public const int BOTTOM_LEFT  = BOTTOM | LEFT;
     public const int BOTTOM_RIGHT = BOTTOM | RIGHT;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Returns TRUE if the supplied position is aligned to the LEFT.
@@ -95,7 +95,7 @@ public sealed class Align
         return ( ( position & TOP ) == 0 ) && ( ( position & BOTTOM ) == 0 );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <inheritdoc cref="Object.ToString"/>
     public static string ToString( int position )

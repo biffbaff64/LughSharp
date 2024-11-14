@@ -46,8 +46,8 @@ public class AssetLoadingTask
     private readonly long         _startTime;
     private readonly object       _lock = new();
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Represents a task for loading an asset, including managing dependencies and handling cancellation.

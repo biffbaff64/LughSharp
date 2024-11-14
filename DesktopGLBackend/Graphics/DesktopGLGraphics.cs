@@ -42,7 +42,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 {
     public DesktopGLWindow? GLWindow { get; set; }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     private IGraphics.DisplayMode? _displayModeBeforeFullscreen;
 
@@ -56,8 +56,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     private int  _windowWidthBeforeFullscreen;
     private int  _windowHeightBeforeFullscreen;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Creates a new GLGraphics instance for Desktop backends, using the
@@ -359,7 +359,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         DesktopGLCursor.SetSystemCursor( GLWindow.GlfwWindow, systemCursor );
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <inheritdoc />
     public override IGraphics.DisplayMode[] GetDisplayModes()
@@ -454,8 +454,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
                  ( GetDisplayMode().Height / ( float ) sizeY ) * 10 );
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Makes a backup of the current windows position and display mode.
@@ -489,7 +489,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         }
     }
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <inheritdoc />
     public override int GetSafeInsetLeft() => 0;
@@ -509,7 +509,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <inheritdoc />
     public override int GetFramesPerSecond() => _fps;
 
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     /// Describes a Display Mode for a <see cref="GLFW.Monitor"/>
@@ -537,8 +537,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         }
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// Wrapper for a <see cref="GLFW.Monitor"/> which adds virtual X & Y, plus a name.
@@ -559,8 +559,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         }
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
+    // ========================================================================
 
     #region IDisposable implementation
 
