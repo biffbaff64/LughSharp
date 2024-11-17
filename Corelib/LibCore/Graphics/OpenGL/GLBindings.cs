@@ -4429,6 +4429,10 @@ public unsafe partial class GLBindings : IGLBindings
 
     // ========================================================================
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
     public void glMinSampleShading( GLfloat value )
     {
         _glMinSampleShading( value );
@@ -4439,6 +4443,11 @@ public unsafe partial class GLBindings : IGLBindings
 
     // ========================================================================
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="buf"></param>
+    /// <param name="mode"></param>
     public void glBlendEquationi( GLuint buf, GLenum mode )
     {
         _glBlendEquationi( buf, mode );
@@ -4449,6 +4458,12 @@ public unsafe partial class GLBindings : IGLBindings
 
     // ========================================================================
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="buf"></param>
+    /// <param name="modeRGB"></param>
+    /// <param name="modeAlpha"></param>
     public void glBlendEquationSeparatei( GLuint buf, GLenum modeRGB, GLenum modeAlpha )
     {
         _glBlendEquationSeparatei( buf, modeRGB, modeAlpha );
@@ -4459,6 +4474,12 @@ public unsafe partial class GLBindings : IGLBindings
 
     // ========================================================================
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="buf"></param>
+    /// <param name="src"></param>
+    /// <param name="dst"></param>
     public void glBlendFunci( GLuint buf, GLenum src, GLenum dst )
     {
         _glBlendFunci( buf, src, dst );
@@ -4469,6 +4490,14 @@ public unsafe partial class GLBindings : IGLBindings
 
     // ========================================================================
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="buf"></param>
+    /// <param name="srcRGB"></param>
+    /// <param name="dstRGB"></param>
+    /// <param name="srcAlpha"></param>
+    /// <param name="dstAlpha"></param>
     public void glBlendFuncSeparatei( GLuint buf, GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha, GLenum dstAlpha )
     {
         _glBlendFuncSeparatei( buf, srcRGB, dstRGB, srcAlpha, dstAlpha );
@@ -4487,6 +4516,11 @@ public unsafe partial class GLBindings : IGLBindings
         public GLuint baseInstance;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="mode"></param>
+    /// <param name="indirect"></param>
     public void glDrawArraysIndirect( GLenum mode, void* indirect )
     {
         _glDrawArraysIndirect( mode, indirect );
@@ -4497,6 +4531,11 @@ public unsafe partial class GLBindings : IGLBindings
 
     // ========================================================================
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="mode"></param>
+    /// <param name="indirect"></param>
     public void glDrawArraysIndirect( GLenum mode, DrawArraysIndirectCommand indirect )
     {
         _glDrawArraysIndirect( mode, &indirect );
@@ -7364,6 +7403,3762 @@ public unsafe partial class GLBindings : IGLBindings
 
     [DllImport( LIBGL, EntryPoint = "glPopDebugGroup", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glPopDebugGroup();
+    
+    // ========================================================================
+
+    public void glObjectLabel( GLenum identifier, GLuint name, GLsizei length, GLchar* label )
+    {
+        _glObjectLabel( identifier, name, length, label );
+    }
+
+    public void glObjectLabel( GLenum identifier, GLuint name, string label )
+    {
+        var labelBytes = Encoding.UTF8.GetBytes( label );
+
+        fixed ( GLchar* p_labelBytes = labelBytes )
+        {
+            _glObjectLabel( identifier, name, labelBytes.Length, p_labelBytes );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glObjectLabel", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glObjectLabel( GLenum identifier, GLuint name, GLsizei length, GLchar* label );
+
+    // ========================================================================
+
+    public void glGetObjectLabel( GLenum identifier, GLuint name, GLsizei bufSize, GLsizei* length, GLchar* label )
+    {
+        _glGetObjectLabel( identifier, name, bufSize, length, label );
+    }
+
+    public string glGetObjectLabel( GLenum identifier, GLuint name, GLsizei bufSize )
+    {
+        var labelBytes = new GLchar[ bufSize ];
+
+        fixed ( GLchar* p_labelBytes = labelBytes )
+        {
+            GLsizei length;
+
+            _glGetObjectLabel( identifier, name, bufSize, &length, p_labelBytes );
+
+            return new string( ( sbyte* )p_labelBytes, 0, length, Encoding.UTF8 );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetObjectLabel", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetObjectLabel( GLenum identifier, GLuint name, GLsizei bufSize, GLsizei* length, GLchar* label );
+
+    // ========================================================================
+
+    public void glObjectPtrLabel( void* ptr, GLsizei length, GLchar* label )
+    {
+        _glObjectPtrLabel( ptr, length, label );
+    }
+
+    public void glObjectPtrLabel( IntPtr ptr, string label )
+    {
+        var labelBytes = Encoding.UTF8.GetBytes( label );
+
+        fixed ( GLchar* p_labelBytes = labelBytes )
+        {
+            _glObjectPtrLabel( ptr.ToPointer(), labelBytes.Length, p_labelBytes );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glObjectPtrLabel", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glObjectPtrLabel( void* ptr, GLsizei length, GLchar* label );
+
+    // ========================================================================
+
+    public void glGetObjectPtrLabel( void* ptr, GLsizei bufSize, GLsizei* length, GLchar* label )
+    {
+        _glGetObjectPtrLabel( ptr, bufSize, length, label );
+    }
+
+    public string glGetObjectPtrLabel( IntPtr ptr, GLsizei bufSize )
+    {
+        var labelBytes = new GLchar[ bufSize ];
+
+        fixed ( GLchar* p_labelBytes = labelBytes )
+        {
+            GLsizei length;
+
+            _glGetObjectPtrLabel( ptr.ToPointer(), bufSize, &length, p_labelBytes );
+
+            return new string( ( sbyte* )p_labelBytes, 0, length, Encoding.UTF8 );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetObjectPtrLabel", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetObjectPtrLabel( void* ptr, GLsizei bufSize, GLsizei* length, GLchar* label );
+
+    // ========================================================================
+
+    public void glBufferStorage( GLenum target, GLsizeiptr size, void* data, GLbitfield flags )
+    {
+        _glBufferStorage( target, size, data, flags );
+    }
+
+    public void glBufferStorage< T >( GLenum target, T[] data, GLbitfield flags ) where T : unmanaged
+    {
+        fixed ( void* p_data = &data[ 0 ] )
+        {
+            _glBufferStorage( target, data.Length * sizeof( T ), p_data, flags );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glBufferStorage", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glBufferStorage( GLenum target, GLsizeiptr size, void* data, GLbitfield flags );
+
+    // ========================================================================
+
+    public void glClearTexImage( GLuint texture, GLint level, GLenum format, GLenum type, void* data )
+    {
+        _glClearTexImage( texture, level, format, type, data );
+    }
+
+    public void glClearTexImage< T >( GLuint texture, GLint level, GLenum format, GLenum type, T[] data ) where T : unmanaged
+    {
+        fixed ( T* t = &data[ 0 ] )
+        {
+            _glClearTexImage( texture, level, format, type, t );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glClearTexImage", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glClearTexImage( GLuint texture, GLint level, GLenum format, GLenum type, void* data );
+
+    // ========================================================================
+
+    public void glClearTexSubImage( GLuint texture, GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, void* data )
+    {
+        _glClearTexSubImage( texture, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data );
+    }
+
+    public void glClearTexSubImage< T >( GLuint texture, GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, T[] data )
+        where T : unmanaged
+    {
+        fixed ( T* t = &data[ 0 ] )
+        {
+            _glClearTexSubImage( texture, level, xOffset, yOffset, zOffset, width, height, depth, format, type, t );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glClearTexSubImage", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glClearTexSubImage( GLuint texture, GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type,
+                                                    void* data );
+
+    // ========================================================================
+
+    public void glBindBuffersBase( GLenum target, GLuint first, GLsizei count, GLuint* buffers )
+    {
+        _glBindBuffersBase( target, first, count, buffers );
+    }
+
+    public void glBindBuffersBase( GLenum target, GLuint first, GLuint[] buffers )
+    {
+        fixed ( GLuint* p_buffers = &buffers[ 0 ] )
+        {
+            _glBindBuffersBase( target, first, buffers.Length, p_buffers );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glBindBuffersBase", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glBindBuffersBase( GLenum target, GLuint first, GLsizei count, GLuint* buffers );
+
+    // ========================================================================
+
+    public void glBindBuffersRange( GLenum target, GLuint first, GLsizei count, GLuint* buffers, GLintptr* offsets, GLsizeiptr* sizes )
+    {
+        _glBindBuffersRange( target, first, count, buffers, offsets, sizes );
+    }
+
+    public void glBindBuffersRange( GLenum target, GLuint first, GLuint[] buffers, GLintptr[] offsets, GLsizeiptr[] sizes )
+    {
+        fixed ( GLuint* p_buffers = &buffers[ 0 ] )
+        {
+            fixed ( GLintptr* p_offsets = &offsets[ 0 ] )
+            {
+                fixed ( GLsizeiptr* p_sizes =
+                           &sizes[ 0 ] )
+                {
+                    _glBindBuffersRange( target, first, buffers.Length, p_buffers, p_offsets, p_sizes );
+                }
+            }
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glBindBuffersRange", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glBindBuffersRange( GLenum target, GLuint first, GLsizei count, GLuint* buffers, GLintptr* offsets, GLsizeiptr* sizes );
+
+    // ========================================================================
+
+    public void glBindTextures( GLuint first, GLsizei count, GLuint* textures )
+    {
+        _glBindTextures( first, count, textures );
+    }
+
+    public void glBindTextures( GLuint first, GLuint[] textures )
+    {
+        fixed ( GLuint* p_textures = &textures[ 0 ] )
+        {
+            _glBindTextures( first, textures.Length, p_textures );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glBindTextures", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glBindTextures( GLuint first, GLsizei count, GLuint* textures );
+
+    // ========================================================================
+
+    public void glBindSamplers( GLuint first, GLsizei count, GLuint* samplers )
+    {
+        _glBindSamplers( first, count, samplers );
+    }
+
+    public void glBindSamplers( GLuint first, GLuint[] samplers )
+    {
+        fixed ( GLuint* p_samplers = &samplers[ 0 ] )
+        {
+            _glBindSamplers( first, samplers.Length, p_samplers );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glBindSamplers", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glBindSamplers( GLuint first, GLsizei count, GLuint* samplers );
+
+    // ========================================================================
+
+    public void glBindImageTextures( GLuint first, GLsizei count, GLuint* textures )
+    {
+        _glBindImageTextures( first, count, textures );
+    }
+
+    public void glBindImageTextures( GLuint first, GLuint[] textures )
+    {
+        fixed ( GLuint* p_textures = &textures[ 0 ] )
+        {
+            _glBindImageTextures( first, textures.Length, p_textures );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glBindImageTextures", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glBindImageTextures( GLuint first, GLsizei count, GLuint* textures );
+
+    // ========================================================================
+
+    public void glBindVertexBuffers( GLuint first, GLsizei count, GLuint* buffers, GLintptr* offsets, GLsizei* strides )
+    {
+        _glBindVertexBuffers( first, count, buffers, offsets, strides );
+    }
+
+    public void glBindVertexBuffers( GLuint first, GLuint[] buffers, GLintptr[] offsets, GLsizei[] strides )
+    {
+        fixed ( GLuint* p_buffers = &buffers[ 0 ] )
+        {
+            fixed ( GLintptr* p_offsets = &offsets[ 0 ] )
+            {
+                fixed ( GLsizei* p_strides = &strides[ 0 ] )
+                {
+                    _glBindVertexBuffers( first, buffers.Length, p_buffers, p_offsets, p_strides );
+                }
+            }
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glBindVertexBuffers", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glBindVertexBuffers( GLuint first, GLsizei count, GLuint* buffers, GLintptr* offsets, GLsizei* strides );
+
+    // ========================================================================
+
+    public void glClipControl( GLenum origin, GLenum depth )
+    {
+        _glClipControl( origin, depth );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glClipControl", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glClipControl( GLenum origin, GLenum depth );
+
+    // ========================================================================
+
+    public void glCreateTransformFeedbacks( GLsizei n, GLuint* ids )
+    {
+        _glCreateTransformFeedbacks( n, ids );
+    }
+
+    public GLuint[] glCreateTransformFeedbacks( GLsizei n )
+    {
+        var ids = new GLuint[ n ];
+
+        fixed ( GLuint* p_ids = &ids[ 0 ] )
+        {
+            _glCreateTransformFeedbacks( n, p_ids );
+        }
+
+        return ids;
+    }
+
+    public GLuint glCreateTransformFeedbacks()
+    {
+        return glCreateTransformFeedbacks( 1 )[ 0 ];
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCreateTransformFeedbacks", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCreateTransformFeedbacks( GLsizei n, GLuint* ids );
+
+    // ========================================================================
+
+    public void glTransformFeedbackBufferBase( GLuint xfb, GLuint index, GLuint buffer )
+    {
+        _glTransformFeedbackBufferBase( xfb, index, buffer );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTransformFeedbackBufferBase", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTransformFeedbackBufferBase( GLuint xfb, GLuint index, GLuint buffer );
+
+    // ========================================================================
+
+    public void glTransformFeedbackBufferRange( GLuint xfb, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size )
+    {
+        _glTransformFeedbackBufferRange( xfb, index, buffer, offset, size );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTransformFeedbackBufferRange", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTransformFeedbackBufferRange( GLuint xfb, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size );
+
+    // ========================================================================
+
+    public void glGetTransformFeedbackiv( GLuint xfb, GLenum pname, GLint* param )
+    {
+        _glGetTransformFeedbackiv( xfb, pname, param );
+    }
+
+    public void glGetTransformFeedbackiv( GLuint xfb, GLenum pname, ref GLint[] param )
+    {
+        fixed ( GLint* p_param = &param[ 0 ] )
+        {
+            _glGetTransformFeedbackiv( xfb, pname, p_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetTransformFeedbackiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetTransformFeedbackiv( GLuint xfb, GLenum pname, GLint* param );
+
+    // ========================================================================
+
+    public void glGetTransformFeedbacki_v( GLuint xfb, GLenum pname, GLuint index, GLint* param )
+    {
+        _glGetTransformFeedbacki_v( xfb, pname, index, param );
+    }
+
+    public void glGetTransformFeedbacki_v( GLuint xfb, GLenum pname, GLuint index, ref GLint[] param )
+    {
+        fixed ( GLint* p_param = &param[ 0 ] )
+        {
+            _glGetTransformFeedbacki_v( xfb, pname, index, p_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetTransformFeedbacki_v", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetTransformFeedbacki_v( GLuint xfb, GLenum pname, GLuint index, GLint* param );
+
+    // ========================================================================
+
+    public void glGetTransformFeedbacki64_v( GLuint xfb, GLenum pname, GLuint index, GLint64* param )
+    {
+        _glGetTransformFeedbacki64_v( xfb, pname, index, param );
+    }
+
+    public void glGetTransformFeedbacki64_v( GLuint xfb, GLenum pname, GLuint index, ref GLint64[] param )
+    {
+        fixed ( GLint64* p_param = &param[ 0 ] )
+        {
+            _glGetTransformFeedbacki64_v( xfb, pname, index, p_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetTransformFeedbacki64_v", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetTransformFeedbacki64_v( GLuint xfb, GLenum pname, GLuint index, GLint64* param );
+
+    // ========================================================================
+
+    public void glCreateBuffers( GLsizei n, GLuint* buffers )
+    {
+        _glCreateBuffers( n, buffers );
+    }
+
+    public GLuint[] glCreateBuffers( GLsizei n )
+    {
+        var buffers = new GLuint[ n ];
+
+        fixed ( GLuint* p_buffers = &buffers[ 0 ] )
+        {
+            _glCreateBuffers( n, p_buffers );
+        }
+
+        return buffers;
+    }
+
+    public GLuint glCreateBuffer()
+    {
+        return glCreateBuffers( 1 )[ 0 ];
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCreateBuffers", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCreateBuffers( GLsizei n, GLuint* buffers );
+
+    // ========================================================================
+
+    public void glNamedBufferStorage( GLuint buffer, GLsizeiptr size, void* data, GLbitfield flags )
+    {
+        _glNamedBufferStorage( buffer, size, data, flags );
+    }
+
+    public void glNamedBufferStorage< T >( GLuint buffer, GLsizeiptr size, T[] data, GLbitfield flags ) where T : unmanaged
+    {
+        fixed ( T* p_data = &data[ 0 ] )
+        {
+            _glNamedBufferStorage( buffer, size, p_data, flags );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glNamedBufferStorage", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glNamedBufferStorage( GLuint buffer, GLsizeiptr size, void* data, GLbitfield flags );
+
+    // ========================================================================
+
+    public void glNamedBufferData( GLuint buffer, GLsizeiptr size, void* data, GLenum usage )
+    {
+        _glNamedBufferData( buffer, size, data, usage );
+    }
+
+    public void glNamedBufferData< T >( GLuint buffer, GLsizeiptr size, T[] data, GLenum usage ) where T : unmanaged
+    {
+        fixed ( T* p_data = &data[ 0 ] )
+        {
+            _glNamedBufferData( buffer, size, p_data, usage );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glNamedBufferData", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glNamedBufferData( GLuint buffer, GLsizeiptr size, void* data, GLenum usage );
+
+    // ========================================================================
+
+    public void glNamedBufferSubData( GLuint buffer, GLintptr offset, GLsizeiptr size, void* data )
+    {
+        _glNamedBufferSubData( buffer, offset, size, data );
+    }
+
+    public void glNamedBufferSubData< T >( GLuint buffer, GLintptr offset, GLsizeiptr size, T[] data ) where T : unmanaged
+    {
+        fixed ( T* p_data = &data[ 0 ] )
+        {
+            _glNamedBufferSubData( buffer, offset, size, p_data );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glNamedBufferSubData", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glNamedBufferSubData( GLuint buffer, GLintptr offset, GLsizeiptr size, void* data );
+
+    // ========================================================================
+
+    public void glCopyNamedBufferSubData( GLuint readBuffer, GLuint writeBuffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size )
+    {
+        _glCopyNamedBufferSubData( readBuffer, writeBuffer, readOffset, writeOffset, size );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCopyNamedBufferSubData", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCopyNamedBufferSubData( GLuint readBuffer, GLuint writeBuffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size );
+
+    // ========================================================================
+
+    public void glClearNamedBufferData( GLuint buffer, GLenum internalformat, GLenum format, GLenum type, void* data )
+    {
+        _glClearNamedBufferData( buffer, internalformat, format, type, data );
+    }
+
+    public void glClearNamedBufferData< T >( GLuint buffer, GLenum internalformat, GLenum format, GLenum type, T[] data ) where T : unmanaged
+    {
+        fixed ( T* t = &data[ 0 ] )
+        {
+            _glClearNamedBufferData( buffer, internalformat, format, type, t );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glClearNamedBufferData", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glClearNamedBufferData( GLuint buffer, GLenum internalformat, GLenum format, GLenum type, void* data );
+
+    // ========================================================================
+
+    public void glClearNamedBufferSubData( GLuint buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, void* data )
+    {
+        _glClearNamedBufferSubData( buffer, internalformat, offset, size, format, type, data );
+    }
+
+    public void glClearNamedBufferSubData< T >( GLuint buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, T[] data ) where T : unmanaged
+    {
+        fixed ( T* t = &data[ 0 ] )
+        {
+            _glClearNamedBufferSubData( buffer, internalformat, offset, size, format, type, t );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glClearNamedBufferSubData", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glClearNamedBufferSubData( GLuint buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, void* data );
+
+    // ========================================================================
+
+    public void* glMapNamedBuffer( GLuint buffer, GLenum access )
+    {
+        return _glMapNamedBuffer( buffer, access );
+    }
+
+    public System.Span< T > glMapNamedBuffer< T >( GLuint buffer, GLenum access ) where T : unmanaged
+    {
+        var size = stackalloc GLint[ 1 ];
+        _glGetNamedBufferParameteriv( buffer, IGL.GL_BUFFER_SIZE, size );
+        void* ptr = _glMapNamedBuffer( buffer, access );
+
+        return new System.Span< T >( ptr, *size / sizeof( T ) );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glMapNamedBuffer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void* _glMapNamedBuffer( GLuint buffer, GLenum access );
+
+    // ========================================================================
+
+    public void* glMapNamedBufferRange( GLuint buffer, GLintptr offset, GLsizeiptr length, GLbitfield access )
+    {
+        return _glMapNamedBufferRange( buffer, offset, length, access );
+    }
+
+    public System.Span< T > glMapNamedBufferRange< T >( GLuint buffer, GLintptr offset, GLsizeiptr length, GLbitfield access ) where T : unmanaged
+    {
+        var ptr = _glMapNamedBufferRange( buffer, offset, length, access );
+
+        return new System.Span< T >( ptr, ( int )length / sizeof( T ) );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glMapNamedBufferRange", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void* _glMapNamedBufferRange( GLuint buffer, GLintptr offset, GLsizeiptr length, GLbitfield access );
+
+    // ========================================================================
+
+    public GLboolean glUnmapNamedBuffer( GLuint buffer )
+    {
+        return _glUnmapNamedBuffer( buffer );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glUnmapNamedBuffer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLboolean _glUnmapNamedBuffer( GLuint buffer );
+
+    // ========================================================================
+
+    public void glFlushMappedNamedBufferRange( GLuint buffer, GLintptr offset, GLsizeiptr length )
+    {
+        _glFlushMappedNamedBufferRange( buffer, offset, length );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glFlushMappedNamedBufferRange", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glFlushMappedNamedBufferRange( GLuint buffer, GLintptr offset, GLsizeiptr length );
+
+    // ========================================================================
+
+    public void glGetNamedBufferParameteriv( GLuint buffer, GLenum pname, GLint* parameters )
+    {
+        _glGetNamedBufferParameteriv( buffer, pname, parameters );
+    }
+
+    public void glGetNamedBufferParameteriv( GLuint buffer, GLenum pname, ref GLint[] parameters )
+    {
+        fixed ( GLint* ptr_parameters = &parameters[ 0 ] )
+        {
+            _glGetNamedBufferParameteriv( buffer, pname, ptr_parameters );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetNamedBufferParameteriv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetNamedBufferParameteriv( GLuint buffer, GLenum pname, GLint* parameters );
+
+    // ========================================================================
+
+    public void glGetNamedBufferParameteri64v( GLuint buffer, GLenum pname, GLint64* parameters )
+    {
+        _glGetNamedBufferParameteri64v( buffer, pname, parameters );
+    }
+
+    public void glGetNamedBufferParameteri64v( GLuint buffer, GLenum pname, ref GLint64[] parameters )
+    {
+        fixed ( GLint64* ptr_parameters = &parameters[ 0 ] )
+        {
+            _glGetNamedBufferParameteri64v( buffer, pname, ptr_parameters );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetNamedBufferParameteri64v", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetNamedBufferParameteri64v( GLuint buffer, GLenum pname, GLint64* parameters );
+
+    // ========================================================================
+
+    public void glGetNamedBufferPointerv( GLuint buffer, GLenum pname, void** parameters )
+    {
+        _glGetNamedBufferPointerv( buffer, pname, parameters );
+    }
+
+    public void glGetNamedBufferPointerv( GLuint buffer, GLenum pname, ref IntPtr[] parameters )
+    {
+        var ptr_parameters = new void*[ parameters.Length ];
+
+        for ( var i = 0; i < parameters.Length; i++ )
+        {
+            ptr_parameters[ i ] = ( void* )parameters[ i ];
+        }
+
+        fixed ( void** ptr = &ptr_parameters[ 0 ] )
+        {
+            _glGetNamedBufferPointerv( buffer, pname, ptr );
+        }
+
+        for ( var i = 0; i < parameters.Length; i++ )
+        {
+            parameters[ i ] = ( IntPtr )ptr_parameters[ i ];
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetNamedBufferPointerv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetNamedBufferPointerv( GLuint buffer, GLenum pname, void** parameters );
+
+    // ========================================================================
+
+    public void glGetNamedBufferSubData( GLuint buffer, GLintptr offset, GLsizeiptr size, void* data )
+    {
+        _glGetNamedBufferSubData( buffer, offset, size, data );
+    }
+
+    public T[] glGetNamedBufferSubData< T >( GLuint buffer, GLintptr offset, GLsizeiptr size ) where T : unmanaged
+    {
+        var data = new T[ size / sizeof( T ) ];
+
+        fixed ( T* ptr_data = &data[ 0 ] )
+        {
+            _glGetNamedBufferSubData( buffer, offset, size, ptr_data );
+        }
+
+        return data;
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetNamedBufferSubData", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetNamedBufferSubData( GLuint buffer, GLintptr offset, GLsizeiptr size, void* data );
+
+    // ========================================================================
+
+    public void glCreateFramebuffers( GLsizei n, GLuint* framebuffers )
+    {
+        _glCreateFramebuffers( n, framebuffers );
+    }
+
+    public GLuint[] glCreateFramebuffers( GLsizei n )
+    {
+        var framebuffers = new GLuint[ n ];
+
+        fixed ( GLuint* ptr_framebuffers = &framebuffers[ 0 ] )
+        {
+            _glCreateFramebuffers( n, ptr_framebuffers );
+        }
+
+        return framebuffers;
+    }
+
+    public GLuint glCreateFramebuffer()
+    {
+        return glCreateFramebuffers( 1 )[ 0 ];
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCreateFramebuffers", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCreateFramebuffers( GLsizei n, GLuint* framebuffers );
+
+    // ========================================================================
+
+    public void glNamedFramebufferRenderbuffer( GLuint framebuffer, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer )
+    {
+        _glNamedFramebufferRenderbuffer( framebuffer, attachment, renderbuffertarget, renderbuffer );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glNamedFramebufferRenderbuffer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glNamedFramebufferRenderbuffer( GLuint framebuffer, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer );
+
+    // ========================================================================
+
+    public void glNamedFramebufferParameteri( GLuint framebuffer, GLenum pname, GLint param )
+    {
+        _glNamedFramebufferParameteri( framebuffer, pname, param );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glNamedFramebufferParameteri", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glNamedFramebufferParameteri( GLuint framebuffer, GLenum pname, GLint param );
+
+    // ========================================================================
+
+    public void glNamedFramebufferTexture( GLuint framebuffer, GLenum attachment, GLuint texture, GLint level )
+    {
+        _glNamedFramebufferTexture( framebuffer, attachment, texture, level );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glNamedFramebufferTexture", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glNamedFramebufferTexture( GLuint framebuffer, GLenum attachment, GLuint texture, GLint level );
+
+    // ========================================================================
+
+    public void glNamedFramebufferTextureLayer( GLuint framebuffer, GLenum attachment, GLuint texture, GLint level, GLint layer )
+    {
+        _glNamedFramebufferTextureLayer( framebuffer, attachment, texture, level, layer );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glNamedFramebufferTextureLayer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glNamedFramebufferTextureLayer( GLuint framebuffer, GLenum attachment, GLuint texture, GLint level, GLint layer );
+
+    // ========================================================================
+
+    public void glNamedFramebufferDrawBuffer( GLuint framebuffer, GLenum buf )
+    {
+        _glNamedFramebufferDrawBuffer( framebuffer, buf );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glNamedFramebufferDrawBuffer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glNamedFramebufferDrawBuffer( GLuint framebuffer, GLenum buf );
+
+    // ========================================================================
+
+    public void glNamedFramebufferDrawBuffers( GLuint framebuffer, GLsizei n, GLenum* bufs )
+    {
+        _glNamedFramebufferDrawBuffers( framebuffer, n, bufs );
+    }
+
+    public void glNamedFramebufferDrawBuffers( GLuint framebuffer, GLenum[] bufs )
+    {
+        fixed ( GLenum* ptr_bufs = &bufs[ 0 ] )
+        {
+            _glNamedFramebufferDrawBuffers( framebuffer, bufs.Length, ptr_bufs );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glNamedFramebufferDrawBuffers", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glNamedFramebufferDrawBuffers( GLuint framebuffer, GLsizei n, GLenum* bufs );
+
+    // ========================================================================
+
+    public void glNamedFramebufferReadBuffer( GLuint framebuffer, GLenum src )
+    {
+        _glNamedFramebufferReadBuffer( framebuffer, src );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glNamedFramebufferReadBuffer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glNamedFramebufferReadBuffer( GLuint framebuffer, GLenum src );
+
+    // ========================================================================
+
+    public void glInvalidateNamedFramebufferData( GLuint framebuffer, GLsizei numAttachments, GLenum* attachments )
+    {
+        _glInvalidateNamedFramebufferData( framebuffer, numAttachments, attachments );
+    }
+
+    public void glInvalidateNamedFramebufferData( GLuint framebuffer, GLenum[] attachments )
+    {
+        fixed ( GLenum* ptr_attachments = &attachments[ 0 ] )
+        {
+            _glInvalidateNamedFramebufferData( framebuffer, attachments.Length, ptr_attachments );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glInvalidateNamedFramebufferData", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glInvalidateNamedFramebufferData( GLuint framebuffer, GLsizei numAttachments, GLenum* attachments );
+
+    // ========================================================================
+
+    public void glInvalidateNamedFramebufferSubData( GLuint framebuffer, GLsizei numAttachments, GLenum* attachments, GLint x, GLint y, GLsizei width, GLsizei height )
+    {
+        _glInvalidateNamedFramebufferSubData( framebuffer, numAttachments, attachments, x, y, width, height );
+    }
+
+    public void glInvalidateNamedFramebufferSubData( GLuint framebuffer, GLenum[] attachments, GLint x, GLint y, GLsizei width, GLsizei height )
+    {
+        fixed ( GLenum* ptr_attachments = &attachments[ 0 ] )
+        {
+            _glInvalidateNamedFramebufferSubData( framebuffer, attachments.Length, ptr_attachments, x, y, width, height );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glInvalidateNamedFramebufferSubData", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glInvalidateNamedFramebufferSubData( GLuint framebuffer, GLsizei numAttachments, GLenum* attachments, GLint x, GLint y, GLsizei width, GLsizei height );
+
+    // ========================================================================
+
+    public void glClearNamedFramebufferiv( GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLint* value )
+    {
+        _glClearNamedFramebufferiv( framebuffer, buffer, drawbuffer, value );
+    }
+
+    public void glClearNamedFramebufferiv( GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLint[] value )
+    {
+        fixed ( GLint* ptr_value = &value[ 0 ] )
+        {
+            _glClearNamedFramebufferiv( framebuffer, buffer, drawbuffer, ptr_value );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glClearNamedFramebufferiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glClearNamedFramebufferiv( GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLint* value );
+
+    // ========================================================================
+
+    public void glClearNamedFramebufferuiv( GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLuint* value )
+    {
+        _glClearNamedFramebufferuiv( framebuffer, buffer, drawbuffer, value );
+    }
+
+    public void glClearNamedFramebufferuiv( GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLuint[] value )
+    {
+        fixed ( GLuint* ptr_value = &value[ 0 ] )
+        {
+            _glClearNamedFramebufferuiv( framebuffer, buffer, drawbuffer, ptr_value );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glClearNamedFramebufferuiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glClearNamedFramebufferuiv( GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLuint* value );
+
+    // ========================================================================
+
+    public void glClearNamedFramebufferfv( GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLfloat* value )
+    {
+        _glClearNamedFramebufferfv( framebuffer, buffer, drawbuffer, value );
+    }
+
+    public void glClearNamedFramebufferfv( GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLfloat[] value )
+    {
+        fixed ( GLfloat* ptr_value = &value[ 0 ] )
+        {
+            _glClearNamedFramebufferfv( framebuffer, buffer, drawbuffer, ptr_value );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glClearNamedFramebufferfv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glClearNamedFramebufferfv( GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLfloat* value );
+
+    // ========================================================================
+
+    public void glClearNamedFramebufferfi( GLuint framebuffer, GLenum buffer, GLfloat depth, GLint stencil )
+    {
+        _glClearNamedFramebufferfi( framebuffer, buffer, depth, stencil );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glClearNamedFramebufferfi", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glClearNamedFramebufferfi( GLuint framebuffer, GLenum buffer, GLfloat depth, GLint stencil );
+
+    // ========================================================================
+
+    public void glBlitNamedFramebuffer( GLuint readFramebuffer, GLuint drawFramebuffer, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1,
+                                        GLbitfield mask, GLenum filter )
+    {
+        _glBlitNamedFramebuffer( readFramebuffer, drawFramebuffer, srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glBlitNamedFramebuffer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glBlitNamedFramebuffer( GLuint readFramebuffer, GLuint drawFramebuffer, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1,
+                                                        GLint dstY1,
+                                                        GLbitfield mask, GLenum filter );
+
+    // ========================================================================
+
+    public GLenum glCheckNamedFramebufferStatus( GLuint framebuffer, GLenum target )
+    {
+        return _glCheckNamedFramebufferStatus( framebuffer, target );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCheckNamedFramebufferStatus", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLenum _glCheckNamedFramebufferStatus( GLuint framebuffer, GLenum target );
+
+    // ========================================================================
+
+    public void glGetNamedFramebufferParameteriv( GLuint framebuffer, GLenum pname, GLint* param )
+    {
+        _glGetNamedFramebufferParameteriv( framebuffer, pname, param );
+    }
+
+    public void glGetNamedFramebufferParameteriv( GLuint framebuffer, GLenum pname, ref GLint[] param )
+    {
+        fixed ( GLint* ptr_param = &param[ 0 ] )
+        {
+            _glGetNamedFramebufferParameteriv( framebuffer, pname, ptr_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetNamedFramebufferParameteriv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetNamedFramebufferParameteriv( GLuint framebuffer, GLenum pname, GLint* param );
+
+    // ========================================================================
+
+    public void glGetNamedFramebufferAttachmentParameteriv( GLuint framebuffer, GLenum attachment, GLenum pname, GLint* params_ )
+    {
+        _glGetNamedFramebufferAttachmentParameteriv( framebuffer, attachment, pname, params_ );
+    }
+
+    public void glGetNamedFramebufferAttachmentParameteriv( GLuint framebuffer, GLenum attachment, GLenum pname, ref GLint[] params_ )
+    {
+        fixed ( GLint* ptr_params_ = &params_[ 0 ] )
+        {
+            _glGetNamedFramebufferAttachmentParameteriv( framebuffer, attachment, pname, ptr_params_ );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetNamedFramebufferAttachmentParameteriv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetNamedFramebufferAttachmentParameteriv( GLuint framebuffer, GLenum attachment, GLenum pname, GLint* params_ );
+
+    // ========================================================================
+
+    public void glCreateRenderbuffers( GLsizei n, GLuint* renderbuffers )
+    {
+        _glCreateRenderbuffers( n, renderbuffers );
+    }
+
+    public GLuint[] glCreateRenderbuffers( GLsizei n )
+    {
+        var renderbuffers = new GLuint[ n ];
+
+        fixed ( GLuint* ptr_renderbuffers = &renderbuffers[ 0 ] )
+        {
+            _glCreateRenderbuffers( n, ptr_renderbuffers );
+        }
+
+        return renderbuffers;
+    }
+
+    public GLuint glCreateRenderbuffer()
+    {
+        return glCreateRenderbuffers( 1 )[ 0 ];
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCreateRenderbuffers", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCreateRenderbuffers( GLsizei n, GLuint* renderbuffers );
+
+    // ========================================================================
+
+    public void glNamedRenderbufferStorage( GLuint renderbuffer, GLenum internalformat, GLsizei width, GLsizei height )
+    {
+        _glNamedRenderbufferStorage( renderbuffer, internalformat, width, height );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glNamedRenderbufferStorage", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glNamedRenderbufferStorage( GLuint renderbuffer, GLenum internalformat, GLsizei width, GLsizei height );
+
+    // ========================================================================
+
+    public void glNamedRenderbufferStorageMultisample( GLuint renderbuffer, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height )
+    {
+        _glNamedRenderbufferStorageMultisample( renderbuffer, samples, internalformat, width, height );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glNamedRenderbufferStorageMultisample", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glNamedRenderbufferStorageMultisample( GLuint renderbuffer, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height );
+
+    // ========================================================================
+
+    public void glGetNamedRenderbufferParameteriv( GLuint renderbuffer, GLenum pname, GLint* param )
+    {
+        _glGetNamedRenderbufferParameteriv( renderbuffer, pname, param );
+    }
+
+    public void glGetNamedRenderbufferParameteriv( GLuint renderbuffer, GLenum pname, ref GLint[] param )
+    {
+        fixed ( GLint* ptr_param = &param[ 0 ] )
+        {
+            _glGetNamedRenderbufferParameteriv( renderbuffer, pname, ptr_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetNamedRenderbufferParameteriv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetNamedRenderbufferParameteriv( GLuint renderbuffer, GLenum pname, GLint* param );
+
+    // ========================================================================
+
+    public void glCreateTextures( GLenum target, GLsizei n, GLuint* textures )
+    {
+        _glCreateTextures( target, n, textures );
+    }
+
+    public GLuint[] glCreateTextures( GLenum target, GLsizei n )
+    {
+        var textures = new GLuint[ n ];
+
+        fixed ( GLuint* ptr_textures = &textures[ 0 ] )
+        {
+            _glCreateTextures( target, n, ptr_textures );
+        }
+
+        return textures;
+    }
+
+    public GLuint glCreateTexture( GLenum target )
+    {
+        return glCreateTextures( target, 1 )[ 0 ];
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCreateTextures", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCreateTextures( GLenum target, GLsizei n, GLuint* textures );
+
+    // ========================================================================
+
+    public void glTextureBuffer( GLuint texture, GLenum internalformat, GLuint buffer )
+    {
+        _glTextureBuffer( texture, internalformat, buffer );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureBuffer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureBuffer( GLuint texture, GLenum internalformat, GLuint buffer );
+
+    // ========================================================================
+
+    public void glTextureBufferRange( GLuint texture, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size )
+    {
+        _glTextureBufferRange( texture, internalformat, buffer, offset, size );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureBufferRange", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureBufferRange( GLuint texture, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size );
+
+    // ========================================================================
+
+    public void glTextureStorage1D( GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width )
+    {
+        _glTextureStorage1D( texture, levels, internalformat, width );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureStorage1D", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureStorage1D( GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width );
+
+    // ========================================================================
+
+    public void glTextureStorage2D( GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height )
+    {
+        _glTextureStorage2D( texture, levels, internalformat, width, height );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureStorage2D", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureStorage2D( GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height );
+
+    // ========================================================================
+
+    public void glTextureStorage3D( GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth )
+    {
+        _glTextureStorage3D( texture, levels, internalformat, width, height, depth );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureStorage3D", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureStorage3D( GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth );
+
+    // ========================================================================
+
+    public void glTextureStorage2DMultisample( GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations )
+    {
+        _glTextureStorage2DMultisample( texture, samples, internalformat, width, height, fixedsamplelocations );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureStorage2DMultisample", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureStorage2DMultisample( GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations );
+
+    // ========================================================================
+
+    public void glTextureStorage3DMultisample( GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations )
+    {
+        _glTextureStorage3DMultisample( texture, samples, internalformat, width, height, depth, fixedsamplelocations );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureStorage3DMultisample", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureStorage3DMultisample( GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations );
+
+    // ========================================================================
+
+    public void glTextureSubImage1D( GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, void* pixels )
+    {
+        _glTextureSubImage1D( texture, level, xoffset, width, format, type, pixels );
+    }
+
+    public void glTextureSubImage1D< T >( GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, T[] pixels ) where T : unmanaged
+    {
+        fixed ( T* ptr_pixels = &pixels[ 0 ] )
+        {
+            _glTextureSubImage1D( texture, level, xoffset, width, format, type, ptr_pixels );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureSubImage1D", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureSubImage1D( GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, void* pixels );
+
+    // ========================================================================
+
+    public void glTextureSubImage2D( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, void* pixels )
+    {
+        _glTextureSubImage2D( texture, level, xoffset, yoffset, width, height, format, type, pixels );
+    }
+
+    public void glTextureSubImage2D< T >( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, T[] pixels ) where T : unmanaged
+    {
+        fixed ( T* ptr_pixels = &pixels[ 0 ] )
+        {
+            _glTextureSubImage2D( texture, level, xoffset, yoffset, width, height, format, type, ptr_pixels );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureSubImage2D", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureSubImage2D( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, void* pixels );
+
+    // ========================================================================
+
+    public void glTextureSubImage3D( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, void* pixels )
+    {
+        _glTextureSubImage3D( texture, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels );
+    }
+
+    public void glTextureSubImage3D< T >( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type,
+                                          T[] pixels ) where T : unmanaged
+    {
+        fixed ( T* ptr_pixels = &pixels[ 0 ] )
+        {
+            _glTextureSubImage3D( texture, level, xoffset, yoffset, zoffset, width, height, depth, format, type, ptr_pixels );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureSubImage3D", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureSubImage3D( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset,
+                                                     GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, void* pixels );
+
+    // ========================================================================
+
+    public void glCompressedTextureSubImage1D( GLuint texture, GLint level, GLint xoffset, GLsizei width,
+                                               GLenum format, GLsizei imageSize, void* data )
+    {
+        _glCompressedTextureSubImage1D( texture, level, xoffset, width, format, imageSize, data );
+    }
+
+    public void glCompressedTextureSubImage1D( GLuint texture, GLint level, GLint xoffset, GLsizei width,
+                                               GLenum format, GLsizei imageSize, byte[] data )
+    {
+        fixed ( byte* ptr_data = &data[ 0 ] )
+        {
+            _glCompressedTextureSubImage1D( texture, level, xoffset, width, format, imageSize, ptr_data );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCompressedTextureSubImage1D", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCompressedTextureSubImage1D( GLuint texture, GLint level, GLint xoffset, GLsizei width,
+                                                               GLenum format, GLsizei imageSize, void* data );
+
+    // ========================================================================
+
+    public void glCompressedTextureSubImage2D( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, void* data )
+    {
+        _glCompressedTextureSubImage2D( texture, level, xoffset, yoffset, width, height, format, imageSize, data );
+    }
+
+    public void glCompressedTextureSubImage2D( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, byte[] data )
+    {
+        fixed ( byte* ptr_data = &data[ 0 ] )
+        {
+            _glCompressedTextureSubImage2D( texture, level, xoffset, yoffset, width, height, format, imageSize, ptr_data );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCompressedTextureSubImage2D", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCompressedTextureSubImage2D( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, void* data );
+
+    // ========================================================================
+
+    public void glCompressedTextureSubImage3D( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize,
+                                               void* data )
+    {
+        _glCompressedTextureSubImage3D( texture, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data );
+    }
+
+    public void glCompressedTextureSubImage3D( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize,
+                                               byte[] data )
+    {
+        fixed ( byte* ptr_data = &data[ 0 ] )
+        {
+            _glCompressedTextureSubImage3D( texture, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, ptr_data );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCompressedTextureSubImage3D", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCompressedTextureSubImage3D( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width,
+                                                               GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, void* data );
+
+    // ========================================================================
+
+    public void glCopyTextureSubImage1D( GLuint texture, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width )
+    {
+        _glCopyTextureSubImage1D( texture, level, xoffset, x, y, width );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCopyTextureSubImage1D", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCopyTextureSubImage1D( GLuint texture, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width );
+
+    // ========================================================================
+
+    public void glCopyTextureSubImage2D( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height )
+    {
+        _glCopyTextureSubImage2D( texture, level, xoffset, yoffset, x, y, width, height );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCopyTextureSubImage2D", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCopyTextureSubImage2D( GLuint texture, GLint level, GLint xoffset, GLint yoffset,
+                                                         GLint x, GLint y, GLsizei width, GLsizei height );
+
+    // ========================================================================
+
+    public void glCopyTextureSubImage3D( GLuint texture, GLint level, GLint xoffset, GLint yoffset,
+                                         GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height )
+    {
+        _glCopyTextureSubImage3D( texture, level, xoffset, yoffset, zoffset, x, y, width, height );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCopyTextureSubImage3D", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCopyTextureSubImage3D( GLuint texture, GLint level, GLint xoffset, GLint yoffset,
+                                                         GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height );
+
+    // ========================================================================
+
+    public void glTextureParameterf( GLuint texture, GLenum pname, GLfloat param )
+    {
+        _glTextureParameterf( texture, pname, param );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureParameterf", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureParameterf( GLuint texture, GLenum pname, GLfloat param );
+
+    // ========================================================================
+
+    public void glTextureParameterfv( GLuint texture, GLenum pname, GLfloat* param )
+    {
+        _glTextureParameterfv( texture, pname, param );
+    }
+
+    public void glTextureParameterfv( GLuint texture, GLenum pname, GLfloat[] param )
+    {
+        fixed ( GLfloat* ptr_param = &param[ 0 ] )
+        {
+            _glTextureParameterfv( texture, pname, ptr_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureParameterfv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureParameterfv( GLuint texture, GLenum pname, GLfloat* param );
+
+    // ========================================================================
+
+    public void glTextureParameteri( GLuint texture, GLenum pname, GLint param )
+    {
+        _glTextureParameteri( texture, pname, param );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureParameteri", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureParameteri( GLuint texture, GLenum pname, GLint param );
+
+    // ========================================================================
+
+    public void glTextureParameterIiv( GLuint texture, GLenum pname, GLint* param )
+    {
+        _glTextureParameterIiv( texture, pname, param );
+    }
+
+    public void glTextureParameterIiv( GLuint texture, GLenum pname, GLint[] param )
+    {
+        fixed ( GLint* ptr_param = &param[ 0 ] )
+        {
+            _glTextureParameterIiv( texture, pname, ptr_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureParameterIiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureParameterIiv( GLuint texture, GLenum pname, GLint* param );
+
+    // ========================================================================
+
+    public void glTextureParameterIuiv( GLuint texture, GLenum pname, GLuint* param )
+    {
+        _glTextureParameterIuiv( texture, pname, param );
+    }
+
+    public void glTextureParameterIuiv( GLuint texture, GLenum pname, GLuint[] param )
+    {
+        fixed ( GLuint* ptr_param = &param[ 0 ] )
+        {
+            _glTextureParameterIuiv( texture, pname, ptr_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureParameterIuiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureParameterIuiv( GLuint texture, GLenum pname, GLuint* param );
+
+    // ========================================================================
+
+    public void glTextureParameteriv( GLuint texture, GLenum pname, GLint* param )
+    {
+        _glTextureParameteriv( texture, pname, param );
+    }
+
+    public void glTextureParameteriv( GLuint texture, GLenum pname, GLint[] param )
+    {
+        fixed ( GLint* ptr_param = &param[ 0 ] )
+        {
+            _glTextureParameteriv( texture, pname, ptr_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureParameteriv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureParameteriv( GLuint texture, GLenum pname, GLint* param );
+
+    // ========================================================================
+
+    public void glGenerateTextureMipmap( GLuint texture )
+    {
+        _glGenerateTextureMipmap( texture );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGenerateTextureMipmap", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGenerateTextureMipmap( GLuint texture );
+
+    // ========================================================================
+
+    public void glBindTextureUnit( GLuint unit, GLuint texture )
+    {
+        _glBindTextureUnit( unit, texture );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glBindTextureUnit", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glBindTextureUnit( GLuint unit, GLuint texture );
+
+    // ========================================================================
+
+    public void glGetTextureImage( GLuint texture, GLint level, GLenum format, GLenum type, GLsizei bufSize, void* pixels )
+    {
+        _glGetTextureImage( texture, level, format, type, bufSize, pixels );
+    }
+
+    public T[] glGetTextureImage< T >( GLuint texture, GLint level, GLenum format, GLenum type, GLsizei bufSize ) where T : unmanaged
+    {
+        var pixels = new T[ bufSize ];
+
+        fixed ( T* ptr_pixels = &pixels[ 0 ] )
+        {
+            _glGetTextureImage( texture, level, format, type, bufSize, ptr_pixels );
+        }
+
+        return pixels;
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetTextureImage", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetTextureImage( GLuint texture, GLint level, GLenum format, GLenum type, GLsizei bufSize, void* pixels );
+
+    // ========================================================================
+
+    public void glGetCompressedTextureImage( GLuint texture, GLint level, GLsizei bufSize, void* pixels )
+    {
+        _glGetCompressedTextureImage( texture, level, bufSize, pixels );
+    }
+
+    public byte[] glGetCompressedTextureImage( GLuint texture, GLint level, GLsizei bufSize )
+    {
+        var pixels = new byte[ bufSize ];
+
+        fixed ( byte* ptr_pixels = &pixels[ 0 ] )
+        {
+            _glGetCompressedTextureImage( texture, level, bufSize, ptr_pixels );
+        }
+
+        return pixels;
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetCompressedTextureImageglGetCompressedTextureImage", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetCompressedTextureImage( GLuint texture, GLint level, GLsizei bufSize, void* pixels );
+
+    // ========================================================================
+
+    public void glGetTextureLevelParameterfv( GLuint texture, GLint level, GLenum pname, GLfloat* param )
+    {
+        _glGetTextureLevelParameterfv( texture, level, pname, param );
+    }
+
+    public void glGetTextureLevelParameterfv( GLuint texture, GLint level, GLenum pname, ref GLfloat[] param )
+    {
+        fixed ( GLfloat* ptr_param = &param[ 0 ] )
+        {
+            _glGetTextureLevelParameterfv( texture, level, pname, ptr_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetTextureLevelParameterfv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetTextureLevelParameterfv( GLuint texture, GLint level, GLenum pname, GLfloat* param );
+
+    // ========================================================================
+
+    public void glGetTextureLevelParameteriv( GLuint texture, GLint level, GLenum pname, GLint* param )
+    {
+        _glGetTextureLevelParameteriv( texture, level, pname, param );
+    }
+
+    public void glGetTextureLevelParameteriv( GLuint texture, GLint level, GLenum pname, ref GLint[] param )
+    {
+        fixed ( GLint* ptr_param = &param[ 0 ] )
+        {
+            _glGetTextureLevelParameteriv( texture, level, pname, ptr_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetTextureLevelParameteriv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetTextureLevelParameteriv( GLuint texture, GLint level, GLenum pname, GLint* param );
+
+    // ========================================================================
+
+    public void glGetTextureParameterfv( GLuint texture, GLenum pname, GLfloat* param )
+    {
+        _glGetTextureParameterfv( texture, pname, param );
+    }
+
+    public void glGetTextureParameterfv( GLuint texture, GLenum pname, ref GLfloat[] param )
+    {
+        fixed ( GLfloat* ptr_param = &param[ 0 ] )
+        {
+            _glGetTextureParameterfv( texture, pname, ptr_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetTextureParameterfv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetTextureParameterfv( GLuint texture, GLenum pname, GLfloat* param );
+
+    // ========================================================================
+
+    public void glGetTextureParameterIiv( GLuint texture, GLenum pname, GLint* param )
+    {
+        _glGetTextureParameterIiv( texture, pname, param );
+    }
+
+    public void glGetTextureParameterIiv( GLuint texture, GLenum pname, ref GLint[] param )
+    {
+        fixed ( GLint* ptr_param = &param[ 0 ] )
+        {
+            _glGetTextureParameterIiv( texture, pname, ptr_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetTextureParameterIiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetTextureParameterIiv( GLuint texture, GLenum pname, GLint* param );
+
+    // ========================================================================
+
+    public void glGetTextureParameterIuiv( GLuint texture, GLenum pname, GLuint* param )
+    {
+        _glGetTextureParameterIuiv( texture, pname, param );
+    }
+
+    public void glGetTextureParameterIuiv( GLuint texture, GLenum pname, ref GLuint[] param )
+    {
+        fixed ( GLuint* ptr_param = &param[ 0 ] )
+        {
+            _glGetTextureParameterIuiv( texture, pname, ptr_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetTextureParameterIuiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetTextureParameterIuiv( GLuint texture, GLenum pname, GLuint* param );
+
+    // ========================================================================
+
+    public void glGetTextureParameteriv( GLuint texture, GLenum pname, GLint* param )
+    {
+        _glGetTextureParameteriv( texture, pname, param );
+    }
+
+    public void glGetTextureParameteriv( GLuint texture, GLenum pname, ref GLint[] param )
+    {
+        fixed ( GLint* ptr_param = &param[ 0 ] )
+        {
+            _glGetTextureParameteriv( texture, pname, ptr_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetTextureParameteriv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetTextureParameteriv( GLuint texture, GLenum pname, GLint* param );
+
+    // ========================================================================
+
+    public void glCreateVertexArrays( GLsizei n, GLuint* arrays )
+    {
+        _glCreateVertexArrays( n, arrays );
+    }
+
+    public GLuint[] glCreateVertexArrays( GLsizei n )
+    {
+        var arrays = new GLuint[ n ];
+
+        fixed ( GLuint* ptr_arrays = &arrays[ 0 ] )
+        {
+            _glCreateVertexArrays( n, ptr_arrays );
+        }
+
+        return arrays;
+    }
+
+    public GLuint glCreateVertexArray()
+    {
+        return glCreateVertexArrays( 1 )[ 0 ];
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCreateVertexArrays", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCreateVertexArrays( GLsizei n, GLuint* arrays );
+
+    // ========================================================================
+
+    public void glDisableVertexArrayAttrib( GLuint vaobj, GLuint index )
+    {
+        _glDisableVertexArrayAttrib( vaobj, index );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glDisableVertexArrayAttrib", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glDisableVertexArrayAttrib( GLuint vaobj, GLuint index );
+
+    // ========================================================================
+
+    public void glEnableVertexArrayAttrib( GLuint vaobj, GLuint index )
+    {
+        _glEnableVertexArrayAttrib( vaobj, index );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glEnableVertexArrayAttrib", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glEnableVertexArrayAttrib( GLuint vaobj, GLuint index );
+
+    // ========================================================================
+
+    public void glVertexArrayElementBuffer( GLuint vaobj, GLuint buffer )
+    {
+        _glVertexArrayElementBuffer( vaobj, buffer );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexArrayElementBuffer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexArrayElementBuffer( GLuint vaobj, GLuint buffer );
+
+    // ========================================================================
+
+    public void glVertexArrayVertexBuffer( GLuint vaobj, GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride )
+    {
+        _glVertexArrayVertexBuffer( vaobj, bindingindex, buffer, offset, stride );
+    }
+
+    public void glVertexArrayVertexBuffers( GLuint vaobj, GLuint first, GLsizei count, GLuint* buffers, GLintptr* offsets, GLsizei* strides )
+    {
+        _glVertexArrayVertexBuffers( vaobj, first, count, buffers, offsets, strides );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexArrayVertexBuffer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexArrayVertexBuffer( GLuint vaobj, GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride );
+
+    // ========================================================================
+
+    public void glVertexArrayVertexBuffers( GLuint vaobj, GLuint first, GLuint[] buffers, GLintptr[] offsets, GLsizei[] strides )
+    {
+        fixed ( GLuint* ptr_buffers = &buffers[ 0 ] )
+        fixed ( GLintptr* ptr_offsets = &offsets[ 0 ] )
+        fixed ( GLsizei* ptr_strides = &strides[ 0 ] )
+        {
+            _glVertexArrayVertexBuffers( vaobj, first, ( GLsizei )buffers.Length, ptr_buffers, ptr_offsets, ptr_strides );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexArrayVertexBuffers", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexArrayVertexBuffers( GLuint vaobj, GLuint first, GLsizei len, GLuint* buffers, GLintptr* offsets, GLsizei* strides );
+
+    // ========================================================================
+
+    public void glVertexArrayAttribBinding( GLuint vaobj, GLuint attribindex, GLuint bindingindex )
+    {
+        _glVertexArrayAttribBinding( vaobj, attribindex, bindingindex );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexArrayAttribBinding", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexArrayAttribBinding( GLuint vaobj, GLuint attribindex, GLuint bindingindex );
+
+    // ========================================================================
+
+    public void glVertexArrayAttribFormat( GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset )
+    {
+        _glVertexArrayAttribFormat( vaobj, attribindex, size, type, normalized, relativeoffset );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexArrayAttribFormat", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexArrayAttribFormat( GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset );
+
+    // ========================================================================
+
+    public void glVertexArrayAttribIFormat( GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset )
+    {
+        _glVertexArrayAttribIFormat( vaobj, attribindex, size, type, relativeoffset );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexArrayAttribIFormat", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexArrayAttribIFormat( GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset );
+
+    // ========================================================================
+
+    public void glVertexArrayAttribLFormat( GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset )
+    {
+        _glVertexArrayAttribLFormat( vaobj, attribindex, size, type, relativeoffset );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexArrayAttribLFormat", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexArrayAttribLFormat( GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset );
+
+    // ========================================================================
+
+    public void glVertexArrayBindingDivisor( GLuint vaobj, GLuint bindingindex, GLuint divisor )
+    {
+        _glVertexArrayBindingDivisor( vaobj, bindingindex, divisor );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexArrayBindingDivisor", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexArrayBindingDivisor( GLuint vaobj, GLuint bindingindex, GLuint divisor );
+
+    // ========================================================================
+
+    public void glGetVertexArrayiv( GLuint vaobj, GLenum pname, GLint* param )
+    {
+        _glGetVertexArrayiv( vaobj, pname, param );
+    }
+
+    public void glGetVertexArrayiv( GLuint vaobj, GLenum pname, ref GLint[] param )
+    {
+        fixed ( GLint* ptr_param = &param[ 0 ] )
+        {
+            _glGetVertexArrayiv( vaobj, pname, ptr_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetVertexArrayiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetVertexArrayiv( GLuint vaobj, GLenum pname, GLint* param );
+
+    // ========================================================================
+
+    public void glGetVertexArrayIndexediv( GLuint vaobj, GLuint index, GLenum pname, GLint* param )
+    {
+        _glGetVertexArrayIndexediv( vaobj, index, pname, param );
+    }
+
+    public void glGetVertexArrayIndexediv( GLuint vaobj, GLuint index, GLenum pname, ref GLint[] param )
+    {
+        fixed ( GLint* ptr_param = &param[ 0 ] )
+        {
+            _glGetVertexArrayIndexediv( vaobj, index, pname, ptr_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetVertexArrayIndexediv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetVertexArrayIndexediv( GLuint vaobj, GLuint index, GLenum pname, GLint* param );
+
+    // ========================================================================
+
+    public void glGetVertexArrayIndexed64iv( GLuint vaobj, GLuint index, GLenum pname, GLint64* param )
+    {
+        _glGetVertexArrayIndexed64iv( vaobj, index, pname, param );
+    }
+
+    public void glGetVertexArrayIndexed64iv( GLuint vaobj, GLuint index, GLenum pname, ref GLint64[] param )
+    {
+        fixed ( GLint64* ptr_param = &param[ 0 ] )
+        {
+            _glGetVertexArrayIndexed64iv( vaobj, index, pname, ptr_param );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetVertexArrayIndexed64iv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetVertexArrayIndexed64iv( GLuint vaobj, GLuint index, GLenum pname, GLint64* param );
+
+    // ========================================================================
+
+    public void glCreateSamplers( GLsizei n, GLuint* samplers )
+    {
+        _glCreateSamplers( n, samplers );
+    }
+
+    public GLuint[] glCreateSamplers( GLsizei n )
+    {
+        var samplers = new GLuint[ n ];
+
+        fixed ( GLuint* ptr_samplers = &samplers[ 0 ] )
+        {
+            _glCreateSamplers( n, ptr_samplers );
+        }
+
+        return samplers;
+    }
+
+    public GLuint glCreateSamplers()
+    {
+        return glCreateSamplers( 1 )[ 0 ];
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCreateSamplers", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCreateSamplers( GLsizei n, GLuint* samplers );
+
+    // ========================================================================
+
+    public void glCreateProgramPipelines( GLsizei n, GLuint* pipelines )
+    {
+        _glCreateProgramPipelines( n, pipelines );
+    }
+
+    public GLuint[] glCreateProgramPipelines( GLsizei n )
+    {
+        var pipelines = new GLuint[ n ];
+
+        fixed ( GLuint* ptr_pipelines = &pipelines[ 0 ] )
+        {
+            _glCreateProgramPipelines( n, ptr_pipelines );
+        }
+
+        return pipelines;
+    }
+
+    public GLuint glCreateProgramPipeline()
+    {
+        return glCreateProgramPipelines( 1 )[ 0 ];
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCreateProgramPipelines", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCreateProgramPipelines( GLsizei n, GLuint* pipelines );
+    
+    // ========================================================================
+
+    public void glCreateQueries( GLenum target, GLsizei n, GLuint* ids )
+    {
+        _glCreateQueries( target, n, ids );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCreateQueries", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCreateQueries( GLenum target, GLsizei n, GLuint* ids );
+
+    // ========================================================================
+
+    public GLuint[] glCreateQueries( GLenum target, GLsizei n )
+    {
+        var ids = new GLuint[ n ];
+
+        fixed ( GLuint* ptr_ids = &ids[ 0 ] )
+        {
+            _glCreateQueries( target, n, ptr_ids );
+        }
+
+        return ids;
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCreateQueries", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLuint[] _glCreateQueries( GLenum target, GLsizei n );
+
+    // ========================================================================
+
+    public GLuint glCreateQuery( GLenum target )
+    {
+        return glCreateQueries( target, 1 )[ 0 ];
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCreateQuery", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLuint _glCreateQuery( GLenum target );
+
+    // ========================================================================
+
+    public void glGetQueryBufferObjecti64v( GLuint id, GLuint buffer, GLenum pname, GLintptr offset )
+    {
+        _glGetQueryBufferObjecti64v( id, buffer, pname, offset );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetQueryBufferObjecti64v", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetQueryBufferObjecti64v( GLuint id, GLuint buffer, GLenum pname, GLintptr offset );
+
+    // ========================================================================
+
+    public void glGetQueryBufferObjectiv( GLuint id, GLuint buffer, GLenum pname, GLintptr offset )
+    {
+        _glGetQueryBufferObjectiv( id, buffer, pname, offset );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetQueryBufferObjectiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetQueryBufferObjectiv( GLuint id, GLuint buffer, GLenum pname, GLintptr offset );
+
+    // ========================================================================
+
+    public void glGetQueryBufferObjectui64v( GLuint id, GLuint buffer, GLenum pname, GLintptr offset )
+    {
+        _glGetQueryBufferObjectui64v( id, buffer, pname, offset );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetQueryBufferObjectui64v", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetQueryBufferObjectui64v( GLuint id, GLuint buffer, GLenum pname, GLintptr offset );
+
+    // ========================================================================
+
+    public void glGetQueryBufferObjectuiv( GLuint id, GLuint buffer, GLenum pname, GLintptr offset )
+    {
+        _glGetQueryBufferObjectuiv( id, buffer, pname, offset );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetQueryBufferObjectuiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetQueryBufferObjectuiv( GLuint id, GLuint buffer, GLenum pname, GLintptr offset );
+
+    // ========================================================================
+
+    public void glMemoryBarrierByRegion( GLbitfield barriers )
+    {
+        _glMemoryBarrierByRegion( barriers );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glMemoryBarrierByRegion", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glMemoryBarrierByRegion( GLbitfield barriers );
+
+    // ========================================================================
+
+    public void glGetTextureSubImage( GLuint texture, GLint level, GLint xoffset, GLint yoffset,
+                                      GLint zoffset, GLsizei width, GLsizei height, GLsizei depth,
+                                      GLenum format, GLenum type, GLsizei bufSize, void* pixels )
+    {
+        _glGetTextureSubImage( texture, level, xoffset, yoffset, zoffset, width, height, depth, format, type, bufSize, pixels );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetTextureSubImage", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetTextureSubImage( GLuint texture, GLint level, GLint xoffset, GLint yoffset,
+                                                      GLint zoffset, GLsizei width, GLsizei height, GLsizei depth,
+                                                      GLenum format, GLenum type, GLsizei bufSize, void* pixels );
+
+    // ========================================================================
+
+    public byte[] glGetTextureSubImage( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset,
+                                        GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type,
+                                        GLsizei bufSize )
+    {
+        var pixels = new byte[ bufSize ];
+
+        fixed ( void* ptr_pixels = &pixels[ 0 ] )
+        {
+            _glGetTextureSubImage( texture, level, xoffset, yoffset, zoffset, width,
+                                   height, depth, format, type, bufSize, ptr_pixels );
+        }
+
+        return pixels;
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetTextureSubImage", CallingConvention = CallingConvention.Cdecl )]
+    private static extern byte[] _glGetTextureSubImage( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width,
+                                                        GLsizei height, GLsizei depth, GLenum format, GLenum type, GLsizei bufSize );
+
+    // ========================================================================
+
+    public void glGetCompressedTextureSubImage( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize, void* pixels )
+    {
+        _glGetCompressedTextureSubImage( texture, level, xoffset, yoffset, zoffset, width, height, depth, bufSize, pixels );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetCompressedTextureSubImage", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetCompressedTextureSubImage( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize, void* pixels );
+
+    // ========================================================================
+
+    public byte[] glGetCompressedTextureSubImage( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize )
+    {
+        var pixels = new byte[ bufSize ];
+
+        fixed ( void* ptr_pixels = &pixels[ 0 ] )
+        {
+            _glGetCompressedTextureSubImage( texture, level, xoffset, yoffset, zoffset, width, height, depth, bufSize, ptr_pixels );
+        }
+
+        return pixels;
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetCompressedTextureSubImage", CallingConvention = CallingConvention.Cdecl )]
+    private static extern byte[] _glGetCompressedTextureSubImage( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize );
+
+    // ========================================================================
+
+    public GLenum glGetGraphicsResetStatus()
+    {
+        return _glGetGraphicsResetStatus();
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetGraphicsResetStatus", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLenum _glGetGraphicsResetStatus();
+
+    // ========================================================================
+
+    public void glGetnCompressedTexImage( GLenum target, GLint lod, GLsizei bufSize, void* pixels )
+    {
+        _glGetnCompressedTexImage( target, lod, bufSize, pixels );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetnCompressedTexImage", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetnCompressedTexImage( GLenum target, GLint lod, GLsizei bufSize, void* pixels );
+
+    // ========================================================================
+
+    public byte[] glGetnCompressedTexImage( GLenum target, GLint lod, GLsizei bufSize )
+    {
+        var pixels = new byte[ bufSize ];
+
+        fixed ( void* ptr_pixels = &pixels[ 0 ] )
+        {
+            _glGetnCompressedTexImage( target, lod, bufSize, ptr_pixels );
+        }
+
+        return pixels;
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetnCompressedTexImage", CallingConvention = CallingConvention.Cdecl )]
+    private static extern byte[] _glGetnCompressedTexImage( GLenum target, GLint lod, GLsizei bufSize );
+
+    // ========================================================================
+
+    public void glGetnTexImage( GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize, void* pixels )
+    {
+        _glGetnTexImage( target, level, format, type, bufSize, pixels );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetnTexImage", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetnTexImage( GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize, void* pixels );
+
+    // ========================================================================
+
+    public byte[] glGetnTexImage( GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize )
+    {
+        var pixels = new byte[ bufSize ];
+
+        fixed ( void* ptr_pixels = &pixels[ 0 ] )
+        {
+            _glGetnTexImage( target, level, format, type, bufSize, ptr_pixels );
+        }
+
+        return pixels;
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetnTexImage", CallingConvention = CallingConvention.Cdecl )]
+    private static extern byte[] _glGetnTexImage( GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize );
+
+    // ========================================================================
+
+    public void glGetnUniformdv( GLuint program, GLint location, GLsizei bufSize, GLdouble* parameters )
+    {
+        _glGetnUniformdv( program, location, bufSize, parameters );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetnUniformdv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetnUniformdv( GLuint program, GLint location, GLsizei bufSize, GLdouble* parameters );
+
+    // ========================================================================
+
+    public void glGetnUniformdv( GLuint program, GLint location, GLsizei bufSize, ref GLdouble[] parameters )
+    {
+        fixed ( void* ptr_parameters = &parameters[ 0 ] )
+        {
+            _glGetnUniformdv( program, location, bufSize, ( GLdouble* )ptr_parameters );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetnUniformdv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetnUniformdv( GLuint program, GLint location, GLsizei bufSize, ref GLdouble[] parameters );
+
+    // ========================================================================
+
+    public void glGetnUniformfv( GLuint program, GLint location, GLsizei bufSize, GLfloat* parameters )
+    {
+        _glGetnUniformfv( program, location, bufSize, parameters );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetnUniformfv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetnUniformfv( GLuint program, GLint location, GLsizei bufSize, GLfloat* parameters );
+
+    // ========================================================================
+
+    public void glGetnUniformfv( GLuint program, GLint location, GLsizei bufSize, ref GLfloat[] parameters )
+    {
+        fixed ( void* ptr_parameters = &parameters[ 0 ] )
+        {
+            _glGetnUniformfv( program, location, bufSize, ( GLfloat* )ptr_parameters );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetnUniformfv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetnUniformfv( GLuint program, GLint location, GLsizei bufSize, ref GLfloat[] parameters );
+
+    // ========================================================================
+
+    public void glGetnUniformiv( GLuint program, GLint location, GLsizei bufSize, GLint* parameters )
+    {
+        _glGetnUniformiv( program, location, bufSize, parameters );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetnUniformiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetnUniformiv( GLuint program, GLint location, GLsizei bufSize, GLint* parameters );
+
+    // ========================================================================
+
+    public void glGetnUniformiv( GLuint program, GLint location, GLsizei bufSize, ref GLint[] parameters )
+    {
+        fixed ( void* ptr_parameters = &parameters[ 0 ] )
+        {
+            _glGetnUniformiv( program, location, bufSize, ( GLint* )ptr_parameters );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetnUniformiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetnUniformiv( GLuint program, GLint location, GLsizei bufSize, ref GLint[] parameters );
+
+    // ========================================================================
+
+    public void glGetnUniformuiv( GLuint program, GLint location, GLsizei bufSize, GLuint* parameters )
+    {
+        _glGetnUniformuiv( program, location, bufSize, parameters );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetnUniformuiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetnUniformuiv( GLuint program, GLint location, GLsizei bufSize, GLuint* parameters );
+
+    // ========================================================================
+
+    public void glGetnUniformuiv( GLuint program, GLint location, GLsizei bufSize, ref GLuint[] parameters )
+    {
+        fixed ( void* ptr_parameters = &parameters[ 0 ] )
+        {
+            _glGetnUniformuiv( program, location, bufSize, ( GLuint* )ptr_parameters );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetnUniformuiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetnUniformuiv( GLuint program, GLint location, GLsizei bufSize, ref GLuint[] parameters );
+
+    // ========================================================================
+
+    public void glReadnPixels( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, void* data )
+    {
+        _glReadnPixels( x, y, width, height, format, type, bufSize, data );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glReadnPixels", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glReadnPixels( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, void* data );
+
+    // ========================================================================
+
+    public byte[] glReadnPixels( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize )
+    {
+        var data = new byte[ bufSize ];
+
+        fixed ( void* ptr_data = &data[ 0 ] )
+        {
+            _glReadnPixels( x, y, width, height, format, type, bufSize, ptr_data );
+        }
+
+        return data;
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glReadnPixels", CallingConvention = CallingConvention.Cdecl )]
+    private static extern byte[] _glReadnPixels( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize );
+
+    // ========================================================================
+
+    public void glTextureBarrier()
+    {
+        _glTextureBarrier();
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTextureBarrier", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTextureBarrier();
+
+    // ========================================================================
+
+    public void glSpecializeShader( GLuint shader, GLchar* pEntryPoint, GLuint numSpecializationConstants, GLuint* pConstantIndex, GLuint* pConstantValue )
+    {
+        _glSpecializeShader( shader, pEntryPoint, numSpecializationConstants, pConstantIndex, pConstantValue );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glSpecializeShader", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glSpecializeShader( GLuint shader, GLchar* pEntryPoint, GLuint numSpecializationConstants, GLuint* pConstantIndex, GLuint* pConstantValue );
+
+    // ========================================================================
+
+    public void glSpecializeShader( GLuint shader, string pEntryPoint, GLuint numSpecializationConstants, GLuint[] pConstantIndex, GLuint[] pConstantValue )
+    {
+        var pEntryPointBytes = Encoding.UTF8.GetBytes( pEntryPoint );
+
+        fixed ( GLchar* ptr_pEntryPoint = &pEntryPointBytes[ 0 ] )
+        fixed ( GLuint* ptr_pConstantIndex = &pConstantIndex[ 0 ] )
+        fixed ( GLuint* ptr_pConstantValue = &pConstantValue[ 0 ] )
+        {
+            _glSpecializeShader( shader, ptr_pEntryPoint, numSpecializationConstants, ptr_pConstantIndex, ptr_pConstantValue );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glSpecializeShader", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glSpecializeShader( GLuint shader, string pEntryPoint, GLuint numSpecializationConstants, GLuint[] pConstantIndex, GLuint[] pConstantValue );
+
+    // ========================================================================
+
+    public void glMultiDrawArraysIndirectCount( GLenum mode, void* indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride )
+    {
+        _glMultiDrawArraysIndirectCount( mode, indirect, drawcount, maxdrawcount, stride );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glMultiDrawArraysIndirectCount", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glMultiDrawArraysIndirectCount( GLenum mode, void* indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride );
+
+    // ========================================================================
+
+    public void glMultiDrawArraysIndirectCount( GLenum mode, DrawArraysIndirectCommand indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride )
+    {
+        _glMultiDrawArraysIndirectCount( mode, &indirect, drawcount, maxdrawcount, stride );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glMultiDrawArraysIndirectCount", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glMultiDrawArraysIndirectCount( GLenum mode, DrawArraysIndirectCommand indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride );
+
+    // ========================================================================
+
+    public void glMultiDrawElementsIndirectCount( GLenum mode, GLenum type, void* indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride )
+    {
+        _glMultiDrawElementsIndirectCount( mode, type, indirect, drawcount, maxdrawcount, stride );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glMultiDrawElementsIndirectCount", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glMultiDrawElementsIndirectCount( GLenum mode, GLenum type, void* indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride );
+
+    // ========================================================================
+
+    public void glMultiDrawElementsIndirectCount( GLenum mode, GLenum type, DrawElementsIndirectCommand indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride )
+    {
+        _glMultiDrawElementsIndirectCount( mode, type, &indirect, drawcount, maxdrawcount, stride );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glMultiDrawElementsIndirectCount", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glMultiDrawElementsIndirectCount( GLenum mode, GLenum type, DrawElementsIndirectCommand indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride );
+
+    // ========================================================================
+
+    public void glPolygonOffsetClamp( GLfloat factor, GLfloat units, GLfloat clamp )
+    {
+        _glPolygonOffsetClamp( factor, units, clamp );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glPolygonOffsetClamp", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glPolygonOffsetClamp( GLfloat factor, GLfloat units, GLfloat clamp );
+
+    // ========================================================================
+
+    public void glTransformFeedbackVaryings( GLuint program, GLsizei count, GLchar** varyings, GLenum bufferMode )
+    {
+        _glTransformFeedbackVaryings( program, count, varyings, bufferMode );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTransformFeedbackVaryings", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTransformFeedbackVaryings( GLuint program, GLsizei count, GLchar** varyings, GLenum bufferMode );
+
+    // ========================================================================
+
+    public void glTransformFeedbackVaryings( GLuint program, string[] varyings, GLenum bufferMode )
+    {
+        var varyingsBytes = new GLchar[ varyings.Length ][];
+
+        for ( var i = 0; i < varyings.Length; i++ )
+        {
+            varyingsBytes[ i ] = Encoding.UTF8.GetBytes( varyings[ i ] );
+        }
+
+        var varyingsPtrs = new GLchar*[ varyings.Length ];
+
+        for ( var i = 0; i < varyings.Length; i++ )
+        {
+            fixed ( GLchar* p = &varyingsBytes[ i ][ 0 ] )
+            {
+                varyingsPtrs[ i ] = p;
+            }
+        }
+
+        fixed ( GLchar** p = &varyingsPtrs[ 0 ] )
+        {
+            _glTransformFeedbackVaryings( program, varyings.Length, p, bufferMode );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTransformFeedbackVaryings", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTransformFeedbackVaryings( GLuint program, string[] varyings, GLenum bufferMode );
+
+    // ========================================================================
+
+    public void glGetTransformFeedbackVarying( GLuint program,
+                                               GLuint index,
+                                               GLsizei bufSize,
+                                               GLsizei* length,
+                                               GLsizei* size,
+                                               GLenum* type,
+                                               GLchar* name )
+    {
+        _glGetTransformFeedbackVarying( program, index, bufSize, length, size, type, name );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetTransformFeedbackVarying", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetTransformFeedbackVarying( GLuint program,
+                                                               GLuint index,
+                                                               GLsizei bufSize,
+                                                               GLsizei* length,
+                                                               GLsizei* size,
+                                                               GLenum* type,
+                                                               GLchar* name );
+
+    // ========================================================================
+
+    public string glGetTransformFeedbackVarying( GLuint program, GLuint index, GLsizei bufSize, out GLsizei size, out GLenum type )
+    {
+        var     name = new GLchar[ bufSize ];
+
+        fixed ( GLsizei* pSize = &size )
+        {
+            fixed ( GLenum* pType = &type )
+            {
+                fixed ( GLchar* p = &name[ 0 ] )
+                {
+                    GLsizei length;
+
+                    _glGetTransformFeedbackVarying( program, index, bufSize, &length, pSize, pType, p );
+
+                    return new string( ( sbyte* )p, 0, length, Encoding.UTF8 );
+                }
+            }
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetTransformFeedbackVarying", CallingConvention = CallingConvention.Cdecl )]
+    private static extern string _glGetTransformFeedbackVarying( GLuint program, GLuint index, GLsizei bufSize, out GLsizei size, out GLenum type );
+
+    // ========================================================================
+
+    public void glClampColor( GLenum target, GLboolean clamp )
+    {
+        _glClampColor( target, clamp );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glClampColor", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glClampColor( GLenum target, GLboolean clamp );
+
+    // ========================================================================
+
+    public void glBeginConditionalRender( GLuint id, GLenum mode )
+    {
+        _glBeginConditionalRender( id, mode );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glBeginConditionalRender", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glBeginConditionalRender( GLuint id, GLenum mode );
+
+    // ========================================================================
+
+    public void glEndConditionalRender()
+    {
+        _glEndConditionalRender();
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glEndConditionalRender", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glEndConditionalRender();
+
+    // ========================================================================
+
+    public void glVertexAttribIPointer( GLuint index, GLint size, GLenum type, GLsizei stride, void* pointer )
+    {
+        _glVertexAttribIPointer( index, size, type, stride, pointer );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribIPointer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribIPointer( GLuint index, GLint size, GLenum type, GLsizei stride, void* pointer );
+
+    // ========================================================================
+
+    public void glVertexAttribIPointer( GLuint index, GLint size, GLenum type, GLsizei stride, uint pointer )
+    {
+        _glVertexAttribIPointer( index, size, type, stride, ( void* )pointer );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribIPointer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribIPointer( GLuint index, GLint size, GLenum type, GLsizei stride, uint pointer );
+
+    // ========================================================================
+
+    public void glGetVertexAttribIiv( GLuint index, GLenum pname, GLint* parameters )
+    {
+        _glGetVertexAttribIiv( index, pname, parameters );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetVertexAttribIiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetVertexAttribIiv( GLuint index, GLenum pname, GLint* parameters );
+
+    // ========================================================================
+
+    public void glGetVertexAttribIiv( GLuint index, GLenum pname, ref GLint[] parameters )
+    {
+        fixed ( GLint* p = &parameters[ 0 ] )
+        {
+            _glGetVertexAttribIiv( index, pname, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetVertexAttribIiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetVertexAttribIiv( GLuint index, GLenum pname, ref GLint[] parameters );
+
+    // ========================================================================
+
+    public void glGetVertexAttribIuiv( GLuint index, GLenum pname, GLuint* parameters )
+    {
+        _glGetVertexAttribIuiv( index, pname, parameters );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetVertexAttribIuiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetVertexAttribIuiv( GLuint index, GLenum pname, GLuint* parameters );
+
+    // ========================================================================
+
+    public void glGetVertexAttribIuiv( GLuint index, GLenum pname, ref GLuint[] parameters )
+    {
+        fixed ( GLuint* p = &parameters[ 0 ] )
+        {
+            _glGetVertexAttribIuiv( index, pname, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetVertexAttribIuiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetVertexAttribIuiv( GLuint index, GLenum pname, ref GLuint[] parameters );
+
+    // ========================================================================
+
+    public void glVertexAttribI1i( GLuint index, GLint x )
+    {
+        _glVertexAttribI1i( index, x );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI1i", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI1i( GLuint index, GLint x );
+
+    // ========================================================================
+
+    public void glVertexAttribI2i( GLuint index, GLint x, GLint y )
+    {
+        _glVertexAttribI2i( index, x, y );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI2i", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI2i( GLuint index, GLint x, GLint y );
+
+    // ========================================================================
+
+    public void glVertexAttribI3i( GLuint index, GLint x, GLint y, GLint z )
+    {
+        _glVertexAttribI3i( index, x, y, z );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI3i", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI3i( GLuint index, GLint x, GLint y, GLint z );
+
+    // ========================================================================
+
+    public void glVertexAttribI4i( GLuint index, GLint x, GLint y, GLint z, GLint w )
+    {
+        _glVertexAttribI4i( index, x, y, z, w );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI4i", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI4i( GLuint index, GLint x, GLint y, GLint z, GLint w );
+
+    // ========================================================================
+
+    public void glVertexAttribI1ui( GLuint index, GLuint x )
+    {
+        _glVertexAttribI1ui( index, x );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI1ui", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI1ui( GLuint index, GLuint x );
+
+    // ========================================================================
+
+    public void glVertexAttribI2ui( GLuint index, GLuint x, GLuint y )
+    {
+        _glVertexAttribI2ui( index, x, y );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI2ui", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI2ui( GLuint index, GLuint x, GLuint y );
+
+    // ========================================================================
+
+    public void glVertexAttribI3ui( GLuint index, GLuint x, GLuint y, GLuint z )
+    {
+        _glVertexAttribI3ui( index, x, y, z );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI3ui", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI3ui( GLuint index, GLuint x, GLuint y, GLuint z );
+
+    // ========================================================================
+
+    public void glVertexAttribI4ui( GLuint index, GLuint x, GLuint y, GLuint z, GLuint w )
+    {
+        _glVertexAttribI4ui( index, x, y, z, w );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI4ui", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI4ui( GLuint index, GLuint x, GLuint y, GLuint z, GLuint w );
+
+    // ========================================================================
+
+    public void glVertexAttribI1iv( GLuint index, GLint* v )
+    {
+        _glVertexAttribI1iv( index, v );
+    }
+
+    public void glVertexAttribI1iv( GLuint index, GLint[] v )
+    {
+        fixed ( GLint* p = &v[ 0 ] )
+        {
+            _glVertexAttribI1iv( index, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI1iv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI1iv( GLuint index, GLint* v );
+
+    // ========================================================================
+
+    public void glVertexAttribI2iv( GLuint index, GLint* v )
+    {
+        _glVertexAttribI2iv( index, v );
+    }
+
+    public void glVertexAttribI2iv( GLuint index, GLint[] v )
+    {
+        fixed ( GLint* p = &v[ 0 ] )
+        {
+            _glVertexAttribI2iv( index, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI2iv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI2iv( GLuint index, GLint* v );
+
+    // ========================================================================
+
+    public void glVertexAttribI3iv( GLuint index, GLint* v )
+    {
+        _glVertexAttribI3iv( index, v );
+    }
+
+    public void glVertexAttribI3iv( GLuint index, GLint[] v )
+    {
+        fixed ( GLint* p = &v[ 0 ] )
+        {
+            _glVertexAttribI3iv( index, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI3iv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI3iv( GLuint index, GLint* v );
+
+    // ========================================================================
+
+    public void glVertexAttribI4iv( GLuint index, GLint* v )
+    {
+        _glVertexAttribI4iv( index, v );
+    }
+
+    public void glVertexAttribI4iv( GLuint index, GLint[] v )
+    {
+        fixed ( GLint* p = &v[ 0 ] )
+        {
+            _glVertexAttribI4iv( index, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI4iv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI4iv( GLuint index, GLint* v );
+
+    // ========================================================================
+
+    public void glVertexAttribI1uiv( GLuint index, GLuint* v )
+    {
+        _glVertexAttribI1uiv( index, v );
+    }
+
+    public void glVertexAttribI1uiv( GLuint index, GLuint[] v )
+    {
+        fixed ( GLuint* p = &v[ 0 ] )
+        {
+            _glVertexAttribI1uiv( index, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI1uiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI1uiv( GLuint index, GLuint* v );
+
+    // ========================================================================
+
+    public void glVertexAttribI2uiv( GLuint index, GLuint* v )
+    {
+        _glVertexAttribI2uiv( index, v );
+    }
+
+    public void glVertexAttribI2uiv( GLuint index, GLuint[] v )
+    {
+        fixed ( GLuint* p = &v[ 0 ] )
+        {
+            _glVertexAttribI2uiv( index, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI2uiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI2uiv( GLuint index, GLuint* v );
+
+    // ========================================================================
+
+    public void glVertexAttribI3uiv( GLuint index, GLuint* v )
+    {
+        _glVertexAttribI3uiv( index, v );
+    }
+
+    public void glVertexAttribI3uiv( GLuint index, GLuint[] v )
+    {
+        fixed ( GLuint* p = &v[ 0 ] )
+        {
+            _glVertexAttribI3uiv( index, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI3uiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI3uiv( GLuint index, GLuint* v );
+
+    // ========================================================================
+
+    public void glVertexAttribI4uiv( GLuint index, GLuint* v )
+    {
+        _glVertexAttribI4uiv( index, v );
+    }
+
+    public void glVertexAttribI4uiv( GLuint index, GLuint[] v )
+    {
+        fixed ( GLuint* p = &v[ 0 ] )
+        {
+            _glVertexAttribI4uiv( index, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI4uiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI4uiv( GLuint index, GLuint* v );
+
+    // ========================================================================
+
+    public void glVertexAttribI4bv( GLuint index, GLbyte* v )
+    {
+        _glVertexAttribI4bv( index, v );
+    }
+
+    public void glVertexAttribI4bv( GLuint index, GLbyte[] v )
+    {
+        fixed ( GLbyte* p = &v[ 0 ] )
+        {
+            _glVertexAttribI4bv( index, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI4bv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI4bv( GLuint index, GLbyte* v );
+
+    // ========================================================================
+
+    public void glVertexAttribI4sv( GLuint index, GLshort* v )
+    {
+        _glVertexAttribI4sv( index, v );
+    }
+
+    public void glVertexAttribI4sv( GLuint index, GLshort[] v )
+    {
+        fixed ( GLshort* p = &v[ 0 ] )
+        {
+            _glVertexAttribI4sv( index, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI4sv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI4sv( GLuint index, GLshort* v );
+
+    // ========================================================================
+
+    public void glVertexAttribI4ubv( GLuint index, GLubyte* v )
+    {
+        _glVertexAttribI4ubv( index, v );
+    }
+
+    public void glVertexAttribI4ubv( GLuint index, GLubyte[] v )
+    {
+        fixed ( GLubyte* p = &v[ 0 ] )
+        {
+            _glVertexAttribI4ubv( index, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI4ubv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI4ubv( GLuint index, GLubyte* v );
+
+    // ========================================================================
+
+    public void glVertexAttribI4usv( GLuint index, GLushort* v )
+    {
+        _glVertexAttribI4usv( index, v );
+    }
+
+    public void glVertexAttribI4usv( GLuint index, GLushort[] v )
+    {
+        fixed ( GLushort* p = &v[ 0 ] )
+        {
+            _glVertexAttribI4usv( index, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glVertexAttribI4usv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glVertexAttribI4usv( GLuint index, GLushort* v );
+
+    // ========================================================================
+
+    public void glGetUniformuiv( GLuint program, GLint location, GLuint* parameters )
+    {
+        _glGetUniformuiv( program, location, parameters );
+    }
+
+    public void glGetUniformuiv( GLuint program, GLint location, ref GLuint[] parameters )
+    {
+        fixed ( GLuint* p = &parameters[ 0 ] )
+        {
+            _glGetUniformuiv( program, location, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetUniformuiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetUniformuiv( GLuint program, GLint location, GLuint* parameters );
+
+    // ========================================================================
+
+    public void glBindFragDataLocation( GLuint program, GLuint color, GLchar* name )
+    {
+        _glBindFragDataLocation( program, color, name );
+    }
+
+    public void glBindFragDataLocation( GLuint program, GLuint color, string name )
+    {
+        var narr = Encoding.UTF8.GetBytes( name );
+
+        fixed ( GLchar* p = &narr[ 0 ] )
+        {
+            _glBindFragDataLocation( program, color, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glBindFragDataLocation", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glBindFragDataLocation( GLuint program, GLuint color, GLchar* name );
+
+    // ========================================================================
+
+    public GLint glGetFragDataLocation( GLuint program, GLchar* name )
+    {
+        return _glGetFragDataLocation( program, name );
+    }
+
+    public GLint glGetFragDataLocation( GLuint program, string name )
+    {
+        var narr = Encoding.UTF8.GetBytes( name );
+
+        fixed ( GLchar* p = &narr[ 0 ] )
+        {
+            return _glGetFragDataLocation( program, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetFragDataLocation", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLint _glGetFragDataLocation( GLuint program, GLchar* name );
+
+    // ========================================================================
+
+    public void glUniform1ui( GLint location, GLuint v0 )
+    {
+        _glUniform1ui( location, v0 );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glUniform1ui", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glUniform1ui( GLint location, GLuint v0 );
+
+    // ========================================================================
+
+    public void glUniform2ui( GLint location, GLuint v0, GLuint v1 )
+    {
+        _glUniform2ui( location, v0, v1 );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glUniform2ui", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glUniform2ui( GLint location, GLuint v0, GLuint v1 );
+
+    // ========================================================================
+
+    public void glUniform3ui( GLint location, GLuint v0, GLuint v1, GLuint v2 )
+    {
+        _glUniform3ui( location, v0, v1, v2 );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glUniform3ui", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glUniform3ui( GLint location, GLuint v0, GLuint v1, GLuint v2 );
+
+    // ========================================================================
+
+    public void glUniform4ui( GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3 )
+    {
+        _glUniform4ui( location, v0, v1, v2, v3 );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glUniform4ui", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glUniform4ui( GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3 );
+
+    // ========================================================================
+
+    public void glUniform1uiv( GLint location, GLsizei count, GLuint* value )
+    {
+        _glUniform1uiv( location, count, value );
+    }
+
+    public void glUniform1uiv( GLint location, GLuint[] value )
+    {
+        fixed ( GLuint* p = &value[ 0 ] )
+        {
+            _glUniform1uiv( location, value.Length, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glUniform1uiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glUniform1uiv( GLint location, GLsizei count, GLuint* value );
+
+    // ========================================================================
+
+    public void glUniform2uiv( GLint location, GLsizei count, GLuint* value )
+    {
+        _glUniform2uiv( location, count, value );
+    }
+
+    public void glUniform2uiv( GLint location, GLuint[] value )
+    {
+        fixed ( GLuint* p = &value[ 0 ] )
+        {
+            _glUniform2uiv( location, value.Length / 2, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glUniform2uiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glUniform2uiv( GLint location, GLsizei count, GLuint* value );
+
+    // ========================================================================
+
+    public void glUniform3uiv( GLint location, GLsizei count, GLuint* value )
+    {
+        _glUniform3uiv( location, count, value );
+    }
+
+    public void glUniform3uiv( GLint location, GLuint[] value )
+    {
+        fixed ( GLuint* p = &value[ 0 ] )
+        {
+            _glUniform3uiv( location, value.Length / 3, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glUniform3uiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glUniform3uiv( GLint location, GLsizei count, GLuint* value );
+
+    // ========================================================================
+
+    public void glUniform4uiv( GLint location, GLsizei count, GLuint* value )
+    {
+        _glUniform4uiv( location, count, value );
+    }
+
+    public void glUniform4uiv( GLint location, GLuint[] value )
+    {
+        fixed ( GLuint* p = &value[ 0 ] )
+        {
+            _glUniform4uiv( location, value.Length / 4, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glUniform4uiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glUniform4uiv( GLint location, GLsizei count, GLuint* value );
+
+    // ========================================================================
+
+    public void glTexParameterIiv( GLenum target, GLenum pname, GLint* param )
+    {
+        _glTexParameterIiv( target, pname, param );
+    }
+
+    public void glTexParameterIiv( GLenum target, GLenum pname, GLint[] param )
+    {
+        fixed ( GLint* p = &param[ 0 ] )
+        {
+            _glTexParameterIiv( target, pname, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTexParameterIiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTexParameterIiv( GLenum target, GLenum pname, GLint* param );
+
+    // ========================================================================
+
+    public void glTexParameterIuiv( GLenum target, GLenum pname, GLuint* param )
+    {
+        _glTexParameterIuiv( target, pname, param );
+    }
+
+    public void glTexParameterIuiv( GLenum target, GLenum pname, GLuint[] param )
+    {
+        fixed ( GLuint* p = &param[ 0 ] )
+        {
+            _glTexParameterIuiv( target, pname, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTexParameterIuiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTexParameterIuiv( GLenum target, GLenum pname, GLuint* param );
+
+    // ========================================================================
+
+    public void glGetTexParameterIiv( GLenum target, GLenum pname, GLint* parameters )
+    {
+        _glGetTexParameterIiv( target, pname, parameters );
+    }
+
+    public void glGetTexParameterIiv( GLenum target, GLenum pname, ref GLint[] parameters )
+    {
+        fixed ( GLint* p = &parameters[ 0 ] )
+        {
+            _glGetTexParameterIiv( target, pname, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetTexParameterIiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetTexParameterIiv( GLenum target, GLenum pname, GLint* parameters );
+
+    // ========================================================================
+
+    public void glGetTexParameterIuiv( GLenum target, GLenum pname, GLuint* parameters )
+    {
+        _glGetTexParameterIuiv( target, pname, parameters );
+    }
+
+    public void glGetTexParameterIuiv( GLenum target, GLenum pname, ref GLuint[] parameters )
+    {
+        fixed ( GLuint* p = &parameters[ 0 ] )
+        {
+            _glGetTexParameterIuiv( target, pname, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetTexParameterIuiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetTexParameterIuiv( GLenum target, GLenum pname, GLuint* parameters );
+
+    // ========================================================================
+
+    public void glClearBufferiv( GLenum buffer, GLint drawbuffer, GLint* value )
+    {
+        _glClearBufferiv( buffer, drawbuffer, value );
+    }
+
+    public void glClearBufferiv( GLenum buffer, GLint drawbuffer, GLint[] value )
+    {
+        fixed ( GLint* p = &value[ 0 ] )
+        {
+            _glClearBufferiv( buffer, drawbuffer, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glClearBufferiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glClearBufferiv( GLenum buffer, GLint drawbuffer, GLint* value );
+
+    // ========================================================================
+
+    public void glClearBufferuiv( GLenum buffer, GLint drawbuffer, GLuint* value )
+    {
+        _glClearBufferuiv( buffer, drawbuffer, value );
+    }
+
+    public void glClearBufferuiv( GLenum buffer, GLint drawbuffer, GLuint[] value )
+    {
+        fixed ( GLuint* p = &value[ 0 ] )
+        {
+            _glClearBufferuiv( buffer, drawbuffer, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glClearBufferuiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glClearBufferuiv( GLenum buffer, GLint drawbuffer, GLuint* value );
+
+    // ========================================================================
+
+    public void glClearBufferfv( GLenum buffer, GLint drawbuffer, GLfloat* value )
+    {
+        _glClearBufferfv( buffer, drawbuffer, value );
+    }
+
+    public void glClearBufferfv( GLenum buffer, GLint drawbuffer, GLfloat[] value )
+    {
+        fixed ( GLfloat* p =
+                   &value[ 0 ] )
+        {
+            _glClearBufferfv( buffer, drawbuffer, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glClearBufferfv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glClearBufferfv( GLenum buffer, GLint drawbuffer, GLfloat* value );
+
+    // ========================================================================
+
+    public void glClearBufferfi( GLenum buffer, GLint drawbuffer, GLfloat depth, GLint stencil )
+    {
+        _glClearBufferfi( buffer, drawbuffer, depth, stencil );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glClearBufferfi", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glClearBufferfi( GLenum buffer, GLint drawbuffer, GLfloat depth, GLint stencil );
+
+    // ========================================================================
+
+    public GLubyte* glGetStringi( GLenum name, GLuint index )
+    {
+        return _glGetStringi( name, index );
+    }
+
+    public string glGetStringiSafe( GLenum name, GLuint index )
+    {
+        var ptr = _glGetStringi( name, index );
+
+        if ( ptr == null )
+        {
+            return null;
+        }
+
+        var i = 0;
+
+        while ( ptr[ i ] != 0 )
+        {
+            i++;
+        }
+
+        return new string( ( sbyte* )ptr, 0, i, Encoding.UTF8 );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetStringi", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLubyte* _glGetStringi( GLenum name, GLuint index );
+
+    // ========================================================================
+
+    public GLboolean glIsRenderbuffer( GLuint renderbuffer )
+    {
+        return _glIsRenderbuffer( renderbuffer );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glIsRenderbuffer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLboolean _glIsRenderbuffer( GLuint renderbuffer );
+
+    // ========================================================================
+
+    public void glBindRenderbuffer( GLenum target, GLuint renderbuffer )
+    {
+        _glBindRenderbuffer( target, renderbuffer );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glBindRenderbuffer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glBindRenderbuffer( GLenum target, GLuint renderbuffer );
+
+    // ========================================================================
+
+    public void glDeleteRenderbuffers( GLsizei n, GLuint* renderbuffers )
+    {
+        _glDeleteRenderbuffers( n, renderbuffers );
+    }
+
+    public void glDeleteRenderbuffers( params GLuint[] renderbuffers )
+    {
+        fixed ( GLuint* p = &renderbuffers[ 0 ] )
+        {
+            _glDeleteRenderbuffers( renderbuffers.Length, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glDeleteRenderbuffers", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glDeleteRenderbuffers( GLsizei n, GLuint* renderbuffers );
+
+    // ========================================================================
+
+    public void glGenRenderbuffers( GLsizei n, GLuint* renderbuffers )
+    {
+        _glGenRenderbuffers( n, renderbuffers );
+    }
+
+    public GLuint[] glGenRenderbuffers( GLsizei n )
+    {
+        var renderbuffers = new GLuint[ n ];
+
+        fixed ( GLuint* p = &renderbuffers[ 0 ] )
+        {
+            _glGenRenderbuffers( n, p );
+        }
+
+        return renderbuffers;
+    }
+
+    public GLuint glGenRenderbuffer()
+    {
+        return glGenRenderbuffers( 1 )[ 0 ];
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGenRenderbuffers", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGenRenderbuffers( GLsizei n, GLuint* renderbuffers );
+
+    // ========================================================================
+
+    public void glRenderbufferStorage( GLenum target, GLenum internalformat, GLsizei width, GLsizei height )
+    {
+        _glRenderbufferStorage( target, internalformat, width, height );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glRenderbufferStorage", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glRenderbufferStorage( GLenum target, GLenum internalformat, GLsizei width, GLsizei height );
+
+    // ========================================================================
+
+    public void glGetRenderbufferParameteriv( GLenum target, GLenum pname, GLint* parameters )
+    {
+        _glGetRenderbufferParameteriv( target, pname, parameters );
+    }
+
+    public void glGetRenderbufferParameteriv( GLenum target, GLenum pname, ref GLint[] parameters )
+    {
+        fixed ( GLint* p = &parameters[ 0 ] )
+        {
+            _glGetRenderbufferParameteriv( target, pname, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetRenderbufferParameteriv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetRenderbufferParameteriv( GLenum target, GLenum pname, GLint* parameters );
+
+    // ========================================================================
+
+    public GLboolean glIsFramebuffer( GLuint framebuffer )
+    {
+        return _glIsFramebuffer( framebuffer );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glIsFramebuffer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLboolean _glIsFramebuffer( GLuint framebuffer );
+
+    // ========================================================================
+
+    public void glBindFramebuffer( GLenum target, GLuint framebuffer )
+    {
+        _glBindFramebuffer( target, framebuffer );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glBindFramebuffer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glBindFramebuffer( GLenum target, GLuint framebuffer );
+
+    // ========================================================================
+
+    public void glDeleteFramebuffers( GLsizei n, GLuint* framebuffers )
+    {
+        _glDeleteFramebuffers( n, framebuffers );
+    }
+
+    public void glDeleteFramebuffers( params GLuint[] framebuffers )
+    {
+        fixed ( GLuint* p = &framebuffers[ 0 ] )
+        {
+            _glDeleteFramebuffers( framebuffers.Length, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glDeleteFramebuffers", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glDeleteFramebuffers( GLsizei n, GLuint* framebuffers );
+
+    // ========================================================================
+
+    public void glGenFramebuffers( GLsizei n, GLuint* framebuffers )
+    {
+        _glGenFramebuffers( n, framebuffers );
+    }
+
+    public GLuint[] glGenFramebuffers( GLsizei n )
+    {
+        var framebuffers = new GLuint[ n ];
+
+        fixed ( GLuint* p = &framebuffers[ 0 ] )
+        {
+            _glGenFramebuffers( n, p );
+        }
+
+        return framebuffers;
+    }
+
+    public GLuint glGenFramebuffer()
+    {
+        return glGenFramebuffers( 1 )[ 0 ];
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGenFramebuffers", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGenFramebuffers( GLsizei n, GLuint* framebuffers );
+
+    // ========================================================================
+
+    public GLenum glCheckFramebufferStatus( GLenum target )
+    {
+        return _glCheckFramebufferStatus( target );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCheckFramebufferStatus", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLenum _glCheckFramebufferStatus( GLenum target );
+
+    // ========================================================================
+
+    public void glFramebufferTexture1D( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level )
+    {
+        _glFramebufferTexture1D( target, attachment, textarget, texture, level );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glFramebufferTexture1D", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glFramebufferTexture1D( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level );
+
+    // ========================================================================
+
+    public void glFramebufferTexture2D( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level )
+    {
+        _glFramebufferTexture2D( target, attachment, textarget, texture, level );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glFramebufferTexture2D", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glFramebufferTexture2D( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level );
+
+    // ========================================================================
+
+    public void glFramebufferTexture3D( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset )
+    {
+        _glFramebufferTexture3D( target, attachment, textarget, texture, level, zoffset );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glFramebufferTexture3D", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glFramebufferTexture3D( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset );
+
+    // ========================================================================
+
+    public void glFramebufferRenderbuffer( GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer )
+    {
+        _glFramebufferRenderbuffer( target, attachment, renderbuffertarget, renderbuffer );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glFramebufferRenderbuffer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glFramebufferRenderbuffer( GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer );
+
+    // ========================================================================
+
+    public void glGetFramebufferAttachmentParameteriv( GLenum target, GLenum attachment, GLenum pname, GLint* parameters )
+    {
+        _glGetFramebufferAttachmentParameteriv( target, attachment, pname, parameters );
+    }
+
+    public void glGetFramebufferAttachmentParameteriv( GLenum target, GLenum attachment, GLenum pname, ref GLint[] parameters )
+    {
+        fixed ( GLint* p = &parameters[ 0 ] )
+        {
+            _glGetFramebufferAttachmentParameteriv( target, attachment, pname, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetFramebufferAttachmentParameteriv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetFramebufferAttachmentParameteriv( GLenum target, GLenum attachment, GLenum pname, GLint* parameters );
+
+    // ========================================================================
+
+    public void glGenerateMipmap( GLenum target )
+    {
+        _glGenerateMipmap( target );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGenerateMipmap", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGenerateMipmap( GLenum target );
+
+    // ========================================================================
+
+    public void glBlitFramebuffer( GLint srcX0,
+                                   GLint srcY0,
+                                   GLint srcX1,
+                                   GLint srcY1,
+                                   GLint dstX0,
+                                   GLint dstY0,
+                                   GLint dstX1,
+                                   GLint dstY1,
+                                   GLbitfield mask,
+                                   GLenum filter )
+    {
+        _glBlitFramebuffer( srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glBlitFramebuffer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glBlitFramebuffer( GLint srcX0,
+                                                   GLint srcY0,
+                                                   GLint srcX1,
+                                                   GLint srcY1,
+                                                   GLint dstX0,
+                                                   GLint dstY0,
+                                                   GLint dstX1,
+                                                   GLint dstY1,
+                                                   GLbitfield mask,
+                                                   GLenum filter );
+
+    // ========================================================================
+
+    public void glRenderbufferStorageMultisample( GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height )
+    {
+        _glRenderbufferStorageMultisample( target, samples, internalformat, width, height );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glRenderbufferStorageMultisample", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glRenderbufferStorageMultisample( GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height );
+
+    // ========================================================================
+
+    public void glFramebufferTextureLayer( GLenum target, GLenum attachment, GLuint texture, GLint level, GLint layer )
+    {
+        _glFramebufferTextureLayer( target, attachment, texture, level, layer );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glFramebufferTextureLayer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glFramebufferTextureLayer( GLenum target, GLenum attachment, GLuint texture, GLint level, GLint layer );
+
+    // ========================================================================
+
+    public void* glMapBufferRange( GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access )
+    {
+        return _glMapBufferRange( target, offset, length, access );
+    }
+
+    public Span< T > glMapBufferRange< T >( GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access ) where T : unmanaged
+    {
+        void* ret = _glMapBufferRange( target, offset, length, access );
+
+        return new Span< T >( ret, length );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glMapBufferRange", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void* _glMapBufferRange( GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access );
+
+    // ========================================================================
+
+    public void glFlushMappedBufferRange( GLenum target, GLintptr offset, GLsizeiptr length )
+    {
+        _glFlushMappedBufferRange( target, offset, length );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glFlushMappedBufferRange", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glFlushMappedBufferRange( GLenum target, GLintptr offset, GLsizeiptr length );
+
+    // ========================================================================
+
+    public void glBindVertexArray( GLuint array )
+    {
+        _glBindVertexArray( array );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glBindVertexArray", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glBindVertexArray( GLuint array );
+
+    // ========================================================================
+
+    public void glDeleteVertexArrays( GLsizei n, GLuint* arrays )
+    {
+        _glDeleteVertexArrays( n, arrays );
+    }
+
+    public void glDeleteVertexArrays( params GLuint[] arrays )
+    {
+        fixed ( GLuint* p = &arrays[ 0 ] )
+        {
+            _glDeleteVertexArrays( arrays.Length, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glDeleteVertexArrays", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glDeleteVertexArrays( GLsizei n, GLuint* arrays );
+
+    // ========================================================================
+
+    public void glGenVertexArrays( GLsizei n, GLuint* arrays )
+    {
+        _glGenVertexArrays( n, arrays );
+    }
+
+    public GLuint[] glGenVertexArrays( GLsizei n )
+    {
+        var arrays = new GLuint[ n ];
+
+        fixed ( GLuint* p = &arrays[ 0 ] )
+        {
+            _glGenVertexArrays( n, p );
+        }
+
+        return arrays;
+    }
+
+    public GLuint glGenVertexArray()
+    {
+        GLuint array = 0;
+        
+        _glGenVertexArrays( 1, &array );
+
+        return array;
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGenVertexArrays", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGenVertexArrays( GLsizei n, GLuint* arrays );
+
+    // ========================================================================
+
+    public GLboolean glIsVertexArray( GLuint array )
+    {
+        return _glIsVertexArray( array );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glIsVertexArray", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLboolean _glIsVertexArray( GLuint array );
+
+    // ========================================================================
+
+    public void glDrawArraysInstanced( GLenum mode, GLint first, GLsizei count, GLsizei instancecount )
+    {
+        _glDrawArraysInstanced( mode, first, count, instancecount );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glDrawArraysInstanced", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glDrawArraysInstanced( GLenum mode, GLint first, GLsizei count, GLsizei instancecount );
+
+    // ========================================================================
+
+    public void glDrawElementsInstanced( GLenum mode, GLsizei count, GLenum type, void* indices, GLsizei instancecount )
+    {
+        _glDrawElementsInstanced( mode, count, type, indices, instancecount );
+    }
+
+    public void glDrawElementsInstanced< T >( GLenum mode, GLsizei count, GLenum type, T[] indices, GLsizei instancecount )
+        where T : unmanaged, IUnsignedNumber< T >
+    {
+        fixed ( T* p = &indices[ 0 ] )
+        {
+            _glDrawElementsInstanced( mode, count, type, p, instancecount );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glDrawElementsInstanced", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glDrawElementsInstanced( GLenum mode, GLsizei count, GLenum type, void* indices, GLsizei instancecount );
+
+    // ========================================================================
+
+    public void glTexBuffer( GLenum target, GLenum internalformat, GLuint buffer )
+    {
+        _glTexBuffer( target, internalformat, buffer );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glTexBuffer", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glTexBuffer( GLenum target, GLenum internalformat, GLuint buffer );
+
+    // ========================================================================
+
+    public void glPrimitiveRestartIndex( GLuint index )
+    {
+        _glPrimitiveRestartIndex( index );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glPrimitiveRestartIndex", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glPrimitiveRestartIndex( GLuint index );
+
+    // ========================================================================
+
+    public void glCopyBufferSubData( GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size )
+    {
+        _glCopyBufferSubData( readTarget, writeTarget, readOffset, writeOffset, size );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glCopyBufferSubData", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glCopyBufferSubData( GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size );
+
+    // ========================================================================
+
+    public void glGetUniformIndices( GLuint program, GLsizei uniformCount, GLchar** uniformNames, GLuint* uniformIndices )
+    {
+        _glGetUniformIndices( program, uniformCount, uniformNames, uniformIndices );
+    }
+
+    public GLuint[] glGetUniformIndices( GLuint program, params string[] uniformNames )
+    {
+        var uniformCount     = uniformNames.Length;
+        var uniformNamesPtrs = new GLchar[ uniformCount ][];
+
+        for ( var i = 0; i < uniformCount; i++ )
+        {
+            uniformNamesPtrs[ i ] = Encoding.UTF8.GetBytes( uniformNames[ i ] );
+        }
+
+        var pUniformNames = stackalloc GLchar*[ uniformCount ];
+
+        for ( var i = 0; i < uniformCount; i++ )
+        {
+            fixed ( GLchar* p = &uniformNamesPtrs[ i ][ 0 ] )
+            {
+                pUniformNames[ i ] = p;
+            }
+        }
+
+        var uniformIndices = new GLuint[ uniformCount ];
+
+        fixed ( GLuint* p = &uniformIndices[ 0 ] )
+        {
+            _glGetUniformIndices( program, uniformCount, pUniformNames, p );
+        }
+
+        return uniformIndices;
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetUniformIndices", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetUniformIndices( GLuint program, GLsizei uniformCount, GLchar** uniformNames, GLuint* uniformIndices );
+
+    // ========================================================================
+
+    public void glGetActiveUniformsiv( GLuint program, GLsizei uniformCount, GLuint* uniformIndices, GLenum pname, GLint* parameters )
+    {
+        _glGetActiveUniformsiv( program, uniformCount, uniformIndices, pname, parameters );
+    }
+
+    public GLint[] glGetActiveUniformsiv( GLuint program, GLenum pname, params GLuint[] uniformIndices )
+    {
+        var uniformCount = uniformIndices.Length;
+        var parameters   = new GLint[ uniformCount ];
+
+        fixed ( GLuint* p = &uniformIndices[ 0 ] )
+        {
+            fixed ( GLint* pParameters = &parameters[ 0 ] )
+            {
+                _glGetActiveUniformsiv( program, uniformCount, p, pname, pParameters );
+            }
+        }
+
+        return parameters;
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetActiveUniformsiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLint[] _glGetActiveUniformsiv( GLuint program, GLint length, GLuint* parameters, GLenum pname, GLint* uniformIndices );
+
+    // ========================================================================
+
+    public void glGetActiveUniformName( GLuint program, GLuint uniformIndex, GLsizei bufSize, GLsizei* length, GLchar* uniformName )
+    {
+        _glGetActiveUniformName( program, uniformIndex, bufSize, length, uniformName );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetActiveUniformName", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetActiveUniformName( GLuint program, GLuint uniformIndex, GLsizei bufSize, GLsizei* length, GLchar* uniformName );
+
+    // ========================================================================
+
+    public string glGetActiveUniformName( GLuint program, GLuint uniformIndex, GLsizei bufSize )
+    {
+        var     uniformName = stackalloc GLchar[ bufSize ];
+        GLsizei length;
+        _glGetActiveUniformName( program, uniformIndex, bufSize, &length, uniformName );
+
+        return new string( ( sbyte* )uniformName, 0, length, Encoding.UTF8 );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetActiveUniformName", CallingConvention = CallingConvention.Cdecl )]
+    private static extern string _glGetActiveUniformName( GLuint program, GLuint uniformIndex, GLsizei bufSize );
+
+    // ========================================================================
+
+    public GLuint glGetUniformBlockIndex( GLuint program, GLchar* uniformBlockName )
+    {
+        return _glGetUniformBlockIndex( program, uniformBlockName );
+    } 
+
+    [DllImport( LIBGL, EntryPoint = "glGetUniformBlockIndex", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLuint _glGetUniformBlockIndex( GLuint program, GLchar* uniformBlockName );
+    
+    // ========================================================================
+
+    public GLuint glGetUniformBlockIndex( GLuint program, string uniformBlockName )
+    {
+        var uniformBlockNameBytes = Encoding.UTF8.GetBytes( uniformBlockName );
+
+        fixed ( GLchar* p = &uniformBlockNameBytes[ 0 ] )
+        {
+            return _glGetUniformBlockIndex( program, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetUniformBlockIndex", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLuint _glGetUniformBlockIndex( GLuint program, string uniformBlockName );
+
+    // ========================================================================
+
+    public void glGetActiveUniformBlockiv( GLuint program, GLuint uniformBlockIndex, GLenum pname, GLint* parameters )
+    {
+        _glGetActiveUniformBlockiv( program, uniformBlockIndex, pname, parameters );
+    }
+
+    public void glGetActiveUniformBlockiv( GLuint program, GLuint uniformBlockIndex, GLenum pname, ref GLint[] parameters )
+    {
+        fixed ( GLint* p = &parameters[ 0 ] )
+        {
+            _glGetActiveUniformBlockiv( program, uniformBlockIndex, pname, p );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetActiveUniformBlockiv", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetActiveUniformBlockiv( GLuint program, GLuint uniformBlockIndex, GLenum pname, GLint* parameters );
+
+    // ========================================================================
+
+    public void glGetActiveUniformBlockName( GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei* length, GLchar* uniformBlockName )
+    {
+        _glGetActiveUniformBlockName( program, uniformBlockIndex, bufSize, length, uniformBlockName );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetActiveUniformBlockName", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetActiveUniformBlockName( GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei* length, GLchar* uniformBlockName );
+
+    // ========================================================================
+
+    public string glGetActiveUniformBlockName( GLuint program, GLuint uniformBlockIndex, GLsizei bufSize )
+    {
+        var uniformBlockName = stackalloc GLchar[ bufSize ];
+        
+        GLsizei length;
+        
+        _glGetActiveUniformBlockName( program, uniformBlockIndex, bufSize, &length, uniformBlockName );
+
+        return new string( ( sbyte* )uniformBlockName, 0, length, Encoding.UTF8 );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glGetActiveUniformBlockName", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glGetActiveUniformBlockName( GLuint program, GLuint uniformBlockIndex, GLsizei bufSize );
+
+    // ========================================================================
+
+    public void glUniformBlockBinding( GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding )
+    {
+        _glUniformBlockBinding( program, uniformBlockIndex, uniformBlockBinding );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glUniformBlockBinding", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glUniformBlockBinding( GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding );
+
+    // ========================================================================
+
+    public void glDrawElementsBaseVertex( GLenum mode, GLsizei count, GLenum type, void* indices, GLint basevertex )
+    {
+        _glDrawElementsBaseVertex( mode, count, type, indices, basevertex );
+    }
+
+    public void glDrawElementsBaseVertex< T >( GLenum mode, GLsizei count, GLenum type, T[] indices, GLint basevertex )
+        where T : unmanaged, IUnsignedNumber< T >
+    {
+        fixed ( void* p = &indices[ 0 ] )
+        {
+            _glDrawElementsBaseVertex( mode, count, type, p, basevertex );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glDrawElementsBaseVertex", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glDrawElementsBaseVertex( GLenum mode, GLsizei count, GLenum type, void* indices, GLint basevertex );
+
+    // ========================================================================
+
+    public void glDrawRangeElementsBaseVertex( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, void* indices, GLint basevertex )
+    {
+        _glDrawRangeElementsBaseVertex( mode, start, end, count, type, indices, basevertex );
+    }
+
+    public void glDrawRangeElementsBaseVertex< T >( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, T[] indices, GLint basevertex )
+        where T : unmanaged, IUnsignedNumber< T >
+    {
+        fixed ( void* p = &indices[ 0 ] )
+        {
+            _glDrawRangeElementsBaseVertex( mode, start, end, count, type, p, basevertex );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glDrawRangeElementsBaseVertex", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void _glDrawRangeElementsBaseVertex( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, void* indices, GLint basevertex );
+
+    // ========================================================================
+
+    public void glDrawElementsInstancedBaseVertex( GLenum mode, GLsizei count, GLenum type, void* indices, GLsizei instancecount, GLint basevertex )
+    {
+        _glDrawElementsInstancedBaseVertex( mode, count, type, indices, instancecount, basevertex );
+    }
+
+    public void glDrawElementsInstancedBaseVertex< T >( GLenum mode, GLsizei count, GLenum type, T[] indices, GLsizei instancecount, GLint basevertex )
+        where T : unmanaged, IUnsignedNumber< T >
+    {
+        fixed ( void* p = &indices[ 0 ] )
+        {
+            _glDrawElementsInstancedBaseVertex( mode, count, type, p, instancecount, basevertex );
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glDrawElementsInstancedBaseVertex", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLboolean _glDrawElementsInstancedBaseVertex( GLenum mode,
+                                                                        GLsizei count,
+                                                                        GLenum type,
+                                                                        void* indices,
+                                                                        GLsizei instancecount,
+                                                                        GLint basevertex );
+
+    // ========================================================================
+
+    public void glMultiDrawElementsBaseVertex( GLenum mode, GLsizei* count, GLenum type, void** indices, GLsizei drawcount, GLint* basevertex )
+    {
+        _glMultiDrawElementsBaseVertex( mode, count, type, indices, drawcount, basevertex );
+    }
+
+    public void glMultiDrawElementsBaseVertex< T >( GLenum mode, GLenum type, T[][] indices, GLint[] basevertex ) where T : unmanaged, IUnsignedNumber< T >
+    {
+        if ( indices.Length != basevertex.Length )
+        {
+            throw new ArgumentException( "indices and basevertex must have the same length" );
+        }
+
+        var counts    = new GLsizei[ indices.Length ];
+        var indexPtrs = new T*[ indices.Length ];
+
+        for ( var i = 0; i < indices.Length; i++ )
+        {
+            counts[ i ] = indices[ i ].Length;
+
+            fixed ( T* p = &indices[ i ][ 0 ] )
+            {
+                indexPtrs[ i ] = p;
+            }
+        }
+
+        fixed ( GLsizei* cp = &counts[ 0 ] )
+        {
+            fixed ( GLint* bvp = &basevertex[ 0 ] )
+            {
+                fixed ( T** ip = &indexPtrs[ 0 ] )
+                {
+                    _glMultiDrawElementsBaseVertex( mode, cp, type, ( void** )ip, indices.Length, bvp );
+                }
+            }
+        }
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glMultiDrawElementsBaseVertex", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLboolean _glMultiDrawElementsBaseVertex( GLenum mode,
+                                                                    GLsizei* count,
+                                                                    GLenum type,
+                                                                    void** indices,
+                                                                    GLsizei drawcount,
+                                                                    GLint* basevertex );
+
+    // ========================================================================
+
+    public void glProvokingVertex( GLenum mode )
+    {
+        _glProvokingVertex( mode );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glProvokingVertex", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLboolean _glProvokingVertex( GLenum mode );
+
+    // ========================================================================
+
+    public void* glFenceSync( GLenum condition, GLbitfield flags )
+    {
+        return _glFenceSync( condition, flags );
+    }
+
+    public IntPtr glFenceSyncSafe( GLenum condition, GLbitfield flags )
+    {
+        return new IntPtr( _glFenceSync( condition, flags ) );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glFenceSync", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void* _glFenceSync( GLenum condition, GLbitfield flags );
+
+    // ========================================================================
+
+    public GLboolean glIsSync( void* sync )
+    {
+        return _glIsSync( sync );
+    }
+
+    public GLboolean glIsSyncSafe( IntPtr sync )
+    {
+        return _glIsSync( sync.ToPointer() );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glIsSync", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLboolean _glIsSync( void* sync );
+
+    // ========================================================================
+
+    /// <inheritdoc />
+    public void glDeleteSync( void* sync )
+    {
+        _glDeleteSync( sync );
+    }
+
+    /// <inheritdoc />
+    public void glDeleteSyncSafe( IntPtr sync )
+    {
+        _glDeleteSync( sync.ToPointer() );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glDeleteSync", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLenum _glDeleteSync( void* sync );
+
+    // ========================================================================
+
+    /// <inheritdoc />
+    public GLenum glClientWaitSync( void* sync, GLbitfield flags, GLuint64 timeout )
+    {
+        return _glClientWaitSync( sync, flags, timeout );
+    }
+
+    /// <inheritdoc />
+    public GLenum glClientWaitSyncSafe( IntPtr sync, GLbitfield flags, GLuint64 timeout )
+    {
+        return _glClientWaitSync( sync.ToPointer(), flags, timeout );
+    }
+
+    [DllImport( LIBGL, EntryPoint = "glClientWaitSync", CallingConvention = CallingConvention.Cdecl )]
+    private static extern GLenum _glClientWaitSync( void* sync, GLbitfield flags, GLuint64 timeout );
     
     // ========================================================================
 }
