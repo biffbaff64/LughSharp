@@ -29,7 +29,6 @@
 #pragma warning disable IDE1006    // Naming Styles.
 #pragma warning disable IDE0090    // Use 'new(...)'.
 #pragma warning disable CS8500     // This takes the address of, gets the size of, or declares a pointer to a managed type
-#pragma warning disable SYSLIB1054 // 
 
 // ============================================================================
 
@@ -9546,6 +9545,12 @@ public unsafe partial class GLBindings : IGLBindings
 
     // ========================================================================
 
+    /// <summary>
+    /// Controls the parameters of polygon offset.
+    /// </summary>
+    /// <param name="factor">Specifies a scale factor that is used to create a variable depth offset for each polygon. The initial value is 0.</param>
+    /// <param name="units">Is multiplied by an implementation-specific value to create a constant depth offset. The initial value is 0.</param>
+    /// <param name="clamp">Specifies the maximum (or minimum) depth clamping value. The initial value is 0.</param>
     public void glPolygonOffsetClamp( GLfloat factor, GLfloat units, GLfloat clamp )
     {
         _glPolygonOffsetClamp( factor, units, clamp );
@@ -11145,13 +11150,43 @@ public unsafe partial class GLBindings : IGLBindings
 
     // ========================================================================
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Causes the client to block and wait for a sync object to become signaled.
+    /// </summary>
+    /// <param name="sync">Specifies the sync object whose status to wait on.</param>
+    /// <param name="flags">
+    /// A bitfield controlling the command flushing behavior. <paramref name="flags"/> may be
+    /// <see cref="IGL.GL_SYNC_FLUSH_COMMANDS_BIT"/> or zero.
+    /// </param>
+    /// <param name="timeout">
+    /// The timeout, specified in nanoseconds, for which the implementation should wait for
+    /// <paramref name="sync"/> to become signaled.
+    /// </param>
+    /// <returns>
+    /// One of <see cref="IGL.GL_ALREADY_SIGNALED"/>, <see cref="IGL.GL_TIMEOUT_EXPIRED"/>,
+    /// <see cref="IGL.GL_CONDITION_SATISFIED"/>, or <see cref="IGL.GL_WAIT_FAILED"/>.
+    /// </returns>
     public GLenum glClientWaitSync( void* sync, GLbitfield flags, GLuint64 timeout )
     {
         return _glClientWaitSync( sync, flags, timeout );
     }
-
-    /// <inheritdoc />
+    
+    /// <summary>
+    /// Causes the client to block and wait for a sync object to become signaled.
+    /// </summary>
+    /// <param name="sync">Specifies the sync object whose status to wait on.</param>
+    /// <param name="flags">
+    /// A bitfield controlling the command flushing behavior. <paramref name="flags"/> may be
+    /// <see cref="IGL.GL_SYNC_FLUSH_COMMANDS_BIT"/> or zero.
+    /// </param>
+    /// <param name="timeout">
+    /// The timeout, specified in nanoseconds, for which the implementation should wait for
+    /// <paramref name="sync"/> to become signaled.
+    /// </param>
+    /// <returns>
+    /// One of <see cref="IGL.GL_ALREADY_SIGNALED"/>, <see cref="IGL.GL_TIMEOUT_EXPIRED"/>,
+    /// <see cref="IGL.GL_CONDITION_SATISFIED"/>, or <see cref="IGL.GL_WAIT_FAILED"/>.
+    /// </returns>
     public GLenum glClientWaitSyncSafe( IntPtr sync, GLbitfield flags, GLuint64 timeout )
     {
         return _glClientWaitSync( sync.ToPointer(), flags, timeout );
@@ -11170,4 +11205,3 @@ public unsafe partial class GLBindings : IGLBindings
 #pragma warning restore IDE1006    // Naming Styles.
 #pragma warning restore IDE0090    // Use 'new(...)'.
 #pragma warning restore CS8500     // This takes the address of, gets the size of, or declares a pointer to a managed type
-#pragma warning restore SYSLIB1054 // 

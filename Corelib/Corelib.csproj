@@ -84,7 +84,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="DotGLFW" Version="1.2.0" />
+        <PackageReference Include="DotGLFW" Version="1.1.0" />
         <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
         <PackageReference Include="RestSharp" Version="112.0.0" />
         <PackageReference Include="SharpZipLib" Version="1.4.2" />
@@ -99,6 +99,12 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Include="lib\gdx2d.dll">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="lib\glfw3.dll">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <None Remove="Assets\arial-15.fnt" />
         <Content Include="Assets\arial-15.fnt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -132,9 +138,6 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <None Remove="lib\gdx2d.dll" />
-        <Content Include="lib\gdx2d.dll">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
         <None Remove="Assets\lsans-15.fnt" />
         <Content Include="Assets\lsans-15.fnt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -147,10 +150,10 @@
         <Content Include="Assets\lsans-15.png">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <None Remove="lib\glfw3.dll" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="lib\" />
         <Folder Include="native\Glfw\" />
         <Folder Include="native\OpenGL\" />
         <Folder Include="ThirdParty\" />

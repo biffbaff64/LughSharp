@@ -22,11 +22,10 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace Corelib.LibCore.Graphics;
+namespace Corelib.LibCore.Graphics.GLFW;
 
 [PublicAPI]
-public static class GraphicsData
+public class GLFW
 {
-    public const int DEFAULT_GL_MAJOR = 3;
-    public const int DEFAULT_GL_MINOR = 2;
+    
 }

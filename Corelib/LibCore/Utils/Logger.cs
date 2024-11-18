@@ -81,7 +81,7 @@ public static class Logger
     /// <param name="logLevel"> The initially enabled log level(s). </param>
     /// <param name="enableWriteToFile"> TRUE to enable outputting messages to a file. </param>
     /// <param name="filename"> The name of the file to write to. Default is trace.txt. </param>
-    public static void Initialise( int logLevel = LOG_DEBUG,
+    public static void Initialise( int logLevel = LOG_DEBUG | LOG_ERROR,
                                    bool enableWriteToFile = true,
                                    string filename = DEFAULT_TRACE_FILENAME )
     {

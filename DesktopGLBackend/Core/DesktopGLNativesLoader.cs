@@ -27,13 +27,10 @@ using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Core;
 
-//TODO: Is this needed?
-
 [PublicAPI]
 public class DesktopGLNativesLoader
 {
     public static void Load()
     {
-        Logger.Checkpoint();
     }
 }

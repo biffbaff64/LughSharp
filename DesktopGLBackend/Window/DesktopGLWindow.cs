@@ -24,17 +24,21 @@
 
 using System;
 using System.Collections.Generic;
+
 using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics;
 using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Maths;
 using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Collections;
+
 using DesktopGLBackend.Core;
 using DesktopGLBackend.Graphics;
 using DesktopGLBackend.Input;
 using DesktopGLBackend.Utils;
+
 using JetBrains.Annotations;
+
 using Platform = Corelib.LibCore.Core.Platform;
 
 namespace DesktopGLBackend.Window;
@@ -49,7 +53,7 @@ public class DesktopGLWindow : IDisposable
     public IDesktopGLWindowListener?         WindowListener      { get; set; }
     public IApplicationListener              Listener            { get; set; }
     public IDesktopGLInput                   Input               { get; set; } = null!;
-    public DesktopGLApplicationConfiguration Config              { get; set; }
+    public DesktopGLApplicationConfiguration AppConfig           { get; set; }
     public DesktopGLGraphics                 Graphics            { get; set; } = null!;
     public bool                              ListenerInitialised { get; set; } = false;
 
@@ -92,7 +96,7 @@ public class DesktopGLWindow : IDisposable
 
         Listener       = listener;
         WindowListener = config.WindowListener;
-        Config         = DesktopGLApplicationConfiguration.Copy( config );
+        AppConfig      = DesktopGLApplicationConfiguration.Copy( config );
     }
 
     /// <summary>
@@ -120,7 +124,7 @@ public class DesktopGLWindow : IDisposable
         Logger.Checkpoint();
 
         WindowListener?.Created( this );
-        
+
         Logger.Checkpoint();
     }
 
@@ -332,10 +336,10 @@ public class DesktopGLWindow : IDisposable
     public static void SetSizeLimits( GLFW.Window handle, int minWidth, int minHeight, int maxWidth, int maxHeight )
     {
         Glfw.SetWindowSizeLimits( handle,
-                                  minWidth > -1 ? minWidth : IGL.GL_DONT_CARE,
-                                  minHeight > -1 ? minHeight : IGL.GL_DONT_CARE,
-                                  maxWidth > -1 ? maxWidth : IGL.GL_DONT_CARE,
-                                  maxHeight > -1 ? maxHeight : IGL.GL_DONT_CARE );
+                                  minWidth > -1 ? minWidth : -1,
+                                  minHeight > -1 ? minHeight : -1,
+                                  maxWidth > -1 ? maxWidth : -1,
+                                  maxHeight > -1 ? maxHeight : -1 );
     }
 
     /// <summary>
@@ -360,7 +364,7 @@ public class DesktopGLWindow : IDisposable
     /// Sets the icon that will be used in the window's title bar. Has no effect in macOS,
     /// which doesn't use window icons.
     /// </summary>
-    public void SetIcon( GLFW.Window window, string[] imagePaths, PathTypes imageFileType )
+    public static void SetIcon( GLFW.Window window, string[] imagePaths, PathTypes imageFileType )
     {
         if ( Platform.IsMac )
         {
@@ -393,7 +397,7 @@ public class DesktopGLWindow : IDisposable
     /// is preferred so the images will not have to be copied and converted. <b>The chosen image
     /// is copied, and the provided Pixmaps are not disposed.</b>
     /// </param>
-    private void SetIcon( GLFW.Window window, Pixmap[] images )
+    public static void SetIcon( GLFW.Window window, Pixmap[] images )
     {
         Logger.Checkpoint();
 

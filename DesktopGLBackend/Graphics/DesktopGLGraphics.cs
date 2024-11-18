@@ -79,12 +79,12 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     //@formatter:off
     
     /// <inheritdoc />
-    public override int Width => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
+    public override int Width => GLWindow?.AppConfig.HdpiMode == HdpiMode.Pixels
                            ? BackBufferWidth
                            : LogicalWidth;
 
     /// <inheritdoc />
-    public override int Height => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
+    public override int Height => GLWindow?.AppConfig.HdpiMode == HdpiMode.Pixels
                            ? BackBufferHeight
                            : LogicalHeight;
     
@@ -153,13 +153,13 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         BufferFormat = new IGraphics.BufferFormatDescriptor
         {
-            R                = GLWindow.Config.Red,
-            G                = GLWindow.Config.Green,
-            B                = GLWindow.Config.Blue,
-            A                = GLWindow.Config.Alpha,
-            Depth            = GLWindow.Config.Depth,
-            Stencil          = GLWindow.Config.Stencil,
-            Samples          = GLWindow.Config.Samples,
+            R                = GLWindow.AppConfig.Red,
+            G                = GLWindow.AppConfig.Green,
+            B                = GLWindow.AppConfig.Blue,
+            A                = GLWindow.AppConfig.Alpha,
+            Depth            = GLWindow.AppConfig.Depth,
+            Stencil          = GLWindow.AppConfig.Stencil,
+            Samples          = GLWindow.AppConfig.Samples,
             CoverageSampling = false,
         };
     }
@@ -280,7 +280,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
 
-        GLWindow.Config.WindowDecorated = !undecorated;
+        GLWindow.AppConfig.WindowDecorated = !undecorated;
 
         Glfw.SetWindowAttrib( GLWindow.GlfwWindow, WindowAttrib.Decorated, undecorated );
     }
@@ -290,7 +290,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
 
-        GLWindow.Config.WindowResizable = resizable;
+        GLWindow.AppConfig.WindowResizable = resizable;
 
         Glfw.SetWindowAttrib( GLWindow.GlfwWindow, WindowAttrib.Resizable, resizable );
     }
@@ -300,7 +300,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
 
-        GLWindow.Config.VSyncEnabled = vsync;
+        GLWindow.AppConfig.VSyncEnabled = vsync;
 
         Glfw.SwapInterval( vsync ? 1 : 0 );
     }
@@ -310,7 +310,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
 
-        GLWindow.Config.ForegroundFPS = fps;
+        GLWindow.AppConfig.ForegroundFPS = fps;
     }
 
     /// <inheritdoc />
@@ -434,7 +434,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         UpdateFramebufferInfo();
 
-        SetVSync( GLWindow!.Config.VSyncEnabled );
+        SetVSync( GLWindow!.AppConfig.VSyncEnabled );
 
         return true;
     }

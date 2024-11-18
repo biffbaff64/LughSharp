@@ -69,6 +69,8 @@ public class DesktopGLWindowConfiguration
     /// </summary>
     public DesktopGLGraphics.DesktopGLDisplayMode? FullscreenMode { get; set; }
 
+    public bool IsFullscreenMode => FullscreenMode != null;
+    
     /// <summary>
     /// Sets whether to use vsync.
     /// <para>

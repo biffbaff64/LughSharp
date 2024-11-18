@@ -42,7 +42,4 @@ public interface IDesktopGLApplicationBase : IApplication
     /// Creates an Input device.
     /// </summary>
     IDesktopGLInput CreateInput( DesktopGLWindow window );
-
-    IApplicationListener GetApplicationListener();
-    IInput               GetInput();
 }
