@@ -22,10 +22,27 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace Corelib.LibCore.Graphics.GLFW;
+namespace Corelib.LibCore.Utils;
 
 [PublicAPI]
-public class GLFW
+public static class BytePointerToString
 {
-    
+    public static unsafe string Convert( byte* bytePointer )
+    {
+        // Find the length of the byte array by searching for the null terminator
+        var length = 0;
+
+        while ( bytePointer[ length ] != 0 )
+        {
+            length++;
+        }
+
+        // Convert byte* to byte array
+        var byteArray = new byte[ length ];
+        Marshal.Copy( ( IntPtr )bytePointer, byteArray, 0, length );
+
+        // Convert byte array to string
+        return System.Text.Encoding.UTF8.GetString( byteArray );
+    }
+
 }

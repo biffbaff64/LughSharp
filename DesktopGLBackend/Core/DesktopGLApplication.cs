@@ -22,6 +22,9 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics;
+
 using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Graphics.OpenGL;
@@ -35,8 +38,6 @@ using DesktopGLBackend.Files;
 using DesktopGLBackend.Input;
 using DesktopGLBackend.Utils;
 using DesktopGLBackend.Window;
-
-using JetBrains.Annotations;
 
 using Exception = System.Exception;
 using Platform = Corelib.LibCore.Core.Platform;
@@ -116,16 +117,22 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         _sync = new Sync();
 
-//        unsafe
-//        {
-//            Logger.Debug( $"{Gdx.GL.glGetString( IGL.GL_VENDOR ) -> ToString()} " +
-//                          $"- {Gdx.GL.glGetString( IGL.GL_VERSION ) -> ToString()} " +
-//                          $"- {Gdx.GL.glGetString( IGL.GL_RENDERER ) -> ToString()}" );
-//        }
-
         InitialiseGLFW();
 
-        Windows.Add( CreateWindow( Config, listener, 0 ) );
+        var window = CreateWindow( Config, listener, 0 );
+
+        window.MakeCurrent();
+
+        unsafe
+        {
+            var vendor  = BytePointerToString.Convert(Gdx.GL.glGetString( IGL.GL_VENDOR ));
+            var version = BytePointerToString.Convert(Gdx.GL.glGetString( IGL.GL_VERSION ));
+            var r       = BytePointerToString.Convert(Gdx.GL.glGetString( IGL.GL_RENDERER ));
+
+            Logger.Debug( $"GL_VENDOR: {vendor} - GL_VERSION: {version} - GL_RENDERER: {r}" );
+        }
+
+        Windows.Add( window );
     }
 
     // ========================================================================
@@ -170,7 +177,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     protected void Loop()
     {
         Logger.Checkpoint();
-        Logger.Debug( $"_running: {_running} Number of windows: {Windows.Count}" );
+        Logger.Debug( $"_running: {_running}, Number of windows: {Windows.Count}" );
         Logger.Debug( "Entering framework loop" );
 
         List< DesktopGLWindow > closedWindows = [ ];
@@ -288,6 +295,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
             Audio?.Update();
         }
+
+        Logger.Debug( "Ending framework loop" );
     }
 
     // ========================================================================
@@ -390,7 +399,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         {
             // Create a fullscreen window
 
-            Glfw.WindowHint( Hint.RefreshRate, config.FullscreenMode.RefreshRate );
+            Glfw.WindowHint( WindowHint.RefreshRate, config.FullscreenMode.RefreshRate );
 
             Logger.Debug( "Fullscreen" );
             Logger.Debug( $"windowWidth : {config.FullscreenMode.Width}" );
@@ -533,11 +542,11 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Logger.Debug( $"GLFW : {glMajor}.{glMinor}.{revision} : glProfile: {OpenGLProfile.CoreProfile}" );
 
         // Set the client API to use OpenGL.
-        Glfw.WindowHint( Hint.ClientAPI, ClientAPI.OpenGLAPI );
+        Glfw.WindowHint( WindowHint.ClientAPI, ClientAPI.OpenGLAPI );
 
         // Set the OpenGL context version based on the retrieved major and minor version numbers.
-        Glfw.WindowHint( Hint.ContextVersionMajor, glMajor );
-        Glfw.WindowHint( Hint.ContextVersionMinor, glMinor );
+        Glfw.WindowHint( WindowHint.ContextVersionMajor, glMajor );
+        Glfw.WindowHint( WindowHint.ContextVersionMinor, glMinor );
 
         // Determine the OpenGL profile to use based on the profile string retrieved.
         OGLProfile = OpenGLProfile.CoreProfile; // Use the core profile.
@@ -734,7 +743,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
-    /// Initialise the main Window <see cref="Hint"/>s. Some Hints may be set
+    /// Initialise the main Window <see cref="WindowHint"/>s. Some Hints may be set
     /// elsewhere, but this is where most are initialised.
     /// </summary>
     /// <param name="config"> The current <see cref="DesktopGLApplicationConfiguration"/>. </param>
@@ -744,34 +753,34 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         Glfw.DefaultWindowHints();
 
-        Glfw.WindowHint( Hint.Visible, config.InitialVisibility );
-        Glfw.WindowHint( Hint.Resizable, config.WindowResizable );
-        Glfw.WindowHint( Hint.Maximized, config.WindowMaximized );
-        Glfw.WindowHint( Hint.AutoIconify, config.AutoIconify );
-        Glfw.WindowHint( Hint.Decorated, config.WindowDecorated );
+        Glfw.WindowHint( WindowHint.Visible, config.InitialVisibility );
+        Glfw.WindowHint( WindowHint.Resizable, config.WindowResizable );
+        Glfw.WindowHint( WindowHint.Maximized, config.WindowMaximized );
+        Glfw.WindowHint( WindowHint.AutoIconify, config.AutoIconify );
+        Glfw.WindowHint( WindowHint.Decorated, config.WindowDecorated );
 
-        Glfw.WindowHint( Hint.RedBits, config.Red );
-        Glfw.WindowHint( Hint.GreenBits, config.Green );
-        Glfw.WindowHint( Hint.BlueBits, config.Blue );
-        Glfw.WindowHint( Hint.AlphaBits, config.Alpha );
-        Glfw.WindowHint( Hint.StencilBits, config.Stencil );
-        Glfw.WindowHint( Hint.DepthBits, config.Depth );
-        Glfw.WindowHint( Hint.Samples, config.Samples );
+        Glfw.WindowHint( WindowHint.RedBits, config.Red );
+        Glfw.WindowHint( WindowHint.GreenBits, config.Green );
+        Glfw.WindowHint( WindowHint.BlueBits, config.Blue );
+        Glfw.WindowHint( WindowHint.AlphaBits, config.Alpha );
+        Glfw.WindowHint( WindowHint.StencilBits, config.Stencil );
+        Glfw.WindowHint( WindowHint.DepthBits, config.Depth );
+        Glfw.WindowHint( WindowHint.Samples, config.Samples );
 
-        Glfw.WindowHint( Hint.ClientAPI, ClientAPI.OpenGLAPI );
-        Glfw.WindowHint( Hint.ContextVersionMajor, config.GLContextMajorVersion );
-        Glfw.WindowHint( Hint.ContextVersionMinor, config.GLContextMinorVersion );
-        Glfw.WindowHint( Hint.OpenGLProfile, OpenGLProfile.CoreProfile );
-        Glfw.WindowHint( Hint.OpenGLForwardCompat, true );
+        Glfw.WindowHint( WindowHint.ClientAPI, ClientAPI.OpenGLAPI );
+        Glfw.WindowHint( WindowHint.ContextVersionMajor, config.GLContextMajorVersion );
+        Glfw.WindowHint( WindowHint.ContextVersionMinor, config.GLContextMinorVersion );
+        Glfw.WindowHint( WindowHint.OpenGLProfile, OpenGLProfile.CoreProfile );
+        Glfw.WindowHint( WindowHint.OpenGLForwardCompat, true );
 
         if ( config.TransparentFramebuffer )
         {
-            Glfw.WindowHint( Hint.TransparentFramebuffer, true );
+            Glfw.WindowHint( WindowHint.TransparentFramebuffer, true );
         }
 
         if ( config.Debug )
         {
-            Glfw.WindowHint( Hint.OpenGLDebugContext, true );
+            Glfw.WindowHint( WindowHint.OpenGLDebugContext, true );
         }
     }
 

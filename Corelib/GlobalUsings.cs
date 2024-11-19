@@ -56,8 +56,8 @@ global using JetBrains.Annotations;
 // OpenAL support
 
 // ====================================================================--------
-// OpenGL / Glfw support
-global using GLFW = DotGLFW;
+// OpenGL support
+global using DotGLFW;
 
 // ====================================================================--------
 // LughSharp

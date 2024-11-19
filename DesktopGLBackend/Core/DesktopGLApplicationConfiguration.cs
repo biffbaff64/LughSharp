@@ -227,7 +227,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     public static IGraphics.DisplayMode[] GetDisplayModes()
     {
-        GLFW.VideoMode[]? videoModes = Glfw.GetVideoModes( Glfw.GetPrimaryMonitor() );
+        GLFW.Vidmode[]? videoModes = Glfw.GetVideoModes( Glfw.GetPrimaryMonitor() );
 
         var result = new IGraphics.DisplayMode[ videoModes.Length ];
 
@@ -250,7 +250,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     public static IGraphics.DisplayMode[] GetDisplayModes( GLFW.Monitor monitor )
     {
-        GLFW.VideoMode[] videoModes = Glfw.GetVideoModes( monitor );
+        GLFW.Vidmode[] videoModes = Glfw.GetVideoModes( monitor );
 
         var result = new IGraphics.DisplayMode[ videoModes.Length ];
 

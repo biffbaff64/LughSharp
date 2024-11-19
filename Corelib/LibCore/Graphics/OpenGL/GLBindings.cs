@@ -22,19 +22,21 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-#pragma warning disable IDE0079    // Remove unnecessary suppression
-#pragma warning disable CS8618     // Non-nullable field is uninitialized. Consider declaring as nullable.
-#pragma warning disable CS8603     // Possible null reference return.
-#pragma warning disable IDE0060    // Remove unused parameter.
-#pragma warning disable IDE1006    // Naming Styles.
-#pragma warning disable IDE0090    // Use 'new(...)'.
-#pragma warning disable CS8500     // This takes the address of, gets the size of, or declares a pointer to a managed type
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable CS8618  // Non-nullable field is uninitialized. Consider declaring as nullable.
+#pragma warning disable CS8603  // Possible null reference return.
+#pragma warning disable IDE0060 // Remove unused parameter.
+#pragma warning disable IDE1006 // Naming Styles.
+#pragma warning disable IDE0090 // Use 'new(...)'.
+#pragma warning disable CS8500  // This takes the address of, gets the size of, or declares a pointer to a managed type
 
 // ============================================================================
 
 using Corelib.LibCore.Utils;
 
 using System.Numerics;
+
+using Corelib.LibCore.Utils.Exceptions;
 
 using GLenum = System.Int32;
 using GLfloat = System.Single;
@@ -96,12 +98,15 @@ public unsafe partial class GLBindings : IGLBindings
 
         if ( version == null )
         {
-            Logger.Debug( "NULL GL Version returned!" );
+            throw new GdxRuntimeException( "NULL GL_VERSION returned!" );
         }
 
-        return version == null
-            ? ( GraphicsData.DEFAULT_GL_MAJOR, GraphicsData.DEFAULT_GL_MINOR )
-            : ( version[ 0 ], version[ 2 ] );
+        var vstring = BytePointerToString.Convert( version );
+        
+        Logger.Debug( vstring );
+
+        return ( ( int )char.GetNumericValue( vstring[ 0 ] ),
+            ( int )char.GetNumericValue( vstring[ 2 ] ) );
     }
 
     // ========================================================================
@@ -2067,7 +2072,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glDeleteProgram( program );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glDeleteProgram", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glDeleteProgram( GLuint program );
 
@@ -2078,7 +2083,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glDeleteShader( shader );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glDeleteShader", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glDeleteShader( GLuint shader );
 
@@ -2089,7 +2094,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glDetachShader( program, shader );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glDetachShader", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glDetachShader( GLuint program, GLuint shader );
 
@@ -2100,7 +2105,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glDisableVertexAttribArray( index );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glDisableVertexAttribArray", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glDisableVertexAttribArray( GLuint index );
 
@@ -2111,7 +2116,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glEnableVertexAttribArray( index );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glEnableVertexAttribArray", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glEnableVertexAttribArray( GLuint index );
 
@@ -2234,7 +2239,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glGetProgramiv( program, pname, pparams );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glGetProgramiv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glGetProgramiv( GLuint program, GLenum pname, GLint* parameters );
 
@@ -2255,7 +2260,7 @@ public unsafe partial class GLBindings : IGLBindings
 
         return new string( ( sbyte* )infoLog, 0, len, Encoding.UTF8 );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glGetProgramInfoLog", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glGetProgramInfoLog( GLuint program, GLsizei bufSize, GLsizei* length, GLchar* infoLog );
 
@@ -2275,7 +2280,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glGetShaderiv( shader, pname, pparams );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glGetShaderiv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glGetShaderiv( GLuint shader, GLenum pname, GLint* parameters );
 
@@ -2296,7 +2301,7 @@ public unsafe partial class GLBindings : IGLBindings
 
         return new string( ( sbyte* )infoLog, 0, len, Encoding.UTF8 );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glGetShaderInfoLog", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glGetShaderInfoLog( GLuint shader, GLsizei bufSize, GLsizei* length, GLchar* infoLog );
 
@@ -2337,7 +2342,7 @@ public unsafe partial class GLBindings : IGLBindings
             return _glGetUniformLocation( program, pname );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glGetUniformLocation", CallingConvention = CallingConvention.Cdecl )]
     private static extern GLint _glGetUniformLocation( GLuint program, GLchar* name );
 
@@ -2358,7 +2363,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glGetUniformfv( program, location, pparams );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glGetUniformfv", CallingConvention = CallingConvention.Cdecl )]
     private static extern GLint _glGetUniformfv( GLuint program, GLint location, GLfloat* parameters );
 
@@ -2378,7 +2383,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glGetUniformiv( program, location, pparams );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glGetUniformiv", CallingConvention = CallingConvention.Cdecl )]
     private static extern GLint _glGetUniformiv( GLuint program, GLint location, GLint* parameters );
 
@@ -2398,7 +2403,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glGetVertexAttribdv( index, pname, pparams );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glGetVertexAttribdv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glGetVertexAttribdv( GLuint index, GLenum pname, GLdouble* parameters );
 
@@ -2418,7 +2423,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glGetVertexAttribfv( index, pname, pparams );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glGetVertexAttribfv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glGetVertexAttribfv( GLuint index, GLenum pname, GLfloat* parameters );
 
@@ -2438,7 +2443,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glGetVertexAttribiv( index, pname, pparams );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glGetVertexAttribiv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glGetVertexAttribiv( GLuint index, GLenum pname, GLint* parameters );
 
@@ -2465,7 +2470,7 @@ public unsafe partial class GLBindings : IGLBindings
             pointer[ i ] = ( uint )ptr[ i ];
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glGetVertexAttribPointerv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glGetVertexAttribPointerv( GLuint index, GLenum pname, void** pointer );
 
@@ -2476,7 +2481,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         return _glIsProgram( program );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glIsProgram", CallingConvention = CallingConvention.Cdecl )]
     private static extern GLboolean _glIsProgram( GLuint program );
 
@@ -2487,7 +2492,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         return _glIsShader( shader );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glIsShader", CallingConvention = CallingConvention.Cdecl )]
     private static extern GLboolean _glIsShader( GLuint shader );
 
@@ -2501,7 +2506,7 @@ public unsafe partial class GLBindings : IGLBindings
 
     [DllImport( LIBGL, EntryPoint = "glLinkProgram", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glLinkProgram( GLuint program );
-    
+
     // ========================================================================
 
     /// <inheritdoc/>
@@ -2549,7 +2554,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glUseProgram( program );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glUseProgram", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUseProgram( GLuint program );
 
@@ -2560,7 +2565,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glUniform1f( location, v0 );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glUniform1f", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUniform1f( GLint location, GLfloat v0 );
 
@@ -2574,7 +2579,7 @@ public unsafe partial class GLBindings : IGLBindings
 
     [DllImport( LIBGL, EntryPoint = "glUniform2f", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUniform2f( GLint location, GLfloat v0, GLfloat v1 );
-    
+
     // ========================================================================
 
     /// <inheritdoc/>
@@ -2582,8 +2587,8 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glUniform3f( location, v0, v1, v2 );
     }
-    
-    [DllImport(LIBGL, EntryPoint = "glUniform3f", CallingConvention = CallingConvention.Cdecl )]
+
+    [DllImport( LIBGL, EntryPoint = "glUniform3f", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUniform3f( GLint location, GLfloat v0, GLfloat v1, GLfloat v2 );
 
     // ========================================================================
@@ -2593,8 +2598,8 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glUniform4f( location, v0, v1, v2, v3 );
     }
-    
-    [DllImport(LIBGL, EntryPoint = "glUniform4f", CallingConvention = CallingConvention.Cdecl )]
+
+    [DllImport( LIBGL, EntryPoint = "glUniform4f", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUniform4f( GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3 );
 
     // ========================================================================
@@ -2604,7 +2609,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glUniform1i( location, v0 );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glUniform1i", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUniform1i( GLint location, GLint v0 );
 
@@ -2615,7 +2620,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glUniform2i( location, v0, v1 );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glUniform2i", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUniform2i( GLint location, GLint v0, GLint v1 );
 
@@ -2626,7 +2631,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glUniform3i( location, v0, v1, v2 );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glUniform3i", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUniform3i( GLint location, GLint v0, GLint v1, GLint v2 );
 
@@ -2637,7 +2642,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glUniform4i( location, v0, v1, v2, v3 );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glUniform4i", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUniform4i( GLint location, GLint v0, GLint v1, GLint v2, GLint v3 );
 
@@ -2657,7 +2662,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glUniform1fv( location, value.Length, p );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glUniform1fv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUniform1fv( GLint location, GLsizei count, GLfloat* value );
 
@@ -2677,7 +2682,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glUniform2fv( location, value.Length / 2, p );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glUniform2fv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUniform2fv( GLint location, GLsizei count, GLfloat* value );
 
@@ -2697,7 +2702,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glUniform3fv( location, value.Length / 3, p );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glUniform3fv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUniform3fv( GLint location, GLsizei count, GLfloat* value );
 
@@ -2717,7 +2722,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glUniform4fv( location, value.Length / 4, p );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glUniform4fv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUniform4fv( GLint location, GLsizei count, GLfloat* value );
 
@@ -2737,7 +2742,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glUniform1iv( location, value.Length, p );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glUniform1iv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUniform1iv( GLint location, GLsizei count, GLint* value );
 
@@ -2757,7 +2762,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glUniform2iv( location, value.Length / 2, p );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glUniform2iv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUniform2iv( GLint location, GLsizei count, GLint* value );
 
@@ -2777,7 +2782,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glUniform3iv( location, value.Length / 3, p );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glUniform3iv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUniform3iv( GLint location, GLsizei count, GLint* value );
 
@@ -2797,7 +2802,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glUniform4iv( location, value.Length / 4, p );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glUniform4iv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glUniform4iv( GLint location, GLsizei count, GLint* value );
 
@@ -2871,7 +2876,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         return _glValidateProgram( program );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glValidateProgram", CallingConvention = CallingConvention.Cdecl )]
     private static extern bool _glValidateProgram( GLuint program );
 
@@ -3133,7 +3138,7 @@ public unsafe partial class GLBindings : IGLBindings
 
     [DllImport( LIBGL, EntryPoint = "glVertexAttrib3s", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glVertexAttrib3s( GLuint index, GLshort x, GLshort y, GLshort z );
-    
+
     // ========================================================================
 
     /// <inheritdoc/>
@@ -3221,10 +3226,10 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glVertexAttrib4Nub( index, x, y, z, w );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glVertexAttrib4Nub", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glVertexAttrib4Nub( GLuint index, GLubyte x, GLubyte y, GLubyte z, GLubyte w );
-    
+
     // ========================================================================
 
     /// <inheritdoc/>
@@ -3252,7 +3257,6 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glVertexAttrib4Nuiv( index, v );
     }
-
 
     /// <inheritdoc/>
     public void glVertexAttrib4Nuiv( GLuint index, params GLuint[] v )
@@ -3313,7 +3317,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glVertexAttrib4d( index, x, y, z, w );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glVertexAttrib4d", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glVertexAttrib4d( GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w );
 
@@ -3344,7 +3348,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glVertexAttrib4f( index, x, y, z, w );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glVertexAttrib4f", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glVertexAttrib4f( GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w );
 
@@ -3364,7 +3368,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glVertexAttrib4fv( index, p );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glVertexAttrib4fv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glVertexAttrib4fv( GLuint index, GLfloat* v );
 
@@ -3384,7 +3388,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glVertexAttrib4iv( index, p );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glVertexAttrib4iv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glVertexAttrib4iv( GLuint index, GLint* v );
 
@@ -3395,7 +3399,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glVertexAttrib4s( index, x, y, z, w );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glVertexAttrib4s", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glVertexAttrib4s( GLuint index, GLshort x, GLshort y, GLshort z, GLshort w );
 
@@ -3495,7 +3499,7 @@ public unsafe partial class GLBindings : IGLBindings
 
     [DllImport( LIBGL, EntryPoint = "glVertexAttribPointer", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glVertexAttribPointer( GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, void* pointer );
-    
+
     // ========================================================================
 
     /// <inheritdoc/>
@@ -3628,7 +3632,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glColorMaski( index, r, g, b, a );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glColorMaski", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glColorMaski( GLuint index, GLboolean r, GLboolean g, GLboolean b, GLboolean a );
 
@@ -3648,7 +3652,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glGetBooleani_v( target, index, p );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glGetBooleani_v", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glGetBooleani_v( GLenum target, GLuint index, GLboolean* data );
 
@@ -3668,7 +3672,7 @@ public unsafe partial class GLBindings : IGLBindings
             _glGetIntegeri_v( target, index, p );
         }
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glGetIntegeri_v", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glGetIntegeri_v( GLenum target, GLuint index, GLint* data );
 
@@ -3679,7 +3683,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glEnablei( target, index );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glEnablei", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glEnablei( GLenum target, GLuint index );
 
@@ -3690,7 +3694,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glDisablei( target, index );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glDisablei", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glDisablei( GLenum target, GLuint index );
 
@@ -3702,9 +3706,9 @@ public unsafe partial class GLBindings : IGLBindings
         return _glIsEnabledi( target, index );
     }
 
-    [DllImport( LIBGL, EntryPoint = "glIsEnabledi", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport( LIBGL, EntryPoint = "glIsEnabledi", CallingConvention = CallingConvention.Cdecl )]
     private static extern GLboolean _glIsEnabledi( GLenum target, GLuint index );
-    
+
     // ========================================================================
 
     /// <inheritdoc/>
@@ -3712,7 +3716,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glBeginTransformFeedback( primitiveMode );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glBeginTransformFeedback", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glBeginTransformFeedback( GLenum primitiverMode );
 
@@ -3723,7 +3727,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glEndTransformFeedback();
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glEndTransformFeedback", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glEndTransformFeedback();
 
@@ -3745,12 +3749,12 @@ public unsafe partial class GLBindings : IGLBindings
     {
         _glBindBufferBase( target, index, buffer );
     }
-    
+
     [DllImport( LIBGL, EntryPoint = "glBindBufferBase", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glBindBufferBase( GLenum target, GLuint index, GLuint buffer );
-    
+
     // ========================================================================
-    
+
     /// <inheritdoc/>
     public void glWaitSync( void* sync, GLbitfield flags, GLuint64 timeout )
     {
@@ -3851,7 +3855,7 @@ public unsafe partial class GLBindings : IGLBindings
 
     [DllImport( LIBGL, EntryPoint = "glGetBufferParameteri64v", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glGetBufferParameteri64v( GLenum target, GLenum pname, GLint64* parameters );
-    
+
     // ========================================================================
 
     /// <inheritdoc/>
@@ -3878,11 +3882,11 @@ public unsafe partial class GLBindings : IGLBindings
 
     [DllImport( LIBGL, EntryPoint = "glTexImage2DMultisample", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glTexImage2DMultisample( GLenum target,
-                                                        GLsizei samples,
-                                                        GLenum internalformat,
-                                                        GLsizei width,
-                                                        GLsizei height,
-                                                        GLboolean fixedsamplelocations );
+                                                         GLsizei samples,
+                                                         GLenum internalformat,
+                                                         GLsizei width,
+                                                         GLsizei height,
+                                                         GLboolean fixedsamplelocations );
 
     // ========================================================================
 
@@ -3900,12 +3904,12 @@ public unsafe partial class GLBindings : IGLBindings
 
     [DllImport( LIBGL, EntryPoint = "glTexImage3DMultisample", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glTexImage3DMultisample( GLenum target,
-                                                        GLsizei samples,
-                                                        GLenum internalformat,
-                                                        GLsizei width,
-                                                        GLsizei height,
-                                                        GLsizei depth,
-                                                        GLboolean fixedsamplelocations );
+                                                         GLsizei samples,
+                                                         GLenum internalformat,
+                                                         GLsizei width,
+                                                         GLsizei height,
+                                                         GLsizei depth,
+                                                         GLboolean fixedsamplelocations );
 
     // ========================================================================
 
@@ -3926,7 +3930,7 @@ public unsafe partial class GLBindings : IGLBindings
 
     [DllImport( LIBGL, EntryPoint = "glGetMultisamplefv", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glGetMultisamplefv( GLenum pname, GLuint index, GLfloat* val );
-    
+
     // ========================================================================
 
     /// <inheritdoc/>
@@ -4566,7 +4570,7 @@ public unsafe partial class GLBindings : IGLBindings
 
     [DllImport( LIBGL, EntryPoint = "glDrawElementsIndirect", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glDrawElementsIndirect( GLenum mode, GLenum type, void* indirect );
-    
+
     // ========================================================================
 
     public void glUniform1d( GLint location, GLdouble x )
@@ -4722,7 +4726,6 @@ public unsafe partial class GLBindings : IGLBindings
         _glUniformMatrix4dv( location, count, transpose, value );
     }
 
-
     public void glUniformMatrix4dv( GLint location, GLboolean transpose, GLdouble[] value )
     {
         fixed ( GLdouble* p = &value[ 0 ] )
@@ -4753,7 +4756,7 @@ public unsafe partial class GLBindings : IGLBindings
     private static extern void _glUniformMatrix2x3dv( GLint location, GLsizei count, GLboolean transpose, GLdouble* value );
 
     // ========================================================================
-    
+
     public void glUniformMatrix2x4dv( GLint location, GLsizei count, GLboolean transpose, GLdouble* value )
     {
         _glUniformMatrix2x4dv( location, count, transpose, value );
@@ -7040,12 +7043,12 @@ public unsafe partial class GLBindings : IGLBindings
 
     public string glGetProgramResourceName( GLuint program, GLenum programInterface, GLuint index, GLsizei bufSize )
     {
-        var     name = new GLchar[ bufSize ];
+        var name = new GLchar[ bufSize ];
 
         fixed ( GLchar* p_name = &name[ 0 ] )
         {
             GLsizei length;
-            
+
             _glGetProgramResourceName( program, programInterface, index, bufSize, &length, p_name );
 
             return new string( ( sbyte* )p_name, 0, length, Encoding.UTF8 );
@@ -7402,7 +7405,7 @@ public unsafe partial class GLBindings : IGLBindings
 
     [DllImport( LIBGL, EntryPoint = "glPopDebugGroup", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glPopDebugGroup();
-    
+
     // ========================================================================
 
     public void glObjectLabel( GLenum identifier, GLuint name, GLsizei length, GLchar* label )
@@ -9133,7 +9136,7 @@ public unsafe partial class GLBindings : IGLBindings
 
     [DllImport( LIBGL, EntryPoint = "glCreateProgramPipelines", CallingConvention = CallingConvention.Cdecl )]
     private static extern void _glCreateProgramPipelines( GLsizei n, GLuint* pipelines );
-    
+
     // ========================================================================
 
     public void glCreateQueries( GLenum target, GLsizei n, GLuint* ids )
@@ -9264,7 +9267,8 @@ public unsafe partial class GLBindings : IGLBindings
     }
 
     [DllImport( LIBGL, EntryPoint = "glGetCompressedTextureSubImage", CallingConvention = CallingConvention.Cdecl )]
-    private static extern void _glGetCompressedTextureSubImage( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize, void* pixels );
+    private static extern void _glGetCompressedTextureSubImage( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize,
+                                                                void* pixels );
 
     // ========================================================================
 
@@ -9281,7 +9285,8 @@ public unsafe partial class GLBindings : IGLBindings
     }
 
     [DllImport( LIBGL, EntryPoint = "glGetCompressedTextureSubImage", CallingConvention = CallingConvention.Cdecl )]
-    private static extern byte[] _glGetCompressedTextureSubImage( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize );
+    private static extern byte[] _glGetCompressedTextureSubImage( GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth,
+                                                                  GLsizei bufSize );
 
     // ========================================================================
 
@@ -9625,7 +9630,7 @@ public unsafe partial class GLBindings : IGLBindings
 
     public string glGetTransformFeedbackVarying( GLuint program, GLuint index, GLsizei bufSize, out GLsizei size, out GLenum type )
     {
-        var     name = new GLchar[ bufSize ];
+        var name = new GLchar[ bufSize ];
 
         fixed ( GLsizei* pSize = &size )
         {
@@ -10735,7 +10740,7 @@ public unsafe partial class GLBindings : IGLBindings
     public GLuint glGenVertexArray()
     {
         GLuint array = 0;
-        
+
         _glGenVertexArrays( 1, &array );
 
         return array;
@@ -10908,11 +10913,11 @@ public unsafe partial class GLBindings : IGLBindings
     public GLuint glGetUniformBlockIndex( GLuint program, GLchar* uniformBlockName )
     {
         return _glGetUniformBlockIndex( program, uniformBlockName );
-    } 
+    }
 
     [DllImport( LIBGL, EntryPoint = "glGetUniformBlockIndex", CallingConvention = CallingConvention.Cdecl )]
     private static extern GLuint _glGetUniformBlockIndex( GLuint program, GLchar* uniformBlockName );
-    
+
     // ========================================================================
 
     public GLuint glGetUniformBlockIndex( GLuint program, string uniformBlockName )
@@ -10961,9 +10966,9 @@ public unsafe partial class GLBindings : IGLBindings
     public string glGetActiveUniformBlockName( GLuint program, GLuint uniformBlockIndex, GLsizei bufSize )
     {
         var uniformBlockName = stackalloc GLchar[ bufSize ];
-        
+
         GLsizei length;
-        
+
         _glGetActiveUniformBlockName( program, uniformBlockIndex, bufSize, &length, uniformBlockName );
 
         return new string( ( sbyte* )uniformBlockName, 0, length, Encoding.UTF8 );
@@ -11170,7 +11175,7 @@ public unsafe partial class GLBindings : IGLBindings
     {
         return _glClientWaitSync( sync, flags, timeout );
     }
-    
+
     /// <summary>
     /// Causes the client to block and wait for a sync object to become signaled.
     /// </summary>
@@ -11194,14 +11199,14 @@ public unsafe partial class GLBindings : IGLBindings
 
     [DllImport( LIBGL, EntryPoint = "glClientWaitSync", CallingConvention = CallingConvention.Cdecl )]
     private static extern GLenum _glClientWaitSync( void* sync, GLbitfield flags, GLuint64 timeout );
-    
+
     // ========================================================================
 }
 
-#pragma warning restore IDE0079    // Remove unnecessary suppression
-#pragma warning restore CS8618     // Non-nullable field is uninitialized. Consider declaring as nullable.
-#pragma warning restore CS8603     // Possible null reference return.
-#pragma warning restore IDE0060    // Remove unused parameter.
-#pragma warning restore IDE1006    // Naming Styles.
-#pragma warning restore IDE0090    // Use 'new(...)'.
-#pragma warning restore CS8500     // This takes the address of, gets the size of, or declares a pointer to a managed type
+#pragma warning restore IDE0079 // Remove unnecessary suppression
+#pragma warning restore CS8618  // Non-nullable field is uninitialized. Consider declaring as nullable.
+#pragma warning restore CS8603  // Possible null reference return.
+#pragma warning restore IDE0060 // Remove unused parameter.
+#pragma warning restore IDE1006 // Naming Styles.
+#pragma warning restore IDE0090 // Use 'new(...)'.
+#pragma warning restore CS8500  // This takes the address of, gets the size of, or declares a pointer to a managed type

@@ -178,8 +178,8 @@ public interface IGraphics
 
     DisplayMode[] GetDisplayModes();
     DisplayMode GetDisplayMode();
-    DisplayMode[] GetDisplayModes( GLFW.Monitor monitor );
-    DisplayMode GetDisplayMode( GLFW.Monitor monitor );
+    DisplayMode[] GetDisplayModes( DotGLFW.Monitor monitor );
+    DisplayMode GetDisplayMode( DotGLFW.Monitor monitor );
 
     bool SetFullscreenMode( DisplayMode displayMode );
 

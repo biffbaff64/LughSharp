@@ -84,7 +84,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="DotGLFW" Version="1.1.0" />
+        <PackageReference Include="DotGLFW" Version="1.2.0" />
         <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
         <PackageReference Include="RestSharp" Version="112.0.0" />
         <PackageReference Include="SharpZipLib" Version="1.4.2" />
@@ -157,6 +157,10 @@
         <Folder Include="native\Glfw\" />
         <Folder Include="native\OpenGL\" />
         <Folder Include="ThirdParty\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\LughGFX\LughGFX.csproj" />
     </ItemGroup>
 
 </Project>
