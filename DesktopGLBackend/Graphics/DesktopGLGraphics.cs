@@ -23,17 +23,18 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System;
+
 using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Exceptions;
+
 using DesktopGLBackend.Core;
 using DesktopGLBackend.Utils;
 using DesktopGLBackend.Window;
-using JetBrains.Annotations;
-using Platform = Corelib.LibCore.Core.Platform;
+
 
 namespace DesktopGLBackend.Graphics;
 
@@ -72,7 +73,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         UpdateFramebufferInfo();
 
         UpdateGLVersion();
-        
+
         Glfw.SetWindowSizeCallback( GLWindow.GlfwWindow, ResizeCallback );
     }
 
@@ -194,8 +195,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// </summary>
     public bool SupportsCubeMapSeamless()
     {
-        return ( bool ) GLVersion!.IsVersionEqualToOrHigher( 3, 2 )
-            || SupportsExtension( "GL_ARB_seamless_cube_map" );
+        return ( bool )GLVersion!.IsVersionEqualToOrHigher( 3, 2 )
+               || SupportsExtension( "GL_ARB_seamless_cube_map" );
     }
 
     /// <summary>
@@ -278,7 +279,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <inheritdoc />
     public override void SetUndecorated( bool undecorated )
     {
-        GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
+        GdxRuntimeException.ThrowIfNull( GLWindow );
 
         GLWindow.AppConfig.WindowDecorated = !undecorated;
 
@@ -288,7 +289,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <inheritdoc />
     public override void SetResizable( bool resizable )
     {
-        GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
+        GdxRuntimeException.ThrowIfNull( GLWindow );
 
         GLWindow.AppConfig.WindowResizable = resizable;
 
@@ -298,7 +299,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <inheritdoc />
     public override void SetVSync( bool vsync )
     {
-        GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
+        GdxRuntimeException.ThrowIfNull( GLWindow );
 
         GLWindow.AppConfig.VSyncEnabled = vsync;
 
@@ -308,7 +309,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <inheritdoc />
     public override void SetForegroundFps( int fps )
     {
-        GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
+        GdxRuntimeException.ThrowIfNull( GLWindow );
 
         GLWindow.AppConfig.ForegroundFPS = fps;
     }
@@ -343,9 +344,9 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// </param>
     public override void SetCursor( ICursor cursor )
     {
-        GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
+        GdxRuntimeException.ThrowIfNull( GLWindow );
 
-        Glfw.SetCursor( GLWindow.GlfwWindow, ( ( DesktopGLCursor ) cursor ).GLFWCursor );
+        Glfw.SetCursor( GLWindow.GlfwWindow, ( ( DesktopGLCursor )cursor ).GLFWCursor );
     }
 
     /// <summary>
@@ -392,14 +393,14 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         GLWindow.Input.ResetPollingStates();
 
-        var newMode = ( DesktopGLDisplayMode ) displayMode;
+        var newMode = ( DesktopGLDisplayMode )displayMode;
 
         if ( IsFullscreen )
         {
-            var currentMode = ( DesktopGLDisplayMode ) GetDisplayMode();
+            var currentMode = ( DesktopGLDisplayMode )GetDisplayMode();
 
             if ( ( currentMode.MonitorHandle == newMode.MonitorHandle )
-              && ( currentMode.RefreshRate == newMode.RefreshRate ) )
+                 && ( currentMode.RefreshRate == newMode.RefreshRate ) )
             {
                 // same monitor and refresh rate
                 Glfw.SetWindowSize( GLWindow.GlfwWindow, newMode.Width, newMode.Height );
@@ -450,8 +451,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         Glfw.GetMonitorPhysicalSize( Glfw.GetPrimaryMonitor(), out var sizeX, out var sizeY );
 
-        return ( ( GetDisplayMode().Width / ( float ) sizeX ) * 10,
-                 ( GetDisplayMode().Height / ( float ) sizeY ) * 10 );
+        return ( ( GetDisplayMode().Width / ( float )sizeX ) * 10,
+            ( GetDisplayMode().Height / ( float )sizeY ) * 10 );
     }
 
     // ========================================================================
@@ -476,12 +477,12 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     private unsafe void UpdateGLVersion()
     {
-        var vendorString   = Gdx.GL.glGetString( IGL.GL_VENDOR );
-        var rendererString = Gdx.GL.glGetString( IGL.GL_RENDERER );
+//        var vendorString   = Gdx.GL.glGetString( IGL.GL_VENDOR );
+//        var rendererString = Gdx.GL.glGetString( IGL.GL_RENDERER );
 
-        GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
-                                   vendorString,
-                                   rendererString );
+//        GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
+//                                   vendorString,
+//                                   rendererString );
 
         if ( SupportsCubeMapSeamless() )
         {

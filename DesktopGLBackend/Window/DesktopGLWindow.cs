@@ -105,10 +105,12 @@ public class DesktopGLWindow : IDisposable
     public void Initialise( GLFW.Window? window, IDesktopGLApplicationBase app )
     {
         Logger.Checkpoint();
+        Logger.Debug( $"window: {window?.GetHandle()}, app: {app}" );
 
-        this.GlfwWindow = window;
-        this.Input      = app.CreateInput( this );
-        this.Graphics   = new DesktopGLGraphics( this );
+        this.GlfwWindow         = window;
+        this.Input              = app.CreateInput( this );
+        this.Graphics           = new DesktopGLGraphics( this );
+        this.Graphics.GLVersion = app.GLVersion;
 
         Logger.Checkpoint();
 

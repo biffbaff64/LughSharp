@@ -25,6 +25,7 @@
 using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Exceptions;
+
 using Platform = Corelib.LibCore.Core.Platform;
 
 namespace Corelib.LibCore.Graphics.GLUtils;
@@ -52,10 +53,10 @@ public class GLVersion
     /// </summary>
     /// <param name="appType"></param>
     /// <param name="vendorString"></param>
-    /// <param name="renderString"></param>
+    /// <param name="rendererString"></param>
     public unsafe GLVersion( Platform.ApplicationType appType,
                              byte* vendorString,
-                             byte* renderString )
+                             byte* rendererString )
     {
         GLtype = appType switch
         {
@@ -66,8 +67,14 @@ public class GLVersion
             var _ => throw new GdxRuntimeException( $"Unknown Platform ApplicationType: {appType}" ),
         };
 
-        VendorString   = vendorString == null ? "" : Marshal.PtrToStringUTF8( ( IntPtr )vendorString );
-        RendererString = renderString == null ? "" : Marshal.PtrToStringUTF8( ( IntPtr )renderString );
+        VendorString   ??= BytePointerToString.Convert( vendorString );
+        RendererString ??= BytePointerToString.Convert( rendererString );
+
+        var version = BytePointerToString.Convert( Gdx.GL.glGetString( IGL.GL_VERSION ) );
+
+        _majorVersion    = ( int )char.GetNumericValue( version[ 0 ] );
+        _minorVersion    = ( int )char.GetNumericValue( version[ 2 ] );
+        _revisionVersion = ( int )char.GetNumericValue( version[ 4 ] );
     }
 
     /// <summary>
@@ -76,8 +83,6 @@ public class GLVersion
     /// <returns></returns>
     public (int major, int minor, int revision) Get()
     {
-        ExtractVersion( @"(\d(\.\d){0,2})", Gdx.GL.glGetStringSafe( IGL.GL_VERSION ) );
-
         return ( _majorVersion, _minorVersion, _revisionVersion );
     }
 
@@ -90,8 +95,6 @@ public class GLVersion
     /// <returns> true if the current version is higher or equal to the test version </returns>
     public bool IsVersionEqualToOrHigher( int testMajorVersion, int testMinorVersion )
     {
-        ExtractVersion( @"(\d(\.\d){0,2})", Gdx.GL.glGetStringSafe( IGL.GL_VERSION ) );
-
         return ( _majorVersion > testMajorVersion )
                || ( ( _majorVersion == testMajorVersion ) && ( _minorVersion >= testMinorVersion ) );
     }
@@ -101,8 +104,6 @@ public class GLVersion
     /// </summary>
     public string DebugVersionString()
     {
-        ExtractVersion( @"(\d(\.\d){0,2})", Gdx.GL.glGetStringSafe( IGL.GL_VERSION ) );
-
         return $"Type: {GLtype}\n"
                + $"Version: {_majorVersion}:{_minorVersion}\n"
                + $"Vendor: {VendorString}\n"
@@ -110,52 +111,4 @@ public class GLVersion
     }
 
     // ========================================================================
-
-    /// <summary>
-    /// </summary>
-    /// <param name="patternString"></param>
-    /// <param name="versionString"></param>
-    private void ExtractVersion( string patternString, string? versionString )
-    {
-        ArgumentNullException.ThrowIfNull( versionString );
-
-        var rx = new Regex( patternString );
-
-        var matches = rx.Matches( versionString );
-
-        if ( matches.Count > 0 )
-        {
-            var resultSplit = rx.Split( "\\." );
-
-            _majorVersion    = ParseInt( resultSplit[ 0 ], 2 );
-            _minorVersion    = resultSplit.Length < 2 ? 0 : GLVersion.ParseInt( resultSplit[ 1 ], 0 );
-            _revisionVersion = resultSplit.Length < 3 ? 0 : GLVersion.ParseInt( resultSplit[ 2 ], 0 );
-        }
-        else
-        {
-            Logger.Error( $"Invalid version string: {versionString}" );
-
-            _majorVersion    = 2;
-            _minorVersion    = 0;
-            _revisionVersion = 0;
-        }
-    }
-
-    /// <summary>
-    /// Forgiving parsing of gl major, minor and release versions as
-    /// some manufacturers don't adhere to spec
-    /// </summary>
-    private static int ParseInt( string v, int defaultValue )
-    {
-        try
-        {
-            return int.Parse( v );
-        }
-        catch ( FormatException )
-        {
-            Logger.Error( $"Error parsing number: {v}, assuming: {defaultValue}" );
-
-            return defaultValue;
-        }
-    }
 }

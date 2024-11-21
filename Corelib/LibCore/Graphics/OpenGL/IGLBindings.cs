@@ -7367,8 +7367,8 @@ public interface IGLBindings
     /// <param name="value">Specifies the value of the vertex attribute.</param>
     unsafe void glVertexAttribP4uiv( uint index, int type, bool normalized, uint[] value );
 
-//    /// <summary>
-//    /// Loads OpenGL functions using the specified loader delegate.
-//    /// </summary>
-//    void Import( GLBindings.GetProcAddressHandler loader );
+    /// <summary>
+    /// Loads OpenGL functions using the specified loader delegate.
+    /// </summary>
+    void Import( GLBindings.GetProcAddressHandler loader );
 }

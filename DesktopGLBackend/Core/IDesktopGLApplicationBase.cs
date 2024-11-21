@@ -23,16 +23,19 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using Corelib.LibCore.Core;
+using Corelib.LibCore.Graphics.GLUtils;
+
 using DesktopGLBackend.Audio;
 using DesktopGLBackend.Input;
 using DesktopGLBackend.Window;
-using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Core;
 
 [PublicAPI]
 public interface IDesktopGLApplicationBase : IApplication
 {
+    GLVersion? GLVersion { get; set; }
+
     /// <summary>
     /// Creates the Audio device.
     /// </summary>

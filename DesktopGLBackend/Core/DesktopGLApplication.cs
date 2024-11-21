@@ -22,9 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Runtime.InteropServices;
-using System.Runtime.Intrinsics;
-
 using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Graphics.OpenGL;
@@ -94,8 +91,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         // Config.Title becomes the name of the ApplicationListener if
         // it has no value at this point.
-        Config       =   DesktopGLApplicationConfiguration.Copy( config );
-        Config.Title ??= listener.GetType().Name;
+        Config                       =   DesktopGLApplicationConfiguration.Copy( config );
+        Config.Title                 ??= listener.GetType().Name;
+        Config.GLContextMajorVersion =   4;
+        Config.GLContextMinorVersion =   6;
 
         // Initialise the persistant data manager
         Preferences = new Dictionary< string, IPreferences >();
@@ -120,17 +119,15 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         InitialiseGLFW();
 
         var window = CreateWindow( Config, listener, 0 );
+        
+        Glfw.MakeContextCurrent( window.GlfwWindow );
 
-        window.MakeCurrent();
+        Gdx.GL.Import( Glfw.GetProcAddress );
 
-        unsafe
-        {
-            var vendor  = BytePointerToString.Convert(Gdx.GL.glGetString( IGL.GL_VENDOR ));
-            var version = BytePointerToString.Convert(Gdx.GL.glGetString( IGL.GL_VERSION ));
-            var r       = BytePointerToString.Convert(Gdx.GL.glGetString( IGL.GL_RENDERER ));
+        Logger.Checkpoint();
 
-            Logger.Debug( $"GL_VENDOR: {vendor} - GL_VERSION: {version} - GL_RENDERER: {r}" );
-        }
+        InitGLVersion();
+        Logger.Debug( GLVersion?.DebugVersionString() ?? "GLVersion: NULL" );
 
         Windows.Add( window );
     }
@@ -194,7 +191,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             // Update active windows
             foreach ( var window in Windows )
             {
-                window.MakeCurrent();
+                Glfw.MakeContextCurrent( window.GlfwWindow );
 
                 _currentWindow                    = window;
                 _currentWindow.Graphics.GLVersion = GLVersion;
@@ -318,6 +315,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     {
         GdxRuntimeException.ThrowIfNull( Config );
 
+        Logger.Checkpoint();
+
         Config.SetWindowConfiguration( windowConfig );
 
         return CreateWindow( Config, listener, 0 );
@@ -334,25 +333,27 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                                          IApplicationListener listener,
                                          long sharedContext )
     {
+        Logger.Checkpoint();
+
         // Create the manager for the main window
-        var dlgWindow = new DesktopGLWindow( listener, config, this );
+        var dglWindow = new DesktopGLWindow( listener, config, this );
 
         if ( sharedContext == 0 )
         {
             // the main window is created immediately
-            dlgWindow = CreateWindow( dlgWindow, config, 0 );
+            dglWindow = CreateWindow( dglWindow, config, 0 );
         }
         else
         {
             // creation of additional windows is deferred to avoid GL context trouble
             PostRunnable( () =>
             {
-                dlgWindow = CreateWindow( dlgWindow, config, sharedContext );
-                Windows.Add( dlgWindow );
+                dglWindow = CreateWindow( dglWindow, config, sharedContext );
+                Windows.Add( dglWindow );
             } );
         }
 
-        return dlgWindow;
+        return dglWindow;
     }
 
     /// <summary>
@@ -363,6 +364,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public DesktopGLWindow CreateWindow( DesktopGLWindow? dglWindow, DesktopGLApplicationConfiguration config, long sharedContext )
     {
         ArgumentNullException.ThrowIfNull( dglWindow );
+
+        Logger.Checkpoint();
 
         var windowHandle = CreateGLFWWindow( config, sharedContext );
 
@@ -391,6 +394,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     /// <exception cref="GdxRuntimeException"></exception>
     private GLFW.Window CreateGLFWWindow( DesktopGLApplicationConfiguration config, long sharedContextWindow )
     {
+        Logger.Checkpoint();
+
         SetWindowHints( config );
 
         GLFW.Window windowHandle;
@@ -439,11 +444,11 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Logger.Debug( $"config.WindowMaxWidth  : {config.WindowMaxWidth}" );
         Logger.Debug( $"config.WindowMaxHeight : {config.WindowMaxHeight}" );
 
-//        DesktopGLWindow.SetSizeLimits( windowHandle,
-//                                       config.WindowMinWidth,
-//                                       config.WindowMinHeight,
-//                                       config.WindowMaxWidth,
-//                                       config.WindowMaxHeight );
+        DesktopGLWindow.SetSizeLimits( windowHandle,
+                                       config.WindowMinWidth,
+                                       config.WindowMinHeight,
+                                       config.WindowMaxWidth,
+                                       config.WindowMaxHeight );
 
         if ( config.FullscreenMode == null )
         {
@@ -514,8 +519,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         Glfw.SwapInterval( config.VSyncEnabled ? 1 : 0 );
 
-        InitGLVersion();
-
         if ( config.Debug )
         {
 //TODO:
@@ -551,9 +554,13 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         // Determine the OpenGL profile to use based on the profile string retrieved.
         OGLProfile = OpenGLProfile.CoreProfile; // Use the core profile.
 
+        Logger.Checkpoint();
+
         GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
-                                   null,   //Gdx.GL.glGetString( IGL.GL_VENDOR ),
-                                   null ); //Gdx.GL.glGetString( IGL.GL_RENDERER ) );
+                                   Gdx.GL.glGetString( IGL.GL_VENDOR ),
+                                   Gdx.GL.glGetString( IGL.GL_RENDERER ) );
+
+        Logger.Checkpoint();
 
         // Set the flag indicating that OpenGL has been initialized.
         _glfwInitialised = true;

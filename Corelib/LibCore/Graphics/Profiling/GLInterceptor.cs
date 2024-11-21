@@ -4626,4 +4626,12 @@ public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler 
         Gdx.GL.glVertexAttribP4uiv( index, type, normalized, value );
         CheckErrors();
     }
+
+    /// <inheritdoc />
+    public void Import( GLBindings.GetProcAddressHandler loader )
+    {
+        Calls++;
+        Gdx.GL.Import( loader );
+        CheckErrors();
+    }
 }

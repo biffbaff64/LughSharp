@@ -7,25 +7,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37b16c66-7b00-439c-a185-d98ba849df85" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/LughGFX/GlobalUsings.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LughGFX/TODO.md" afterDir="false" />
+    <list default="true" id="37b16c66-7b00-439c-a185-d98ba849df85" name="Changes" comment="Backup before switch to silk.net">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidBackend/AndroidBackend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidBackend/AndroidBackend.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/Corelib.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Corelib.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/GlobalUsings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/GlobalUsings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/AbstractGraphics.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Core/AbstractGraphics.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/IGraphics.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Core/IGraphics.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLFW/GLFW.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Utils/BytePointerToString.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/GLVersion.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/GLVersion.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/IGLBindings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/IGLBindings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Profiling/GLInterceptor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Profiling/GLInterceptor.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplicationConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/DesktopGLBackend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/DesktopGLBackend.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/IDesktopGLApplicationBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/IDesktopGLApplicationBase.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DesktopGLBackend/GlobalUsings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/GlobalUsings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Input/DefaultDesktopGLInput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Input/DefaultDesktopGLInput.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Utils/DesktopGLCursor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Utils/DesktopGLCursor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Extensions/Extensions.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Extensions.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LughSharp.sln" beforeDir="false" afterPath="$PROJECT_DIR$/LughSharp.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Graphics/DesktopGLGraphics.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Graphics/DesktopGLGraphics.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindow.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,8 +51,8 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/../Archive/LughSharp/Backends/DesktopGL/DesktopGLApplication.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Archive/LughSharp/LibCore/Graphics/GLUtils/GLVersion.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/IGLBindings.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/NewGLBindings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Frameworks/LughSharpFramework/DesktopGLBackend/Core/DesktopGLApplication.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Frameworks/LughSharpFramework/DesktopGLBackend/Window/DesktopGLWindowConfiguration.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/0fb6ac59fb1edbe4ed3ad62661df0eb7eacd7903/src/libraries/System.Private.CoreLib/src/System/String.Comparison.cs" root0="FORCE_HIGHLIGHTING" />
@@ -72,11 +65,12 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3d5314c4b5f391de6f26e7ce0d430d6d2aa1d7a44530b874fdbb1a4a97374/File.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3e3e6b3f101af6d6cbc7541cdca6b8fc8897df35828321d265cae0d189632df/GL.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/47b3d6b6e3933d8452b253113739c9b889e960d149b72f8e94cf9b5f9663/Glfw.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/58d76fd076ee9d304ef24864c360f46a3c93ee5be2109dae5cfa6e4d61534/ClientAPI.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5d9ddc9594a86544f6a574b744f10abacacf1a7a2416327899918403b1f/OpenGLProfile.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/651c77bced58a4cb94dd9594dfa395f35c94ce82615518a94e974bbbfc70af/Struct.Monitor.gen.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ad962ee45417c5a27da355ec387fce4e67e6651c4714405445e47eef693ad4/Byte.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/da255149761443df39a5570ac232ce545bb9d59957124a899333744fce711/Struct.Window.gen.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ead13cf7cd823eae7113ca46b9c82d169f332117acf9eec8a301f447ccd4f93/WindowHint.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ead13cf7cd823eae7113ca46b9c82d169f332117acf9eec8a301f447ccd4f93/WindowHint.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -166,7 +160,8 @@
       <workItem from="1731773084814" duration="10224000" />
       <workItem from="1731803025536" duration="41502000" />
       <workItem from="1732041161649" duration="1186000" />
-      <workItem from="1732042411377" duration="13523000" />
+      <workItem from="1732042411377" duration="13690000" />
+      <workItem from="1732111074909" duration="21389000" />
     </task>
     <task id="LOCAL-00001" summary="Major Restructuring">
       <option name="closed" value="true" />
@@ -360,7 +355,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731959365919</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Essential Update">
+      <option name="closed" value="true" />
+      <created>1732059026858</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1732059026858</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -384,7 +387,8 @@
     <MESSAGE value="Continuation of GLBindings rewrite" />
     <MESSAGE value="GLBindings complete bar documentation" />
     <MESSAGE value="Essential backup" />
-    <option name="LAST_COMMIT_MESSAGE" value="Essential backup" />
+    <MESSAGE value="Essential Update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Essential Update" />
   </component>
   <component name="com.gk646.codestats.settings.Save">
     <option name="commitTimePoints">
@@ -399,6 +403,12 @@
           <option name="timestamp" value="1731959366864" />
           <option name="linesCode" value="106278" />
           <option name="totalLines" value="211378" />
+          <option name="info" value="" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1732059027513" />
+          <option name="linesCode" value="107063" />
+          <option name="totalLines" value="212236" />
           <option name="info" value="" />
         </TimePoint>
       </list>
@@ -422,6 +432,12 @@
           <option name="linesCode" value="106278" />
           <option name="totalLines" value="211378" />
           <option name="info" value="18 Nov 2024" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1732059027513" />
+          <option name="linesCode" value="107063" />
+          <option name="totalLines" value="212236" />
+          <option name="info" value="19 Nov 2024" />
         </TimePoint>
       </list>
     </option>

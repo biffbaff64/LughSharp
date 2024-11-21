@@ -176,10 +176,10 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// Sets the vorrect values for <see cref="GLContextMajorVersion"/> and
     /// <see cref="GLContextMinorVersion"/>. Defaults to 4 (major) and 6 (minor)
     /// </summary>
-    public void SetGLContextVersion()
+    public void SetGLContextVersion( int major, int minor )
     {
-        GLContextMajorVersion = GraphicsData.DEFAULT_GL_MAJOR;
-        GLContextMinorVersion = GraphicsData.DEFAULT_GL_MINOR;
+        GLContextMajorVersion = major;
+        GLContextMinorVersion = minor;
     }
 
     /// <summary>
