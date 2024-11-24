@@ -23,6 +23,7 @@
 // /////////////////////////////////////////////////////////////////////////////
 
 using System.Numerics;
+
 using Corelib.LibCore.Graphics.OpenGL;
 
 namespace Corelib.LibCore.Graphics.Profiling;
@@ -34,10 +35,10 @@ namespace Corelib.LibCore.Graphics.Profiling;
 public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler ), IGLBindings
 {
     /// <inheritdoc />
-    public (int major, int minor) GetProjectOpenGLVersion()
+    public (int major, int minor) GetOpenGLVersion()
     {
         Calls++;
-        var (major, minor) = Gdx.GL.GetProjectOpenGLVersion();
+        var (major, minor) = Gdx.GL.GetOpenGLVersion();
         CheckErrors();
 
         return ( major, minor );

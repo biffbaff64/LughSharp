@@ -22,6 +22,8 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Corelib.LibCore.Graphics.OpenGL;
+
 namespace Corelib.LibCore.Graphics.GLUtils;
 
 [PublicAPI]

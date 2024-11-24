@@ -33,18 +33,21 @@ namespace Corelib.LibCore.Graphics.GLUtils;
 /// <summary>
 /// Wrapper for the current OpenGL Version used by this library.
 /// </summary>
+/// <remarks>
+/// It is HIGHLY likely that this class can be removed, with some minor work elsewhere.
+/// </remarks>
 [PublicAPI, DebuggerDisplay( "DebugVersionString" )]
 public class GLVersion
 {
-    public string?              VendorString   { get; set; }
-    public string?              RendererString { get; set; }
+    public string?              VendorString   { get; set; } = "Unknown";
+    public string?              RendererString { get; set; } = "Unknown";
     public GraphicsBackend.Type GLtype         { get; set; }
 
     // ========================================================================
 
-    private int _majorVersion;
-    private int _minorVersion;
-    private int _revisionVersion;
+    private int _majorVersion       = 0;
+    private int _minorVersion       = 0;
+    private int _revisionVersion    = 0;
 
     // ========================================================================
     // ========================================================================
@@ -52,11 +55,7 @@ public class GLVersion
     /// <summary>
     /// </summary>
     /// <param name="appType"></param>
-    /// <param name="vendorString"></param>
-    /// <param name="rendererString"></param>
-    public unsafe GLVersion( Platform.ApplicationType appType,
-                             byte* vendorString,
-                             byte* rendererString )
+    public unsafe GLVersion( Platform.ApplicationType appType )
     {
         GLtype = appType switch
         {
@@ -67,14 +66,16 @@ public class GLVersion
             var _ => throw new GdxRuntimeException( $"Unknown Platform ApplicationType: {appType}" ),
         };
 
-        VendorString   ??= BytePointerToString.Convert( vendorString );
-        RendererString ??= BytePointerToString.Convert( rendererString );
+        VendorString   ??= BytePointerToString.Convert( Gdx.GL.glGetString( IGL.GL_VENDOR ) );
+        RendererString ??= BytePointerToString.Convert( Gdx.GL.glGetString( IGL.GL_RENDERER ) );
 
         var version = BytePointerToString.Convert( Gdx.GL.glGetString( IGL.GL_VERSION ) );
 
         _majorVersion    = ( int )char.GetNumericValue( version[ 0 ] );
         _minorVersion    = ( int )char.GetNumericValue( version[ 2 ] );
         _revisionVersion = ( int )char.GetNumericValue( version[ 4 ] );
+        
+        Logger.Debug( DebugVersionString() );
     }
 
     /// <summary>
@@ -104,10 +105,8 @@ public class GLVersion
     /// </summary>
     public string DebugVersionString()
     {
-        return $"Type: {GLtype}\n"
-               + $"Version: {_majorVersion}:{_minorVersion}\n"
-               + $"Vendor: {VendorString}\n"
-               + $"Renderer: {RendererString}";
+        return $"Type: {GLtype} :: Version: {_majorVersion}.{_minorVersion}.{_revisionVersion} :: "
+               + $"Vendor: {VendorString} :: Renderer: {RendererString}";
     }
 
     // ========================================================================

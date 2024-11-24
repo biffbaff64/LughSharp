@@ -27,7 +27,6 @@ using System.Collections.Generic;
 
 using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics;
-using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Maths;
 using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Collections;

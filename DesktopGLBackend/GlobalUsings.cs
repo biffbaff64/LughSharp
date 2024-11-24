@@ -26,6 +26,3 @@ global using JetBrains.Annotations;
 
 global using DotGLFW;
 global using GLFW = DotGLFW;
-
-    
-

@@ -35,7 +35,6 @@ using DesktopGLBackend.Core;
 using DesktopGLBackend.Utils;
 using DesktopGLBackend.Window;
 
-
 namespace DesktopGLBackend.Graphics;
 
 [PublicAPI]
@@ -195,8 +194,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// </summary>
     public bool SupportsCubeMapSeamless()
     {
-        return ( bool )GLVersion!.IsVersionEqualToOrHigher( 3, 2 )
-               || SupportsExtension( "GL_ARB_seamless_cube_map" );
+        return /*( bool )GLVersion!.IsVersionEqualToOrHigher( 3, 2 )
+               ||*/ SupportsExtension( "GL_ARB_seamless_cube_map" );
     }
 
     /// <summary>
@@ -232,7 +231,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
             {
                 //Center window
                 Glfw.GetMonitorWorkarea( monitor, out var x, out var y, out var w, out var h );
-
                 Glfw.SetWindowPos( GLWindow?.GlfwWindow, x, y );
 
                 GLWindow?.SetPosition( x + ( ( w - width ) / 2 ), y + ( ( h - height ) / 2 ) );
@@ -475,7 +473,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         _displayModeBeforeFullscreen  = GetDisplayMode();
     }
 
-    private unsafe void UpdateGLVersion()
+    private void UpdateGLVersion()
     {
 //        var vendorString   = Gdx.GL.glGetString( IGL.GL_VENDOR );
 //        var rendererString = Gdx.GL.glGetString( IGL.GL_RENDERER );
@@ -484,10 +482,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 //                                   vendorString,
 //                                   rendererString );
 
-        if ( SupportsCubeMapSeamless() )
-        {
-            EnableCubeMapSeamless( true );
-        }
+//TODO:
+//        EnableCubeMapSeamless( true );
     }
 
     // ========================================================================

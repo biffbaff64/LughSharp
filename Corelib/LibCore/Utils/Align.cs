@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-
 namespace Corelib.LibCore.Utils;
 
 /// <summary>
@@ -130,7 +129,7 @@ public sealed class Align
             buffer.Append( "Center" );
         }
 
-        buffer.Append( "]" );
+        buffer.Append( ']' );
 
         return buffer.ToString();
     }

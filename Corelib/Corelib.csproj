@@ -6,7 +6,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <Title>LughSharp</Title>
-        <Authors>Red7Projects / Richard Ikin</Authors>
+        <Authors>Richard Ikin</Authors>
         <Version>0.0.1-beta3.2</Version>
         <Description>C# 2D/3D Game Framework based on the Java Framework LibGDX.</Description>
         <RepositoryUrl>https://github.com/biffbaff64/LughSharp</RepositoryUrl>
@@ -43,8 +43,8 @@
         <OpenGLProfile>CORE</OpenGLProfile>
 
         <!-- Version: Any valid OpenGL version from 1.0-4.6 -->
-        <OpenGLVersionMajor>3</OpenGLVersionMajor>
-        <OpenGLVersionMinor>4</OpenGLVersionMinor>
+        <OpenGLVersionMajor>4</OpenGLVersionMajor>
+        <OpenGLVersionMinor>6</OpenGLVersionMinor>
 
         <!-- Defining exposed wrapper API (SAFE/UNSAFE/BOTH) -->
         <!-- SAFE: Only safe functions are exposed -->
@@ -102,9 +102,6 @@
         <Content Include="lib\gdx2d.dll">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="lib\glfw3.dll">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
         <None Remove="Assets\arial-15.fnt" />
         <Content Include="Assets\arial-15.fnt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -150,17 +147,12 @@
         <Content Include="Assets\lsans-15.png">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <None Remove="lib\glfw3.dll" />
     </ItemGroup>
 
     <ItemGroup>
         <Folder Include="native\Glfw\" />
         <Folder Include="native\OpenGL\" />
         <Folder Include="ThirdParty\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\LughGFX\LughGFX.csproj" />
     </ItemGroup>
 
 </Project>

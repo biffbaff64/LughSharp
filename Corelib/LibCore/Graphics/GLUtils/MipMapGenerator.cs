@@ -24,6 +24,7 @@
 
 using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Utils.Exceptions;
+
 using Platform = Corelib.LibCore.Core.Platform;
 
 namespace Corelib.LibCore.Graphics.GLUtils;

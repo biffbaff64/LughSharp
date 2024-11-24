@@ -27,6 +27,7 @@ using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Maths;
 using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Exceptions;
+
 using Matrix4 = Corelib.LibCore.Maths.Matrix4;
 
 namespace Corelib.LibCore.Graphics.G2D;
@@ -116,7 +117,7 @@ public class SpriteBatch : IBatch
 
         IsDrawing = false;
 
-        var vertexDataType = ( Gdx.GL.GetProjectOpenGLVersion().major >= 3 ) //TODO:
+        var vertexDataType = ( Gdx.GL.GetOpenGLVersion().major >= 3 ) //TODO:
             ? Mesh.VertexDataType.VertexBufferObjectWithVAO
             : Mesh.VertexDataType.VertexArray;
 

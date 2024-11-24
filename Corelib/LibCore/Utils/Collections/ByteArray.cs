@@ -152,10 +152,8 @@ public class ByteArray
     /// <exception cref="IndexOutOfRangeException"></exception>
     public byte Get( int index )
     {
-        if ( index >= Size )
-        {
-            throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
-        }
+        if ( index < 0 ) throw new IndexOutOfRangeException( "index cannot be < 0." );
+        if ( index >= Size ) throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
 
         return Items[ index ];
     }
@@ -168,10 +166,8 @@ public class ByteArray
     /// <exception cref="IndexOutOfRangeException"></exception>
     public void Set( int index, byte value )
     {
-        if ( index >= Size )
-        {
-            throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
-        }
+        if ( index < 0 ) throw new IndexOutOfRangeException( "index cannot be < 0." );
+        if ( index >= Size ) throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
 
         Items[ index ] = value;
     }
@@ -184,10 +180,8 @@ public class ByteArray
     /// <exception cref="IndexOutOfRangeException"></exception>
     public void Incr( int index, byte value )
     {
-        if ( index >= Size )
-        {
-            throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
-        }
+        if ( index < 0 ) throw new IndexOutOfRangeException( "index cannot be < 0." );
+        if ( index >= Size ) throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
 
         Items[ index ] += value;
     }
@@ -205,17 +199,17 @@ public class ByteArray
     }
 
     /// <summary>
-    /// 
+    /// Multiplies the value at the specified index by the given value. 
     /// </summary>
-    /// <param name="index"></param>
-    /// <param name="value"></param>
-    /// <exception cref="IndexOutOfRangeException"></exception>
+    /// <param name="index"> The array index. </param>
+    /// <param name="value"> The multiplier. </param>
+    /// <exception cref="IndexOutOfRangeException">
+    /// Thrown if the supplied index is less than zero or greater than the array size.
+    /// </exception>
     public void Mul( int index, byte value )
     {
-        if ( index >= Size )
-        {
-            throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
-        }
+        if ( index < 0 ) throw new IndexOutOfRangeException( "index cannot be < 0." );
+        if ( index >= Size ) throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
 
         Items[ index ] *= value;
     }
@@ -240,10 +234,8 @@ public class ByteArray
     /// <exception cref="IndexOutOfRangeException"></exception>
     public void Insert( int index, byte value )
     {
-        if ( index > Size )
-        {
-            throw new IndexOutOfRangeException( $"index can't be > size: {index} > {Size}" );
-        }
+        if ( index < 0 ) throw new IndexOutOfRangeException( "index cannot be < 0." );
+        if ( index >= Size ) throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
 
         if ( Size == Items.Length )
         {
@@ -270,10 +262,8 @@ public class ByteArray
     /// </summary>
     public void InsertRange( int index, int count )
     {
-        if ( index > Size )
-        {
-            throw new IndexOutOfRangeException( $"index can't be > size: {index} > {Size}" );
-        }
+        if ( index < 0 ) throw new IndexOutOfRangeException( "index cannot be < 0." );
+        if ( index >= Size ) throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
 
         var sizeNeeded = Size + count;
 
@@ -392,10 +382,8 @@ public class ByteArray
     /// <exception cref="IndexOutOfRangeException"></exception>
     public int RemoveIndex( int index )
     {
-        if ( index >= Size )
-        {
-            throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
-        }
+        if ( index < 0 ) throw new IndexOutOfRangeException( "index cannot be < 0." );
+        if ( index >= Size ) throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
 
         int value = Items[ index ];
 
@@ -469,6 +457,7 @@ public class ByteArray
                 {
                     RemoveIndex( ii );
                     size--;
+
                     break;
                 }
             }
@@ -522,7 +511,11 @@ public class ByteArray
     /// </summary>
     public byte[] Shrink()
     {
-        if ( Items.Length != Size ) Resize( Size );
+        if ( Items.Length != Size )
+        {
+            Resize( Size );
+        }
+
         return Items;
     }
 
@@ -652,6 +645,8 @@ public class ByteArray
     /// <inheritdoc />
     public override int GetHashCode()
     {
+        //TODO:
+        
         var h = 1;
 
         for ( int i = 0, n = Size; i < n; i++ )
