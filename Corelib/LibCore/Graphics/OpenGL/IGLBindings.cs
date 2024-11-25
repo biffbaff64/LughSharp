@@ -4851,7 +4851,7 @@ public interface IGLBindings
     /// Specifies whether to apply color clamping. <see langword="true"/> specifies that clamping is
     /// enabled, <see langword="false"/> specifies that clamping is disabled.
     /// </param>
-    void glClampColor( int target, bool clamp );
+    void glClampColor( int target, int clamp );
 
     /// <summary>
     /// Start conditional rendering
@@ -7370,5 +7370,8 @@ public interface IGLBindings
     /// <summary>
     /// Loads OpenGL functions using the specified loader delegate.
     /// </summary>
-    void Import( GLBindings.GetProcAddressHandler loader );
+    public delegate IntPtr GetProcAddressHandler( string funcName );
+
+    void Import( GetProcAddressHandler loader );
+    void Import();
 }

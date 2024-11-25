@@ -7902,9 +7902,9 @@ public unsafe class GLBindings : IGLBindings
     /// Specifies whether to apply color clamping. <see langword="true"/> specifies that clamping is
     /// enabled, <see langword="false"/> specifies that clamping is disabled.
     /// </param>
-    public void glClampColor( GLenum target, GLboolean clamp )
+    public void glClampColor( GLenum target, GLenum clamp )
     {
-        _glClampColor( target, clamp ? IGL.GL_TRUE : IGL.GL_FALSE );
+        _glClampColor( target, clamp > 0 ? IGL.GL_TRUE : IGL.GL_FALSE );
     }
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
@@ -18826,6 +18826,7 @@ public unsafe class GLBindings : IGLBindings
     /// <summary>
     /// Loads OpenGL functions using the specified loader delegate.
     /// </summary>
+    public void Import() {}
     public void Import( GetProcAddressHandler loader )
     {
 #if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_3_4 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6

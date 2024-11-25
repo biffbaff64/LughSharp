@@ -56,12 +56,13 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public List< IRunnable.Runnable >         ExecutedRunnables  { get; set; } = [ ];
     public List< ILifecycleListener >         LifecycleListeners { get; set; } = [ ];
 
-    public IClipboard? Clipboard { get; set; }
-    public IGLAudio?   Audio     { get; set; }
-    public INet        Network   { get; set; }
-    public IFiles      Files     { get; set; }
-    public GLVersion?  GLVersion { get; set; }
-
+    public IClipboard?    Clipboard  { get; set; }
+    public IGLAudio?      Audio      { get; set; }
+    public INet           Network    { get; set; }
+    public IFiles         Files      { get; set; }
+    public GLVersion?     GLVersion  { get; set; }
+    public OpenGLProfile? OGLProfile { get; set; }
+    
     #endregion public properties
 
     // ========================================================================
@@ -92,7 +93,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Gdx.Initialise( this );
 
         // This is set very early in this constructor to avoid any null references.
-        Gdx.GL = new GLBindings();
+        Gdx.GL = new NewGLBindings();
 
         // Config.Title becomes the name of the ApplicationListener if
         // it has no value at this point.
@@ -120,24 +121,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         _sync = new Sync();
 
-        Gdx.GL.Import( Glfw.GetProcAddress );
-        
         InitialiseGLFW();
 
-        var window = CreateWindow( Config, listener, 0 );
-
-        _currentContext = Glfw.GetCurrentContext().GetHandle();
-
-        GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL );
-
-        Windows.Add( window );
-
-        if ( Glfw.GetCurrentContext().GetHandle() != _currentContext )
-        {
-            Logger.Debug( $"CONTEXT INVALID : {Glfw.GetCurrentContext()}" );
-        }
-
-        Logger.Debug( $"Using OpenGL {Config.GLContextMajorVersion}.{Config.GLContextMinorVersion}" );
+        Windows.Add( CreateWindow( Config, listener, 0 ) );
 
         Logger.Checkpoint();
     }
@@ -453,8 +439,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             throw new NullReferenceException( "Failed to create window!" );
         }
 
-        Glfw.MakeContextCurrent( windowHandle );
-
         Logger.Debug( $"_currentGLWindow       : {windowHandle.GetHandle()}" );
         Logger.Debug( $"config.WindowMinWidth  : {config.WindowMinWidth}" );
         Logger.Debug( $"config.WindowMinHeight : {config.WindowMinHeight}" );
@@ -534,8 +518,11 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             DesktopGLWindow.SetIcon( windowHandle, config.WindowIconPaths, config.WindowIconFileType );
         }
 
+        Glfw.MakeContextCurrent( windowHandle );
         Glfw.SwapInterval( config.VSyncEnabled ? 1 : 0 );
 
+        InitGLVersion();
+        
         if ( config.Debug )
         {
 //TODO:
@@ -558,23 +545,34 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     /// </summary>
     private void InitGLVersion()
     {
-//        Glfw.GetVersion( out var glMajor, out var glMinor, out var revision );
-//
-//        Logger.Debug( $"GLFW : {glMajor}.{glMinor}.{revision} : glProfile: {OpenGLProfile.CoreProfile}" );
-//
-//        // Set the client API to use OpenGL.
-//        Glfw.WindowHint( WindowHint.ClientAPI, ClientAPI.OpenGLAPI );
-//
-//        // Set the OpenGL context version based on the retrieved major and minor version numbers.
-//        Glfw.WindowHint( WindowHint.ContextVersionMajor, glMajor );
-//        Glfw.WindowHint( WindowHint.ContextVersionMinor, glMinor );
-//
-//        // Determine the OpenGL profile to use based on the profile string retrieved.
-//        OGLProfile = OpenGLProfile.CoreProfile; // Use the core profile.
+        Logger.Checkpoint();
+
+        Glfw.GetVersion( out var glMajor, out var glMinor, out var revision );
+
+        Logger.Debug( $"GLFW : {glMajor}.{glMinor}.{revision} : glProfile: {OpenGLProfile.CoreProfile}" );
+
+        // Set the client API to use OpenGL.
+        Glfw.WindowHint( WindowHint.ClientAPI, ClientAPI.OpenGLAPI );
+
+        // Set the OpenGL context version based on the retrieved major and minor version numbers.
+        Glfw.WindowHint( WindowHint.ContextVersionMajor, glMajor );
+        Glfw.WindowHint( WindowHint.ContextVersionMinor, glMinor );
+
+        Logger.Checkpoint();
+
+        // Determine the OpenGL profile to use based on the profile string retrieved.
+        OGLProfile = OpenGLProfile.CoreProfile; // Use the core profile.
+
+        Logger.Checkpoint();
+
+//        Gdx.GL.Import( Glfw.GetProcAddress );
+        Gdx.GL.Import();
 
         Logger.Checkpoint();
 
         GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL );
+
+        Logger.Checkpoint();
 
         // Set the flag indicating that OpenGL has been initialized.
         _glfwInitialised = true;
@@ -594,7 +592,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             {
                 DesktopGLNativesLoader.Load();
 
-                _errorCallback = ErrorCallback;
+                _errorCallback = ( error, description ) =>
+                {
+                    Logger.Error( $"ErrorCode: {error}, {description}" );
+                };
 
                 Glfw.SetErrorCallback( _errorCallback );
                 Glfw.InitHint( InitHint.JoystickHatButtons, false );
@@ -603,10 +604,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                 {
                     Glfw.GetError( out var error );
 
-                    Logger.Divider();
-                    Logger.Debug( "Failed to initialise GLFW" );
-                    Logger.Debug( error );
-                    Logger.Divider();
+                    Logger.Debug( $"Failed to initialise GLFW: {error}" );
 
                     System.Environment.Exit( 1 );
                 }
@@ -620,11 +618,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         {
             throw new ApplicationException( $"Failure in InitialiseGLFW() : {e}" );
         }
-    }
-
-    private static void ErrorCallback( ErrorCode error, string description )
-    {
-        Logger.Error( $"ErrorCode: {error}, {description}" );
     }
 
     // ========================================================================
@@ -645,7 +638,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             catch ( Exception e )
             {
                 Logger.Debug( $"Couldn't initialize audio, disabling audio: {e}" );
-
                 audio = new MockAudio();
             }
         }

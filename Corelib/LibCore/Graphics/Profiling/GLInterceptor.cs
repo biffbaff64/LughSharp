@@ -2849,7 +2849,7 @@ public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler 
     }
 
     /// <inheritdoc />
-    public void glClampColor( int target, bool clamp )
+    public void glClampColor( int target, int clamp )
     {
         Calls++;
         Gdx.GL.glClampColor( target, clamp );
@@ -4634,5 +4634,9 @@ public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler 
         Calls++;
         Gdx.GL.Import( loader );
         CheckErrors();
+    }
+
+    public void Import()
+    {
     }
 }
