@@ -4629,7 +4629,7 @@ public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler 
     }
 
     /// <inheritdoc />
-    public void Import( GLBindings.GetProcAddressHandler loader )
+    public void Import( IGLBindings.GetProcAddressHandler loader )
     {
         Calls++;
         Gdx.GL.Import( loader );

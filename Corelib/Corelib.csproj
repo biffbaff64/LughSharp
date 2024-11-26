@@ -36,25 +36,25 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <!-- GL.cs configuration options! -->
-        <!-- Profile: CORE/COMPAT -->
-        <!-- COMPAT not implemented yet -->
-        <OpenGLProfile>CORE</OpenGLProfile>
+<!--    <PropertyGroup>-->
+<!--        &lt;!&ndash; GL.cs configuration options! &ndash;&gt;-->
+<!--        &lt;!&ndash; Profile: CORE/COMPAT &ndash;&gt;-->
+<!--        &lt;!&ndash; COMPAT not implemented yet &ndash;&gt;-->
+<!--        <OpenGLProfile>CORE</OpenGLProfile>-->
 
-        <!-- Version: Any valid OpenGL version from 1.0-4.6 -->
-        <OpenGLVersionMajor>4</OpenGLVersionMajor>
-        <OpenGLVersionMinor>6</OpenGLVersionMinor>
+<!--        &lt;!&ndash; Version: Any valid OpenGL version from 1.0-4.6 &ndash;&gt;-->
+<!--        <OpenGLVersionMajor>3</OpenGLVersionMajor>-->
+<!--        <OpenGLVersionMinor>3</OpenGLVersionMinor>-->
 
-        <!-- Defining exposed wrapper API (SAFE/UNSAFE/BOTH) -->
-        <!-- SAFE: Only safe functions are exposed -->
-        <!-- UNSAFE: Only unsafe functions are exposed -->
-        <!-- BOTH: Both safe and unsafe functions are exposed -->
-        <OpenGLWrapperAPI>BOTH</OpenGLWrapperAPI>
+<!--        &lt;!&ndash; Defining exposed wrapper API (SAFE/UNSAFE/BOTH) &ndash;&gt;-->
+<!--        &lt;!&ndash; SAFE: Only safe functions are exposed &ndash;&gt;-->
+<!--        &lt;!&ndash; UNSAFE: Only unsafe functions are exposed &ndash;&gt;-->
+<!--        &lt;!&ndash; BOTH: Both safe and unsafe functions are exposed &ndash;&gt;-->
+<!--        <OpenGLWrapperAPI>BOTH</OpenGLWrapperAPI>-->
 
-        <!-- Defining constants for compile time availability of APIs -->
-        <DefineConstants>$(DefineConstants);OGL_V_$(OpenGLVersionMajor)_$(OpenGLVersionMinor);OGL_P_$(OpenGLProfile);OGL_WRAPPER_API_$(OpenGLWrapperAPI)</DefineConstants>
-    </PropertyGroup>
+<!--        &lt;!&ndash; Defining constants for compile time availability of APIs &ndash;&gt;-->
+<!--        <DefineConstants>$(DefineConstants);OGL_V_$(OpenGLVersionMajor)_$(OpenGLVersionMinor);OGL_P_$(OpenGLProfile);OGL_WRAPPER_API_$(OpenGLWrapperAPI)</DefineConstants>-->
+<!--    </PropertyGroup>-->
 
     <PropertyGroup Condition="'$(IsWindows)'=='true'">
         <DefineConstants>Windows</DefineConstants>
@@ -81,8 +81,6 @@
 
     <ItemGroup>
         <None Include="..\README.md" Pack="true" PackagePath="\"/>
-        <Compile Remove="LibCore\Graphics\OpenGL\GLBindings.cs" />
-        <None Include="LibCore\Graphics\OpenGL\GLBindings.cs" />
     </ItemGroup>
 
     <ItemGroup>

@@ -119,7 +119,7 @@ public class GLProfiler
             return;
         }
 
-        Gdx.Graphics.GL = ( GLBindings ) Graphics.GL;
+        Gdx.Graphics.GL = ( IGLBindings ) Graphics.GL;
 
         Enabled = false;
     }

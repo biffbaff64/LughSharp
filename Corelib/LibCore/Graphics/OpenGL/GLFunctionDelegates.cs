@@ -54,7 +54,7 @@ using GLint64 = System.Int64;
 
 // ============================================================================
 
-public unsafe partial class NewGLBindings
+public unsafe partial class GLBindings
 {
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCULLFACEPROC( GLenum mode );
@@ -2262,7 +2262,92 @@ public unsafe partial class NewGLBindings
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate GLint PFNGLGETPROGRAMRESOURCELOCATIONINDEXPROC(GLuint program, GLenum programInterface, GLchar* name);
     private PFNGLGETPROGRAMRESOURCELOCATIONINDEXPROC _glGetProgramResourceLocationIndex;
+    
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLSHADERSTORAGEBLOCKBINDINGPROC(GLuint program, GLuint storageBlockIndex, GLuint storageBlockBinding);
+    private PFNGLSHADERSTORAGEBLOCKBINDINGPROC _glShaderStorageBlockBinding;
 
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLTEXBUFFERRANGEPROC(GLenum target, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size);
+    private PFNGLTEXBUFFERRANGEPROC _glTexBufferRange;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLTEXSTORAGE2DMULTISAMPLEPROC(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations);
+    private PFNGLTEXSTORAGE2DMULTISAMPLEPROC _glTexStorage2DMultisample;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLTEXSTORAGE3DMULTISAMPLEPROC(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations);
+    private PFNGLTEXSTORAGE3DMULTISAMPLEPROC _glTexStorage3DMultisample;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLTEXTUREVIEWPROC(GLuint texture, GLenum target, GLuint origtexture, GLenum internalformat, GLuint minlevel, GLuint numlevels, GLuint minlayer, GLuint numlayers);
+    private PFNGLTEXTUREVIEWPROC _glTextureView;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLBINDVERTEXBUFFERPROC(GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride);
+    private PFNGLBINDVERTEXBUFFERPROC _glBindVertexBuffer;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLVERTEXATTRIBFORMATPROC(GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
+    private PFNGLVERTEXATTRIBFORMATPROC _glVertexAttribFormat;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLVERTEXATTRIBIFORMATPROC(GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
+    private PFNGLVERTEXATTRIBIFORMATPROC _glVertexAttribIFormat;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLVERTEXATTRIBLFORMATPROC(GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
+    private PFNGLVERTEXATTRIBLFORMATPROC _glVertexAttribLFormat;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLVERTEXATTRIBBINDINGPROC(GLuint attribindex, GLuint bindingindex);
+    private PFNGLVERTEXATTRIBBINDINGPROC _glVertexAttribBinding;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLVERTEXBINDINGDIVISORPROC(GLuint bindingindex, GLuint divisor);
+    private PFNGLVERTEXBINDINGDIVISORPROC _glVertexBindingDivisor;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLDEBUGMESSAGECONTROLPROC(GLenum source, GLenum type, GLenum severity, GLsizei count, GLuint* ids, GLboolean enabled);
+    private PFNGLDEBUGMESSAGECONTROLPROC _glDebugMessageControl;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLDEBUGMESSAGEINSERTPROC(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar* buf);
+    private PFNGLDEBUGMESSAGEINSERTPROC _glDebugMessageInsert;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void GLDEBUGPROC(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar* message, void* userParam);
+
+    [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
+    public delegate void GLDEBUGPROCSAFE( GLenum source, GLenum type, GLuint id, GLenum severity, string message, void* userParam );
+    
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLDEBUGMESSAGECALLBACKPROC(GLDEBUGPROC callback, void* userParam);
+    private PFNGLDEBUGMESSAGECALLBACKPROC _glDebugMessageCallback;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate GLuint PFNGLGETDEBUGMESSAGELOGPROC(GLuint count, GLsizei bufsize, GLenum* sources, GLenum* types, GLuint* ids, GLenum* severities, GLsizei* lengths, GLchar* messageLog);
+    private PFNGLGETDEBUGMESSAGELOGPROC _glGetDebugMessageLog;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLPUSHDEBUGGROUPPROC(GLenum source, GLuint id, GLsizei length, GLchar* message);
+    private PFNGLPUSHDEBUGGROUPPROC _glPushDebugGroup;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLPOPDEBUGGROUPPROC();
+    private PFNGLPOPDEBUGGROUPPROC _glPopDebugGroup;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLOBJECTLABELPROC(GLenum identifier, GLuint name, GLsizei length, GLchar* label);
+    private PFNGLOBJECTLABELPROC _glObjectLabel;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLGETOBJECTLABELPROC(GLenum identifier, GLuint name, GLsizei bufSize, GLsizei* length, GLchar* label);
+    private PFNGLGETOBJECTLABELPROC _glGetObjectLabel;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void PFNGLOBJECTPTRLABELPROC(void* ptr, GLsizei length, GLchar* label);
+    private PFNGLOBJECTPTRLABELPROC _glObjectPtrLabel;
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETOBJECTPTRLABELPROC(void* ptr, GLsizei bufSize, GLsizei* length, GLchar* label);
@@ -2759,92 +2844,8 @@ public unsafe partial class NewGLBindings
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPOLYGONOFFSETCLAMPPROC(GLfloat factor, GLfloat units, GLfloat clamp);
     private PFNGLPOLYGONOFFSETCLAMPPROC _glPolygonOffsetClamp;
-    
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLSHADERSTORAGEBLOCKBINDINGPROC(GLuint program, GLuint storageBlockIndex, GLuint storageBlockBinding);
-    private PFNGLSHADERSTORAGEBLOCKBINDINGPROC _glShaderStorageBlockBinding;
 
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLTEXBUFFERRANGEPROC(GLenum target, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size);
-    private PFNGLTEXBUFFERRANGEPROC _glTexBufferRange;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLTEXSTORAGE2DMULTISAMPLEPROC(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations);
-    private PFNGLTEXSTORAGE2DMULTISAMPLEPROC _glTexStorage2DMultisample;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLTEXSTORAGE3DMULTISAMPLEPROC(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations);
-    private PFNGLTEXSTORAGE3DMULTISAMPLEPROC _glTexStorage3DMultisample;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLTEXTUREVIEWPROC(GLuint texture, GLenum target, GLuint origtexture, GLenum internalformat, GLuint minlevel, GLuint numlevels, GLuint minlayer, GLuint numlayers);
-    private PFNGLTEXTUREVIEWPROC _glTextureView;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLBINDVERTEXBUFFERPROC(GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride);
-    private PFNGLBINDVERTEXBUFFERPROC _glBindVertexBuffer;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLVERTEXATTRIBFORMATPROC(GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
-    private PFNGLVERTEXATTRIBFORMATPROC _glVertexAttribFormat;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLVERTEXATTRIBIFORMATPROC(GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
-    private PFNGLVERTEXATTRIBIFORMATPROC _glVertexAttribIFormat;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLVERTEXATTRIBLFORMATPROC(GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
-    private PFNGLVERTEXATTRIBLFORMATPROC _glVertexAttribLFormat;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLVERTEXATTRIBBINDINGPROC(GLuint attribindex, GLuint bindingindex);
-    private PFNGLVERTEXATTRIBBINDINGPROC _glVertexAttribBinding;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLVERTEXBINDINGDIVISORPROC(GLuint bindingindex, GLuint divisor);
-    private PFNGLVERTEXBINDINGDIVISORPROC _glVertexBindingDivisor;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLDEBUGMESSAGECONTROLPROC(GLenum source, GLenum type, GLenum severity, GLsizei count, GLuint* ids, GLboolean enabled);
-    private PFNGLDEBUGMESSAGECONTROLPROC _glDebugMessageControl;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLDEBUGMESSAGEINSERTPROC(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar* buf);
-    private PFNGLDEBUGMESSAGEINSERTPROC _glDebugMessageInsert;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void GLDEBUGPROC(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar* message, void* userParam);
-
-    [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    public delegate void GLDEBUGPROCSAFE( GLenum source, GLenum type, GLuint id, GLenum severity, string message, void* userParam );
-    
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLDEBUGMESSAGECALLBACKPROC(GLDEBUGPROC callback, void* userParam);
-    private PFNGLDEBUGMESSAGECALLBACKPROC _glDebugMessageCallback;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate GLuint PFNGLGETDEBUGMESSAGELOGPROC(GLuint count, GLsizei bufsize, GLenum* sources, GLenum* types, GLuint* ids, GLenum* severities, GLsizei* lengths, GLchar* messageLog);
-    private PFNGLGETDEBUGMESSAGELOGPROC _glGetDebugMessageLog;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLPUSHDEBUGGROUPPROC(GLenum source, GLuint id, GLsizei length, GLchar* message);
-    private PFNGLPUSHDEBUGGROUPPROC _glPushDebugGroup;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLPOPDEBUGGROUPPROC();
-    private PFNGLPOPDEBUGGROUPPROC _glPopDebugGroup;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLOBJECTLABELPROC(GLenum identifier, GLuint name, GLsizei length, GLchar* label);
-    private PFNGLOBJECTLABELPROC _glObjectLabel;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLGETOBJECTLABELPROC(GLenum identifier, GLuint name, GLsizei bufSize, GLsizei* length, GLchar* label);
-    private PFNGLGETOBJECTLABELPROC _glGetObjectLabel;
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PFNGLOBJECTPTRLABELPROC(void* ptr, GLsizei length, GLchar* label);
-    private PFNGLOBJECTPTRLABELPROC _glObjectPtrLabel;
+    // ========================================================================
 }
 
 #pragma warning restore IDE0079 // Remove unnecessary suppression

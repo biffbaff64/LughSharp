@@ -62,7 +62,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public IFiles         Files      { get; set; }
     public GLVersion?     GLVersion  { get; set; }
     public OpenGLProfile? OGLProfile { get; set; }
-    
+
     #endregion public properties
 
     // ========================================================================
@@ -93,7 +93,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Gdx.Initialise( this );
 
         // This is set very early in this constructor to avoid any null references.
-        Gdx.GL = new NewGLBindings();
+        Gdx.GL = new GLBindings();
 
         // Config.Title becomes the name of the ApplicationListener if
         // it has no value at this point.
@@ -370,9 +370,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         dglWindow.Initialise( windowHandle, this );
         dglWindow.SetVisible( config.InitialVisibility );
-        
+
         Logger.Checkpoint();
-        
+
         for ( var i = 0; i < 2; i++ )
         {
             Gdx.GL.glClearColor( config.InitialBackgroundColor.R,
@@ -385,7 +385,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
 
         Logger.Checkpoint();
-        
+
         return dglWindow;
     }
 
@@ -475,7 +475,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                     monitorHandle = config.MaximizedMonitor.MonitorHandle;
                 }
 
-                Logger.Checkpoint();
                 Logger.Debug( $"monitorHandle : {monitorHandle}" );
                 Logger.Debug( $"windowHandle  : {windowHandle}" );
                 Logger.Debug( $"config        : {config}" );
@@ -497,8 +496,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             }
             else
             {
-                Logger.Checkpoint();
-
                 Logger.Debug( $"windowHandle  : {windowHandle}" );
                 Logger.Debug( $"config        : {config}" );
                 Logger.Debug( $"config.WindowX: {config.WindowX}" );
@@ -522,10 +519,11 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Glfw.SwapInterval( config.VSyncEnabled ? 1 : 0 );
 
         InitGLVersion();
-        
+
         if ( config.Debug )
         {
-//TODO:
+            Gdx.GL.glEnable( IGL.GL_DEBUG_OUTPUT );
+
 //            GlDebugCallback = Glfw.DebugMessageCallback( config.debugStream );
 //            SetGLDebugMessageControl( GLDebugMessageSeverity.Notification, false );
         }
@@ -548,31 +546,17 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Logger.Checkpoint();
 
         Glfw.GetVersion( out var glMajor, out var glMinor, out var revision );
-
-        Logger.Debug( $"GLFW : {glMajor}.{glMinor}.{revision} : glProfile: {OpenGLProfile.CoreProfile}" );
-
-        // Set the client API to use OpenGL.
         Glfw.WindowHint( WindowHint.ClientAPI, ClientAPI.OpenGLAPI );
-
-        // Set the OpenGL context version based on the retrieved major and minor version numbers.
+        Glfw.WindowHint( WindowHint.OpenGLProfile, OpenGLProfile.CoreProfile );
         Glfw.WindowHint( WindowHint.ContextVersionMajor, glMajor );
         Glfw.WindowHint( WindowHint.ContextVersionMinor, glMinor );
 
-        Logger.Checkpoint();
-
-        // Determine the OpenGL profile to use based on the profile string retrieved.
-        OGLProfile = OpenGLProfile.CoreProfile; // Use the core profile.
-
-        Logger.Checkpoint();
-
-//        Gdx.GL.Import( Glfw.GetProcAddress );
         Gdx.GL.Import();
 
-        Logger.Checkpoint();
+        Logger.Debug( $"GLFW : {glMajor}.{glMinor}.{revision} : glProfile: {OpenGLProfile.CoreProfile}" );
+        Logger.Debug( $"OGLVersion: {Gdx.GL.GetOpenGLVersion().major}.{Gdx.GL.GetOpenGLVersion().minor}" );
 
         GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL );
-
-        Logger.Checkpoint();
 
         // Set the flag indicating that OpenGL has been initialized.
         _glfwInitialised = true;
@@ -592,10 +576,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             {
                 DesktopGLNativesLoader.Load();
 
-                _errorCallback = ( error, description ) =>
-                {
-                    Logger.Error( $"ErrorCode: {error}, {description}" );
-                };
+                _errorCallback = ( error, description ) => { Logger.Error( $"ErrorCode: {error}, {description}" ); };
 
                 Glfw.SetErrorCallback( _errorCallback );
                 Glfw.InitHint( InitHint.JoystickHatButtons, false );
@@ -781,9 +762,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Glfw.WindowHint( WindowHint.DepthBits, config.Depth );
         Glfw.WindowHint( WindowHint.Samples, config.Samples );
 
-        Glfw.WindowHint( WindowHint.ClientAPI, ClientAPI.OpenGLAPI );
         Glfw.WindowHint( WindowHint.ContextVersionMajor, config.GLContextMajorVersion );
         Glfw.WindowHint( WindowHint.ContextVersionMinor, config.GLContextMinorVersion );
+        Glfw.WindowHint( WindowHint.ClientAPI, ClientAPI.OpenGLAPI );
         Glfw.WindowHint( WindowHint.OpenGLProfile, OpenGLProfile.CoreProfile );
         Glfw.WindowHint( WindowHint.OpenGLForwardCompat, true );
 
