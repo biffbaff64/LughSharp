@@ -209,7 +209,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         NumVertices      = 0;
     }
 
-    private VertexAttribute[] BuildVertexAttributes( bool hasNormals, bool hasColor, int numTexCoords )
+    private static VertexAttribute[] BuildVertexAttributes( bool hasNormals, bool hasColor, int numTexCoords )
     {
         var attribs = new List< VertexAttribute >
         {
@@ -255,23 +255,24 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     /// <returns></returns>
     private static string CreateVertexShader( bool hasNormals, bool hasColors, int numTexCoords )
     {
-        var shader = "attribute vec4 "
+        var shader = "#version 460\n"
+                   + "in vec4 "
                    + ShaderProgram.POSITION_ATTRIBUTE
                    + ";\n"
-                   + ( hasNormals ? "attribute vec3 " + ShaderProgram.NORMAL_ATTRIBUTE + ";\n" : "" )
-                   + ( hasColors ? "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" : "" );
+                   + ( hasNormals ? "in vec3 " + ShaderProgram.NORMAL_ATTRIBUTE + ";\n" : "" )
+                   + ( hasColors ? "in vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" : "" );
 
         for ( var i = 0; i < numTexCoords; i++ )
         {
-            shader += "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + i + ";\n";
+            shader += "in vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + i + ";\n";
         }
 
         shader += "uniform mat4 u_projModelView;\n" //
-                + ( hasColors ? "varying vec4 v_col;\n" : "" );
+                + ( hasColors ? "out vec4 v_col;\n" : "" );
 
         for ( var i = 0; i < numTexCoords; i++ )
         {
-            shader += "varying vec2 v_tex" + i + ";\n";
+            shader += "out vec2 v_tex" + i + ";\n";
         }
 
         shader += "void main() {\n"
@@ -304,20 +305,24 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     /// <returns></returns>
     private static string CreateFragmentShader( bool hasColors, int numTexCoords )
     {
-        var shader = "#ifdef GL_ES\n" + "precision mediump float;\n" + "#endif\n";
+        var shader = "#version 460\n"
+                   + "#ifdef GL_ES\n"
+                   + "precision mediump float;\n"
+                   + "#endif\n";
 
         if ( hasColors )
         {
-            shader += "varying vec4 v_col;\n";
+            shader += "in vec4 v_col;\n";
         }
 
         for ( var i = 0; i < numTexCoords; i++ )
         {
-            shader += "varying vec2 v_tex" + i + ";\n";
+            shader += "in vec2 v_tex" + i + ";\n";
             shader += "uniform sampler2D u_sampler" + i + ";\n";
         }
 
-        shader += "void main() {\n   gl_FragColor = " + ( hasColors ? "v_col" : "vec4(1, 1, 1, 1)" );
+        shader += "out vec4 fragColor;\n"
+                  + "void main() {\n   fragColor = " + ( hasColors ? "v_col" : "vec4(1, 1, 1, 1)" );
 
         if ( numTexCoords > 0 )
         {
@@ -328,11 +333,11 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         {
             if ( i == ( numTexCoords - 1 ) )
             {
-                shader += " texture2D(u_sampler" + i + ",  v_tex" + i + ")";
+                shader += " texture(u_sampler" + i + ",  v_tex" + i + ")";
             }
             else
             {
-                shader += " texture2D(u_sampler" + i + ",  v_tex" + i + ") *";
+                shader += " texture(u_sampler" + i + ",  v_tex" + i + ") *";
             }
         }
 

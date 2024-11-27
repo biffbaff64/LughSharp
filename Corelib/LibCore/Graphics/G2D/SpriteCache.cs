@@ -1276,18 +1276,19 @@ public class SpriteCache
 
     private static ShaderProgram CreateDefaultShader()
     {
-        const string VERTEX_SHADER = "attribute vec4 "
+        const string VERTEX_SHADER = "#version 460\n"
+                                   + "in vec4 "
                                    + ShaderProgram.POSITION_ATTRIBUTE
                                    + ";\n" //
-                                   + "attribute vec4 "
+                                   + "in vec4 "
                                    + ShaderProgram.COLOR_ATTRIBUTE
                                    + ";\n" //
-                                   + "attribute vec2 "
+                                   + "in vec2 "
                                    + ShaderProgram.TEXCOORD_ATTRIBUTE
                                    + "0;\n"                                   //
                                    + "uniform mat4 u_projectionViewMatrix;\n" //
-                                   + "varying vec4 v_color;\n"                //
-                                   + "varying vec2 v_texCoords;\n"            //
+                                   + "out vec4 v_color;\n"                //
+                                   + "out vec2 v_texCoords;\n"            //
                                    + "\n"                                     //
                                    + "void main()\n"                          //
                                    + "{\n"                                    //
@@ -1303,15 +1304,17 @@ public class SpriteCache
                                    + ";\n" //
                                    + "}\n";
 
-        const string FRAGMENT_SHADER = "#ifdef GL_ES\n"                                                  //
-                                     + "precision mediump float;\n"                                      //
-                                     + "#endif\n"                                                        //
-                                     + "varying vec4 v_color;\n"                                         //
-                                     + "varying vec2 v_texCoords;\n"                                     //
-                                     + "uniform sampler2D u_texture;\n"                                  //
-                                     + "void main()\n"                                                   //
+        const string FRAGMENT_SHADER = "#version 460\n"
+                                     + "#ifdef GL_ES\n"
+                                     + "#define LOWP lowp\n"
+                                     + "precision mediump float;\n"
+                                     + "#endif\n"
+                                     + "in vec4 v_color;\n"
+                                     + "in vec2 v_texCoords;\n"
+                                     + "uniform sampler2D u_texture;\n"
+                                     + "void main()\n"
                                      + "{\n"                                                             //
-                                     + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" //
+                                     + "  vec4 fragColor = v_color * texture(u_texture, v_texCoords);\n" //
                                      + "}";
 
         var shader = new ShaderProgram( VERTEX_SHADER, FRAGMENT_SHADER );

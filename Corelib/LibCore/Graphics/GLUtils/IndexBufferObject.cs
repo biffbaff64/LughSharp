@@ -251,5 +251,7 @@ public class IndexBufferObject : IIndexData
         {
             BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
         }
+
+        GC.SuppressFinalize(this);
     }
 }

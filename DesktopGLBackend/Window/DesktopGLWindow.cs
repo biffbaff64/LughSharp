@@ -110,6 +110,8 @@ public class DesktopGLWindow : IDisposable
         this.Input              = app.CreateInput( this );
         this.Graphics           = new DesktopGLGraphics( this );
         this.Graphics.GLVersion = app.GLVersion;
+        
+        Gdx.Graphics = Graphics;
 
         Logger.Checkpoint();
 

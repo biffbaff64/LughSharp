@@ -125,12 +125,9 @@ public class SpriteBatch : IBatch
                           false,
                           size * 4,
                           size * 6,
-                          new VertexAttribute
-                              ( VertexAttributes.Usage.POSITION, 2, ShaderProgram.POSITION_ATTRIBUTE ),
-                          new VertexAttribute
-                              ( VertexAttributes.Usage.COLOR_PACKED, 4, ShaderProgram.COLOR_ATTRIBUTE ),
-                          new VertexAttribute
-                              ( VertexAttributes.Usage.TEXTURE_COORDINATES, 2, $"{ShaderProgram.TEXCOORD_ATTRIBUTE}0" ) );
+                          new VertexAttribute( VertexAttributes.Usage.POSITION, 2, ShaderProgram.POSITION_ATTRIBUTE ),
+                          new VertexAttribute( VertexAttributes.Usage.COLOR_PACKED, 4, ShaderProgram.COLOR_ATTRIBUTE ),
+                          new VertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES, 2, $"{ShaderProgram.TEXCOORD_ATTRIBUTE}0" ) );
 
         ProjectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
@@ -1303,6 +1300,8 @@ public class SpriteBatch : IBatch
         _mesh         = null;
         _shader       = null;
         _customShader = null;
+
+        GC.SuppressFinalize( this );
     }
 
     /// <inheritdoc />
@@ -1374,18 +1373,19 @@ public class SpriteBatch : IBatch
     /// </summary>
     public static ShaderProgram CreateDefaultShader()
     {
-        const string VERTEX_SHADER = "attribute vec4 "
+        const string VERTEX_SHADER = "#version 460\n"
+                                     + "in vec4 "
                                      + ShaderProgram.POSITION_ATTRIBUTE
                                      + ";\n"
-                                     + "attribute vec4 "
+                                     + "in vec4 "
                                      + ShaderProgram.COLOR_ATTRIBUTE
                                      + ";\n"
-                                     + "attribute vec2 "
+                                     + "in vec2 "
                                      + ShaderProgram.TEXCOORD_ATTRIBUTE
                                      + "0;\n"
                                      + "uniform mat4 u_projTrans;\n"
-                                     + "varying vec4 v_color;\n"
-                                     + "varying vec2 v_texCoords;\n"
+                                     + "out vec4 v_color;\n"
+                                     + "out vec2 v_texCoords;\n"
                                      + "\n"
                                      + "void main()\n"
                                      + "{\n"
@@ -1401,18 +1401,19 @@ public class SpriteBatch : IBatch
                                      + ";\n"
                                      + "}\n";
 
-        const string FRAGMENT_SHADER = "#ifdef GL_ES\n"
+        const string FRAGMENT_SHADER = "#version 460\n"
+                                       + "#ifdef GL_ES\n"
                                        + "#define LOWP lowp\n"
                                        + "precision mediump float;\n"
                                        + "#else\n"
                                        + "#define LOWP \n"
                                        + "#endif\n"
-                                       + "varying LOWP vec4 v_color;\n"
-                                       + "varying vec2 v_texCoords;\n"
+                                       + "in LOWP vec4 v_color;\n"
+                                       + "in vec2 v_texCoords;\n"
                                        + "uniform sampler2D u_texture;\n"
                                        + "void main()\n"
                                        + "{\n"
-                                       + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n"
+                                       + "  vec4 fragColor = v_color * texture(u_texture, v_texCoords);\n"
                                        + "}";
 
         var shader = new ShaderProgram( VERTEX_SHADER, FRAGMENT_SHADER );

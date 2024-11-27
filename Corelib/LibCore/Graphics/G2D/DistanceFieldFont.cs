@@ -92,18 +92,19 @@ public class DistanceFieldFont : BitmapFont
     /// </summary>
     public ShaderProgram CreateDistanceFieldShader()
     {
-        const string VERTEX_SHADER = "attribute vec4 "
+        const string VERTEX_SHADER = "#version 460\n"
+                                   + "in vec4 "
                                    + ShaderProgram.POSITION_ATTRIBUTE
                                    + ";\n" //
-                                   + "attribute vec4 "
+                                   + "in vec4 "
                                    + ShaderProgram.COLOR_ATTRIBUTE
                                    + ";\n" //
-                                   + "attribute vec2 "
+                                   + "in vec2 "
                                    + ShaderProgram.TEXCOORD_ATTRIBUTE
                                    + "0;\n"
                                    + "uniform mat4 u_projTrans;\n"
-                                   + "varying vec4 v_color;\n"
-                                   + "varying vec2 v_texCoords;\n"
+                                   + "out vec4 v_color;\n"
+                                   + "out vec2 v_texCoords;\n"
                                    + "\n"
                                    + "void main() {\n"
                                    + "	v_color = "
@@ -118,24 +119,26 @@ public class DistanceFieldFont : BitmapFont
                                    + ";\n" //
                                    + "}\n";
 
-        const string FRAGMENT_SHADER = "#ifdef GL_ES\n"
-                                     + "	precision mediump float;\n"
-                                     + "	precision mediump int;\n"
+        const string FRAGMENT_SHADER = "#version 460\n"
+                                     + "#ifdef GL_ES\n"
+                                     + "#define LOWP lowp\n"
+                                     + "precision mediump float;\n"
                                      + "#endif\n"
                                      + "\n"
                                      + "uniform sampler2D u_texture;\n"
                                      + "uniform float u_smoothing;\n"
-                                     + "varying vec4 v_color;\n"
-                                     + "varying vec2 v_texCoords;\n"
+                                     + "in vec4 v_color;\n"
+                                     + "in vec2 v_texCoords;\n"
+                                     + "out vec4 fragColor;\n"
                                      + "\n"
                                      + "void main() {\n"
                                      + "	if (u_smoothing > 0.0) {\n"
                                      + "		float smoothing = 0.25 / u_smoothing;\n"
-                                     + "		float distance = texture2D(u_texture, v_texCoords).a;\n"
+                                     + "		float distance = texture(u_texture, v_texCoords).a;\n"
                                      + "		float alpha = smoothstep(0.5 - smoothing, 0.5 + smoothing, distance);\n"
-                                     + "		gl_FragColor = vec4(v_color.rgb, alpha * v_color.a);\n"
+                                     + "		fragColor = vec4(v_color.rgb, alpha * v_color.a);\n"
                                      + "	} else {\n"
-                                     + "		gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n"
+                                     + "		fragColor = v_color * texture(u_texture, v_texCoords);\n"
                                      + "	}\n"
                                      + "}\n";
 
