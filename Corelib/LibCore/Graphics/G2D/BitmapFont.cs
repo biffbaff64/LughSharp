@@ -1544,7 +1544,7 @@ public class BitmapFont
         /// Scales the font by the specified amounts on both axes
         /// <para>
         /// Note that smoother scaling can be achieved if the texture backing
-        /// the BitmapFont is using <see cref="TextureFilter.Linear"/>.
+        /// the BitmapFont is using <see cref="Texture.TextureFilter.Linear"/>.
         /// The default is Nearest, so use a BitmapFont constructor that takes
         /// a <see cref="TextureRegion"/>.
         /// </para>

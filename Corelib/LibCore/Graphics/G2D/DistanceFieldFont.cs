@@ -56,7 +56,7 @@ public class DistanceFieldFont : BitmapFont
 
         foreach ( var region in regions )
         {
-            region.Texture.SetFilter( TextureFilter.Linear, TextureFilter.Linear );
+            region.Texture.SetFilter( Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
         }
     }
 

@@ -55,27 +55,24 @@ namespace Corelib.LibCore.Graphics;
 /// </para>
 /// </summary>
 [PublicAPI]
-public class Texture : GLTexture, IManageable
+public class Texture : GLTexture, IManaged
 {
+    // ========================================================================
+
     public AssetManager? AssetManager { get; set; } = null;
     public ITextureData  TextureData  { get; set; }
 
-    public bool IsManaged
-    {
-        get => TextureData is { IsManaged: true };
-        set { }
-    }
+    // ========================================================================
+
+    public override int  Width              => TextureData.Width;
+    public override int  Height             => TextureData.Height;
+    public override int  Depth              => 0;
+    public          int  NumManagedTextures => _managedTextures[ Gdx.App ].Count;
+    public          bool IsManaged          => TextureData is { IsManaged: true };
 
     // ========================================================================
 
-    public override int Width              => TextureData.Width;
-    public override int Height             => TextureData.Height;
-    public override int Depth              => 0;
-    public          int NumManagedTextures => _managedTextures[ Gdx.App ].Count;
-
-    // ========================================================================
-
-    private readonly Dictionary< IApplication, List< Texture > > _managedTextures = new();
+    private readonly Dictionary< IApplication, List< Texture > > _managedTextures = [ ];
 
     // ========================================================================
     // ========================================================================
@@ -364,14 +361,19 @@ public class Texture : GLTexture, IManageable
         return TextureData is FileTextureData ? TextureData.ToString() : base.ToString();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void Debug()
     {
-        Logger.Debug( $"Dimensions     : {Width} x {Height}" );
-        Logger.Debug( $"Format         : {TextureData.Format}" );
-        Logger.Debug( $"IsManaged      : {IsManaged}" );
-        Logger.Debug( $"Depth          : {Depth}" );
-        Logger.Debug( $"GLTarget       : {GLTarget}" );
-        Logger.Debug( $"GLTextureHandle: {GLTextureHandle}" );
+        Logger.Debug( $"Dimensions        : {Width} x {Height}" );
+        Logger.Debug( $"Format            : {TextureData.Format}" );
+        Logger.Debug( $"IsManaged         : {IsManaged}" );
+        Logger.Debug( $"Depth             : {Depth}" );
+        Logger.Debug( $"GLTarget          : {GLTarget}" );
+        Logger.Debug( $"GLTextureHandle   : {GLTextureHandle}" );
+        TextureData.Prepare();
+        Logger.Debug( $"TextureData Length: {TextureData.ConsumePixmap()!.PixelData.Length}" );
     }
 
     /// <summary>
@@ -380,6 +382,8 @@ public class Texture : GLTexture, IManageable
     public override void Dispose()
     {
         Dispose( true );
+
+        GC.SuppressFinalize( this );
     }
 
     /// <inheritdoc />
@@ -404,6 +408,75 @@ public class Texture : GLTexture, IManageable
                 _managedTextures[ Gdx.App ].Remove( this );
             }
         }
+    }
+
+    // ========================================================================
+    // ========================================================================
+
+    [PublicAPI]
+    public enum TextureFilter : int
+    {
+        /// <summary>
+        /// Fetch the nearest texel that best maps to the pixel on screen.
+        /// </summary>
+        Nearest = ( IGL.GL_NEAREST ),
+
+        /// <summary>
+        /// Fetch four nearest texels that best map to the pixel on screen.
+        /// </summary>
+        Linear = ( IGL.GL_LINEAR ),
+
+        /// <summary>
+        /// 
+        /// </summary>
+        MipMap = ( IGL.GL_LINEAR_MIPMAP_LINEAR ),
+
+        /// <summary>
+        /// Fetch the best fitting image from the mip map chain based on the pixel/texel ratio and
+        /// then sample the texels with a nearest filter.
+        /// </summary>
+        MipMapNearestNearest = ( IGL.GL_NEAREST_MIPMAP_NEAREST ),
+
+        /// <summary>
+        /// Fetch the best fitting image from the mip map chain based on the pixel/texel ratio and
+        /// then sample the texels with a linear filter.
+        /// </summary>
+        MipMapLinearNearest = ( IGL.GL_LINEAR_MIPMAP_NEAREST ),
+
+        /// <summary>
+        /// Fetch the two best fitting images from the mip map chain and then sample the nearest texel
+        /// from each of the two images, combining them to the final output pixel.
+        /// </summary>
+        MipMapNearestLinear = ( IGL.GL_NEAREST_MIPMAP_LINEAR ),
+
+        /// <summary>
+        /// Fetch the two best fitting images from the mip map chain and then sample the four nearest
+        /// texels from each of the two images, combining them to the final output pixel.
+        /// </summary>
+        MipMapLinearLinear = MipMap,
+    }
+
+    // ========================================================================
+    // ========================================================================
+
+    [PublicAPI]
+    public class Utils
+    {
+        public static bool IsMipMap( TextureFilter filter )
+        {
+            return ( ( int )filter != IGL.GL_NEAREST ) && ( ( int )filter != IGL.GL_LINEAR );
+        }
+    }
+
+    // ========================================================================
+    // ========================================================================
+
+    [PublicAPI]
+    public enum TextureWrap : int
+    {
+        MirroredRepeat = ( IGL.GL_MIRRORED_REPEAT ),
+        ClampToEdge    = ( IGL.GL_CLAMP_TO_EDGE ),
+        Repeat         = ( IGL.GL_REPEAT ),
     }
 
     // ========================================================================

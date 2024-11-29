@@ -863,8 +863,6 @@ public class ShaderProgram
 
     private void AddManagedShader( IApplication app, ShaderProgram shaderProgram )
     {
-        Logger.Checkpoint();
-
         List< ShaderProgram >? managedResources;
 
         if ( !_shaders.ContainsKey( app ) || ( _shaders[ app ] == null ) )

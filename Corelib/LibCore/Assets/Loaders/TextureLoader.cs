@@ -192,22 +192,22 @@ public class TextureLoader : AsynchronousAssetLoader, IDisposable
         /// <summary>
         /// Gets or sets the minification filter for the texture.
         /// </summary>
-        public TextureFilter MinFilter { get; set; } = TextureFilter.Nearest;
+        public Texture.TextureFilter MinFilter { get; set; } = Texture.TextureFilter.Nearest;
 
         /// <summary>
         /// Gets or sets the magnification filter for the texture.
         /// </summary>
-        public TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
+        public Texture.TextureFilter MagFilter { get; set; } = Texture.TextureFilter.Nearest;
 
         /// <summary>
         /// Gets or sets the wrapping mode for the texture in the horizontal direction.
         /// </summary>
-        public TextureWrap WrapU { get; set; } = TextureWrap.ClampToEdge;
+        public Texture.TextureWrap WrapU { get; set; } = Texture.TextureWrap.ClampToEdge;
 
         /// <summary>
         /// Gets or sets the wrapping mode for the texture in the vertical direction.
         /// </summary>
-        public TextureWrap WrapV { get; set; } = TextureWrap.ClampToEdge;
+        public Texture.TextureWrap WrapV { get; set; } = Texture.TextureWrap.ClampToEdge;
 
         /// <summary>
         /// Gets or sets the format of the final texture. Uses the source image's format if null.

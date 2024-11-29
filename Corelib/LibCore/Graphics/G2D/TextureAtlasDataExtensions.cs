@@ -26,6 +26,182 @@ using Corelib.LibCore.Utils.Exceptions;
 
 namespace Corelib.LibCore.Graphics.G2D;
 
+// ============================================================================
+// ============================================================================
+
+public partial class TextureAtlasData
+{
+    // ========================================================================
+
+    public class PageFieldSize : IField< Page >
+    {
+        public void Parse( Page page, params string[] entry )
+        {
+            page.Width  = int.Parse( entry[ 1 ] );
+            page.Height = int.Parse( entry[ 2 ] );
+        }
+    }
+
+    // ========================================================================
+
+    public class PageFieldFormat : IField< Page >
+    {
+        public void Parse( Page page, params string[] entry )
+        {
+            page.Format = Pixmap.FormatFromString( entry[ 1 ] );
+        }
+    }
+
+    // ========================================================================
+
+    public class PageFieldFilter : IField< Page >
+    {
+        public void Parse( Page page, params string[] entry )
+        {
+            page.MinFilter  = Enum.Parse< Texture.TextureFilter >( entry[ 1 ] );
+            page.MagFilter  = Enum.Parse< Texture.TextureFilter >( entry[ 2 ] );
+            page.UseMipMaps = Texture.Utils.IsMipMap( page.MinFilter );
+        }
+    }
+
+    // ========================================================================
+
+    public class PageFieldRepeat : IField< Page >
+    {
+        public void Parse( Page page, params string[] entry )
+        {
+            if ( entry[ 1 ].Contains('x'))
+            {
+                page.UWrap = Texture.TextureWrap.Repeat;
+            }
+
+            if ( entry[ 1 ].Contains('y'))
+            {
+                page.VWrap = Texture.TextureWrap.Repeat;
+            }
+        }
+    }
+
+    // ========================================================================
+
+    public class PageFieldPma : IField< Page >
+    {
+        public void Parse( Page page, params string[] entry )
+        {
+            page.PreMultipliedAlpha = entry[ 1 ].Equals( "true" );
+        }
+    }
+
+    // ========================================================================
+
+    public class RegionFieldXY : IField< Region >
+    {
+        public void Parse( Region region, params string[] entry )
+        {
+            region.Left = int.Parse( entry[ 1 ] );
+            region.Top  = int.Parse( entry[ 2 ] );
+        }
+    }
+
+    // ========================================================================
+
+    public class RegionFieldSize : IField< Region >
+    {
+        public void Parse( Region region, params string[] entry )
+        {
+            region.Width  = int.Parse( entry[ 1 ] );
+            region.Height = int.Parse( entry[ 2 ] );
+        }
+    }
+
+    // ========================================================================
+
+    public class RegionFieldBounds : IField< Region >
+    {
+        public void Parse( Region region, params string[] entry )
+        {
+            region.Left   = int.Parse( entry[ 1 ] );
+            region.Top    = int.Parse( entry[ 2 ] );
+            region.Width  = int.Parse( entry[ 3 ] );
+            region.Height = int.Parse( entry[ 4 ] );
+        }
+    }
+
+    // ========================================================================
+
+    public class RegionFieldOffset : IField< Region >
+    {
+        public void Parse( Region region, params string[] entry )
+        {
+            region.OffsetX = int.Parse( entry[ 1 ] );
+            region.OffsetY = int.Parse( entry[ 2 ] );
+        }
+    }
+
+    // ========================================================================
+
+    public class RegionFieldOrig : IField< Region >
+    {
+        public void Parse( Region region, params string[] entry )
+        {
+            region.OriginalWidth  = int.Parse( entry[ 1 ] );
+            region.OriginalHeight = int.Parse( entry[ 2 ] );
+        }
+    }
+
+    // ========================================================================
+
+    public class RegionFieldOffsets : IField< Region >
+    {
+        public void Parse( Region region, params string[] entry )
+        {
+            region.OffsetX        = int.Parse( entry[ 1 ] );
+            region.OffsetY        = int.Parse( entry[ 2 ] );
+            region.OriginalWidth  = int.Parse( entry[ 3 ] );
+            region.OriginalHeight = int.Parse( entry[ 4 ] );
+        }
+    }
+
+    // ========================================================================
+
+    public class RegionFieldRotate : IField< Region >
+    {
+        public void Parse( Region region, params string[] entry )
+        {
+            var value = entry[ 1 ];
+
+            if ( value.Equals( "true" ) )
+            {
+                region.Degrees = 90;
+            }
+            else if ( !value.Equals( "false" ) )
+            {
+                region.Degrees = int.Parse( value );
+            }
+
+            region.Rotate = region.Degrees == 90;
+        }
+    }
+
+    // ========================================================================
+
+    public class RegionFieldIndex : IField< Region >
+    {
+        public void Parse( Region region, params string[] entry )
+        {
+            region.Index = int.Parse( entry[ 1 ] );
+
+            if ( region.Index != -1 )
+            {
+                HasIndexes[ 0 ] = true;
+            }
+        }
+    }
+}
+
+// ============================================================================
+// ============================================================================
+
 [PublicAPI]
 public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region >
 {
@@ -61,149 +237,5 @@ public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region 
         }
 
         return i1 - i2;
-    }
-}
-
-public partial record TextureAtlasData
-{
-    public class PageFieldParse : IField< Page >
-    {
-        public void Parse( Page page, params string[] entry )
-        {
-            page.Width  = int.Parse( entry[ 1 ] );
-            page.Height = int.Parse( entry[ 2 ] );
-        }
-    }
-
-    public class PageFieldFormat : IField< Page >
-    {
-        public void Parse( Page page, params string[] entry )
-        {
-            page.Format = Pixmap.FormatFromString( entry[ 1 ] );
-        }
-    }
-
-    public class PageFieldFilter : IField< Page >
-    {
-        public void Parse( Page page, params string[] entry )
-        {
-            page.MinFilter  = TextureFilter.ValueOf( entry[ 1 ] );
-            page.MagFilter  = TextureFilter.ValueOf( entry[ 2 ] );
-            page.UseMipMaps = page.MinFilter.IsMipMap();
-        }
-    }
-
-    public class PageFieldRepeat : IField< Page >
-    {
-        public void Parse( Page page, params string[] entry )
-        {
-            if ( entry[ 1 ].IndexOf( 'x' ) != -1 )
-            {
-                page.UWrap = TextureWrap.Repeat;
-            }
-
-            if ( entry[ 1 ].IndexOf( 'y' ) != -1 )
-            {
-                page.VWrap = TextureWrap.Repeat;
-            }
-        }
-    }
-
-    public class PageFieldPma : IField< Page >
-    {
-        public void Parse( Page page, params string[] entry )
-        {
-            page.PreMultipliedAlpha = entry[ 1 ].Equals( "true" );
-        }
-    }
-
-    public class RegionFieldXY : IField< Region >
-    {
-        public void Parse( Region region, params string[] entry )
-        {
-            region.Left = int.Parse( entry[ 1 ] );
-            region.Top  = int.Parse( entry[ 2 ] );
-        }
-    }
-
-    public class RegionFieldSize : IField< Region >
-    {
-        public void Parse( Region region, params string[] entry )
-        {
-            region.Width  = int.Parse( entry[ 1 ] );
-            region.Height = int.Parse( entry[ 2 ] );
-        }
-    }
-
-    public class RegionFieldBounds : IField< Region >
-    {
-        public void Parse( Region region, params string[] entry )
-        {
-            region.Left   = int.Parse( entry[ 1 ] );
-            region.Top    = int.Parse( entry[ 2 ] );
-            region.Width  = int.Parse( entry[ 3 ] );
-            region.Height = int.Parse( entry[ 4 ] );
-        }
-    }
-
-    public class RegionFieldOffset : IField< Region >
-    {
-        public void Parse( Region region, params string[] entry )
-        {
-            region.OffsetX = int.Parse( entry[ 1 ] );
-            region.OffsetY = int.Parse( entry[ 2 ] );
-        }
-    }
-
-    public class RegionFieldOrig : IField< Region >
-    {
-        public void Parse( Region region, params string[] entry )
-        {
-            region.OriginalWidth  = int.Parse( entry[ 1 ] );
-            region.OriginalHeight = int.Parse( entry[ 2 ] );
-        }
-    }
-
-    public class RegionFieldOffsets : IField< Region >
-    {
-        public void Parse( Region region, params string[] entry )
-        {
-            region.OffsetX        = int.Parse( entry[ 1 ] );
-            region.OffsetY        = int.Parse( entry[ 2 ] );
-            region.OriginalWidth  = int.Parse( entry[ 3 ] );
-            region.OriginalHeight = int.Parse( entry[ 4 ] );
-        }
-    }
-
-    public class RegionFieldRotate : IField< Region >
-    {
-        public void Parse( Region region, params string[] entry )
-        {
-            var value = entry[ 1 ];
-
-            if ( value.Equals( "true" ) )
-            {
-                region.Degrees = 90;
-            }
-            else if ( !value.Equals( "false" ) )
-            {
-                region.Degrees = int.Parse( value );
-            }
-
-            region.Rotate = region.Degrees == 90;
-        }
-    }
-
-    public class RegionFieldIndex : IField< Region >
-    {
-        public void Parse( Region region, params string[] entry )
-        {
-            region.Index = int.Parse( entry[ 1 ] );
-
-            if ( region.Index != -1 )
-            {
-                HasIndexes[ 0 ] = true;
-            }
-        }
     }
 }

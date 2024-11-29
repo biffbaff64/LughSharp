@@ -65,8 +65,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// </summary>
     public DesktopGLGraphics( DesktopGLWindow glWindow )
     {
-        Logger.Checkpoint();
-
         this.GLWindow = glWindow;
 
         UpdateFramebufferInfo();
@@ -142,15 +140,15 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         }
 
         Glfw.GetFramebufferSize( GLWindow.GlfwWindow, out var tmpWidth, out var tmpHeight );
-
-        BackBufferWidth  = tmpWidth;
+        
+        BackBufferWidth = tmpWidth;
         BackBufferHeight = tmpHeight;
-
+        
         Glfw.GetWindowSize( GLWindow.GlfwWindow, out tmpWidth, out tmpHeight );
 
-        LogicalWidth  = tmpWidth;
+        LogicalWidth = tmpWidth;
         LogicalHeight = tmpHeight;
-
+        
         BufferFormat = new IGraphics.BufferFormatDescriptor
         {
             R                = GLWindow.AppConfig.Red,

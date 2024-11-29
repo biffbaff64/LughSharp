@@ -22,7 +22,9 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Utils.Exceptions;
+
 using Matrix4 = Corelib.LibCore.Maths.Matrix4;
 
 namespace Corelib.LibCore.Graphics.GLUtils;
@@ -59,33 +61,52 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     // ========================================================================
     // ========================================================================
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="hasNormals"></param>
+    /// <param name="hasColors"></param>
+    /// <param name="numTexCoords"></param>
     public ImmediateModeRenderer20( bool hasNormals, bool hasColors, int numTexCoords )
         : this( 5000, hasNormals, hasColors, numTexCoords, CreateDefaultShader( hasNormals, hasColors, numTexCoords ) )
     {
         _ownsShader = true;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="maxVertices"></param>
+    /// <param name="hasNormals"></param>
+    /// <param name="hasColors"></param>
+    /// <param name="numTexCoords"></param>
     public ImmediateModeRenderer20( int maxVertices, bool hasNormals, bool hasColors, int numTexCoords )
-        : this(
-               maxVertices,
-               hasNormals,
-               hasColors,
-               numTexCoords,
-               CreateDefaultShader( hasNormals, hasColors, numTexCoords )
-              )
+        : this( maxVertices,
+                hasNormals,
+                hasColors,
+                numTexCoords,
+                CreateDefaultShader( hasNormals, hasColors, numTexCoords ) )
     {
         _ownsShader = true;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="maxVertices"></param>
+    /// <param name="hasNormals"></param>
+    /// <param name="hasColors"></param>
+    /// <param name="numTexCoords"></param>
+    /// <param name="shader"></param>
     public ImmediateModeRenderer20( int maxVertices, bool hasNormals, bool hasColors, int numTexCoords, ShaderProgram shader )
     {
         MaxVertices   = maxVertices;
         _numTexCoords = numTexCoords;
         _shader       = shader;
 
-        VertexAttribute[] attribs = BuildVertexAttributes( hasNormals, hasColors, numTexCoords );
-        _mesh = new Mesh( false, maxVertices, 0, attribs );
+        var attribs = BuildVertexAttributes( hasNormals, hasColors, numTexCoords );
 
+        _mesh       = new Mesh( false, maxVertices, 0, attribs );
         _vertices   = new float[ maxVertices * ( _mesh.VertexAttributes.VertexSize / 4 ) ];
         _vertexSize = _mesh.VertexAttributes.VertexSize / 4;
 
@@ -124,32 +145,60 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="projModelView"></param>
+    /// <param name="primitiveType"></param>
     public void Begin( Matrix4 projModelView, int primitiveType )
     {
         _projModelView.Set( projModelView );
         _primitiveType = primitiveType;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void End()
     {
         Flush();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="color"></param>
     public void SetColor( Color color )
     {
         _vertices[ _vertexIdx + _colorOffset ] = color.ToFloatBitsABGR();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="r"></param>
+    /// <param name="g"></param>
+    /// <param name="b"></param>
+    /// <param name="a"></param>
     public void SetColor( float r, float g, float b, float a )
     {
         _vertices[ _vertexIdx + _colorOffset ] = Color.ToFloatBitsABGR( r, g, b, a );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="colorBits"></param>
     public void SetColor( float colorBits )
     {
         _vertices[ _vertexIdx + _colorOffset ] = colorBits;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="u"></param>
+    /// <param name="v"></param>
     public void TexCoord( float u, float v )
     {
         var idx = _vertexIdx + _texCoordOffset;
@@ -159,6 +208,12 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         _numSetTexCoords                        += 2;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
     public void Normal( float x, float y, float z )
     {
         var idx = _vertexIdx + _normalOffset;
@@ -209,6 +264,13 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         NumVertices      = 0;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="hasNormals"></param>
+    /// <param name="hasColor"></param>
+    /// <param name="numTexCoords"></param>
+    /// <returns></returns>
     private static VertexAttribute[] BuildVertexAttributes( bool hasNormals, bool hasColor, int numTexCoords )
     {
         var attribs = new List< VertexAttribute >
@@ -256,11 +318,11 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     private static string CreateVertexShader( bool hasNormals, bool hasColors, int numTexCoords )
     {
         var shader = "#version 460\n"
-                   + "in vec4 "
-                   + ShaderProgram.POSITION_ATTRIBUTE
-                   + ";\n"
-                   + ( hasNormals ? "in vec3 " + ShaderProgram.NORMAL_ATTRIBUTE + ";\n" : "" )
-                   + ( hasColors ? "in vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" : "" );
+                     + "in vec4 "
+                     + ShaderProgram.POSITION_ATTRIBUTE
+                     + ";\n"
+                     + ( hasNormals ? "in vec3 " + ShaderProgram.NORMAL_ATTRIBUTE + ";\n" : "" )
+                     + ( hasColors ? "in vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" : "" );
 
         for ( var i = 0; i < numTexCoords; i++ )
         {
@@ -268,7 +330,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         }
 
         shader += "uniform mat4 u_projModelView;\n" //
-                + ( hasColors ? "out vec4 v_col;\n" : "" );
+                  + ( hasColors ? "out vec4 v_col;\n" : "" );
 
         for ( var i = 0; i < numTexCoords; i++ )
         {
@@ -276,16 +338,16 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         }
 
         shader += "void main() {\n"
-                + "   gl_Position = u_projModelView * "
-                + ShaderProgram.POSITION_ATTRIBUTE
-                + ";\n";
+                  + "   gl_Position = u_projModelView * "
+                  + ShaderProgram.POSITION_ATTRIBUTE
+                  + ";\n";
 
         if ( hasColors )
         {
             shader += "   v_col = "
-                    + ShaderProgram.COLOR_ATTRIBUTE
-                    + ";\n"
-                    + "   v_col.a *= 255.0 / 254.0;\n";
+                      + ShaderProgram.COLOR_ATTRIBUTE
+                      + ";\n"
+                      + "   v_col.a *= 255.0 / 254.0;\n";
         }
 
         for ( var i = 0; i < numTexCoords; i++ )
@@ -306,9 +368,9 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     private static string CreateFragmentShader( bool hasColors, int numTexCoords )
     {
         var shader = "#version 460\n"
-                   + "#ifdef GL_ES\n"
-                   + "precision mediump float;\n"
-                   + "#endif\n";
+                     + "#ifdef GL_ES\n"
+                     + "precision mediump float;\n"
+                     + "#endif\n";
 
         if ( hasColors )
         {
@@ -373,5 +435,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         }
 
         _mesh.Dispose();
+
+        GC.SuppressFinalize( this );
     }
 }

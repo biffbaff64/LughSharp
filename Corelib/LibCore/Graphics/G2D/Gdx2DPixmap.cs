@@ -267,8 +267,6 @@ public partial class Gdx2DPixmap : IDisposable
     /// <param name="requestedFormat"> The new Format. </param>
     private void ConvertFormatTo( int requestedFormat )
     {
-        Logger.Checkpoint();
-
         var pixmap = new Gdx2DPixmap( ( int )Width, ( int )Height, requestedFormat );
 
         pixmap.SetBlend( PixmapFormat.GDX_2D_BLEND_NONE );

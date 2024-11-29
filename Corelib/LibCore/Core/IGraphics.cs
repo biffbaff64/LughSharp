@@ -29,7 +29,7 @@ using Corelib.LibCore.Graphics.OpenGL;
 namespace Corelib.LibCore.Core;
 
 [PublicAPI]
-public interface IGraphics
+public partial interface IGraphics
 {
     #region properties
 
@@ -40,103 +40,12 @@ public interface IGraphics
     float                  DeltaTime             { get; set; }
     int                    Width                 { get; }
     int                    Height                { get; }
-    int                    BackBufferWidth       { get; }
-    int                    BackBufferHeight      { get; }
+    int                    BackBufferWidth       { get; set; }
+    int                    BackBufferHeight      { get; set; }
     bool                   IsFullscreen          { get; }
     Color                  WindowBackgroundColor { get; set; }
 
     #endregion properties
-
-    // ========================================================================
-    // ========================================================================
-
-    #region nested classes
-
-    /// <summary>
-    /// Describes a fullscreen display mode, having the properties <see cref="Width"/>,
-    /// <see cref="Height"/>, <see cref="RefreshRate"/>, and <see cref="BitsPerPixel"/>.
-    /// </summary>
-    [PublicAPI]
-    public class DisplayMode
-    {
-        public int Width        { get; set; }
-        public int Height       { get; set; }
-        public int RefreshRate  { get; set; }
-        public int BitsPerPixel { get; set; }
-
-        /// <summary>
-        /// Creates a new DisplayMode object, using the specified width, height,
-        /// refresh rate and bits per pixel values.
-        /// </summary>
-        /// <param name="width"> Width of this display mode in pixels. </param>
-        /// <param name="height"> Height of this display mode in pixels. </param>
-        /// <param name="refreshRate"> The refresh rate. </param>
-        /// <param name="bitsPerPixel"> Bits per Pixel. </param>
-        public DisplayMode( int width, int height, int refreshRate, int bitsPerPixel )
-        {
-            Width        = width;
-            Height       = height;
-            RefreshRate  = refreshRate;
-            BitsPerPixel = bitsPerPixel;
-        }
-
-        /// <inheritdoc />
-        public override string ToString()
-        {
-            return $"{Width}x{Height}, bpp: {BitsPerPixel}, hz: {RefreshRate}";
-        }
-    }
-
-    // ========================================================================
-    // ========================================================================
-
-    [PublicAPI]
-    public class GdxMonitor
-    {
-        public int    VirtualX { get; set; }
-        public int    VirtualY { get; set; }
-        public string Name     { get; set; }
-
-        protected GdxMonitor( int virtualX, int virtualY, string name )
-        {
-            this.VirtualX = virtualX;
-            this.VirtualY = virtualY;
-            this.Name     = name;
-        }
-    }
-
-    // ========================================================================
-    // ========================================================================
-
-    /// <summary>
-    /// Class describing the bits per pixel, depth buffer precision,
-    /// stencil precision and number of MSAA samples.
-    /// </summary>
-    [PublicAPI]
-    public class BufferFormatDescriptor
-    {
-        public int R       { get; set; } // number of bits per color channel.
-        public int G       { get; set; } // ...
-        public int B       { get; set; } // ...
-        public int A       { get; set; } // ...
-        public int Depth   { get; set; } // number of bits for depth and stencil buffer.
-        public int Stencil { get; set; } // ...
-        public int Samples { get; set; } // number of samples for multi-sample anti-aliasing (MSAA).
-
-        /// <summary>
-        /// Whether coverage sampling anti-aliasing is used. If so, you have
-        /// to clear the coverage buffer as well!
-        /// </summary>
-        public bool CoverageSampling { get; set; }
-
-        public override string ToString()
-        {
-            return $"r - {R}, g - {G}, b - {B}, a - {A}, depth - {Depth}, stencil - "
-                   + $"{Stencil}, num samples - {Samples}, coverage sampling - {CoverageSampling}";
-        }
-    }
-
-    #endregion nested classes
 
     // ========================================================================
     // ========================================================================

@@ -29,14 +29,72 @@ using Corelib.LibCore.Utils.Exceptions;
 namespace Corelib.LibCore.Graphics;
 
 /// <summary>
-/// Open GLES wrapper for TextureArray.
+/// OpenGL wrapper for TextureArray.
 /// </summary>
 [PublicAPI]
-public class TextureArray : GLTexture, IManageable
+public class TextureArray : GLTexture, IManaged
 {
     private static readonly Dictionary< IApplication, List< TextureArray > > _managedTextureArrays = new();
 
     private ITextureArrayData _data;
+
+    // ========================================================================
+
+    #region constructors
+
+    /// <summary>
+    /// </summary>
+    /// <param name="internalPaths"></param>
+    public TextureArray( params string[] internalPaths )
+        : this( GetInternalHandles( internalPaths ) )
+    {
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="files"></param>
+    public TextureArray( params FileInfo[] files )
+        : this( false, files )
+    {
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="useMipMaps"></param>
+    /// <param name="files"></param>
+    public TextureArray( bool useMipMaps, params FileInfo[] files )
+        : this( useMipMaps, Pixmap.ColorFormat.RGBA8888, files )
+    {
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="useMipMaps"></param>
+    /// <param name="format"></param>
+    /// <param name="files"></param>
+    public TextureArray( bool useMipMaps, Pixmap.ColorFormat format, params FileInfo[] files )
+        : this( TextureArrayDataFactory.LoadFromFiles( format, useMipMaps, files ) )
+    {
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="data"></param>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public TextureArray( ITextureArrayData data )
+        : base( IGL.GL_TEXTURE_2D_ARRAY, Gdx.GL.glGenTexture() )
+    {
+        _data = null!;
+
+        Load( data );
+
+        if ( data.Managed )
+        {
+            AddManagedTexture( Gdx.App, this );
+        }
+    }
+
+    #endregion constructors
 
     // ========================================================================
 
@@ -150,65 +208,7 @@ public class TextureArray : GLTexture, IManageable
         _managedTextureArrays[ app ].Add( texture );
         _managedTextureArrays[ app ] = managedTextureArray;
     }
-
-    // ========================================================================
-
-    #region constructors
-
-    /// <summary>
-    /// </summary>
-    /// <param name="internalPaths"></param>
-    public TextureArray( params string[] internalPaths )
-        : this( GetInternalHandles( internalPaths ) )
-    {
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="files"></param>
-    public TextureArray( params FileInfo[] files )
-        : this( false, files )
-    {
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="useMipMaps"></param>
-    /// <param name="files"></param>
-    public TextureArray( bool useMipMaps, params FileInfo[] files )
-        : this( useMipMaps, Pixmap.ColorFormat.RGBA8888, files )
-    {
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="useMipMaps"></param>
-    /// <param name="format"></param>
-    /// <param name="files"></param>
-    public TextureArray( bool useMipMaps, Pixmap.ColorFormat format, params FileInfo[] files )
-        : this( TextureArrayDataFactory.LoadFromFiles( format, useMipMaps, files ) )
-    {
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="data"></param>
-    /// <exception cref="GdxRuntimeException"></exception>
-    public TextureArray( ITextureArrayData data )
-        : base( IGL.GL_TEXTURE_2D_ARRAY, Gdx.GL.glGenTexture() )
-    {
-        _data = null!;
-
-        Load( data );
-
-        if ( data.Managed )
-        {
-            AddManagedTexture( Gdx.App, this );
-        }
-    }
-
-    #endregion constructors
-
+    
     // ========================================================================
     
     #region aliases

@@ -91,8 +91,6 @@ public class DesktopGLWindow : IDisposable
                             DesktopGLApplicationConfiguration config,
                             IDesktopGLApplicationBase application )
     {
-        Logger.Checkpoint();
-
         Listener       = listener;
         WindowListener = config.WindowListener;
         AppConfig      = DesktopGLApplicationConfiguration.Copy( config );
@@ -103,9 +101,6 @@ public class DesktopGLWindow : IDisposable
     /// </summary>
     public void Initialise( GLFW.Window? window, IDesktopGLApplicationBase app )
     {
-        Logger.Checkpoint();
-        Logger.Debug( $"window: {window?.GetHandle()}, app: {app}" );
-
         this.GlfwWindow         = window;
         this.Input              = app.CreateInput( this );
         this.Graphics           = new DesktopGLGraphics( this );
@@ -113,8 +108,6 @@ public class DesktopGLWindow : IDisposable
 
         Gdx.Input    = Input;
         Gdx.Graphics = Graphics;
-
-        Logger.Checkpoint();
 
         //@formatter:off
         Glfw.SetWindowFocusCallback     ( window, DesktopWindowCallbacks.GdxFocusCallback );
@@ -125,11 +118,7 @@ public class DesktopGLWindow : IDisposable
         Glfw.SetWindowRefreshCallback   ( window, DesktopWindowCallbacks.GdxRefreshCallback );
         //@formatter:on
 
-        Logger.Checkpoint();
-
         WindowListener?.Created( this );
-
-        Logger.Checkpoint();
     }
 
     /// <summary>
@@ -208,10 +197,12 @@ public class DesktopGLWindow : IDisposable
     /// </summary>
     public void MakeCurrent()
     {
+        Glfw.MakeContextCurrent( GlfwWindow );
+
+        Gdx.GL.glGetError();
+        
         Gdx.Graphics = Graphics;
         Gdx.Input    = Input;
-
-        Glfw.MakeContextCurrent( GlfwWindow );
     }
 
     /// <summary>
@@ -403,8 +394,6 @@ public class DesktopGLWindow : IDisposable
     /// </param>
     public static void SetIcon( GLFW.Window window, Pixmap[] images )
     {
-        Logger.Checkpoint();
-
         if ( Platform.IsMac )
         {
             return;

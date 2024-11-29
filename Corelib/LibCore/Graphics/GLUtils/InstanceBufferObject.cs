@@ -47,13 +47,10 @@ public class InstanceBufferObject : IInstanceData
     public InstanceBufferObject( bool isStatic, int numVertices, params VertexAttribute[] attributes )
         : this( isStatic, numVertices, new VertexAttributes( attributes ) )
     {
-        Logger.Checkpoint();
     }
 
     public InstanceBufferObject( bool isStatic, int numVertices, VertexAttributes instanceAttributes )
     {
-        Logger.Checkpoint();
-
         _bufferHandle = ( int ) Gdx.GL.glGenBuffer();
 
         var data = BufferUtils.NewByteBuffer( instanceAttributes.VertexSize * numVertices, false );

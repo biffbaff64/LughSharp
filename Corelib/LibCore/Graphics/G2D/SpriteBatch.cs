@@ -174,6 +174,8 @@ public class SpriteBatch : IBatch
 
         RenderCalls = 0;
 
+        Gdx.GL.glEnable( IGL.GL_TEXTURE_2D );
+        
         Gdx.GL.glDepthMask( false );
 
         if ( _customShader != null )
@@ -1514,21 +1516,28 @@ public class SpriteBatch : IBatch
     // ========================================================================
     // ========================================================================
 
+    private bool once = true;
+    
     private void DebugVertices()
     {
-        Logger.Debug( "Begin DebugVertices()" );
-
-        Logger.Debug( $"ColorPacked ABGR: {Color.ToFloatBitsABGR():F1}" );
-        Logger.Debug( $"ColorPacked RGBA: {Color.ToFloatBitsRGBA():F1}" );
-        Logger.Debug( $"FloatToHexString ABGR: {NumberUtils.FloatToHexString( Color.ToFloatBitsABGR() )}" );
-        Logger.Debug( $"FloatToHexString RGBA: {NumberUtils.FloatToHexString( Color.ToFloatBitsRGBA() )}" );
-        Logger.Debug( $"Color: {Color.RGBAToString()}" );
-
-        for ( var i = 0; i < 20; i++ )
+        if ( once )
         {
-            Logger.Debug( $"Vertices[{i}]: {Vertices[ i ]}" );
-        }
+            Logger.Debug( "Begin DebugVertices()" );
 
-        Logger.Debug( "End DebugVertices()" );
+            Logger.Debug( $"ColorPacked ABGR: {Color.ToFloatBitsABGR():F1}" );
+            Logger.Debug( $"ColorPacked RGBA: {Color.ToFloatBitsRGBA():F1}" );
+            Logger.Debug( $"FloatToHexString ABGR: {NumberUtils.FloatToHexString( Color.ToFloatBitsABGR() )}" );
+            Logger.Debug( $"FloatToHexString RGBA: {NumberUtils.FloatToHexString( Color.ToFloatBitsRGBA() )}" );
+            Logger.Debug( $"Color: {Color.RGBAToString()}" );
+
+            for ( var i = 0; i < 20; i++ )
+            {
+                Logger.Debug( $"Vertices[{i}]: {Vertices[ i ]}" );
+            }
+
+            Logger.Debug( "End DebugVertices()" );
+            
+            once = false;
+        }
     }
 }

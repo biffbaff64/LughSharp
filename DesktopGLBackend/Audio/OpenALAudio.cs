@@ -27,7 +27,7 @@ using Corelib.LibCore.Audio.OpenAL;
 using Corelib.LibCore.Maths;
 using Corelib.LibCore.Utils.Collections;
 using Corelib.LibCore.Utils.Exceptions;
-using JetBrains.Annotations;
+
 using Exception = System.Exception;
 
 namespace DesktopGLBackend.Audio;

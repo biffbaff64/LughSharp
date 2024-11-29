@@ -55,8 +55,6 @@ public class ShapeRenderer : IDisposable
 
     public ShapeRenderer( int maxVertices = 5000, ShaderProgram? defaultShader = null )
     {
-        Logger.Checkpoint();
-
         Renderer = defaultShader == null
                        ? new ImmediateModeRenderer20( maxVertices, false, true, 0 )
                        : new ImmediateModeRenderer20( maxVertices, false, true, 0, defaultShader );

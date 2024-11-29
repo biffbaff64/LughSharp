@@ -22,13 +22,14 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Corelib.LibCore.Utils.Collections;
 using Corelib.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 
 namespace Corelib.LibCore.Graphics.G2D;
 
 [PublicAPI]
-public partial record TextureAtlasData
+public partial class TextureAtlasData
 {
     internal static readonly bool[] HasIndexes = [ false ];
 
@@ -64,11 +65,11 @@ public partial record TextureAtlasData
         //@formatter:off
         Dictionary< string, IField< Page > > pageFields = new( 15 )
         {
-            { "pma",        new PageFieldPma()    },
-            { "size",       new PageFieldParse()  },
+            { "size",       new PageFieldSize()   },
             { "format",     new PageFieldFormat() },
             { "filter",     new PageFieldFilter() },
             { "repeat",     new PageFieldRepeat() },
+            { "pma",        new PageFieldPma()    },
         };
 
         Dictionary< string, IField< Region > > regionFields = new( 127 )
@@ -209,7 +210,6 @@ public partial record TextureAtlasData
                         region.OriginalHeight = region.Height;
                     }
 
-                    // ( if names != null and names.Count > 0 )
                     if ( names is { Count: > 0 } )
                     {
                         region.Names  = names.ToArray();
@@ -313,15 +313,15 @@ public partial record TextureAtlasData
         /// </summary>
         public FileInfo? TextureFile { get; set; }
 
-        public bool          UseMipMaps         { get; set; }
-        public Pixmap.ColorFormat Format             { get; set; } = Pixmap.ColorFormat.RGBA8888;
-        public TextureFilter MinFilter          { get; set; } = TextureFilter.Nearest;
-        public TextureFilter MagFilter          { get; set; } = TextureFilter.Nearest;
-        public TextureWrap   UWrap              { get; set; } = TextureWrap.ClampToEdge;
-        public TextureWrap   VWrap              { get; set; } = TextureWrap.ClampToEdge;
-        public float         Width              { get; set; }
-        public float         Height             { get; set; }
-        public bool          PreMultipliedAlpha { get; set; }
+        public bool                  UseMipMaps         { get; set; }
+        public Pixmap.ColorFormat    Format             { get; set; } = Pixmap.ColorFormat.RGBA8888;
+        public Texture.TextureFilter MinFilter          { get; set; } = Texture.TextureFilter.Nearest;
+        public Texture.TextureFilter MagFilter          { get; set; } = Texture.TextureFilter.Nearest;
+        public Texture.TextureWrap   UWrap              { get; set; } = Texture.TextureWrap.ClampToEdge;
+        public Texture.TextureWrap   VWrap              { get; set; } = Texture.TextureWrap.ClampToEdge;
+        public float                 Width              { get; set; }
+        public float                 Height             { get; set; }
+        public bool                  PreMultipliedAlpha { get; set; }
     }
 
     [PublicAPI]

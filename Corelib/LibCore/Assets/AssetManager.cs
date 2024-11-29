@@ -77,7 +77,6 @@ public class AssetManager
     /// </summary>
     public AssetManager() : this( new InternalFileHandleResolver() )
     {
-        Logger.Checkpoint();
     }
 
     /// <summary>
@@ -89,8 +88,6 @@ public class AssetManager
     /// <param name="defaultLoaders">Whether to add the default loaders (default is true).</param>
     public AssetManager( IFileHandleResolver resolver, bool defaultLoaders = true )
     {
-        Logger.Checkpoint();
-
         if ( defaultLoaders )
         {
             Logger.Debug( "Setting default loaders..." );
@@ -548,8 +545,6 @@ public class AssetManager
     {
         lock ( this )
         {
-            Logger.Checkpoint();
-
             var sb = new StringBuilder();
 
             sb.Append( $"_assets.Length    : {_assets.Count}\n" );
@@ -1299,8 +1294,6 @@ public class AssetManager
     /// <exception cref="GdxRuntimeException">Thrown if the asset is not loaded or cannot be found.</exception>
     public void Unload( string fileName )
     {
-        Logger.Checkpoint();
-
         // Convert all Windows path separators to Unix style
         fileName = fileName.Replace( '\\', '/' );
 

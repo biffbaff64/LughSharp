@@ -483,8 +483,8 @@ public class NinePatch
         var u2 = region.U2;
         var v2 = region.V;
 
-        if ( ( Texture?.MagFilter == TextureFilter.Linear )
-          || ( Texture?.MinFilter == TextureFilter.Linear ) )
+        if ( ( Texture?.MagFilter == Texture.TextureFilter.Linear )
+          || ( Texture?.MinFilter == Texture.TextureFilter.Linear ) )
         {
             if ( isStretchW )
             {

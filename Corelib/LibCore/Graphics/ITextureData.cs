@@ -42,7 +42,7 @@ namespace Corelib.LibCore.Graphics;
 /// </para>
 /// </summary>
 [PublicAPI]
-public interface ITextureData : IManageable
+public interface ITextureData : IManaged
 {
     public enum TextureType
     {

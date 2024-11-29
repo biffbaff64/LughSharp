@@ -508,7 +508,7 @@ public class PixmapPacker : IDisposable
     /// so far. After calling this method, disposing the packer will no longer
     /// dispose the page pixmaps.
     /// </summary>
-    public TextureAtlas GenerateTextureAtlas( TextureFilter minFilter, TextureFilter magFilter, bool useMipMaps )
+    public TextureAtlas GenerateTextureAtlas( Texture.TextureFilter minFilter, Texture.TextureFilter magFilter, bool useMipMaps )
     {
         var atlas = new TextureAtlas();
 
@@ -529,8 +529,8 @@ public class PixmapPacker : IDisposable
     /// Has useIndexes on by default so as to keep backwards compatibility
     /// </summary>
     public void UpdateTextureAtlas( TextureAtlas atlas,
-                                    TextureFilter minFilter,
-                                    TextureFilter magFilter,
+                                    Texture.TextureFilter minFilter,
+                                    Texture.TextureFilter magFilter,
                                     bool useMipMaps )
     {
         UpdateTextureAtlas( atlas, minFilter, magFilter, useMipMaps, useIndexes: true );
@@ -545,8 +545,8 @@ public class PixmapPacker : IDisposable
     /// packer will no longer dispose the page pixmaps.
     /// </summary>
     public void UpdateTextureAtlas( TextureAtlas atlas,
-                                    TextureFilter minFilter,
-                                    TextureFilter magFilter,
+                                    Texture.TextureFilter minFilter,
+                                    Texture.TextureFilter magFilter,
                                     bool useMipMaps,
                                     bool useIndexes )
     {
@@ -609,12 +609,12 @@ public class PixmapPacker : IDisposable
     }
 
     /// <summary>
-    /// Calls <see cref="UpdatePageTextures(TextureFilter, TextureFilter, bool)"/>
+    /// Calls <see cref="UpdatePageTextures(Texture.TextureFilter, Texture.TextureFilter, bool)"/>
     /// for each page and adds a region to the specified array for each page texture.
     /// </summary>
     public void UpdateTextureRegions( List< TextureRegion > regions,
-                                      TextureFilter minFilter,
-                                      TextureFilter magFilter,
+                                      Texture.TextureFilter minFilter,
+                                      Texture.TextureFilter magFilter,
                                       bool useMipMaps )
     {
         UpdatePageTextures( minFilter, magFilter, useMipMaps );
@@ -631,10 +631,10 @@ public class PixmapPacker : IDisposable
     }
 
     /// <summary>
-    /// Calls <see cref="Page.UpdateTexture(TextureFilter, TextureFilter, bool)"/>"
+    /// Calls <see cref="Page.UpdateTexture(Texture.TextureFilter, Texture.TextureFilter, bool)"/>"
     /// for each page.
     /// </summary>
-    public void UpdatePageTextures( TextureFilter minFilter, TextureFilter magFilter, bool useMipMaps )
+    public void UpdatePageTextures( Texture.TextureFilter minFilter, Texture.TextureFilter magFilter, bool useMipMaps )
     {
         foreach ( var page in Pages )
         {
@@ -854,7 +854,7 @@ public class PixmapPacker : IDisposable
         /// this method was last called.
         /// </summary>
         /// <returns> true if the texture was created or reuploaded. </returns>
-        public bool UpdateTexture( TextureFilter minFilter, TextureFilter magFilter, bool useMipMaps )
+        public bool UpdateTexture( Texture.TextureFilter minFilter, Texture.TextureFilter magFilter, bool useMipMaps )
         {
             if ( Texture != null )
             {

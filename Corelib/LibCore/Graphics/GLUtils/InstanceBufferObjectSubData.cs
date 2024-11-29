@@ -62,7 +62,6 @@ public class InstanceBufferObjectSubData : IInstanceData
                                         params VertexAttribute[] instanceAttributes )
         : this( isStatic, numInstances, new VertexAttributes( instanceAttributes ) )
     {
-        Logger.Checkpoint();
     }
 
     /// <summary>
@@ -73,8 +72,6 @@ public class InstanceBufferObjectSubData : IInstanceData
     /// <param name="instanceAttributes"> the <see cref="VertexAttributes"/>". </param>
     public InstanceBufferObjectSubData( bool isStatic, int numInstances, VertexAttributes instanceAttributes )
     {
-        Logger.Checkpoint();
-
         _isStatic   = isStatic;
         Attributes  = instanceAttributes;
         _byteBuffer = BufferUtils.NewByteBuffer( Attributes.VertexSize * numInstances, false );

@@ -1194,9 +1194,7 @@ public class SpriteCache
     /// </summary>
     /// <param name="cacheID"></param>
     /// <param name="offset"> The first image to render. </param>
-    /// <param name="length">
-    /// The number of images from the first image (inclusive) to render.
-    /// </param>
+    /// <param name="length"> The number of images from the first image (inclusive) to render. </param>
     public void Draw( int cacheID, int offset, int length )
     {
         if ( !IsDrawing )
@@ -1327,6 +1325,7 @@ public class SpriteCache
         return shader;
     }
 
+    //TODO: Update this documentation, this is GL not GLES
     /// <summary>
     /// Sets the shader to be used in a GLES 2.0 environment. Vertex position
     /// attribute is called "a_position", the texture coordinates attribute is

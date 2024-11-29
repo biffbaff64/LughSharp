@@ -96,15 +96,15 @@ public class FloatFrameBuffer : FrameBuffer
 
         if ( Gdx.App.AppType == Platform.ApplicationType.WindowsGL )
         {
-            result.SetFilter( TextureFilter.Linear, TextureFilter.Linear );
+            result.SetFilter( Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
         }
         else
         {
             // no filtering for float textures in OpenGL ES
-            result.SetFilter( TextureFilter.Nearest, TextureFilter.Nearest );
+            result.SetFilter( Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest );
         }
 
-        result.SetWrap( TextureWrap.ClampToEdge, TextureWrap.ClampToEdge );
+        result.SetWrap( Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge );
 
         return result;
     }

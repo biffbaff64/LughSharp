@@ -62,8 +62,6 @@ public class IndexBufferObjectSubData : IIndexData
     /// <param name="maxIndices"> the maximum number of indices this buffer can hold </param>
     public IndexBufferObjectSubData( bool isStatic, int maxIndices )
     {
-        Logger.Checkpoint();
-
         _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2, false );
 
         _usage  = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
@@ -81,8 +79,6 @@ public class IndexBufferObjectSubData : IIndexData
     /// <param name="maxIndices"> the maximum number of indices this buffer can hold </param>
     public IndexBufferObjectSubData( int maxIndices )
     {
-        Logger.Checkpoint();
-
         _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2, false );
 
         _usage  = IGL.GL_STATIC_DRAW;

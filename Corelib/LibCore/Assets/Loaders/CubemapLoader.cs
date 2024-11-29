@@ -137,10 +137,10 @@ public class CubemapLoader : AsynchronousAssetLoader
         /// </summary>
         public Pixmap.ColorFormat? Format = null;
 
-        public TextureFilter MagFilter = TextureFilter.Nearest;
-        public TextureFilter MinFilter = TextureFilter.Nearest;
-        public TextureWrap   WrapU     = TextureWrap.ClampToEdge;
-        public TextureWrap   WrapV     = TextureWrap.ClampToEdge;
+        public Texture.TextureFilter MagFilter = Texture.TextureFilter.Nearest;
+        public Texture.TextureFilter MinFilter = Texture.TextureFilter.Nearest;
+        public Texture.TextureWrap   WrapU     = Texture.TextureWrap.ClampToEdge;
+        public Texture.TextureWrap   WrapV     = Texture.TextureWrap.ClampToEdge;
 
         /// <summary>
         /// The texture to put the TextureData in, optional.

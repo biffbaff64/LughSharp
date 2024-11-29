@@ -38,23 +38,23 @@ public interface ITextureProvider
     [PublicAPI]
     public class FileTextureProvider : ITextureProvider
     {
-        private readonly TextureFilter _magFilter;
-        private readonly TextureFilter _minFilter;
-        private readonly bool          _useMipMaps;
-        private readonly TextureWrap   _uWrap;
-        private readonly TextureWrap   _vWrap;
+        private readonly Texture.TextureFilter _magFilter;
+        private readonly Texture.TextureFilter _minFilter;
+        private readonly bool                  _useMipMaps;
+        private readonly Texture.TextureWrap   _uWrap;
+        private readonly Texture.TextureWrap   _vWrap;
 
         public FileTextureProvider()
         {
-            _minFilter  = _magFilter = TextureFilter.Linear;
-            _uWrap      = _vWrap     = TextureWrap.Repeat;
+            _minFilter  = _magFilter = Texture.TextureFilter.Linear;
+            _uWrap      = _vWrap     = Texture.TextureWrap.Repeat;
             _useMipMaps = false;
         }
 
-        public FileTextureProvider( TextureFilter minFilter,
-                                    TextureFilter magFilter,
-                                    TextureWrap uWrap,
-                                    TextureWrap vWrap,
+        public FileTextureProvider( Texture.TextureFilter minFilter,
+                                    Texture.TextureFilter magFilter,
+                                    Texture.TextureWrap uWrap,
+                                    Texture.TextureWrap vWrap,
                                     bool useMipMaps )
         {
             _minFilter  = minFilter;

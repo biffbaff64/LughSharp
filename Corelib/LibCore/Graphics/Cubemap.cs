@@ -36,20 +36,15 @@ namespace Corelib.LibCore.Graphics;
 /// Wraps a standard OpenGL ES Cubemap. Must be disposed when it is no longer used.
 /// </summary>
 [PublicAPI]
-public class Cubemap : GLTexture, IManageable
+public class Cubemap : GLTexture, IManaged
 {
     public static AssetManager? AssetManager { get; set; }
     public        ICubemapData  Data         { get; set; }
 
-    public override int Width  => Data.Width;
-    public override int Height => Data.Height;
-    public override int Depth  => 0;
-
-    public bool IsManaged
-    {
-        get => Data.IsManaged;
-        set { }
-    }
+    public override int  Width     => Data.Width;
+    public override int  Height    => Data.Height;
+    public override int  Depth     => 0;
+    public          bool IsManaged => Data.IsManaged;
 
     // ========================================================================
 

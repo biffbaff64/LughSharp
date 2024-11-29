@@ -43,8 +43,6 @@ public static class TextureDataFactory
     /// <exception cref="ArgumentNullException">Thrown when the file parameter is null.</exception>
     public static ITextureData LoadFromFile( FileInfo file, bool useMipMaps = true )
     {
-        Logger.Checkpoint();
-
         return LoadFromFile( file, Pixmap.ColorFormat.RGBA8888, useMipMaps );
     }
 

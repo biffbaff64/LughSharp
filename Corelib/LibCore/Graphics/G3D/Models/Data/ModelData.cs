@@ -22,12 +22,13 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Corelib.LibCore.Assets.Loaders;
 using Corelib.LibCore.Utils.Exceptions;
 
 namespace Corelib.LibCore.Graphics.G3D.Models.Data;
 
 /// <summary>
-/// Returned by a <see cref="ModelLoader{TP}"/>, contains meshes, materials, nodes and animations.
+/// Returned by a <see cref="ModelLoader"/>, contains meshes, materials, nodes and animations.
 /// OpenGL resources like textures or vertex buffer objects are not stored. Instead, a ModelData
 /// instance needs to be converted to a Model first.
 /// </summary>

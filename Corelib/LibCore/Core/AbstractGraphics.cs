@@ -38,10 +38,11 @@ public abstract class AbstractGraphics : IGraphics
     public IGraphics.BufferFormatDescriptor BufferFormat { get; set; } = null!;
     public IGLBindings                      GL           { get; set; } = null!;
 
-    public virtual int                  BackBufferWidth     { get; protected set; }
-    public virtual int                  BackBufferHeight    { get; protected set; }
-    public virtual int                  LogicalWidth        { get; set; }
-    public virtual int                  LogicalHeight       { get; set; }
+    public int BackBufferWidth  { get; set; }
+    public int BackBufferHeight { get; set; }
+    public int LogicalWidth     { get; set; }
+    public int LogicalHeight    { get; set; }
+
     public virtual int                  Width               { get; }
     public virtual int                  Height              { get; }
     public virtual float                DeltaTime           { get; set; }
@@ -76,7 +77,7 @@ public abstract class AbstractGraphics : IGraphics
     /// <summary>
     /// Returns the amount of pixels per logical pixel (point).
     /// </summary>
-    float IGraphics.GetBackBufferScale() => BackBufferWidth / ( float ) Width;
+    float IGraphics.GetBackBufferScale() => BackBufferWidth / ( float )Width;
 
     #endregion implemented methods
 
@@ -89,9 +90,9 @@ public abstract class AbstractGraphics : IGraphics
     // between the class and interface, which just makes everything annoying tbh.
 
     public abstract IGraphics.DisplayMode[] GetDisplayModes();
-    public abstract IGraphics.DisplayMode   GetDisplayMode();
+    public abstract IGraphics.DisplayMode GetDisplayMode();
     public abstract IGraphics.DisplayMode[] GetDisplayModes( DotGLFW.Monitor monitor );
-    public abstract IGraphics.DisplayMode   GetDisplayMode( DotGLFW.Monitor monitor );
+    public abstract IGraphics.DisplayMode GetDisplayMode( DotGLFW.Monitor monitor );
 
     // ========================================================================
     public abstract bool SetWindowedMode( int width, int height );
@@ -105,17 +106,17 @@ public abstract class AbstractGraphics : IGraphics
     public abstract bool SupportsExtension( string extension );
     public abstract bool SupportsDisplayModeChange();
     public abstract void RequestRendering();
-    public abstract int  GetSafeInsetLeft();
-    public abstract int  GetSafeInsetTop();
-    public abstract int  GetSafeInsetBottom();
-    public abstract int  GetSafeInsetRight();
+    public abstract int GetSafeInsetLeft();
+    public abstract int GetSafeInsetTop();
+    public abstract int GetSafeInsetBottom();
+    public abstract int GetSafeInsetRight();
     public abstract long GetFrameID();
-    public abstract int  GetFramesPerSecond();
+    public abstract int GetFramesPerSecond();
 
     // ========================================================================
     public abstract ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot );
-    public abstract void    SetCursor( ICursor cursor );
-    public abstract void    SetSystemCursor( ICursor.SystemCursor systemCursor );
+    public abstract void SetCursor( ICursor cursor );
+    public abstract void SetSystemCursor( ICursor.SystemCursor systemCursor );
 
     // ========================================================================
     public abstract (float X, float Y) GetPpcXY();

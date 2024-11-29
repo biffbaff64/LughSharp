@@ -45,7 +45,7 @@ namespace Corelib.LibCore.Graphics;
 /// interface.
 /// </summary>
 [PublicAPI]
-public interface ICubemapData : IManageable
+public interface ICubemapData : IManaged
 {
     /// <summary>
     /// whether the TextureData is prepared or not.

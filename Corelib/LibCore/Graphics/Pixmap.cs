@@ -94,8 +94,6 @@ public class Pixmap : IDisposable
     /// <param name="format">The <see cref="ColorFormat"/></param>
     public Pixmap( int width, int height, Pixmap.ColorFormat format )
     {
-        Logger.Checkpoint();
-
         Gdx2DPixmap = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DFormat( format ) );
 
         SetColor( Graphics.Color.Red );
@@ -105,13 +103,11 @@ public class Pixmap : IDisposable
     }
 
     /// <summary>
-    /// Creates a new Pixmap instance from the given encoded image data.
-    /// The image can be encoded as JPEG, PNG or BMP.
+    /// Creates a new Pixmap instance from the given encoded image data. The image can be encoded
+    /// as JPEG, PNG or BMP. The size of data used is <b>len</b>, starting from <b>offset</b>.
     /// </summary>
     public Pixmap( byte[] encodedData, int offset, int len )
     {
-        Logger.Checkpoint();
-
         try
         {
             Gdx2DPixmap = new Gdx2DPixmap( encodedData, offset, len, 0 );

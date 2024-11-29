@@ -163,39 +163,4 @@ public class PixmapFormat
             var _                         => "Unknown",
         };
     }
-
-    /// <summary>
-    /// Extracts the <c>Width</c> and <c>Height</c> from a PNG file.
-    /// </summary>
-    /// <remarks>
-    /// Adapted from code obtained elsewhere. I'm not sure of where, and will credit
-    /// the original author when I have corrected this.
-    /// </remarks>
-    public static ( int width, int height ) GetPNGWidthHeight( FileInfo file )
-    {
-        if ( file.Extension.ToLower() != ".png" )
-        {
-            throw new GdxRuntimeException( $"PNG files ONLY!: ({file.Name})" );
-        }
-
-        var br = new BinaryReader( File.OpenRead( file.Name ) );
-
-        br.BaseStream.Position = 16;
-
-        var widthbytes  = new byte[ sizeof( int ) ];
-        var heightbytes = new byte[ sizeof( int ) ];
-
-        for ( var i = 0; i < sizeof( int ); i++ )
-        {
-            widthbytes[ sizeof( int ) - 1 - i ] = br.ReadByte();
-        }
-
-        for ( var i = 0; i < sizeof( int ); i++ )
-        {
-            heightbytes[ sizeof( int ) - 1 - i ] = br.ReadByte();
-        }
-
-        return ( BitConverter.ToInt32( widthbytes, 0 ),
-                 BitConverter.ToInt32( heightbytes, 0 ) );
-    }
 }

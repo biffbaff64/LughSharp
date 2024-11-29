@@ -45,8 +45,6 @@ public class PixmapTextureData : ITextureData
                               bool disposePixmap,
                               bool managed = false )
     {
-        Logger.Checkpoint();
-
         Pixmap        = pixmap;
         UseMipMaps    = useMipMaps;
         DisposePixmap = disposePixmap;

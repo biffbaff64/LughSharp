@@ -54,8 +54,6 @@ public class AssetLoadingTask
     /// </summary>
     public AssetLoadingTask( AssetManager manager, AssetDescriptor assetDesc, AssetLoader loader )
     {
-        Logger.Checkpoint();
-
         IsAsyncLoader = _loader is AsynchronousAssetLoader;
         _startTime    = Logger.TraceLevel.Equals( Logger.LOG_DEBUG ) ? TimeUtils.NanoTime() : 0;
 
@@ -75,8 +73,6 @@ public class AssetLoadingTask
     /// </returns>
     public object? LoadAsync()
     {
-        Logger.Checkpoint();
-
         if ( Cancel )
         {
             return null;

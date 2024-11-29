@@ -22,11 +22,47 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
+using Corelib.LibCore.Utils.Exceptions;
+
 namespace Corelib.LibCore.Graphics;
 
 [PublicAPI]
-public class PNGFormatStructs
+public class PNGUtils
 {
+    /// <summary>
+    /// Extracts the <c>Width</c> and <c>Height</c> from a PNG file.
+    /// </summary>
+    /// <remarks>
+    /// Adapted from code obtained elsewhere. I'm not sure of where, and will credit
+    /// the original author when I have corrected this.
+    /// </remarks>
+    public static ( int width, int height ) GetPNGWidthHeight( FileInfo file )
+    {
+        if ( file.Extension.ToLower() != ".png" )
+        {
+            throw new GdxRuntimeException( $"PNG files ONLY!: ({file.Name})" );
+        }
+
+        var br = new BinaryReader( File.OpenRead( file.Name ) );
+
+        br.BaseStream.Position = 16;
+
+        var widthbytes  = new byte[ sizeof( int ) ];
+        var heightbytes = new byte[ sizeof( int ) ];
+
+        for ( var i = 0; i < sizeof( int ); i++ )
+        {
+            widthbytes[ sizeof( int ) - 1 - i ] = br.ReadByte();
+        }
+
+        for ( var i = 0; i < sizeof( int ); i++ )
+        {
+            heightbytes[ sizeof( int ) - 1 - i ] = br.ReadByte();
+        }
+
+        return ( BitConverter.ToInt32( widthbytes, 0 ), BitConverter.ToInt32( heightbytes, 0 ) );
+    }
+
     // Bytes 0 - 7 : Signature. Will always be 0x89504E470D0A1A0A
     // Bytes 8 -   : A series of chunks //TODO:
     // ========================================================================

@@ -189,22 +189,22 @@ public partial class PixmapPackerIO
     [PublicAPI]
     public struct SaveParameters
     {
-        public ImageFormat   Format     { get; set; }
-        public TextureFilter MinFilter  { get; set; }
-        public TextureFilter MagFilter  { get; set; }
-        public bool          UseIndexes { get; set; }
+        public ImageFormat           Format     { get; set; }
+        public Texture.TextureFilter MinFilter  { get; set; }
+        public Texture.TextureFilter MagFilter  { get; set; }
+        public bool                  UseIndexes { get; set; }
 
         public SaveParameters()
         {
             Format     = ImageFormat.PNG;
-            MinFilter  = TextureFilter.Nearest;
-            MagFilter  = TextureFilter.Nearest;
+            MinFilter  = Texture.TextureFilter.Nearest;
+            MagFilter  = Texture.TextureFilter.Nearest;
             UseIndexes = false;
         }
 
         public SaveParameters( ImageFormat format,
-                               TextureFilter minFilter,
-                               TextureFilter magFilter,
+                               Texture.TextureFilter minFilter,
+                               Texture.TextureFilter magFilter,
                                bool useIndexes )
         {
             Format     = format;

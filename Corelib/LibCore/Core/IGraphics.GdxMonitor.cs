@@ -22,13 +22,22 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace Corelib.LibCore.Utils;
+namespace Corelib.LibCore.Core;
 
-/// <summary>
-/// Interface for objects that are manageable, such as textures. 
-/// </summary>
-[PublicAPI]
-public interface IManageable
+public partial interface IGraphics
 {
-    bool IsManaged { get; set; }
+    [PublicAPI]
+    public class GdxMonitor
+    {
+        public int    VirtualX { get; set; }
+        public int    VirtualY { get; set; }
+        public string Name     { get; set; }
+
+        protected GdxMonitor( int virtualX, int virtualY, string name )
+        {
+            this.VirtualX = virtualX;
+            this.VirtualY = virtualY;
+            this.Name     = name;
+        }
+    }
 }
