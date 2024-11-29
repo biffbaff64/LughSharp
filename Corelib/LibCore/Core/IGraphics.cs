@@ -34,7 +34,7 @@ public partial interface IGraphics
     #region properties
 
     GLVersion?             GLVersion             { get; set; }
-    GraphicsBackend.Type   GraphicsType          { get; }
+    GraphicsBackend.BackendType   GraphicsType          { get; }
     BufferFormatDescriptor BufferFormat          { get; set; }
     IGLBindings            GL                    { get; set; }
     float                  DeltaTime             { get; set; }

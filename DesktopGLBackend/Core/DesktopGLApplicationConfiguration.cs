@@ -23,11 +23,15 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Text;
+
 using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics;
 using Corelib.LibCore.Graphics.GLUtils;
+using Corelib.LibCore.Graphics.OpenGL;
+
 using DesktopGLBackend.Graphics;
 using DesktopGLBackend.Window;
+
 using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Core;
@@ -38,30 +42,40 @@ namespace DesktopGLBackend.Core;
 [PublicAPI]
 public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 {
+    public enum GLEmulationType
+    {
+        ANGLE_GLES20,
+        GL20,
+        GL30,
+        GL31,
+        GL32
+    }
+
     #region properties
 
-    public bool          DisableAudio                   { get; set; } = false;
-    public int           AudioDeviceSimultaneousSources { get; set; } = 16;
-    public int           AudioDeviceBufferSize          { get; set; } = 512;
-    public int           AudioDeviceBufferCount         { get; set; } = 9;
-    public bool          Debug                          { get; set; } = false;
-    public StreamWriter? DebugStream                    { get; set; } = new( Console.OpenStandardOutput(), Encoding.UTF8 );
-    public bool          TransparentFramebuffer         { get; set; } = false;
-    public HdpiMode      HdpiMode                       { get; set; } = HdpiMode.Logical;
-    public int           Depth                          { get; set; } = 16;
-    public int           Stencil                        { get; set; } = 0;
-    public int           Samples                        { get; set; } = 0;
-    public int           IdleFPS                        { get; set; } = 60;
-    public int           ForegroundFPS                  { get; set; } = 0;
-    public int           GLContextMajorVersion          { get; set; } = GraphicsData.DEFAULT_GL_MAJOR;
-    public int           GLContextMinorVersion          { get; set; } = GraphicsData.DEFAULT_GL_MINOR;
-    public int           GLContextRevision              { get; set; } = 0;
-    public int           Red                            { get; set; } = 8;
-    public int           Green                          { get; set; } = 8;
-    public int           Blue                           { get; set; } = 8;
-    public int           Alpha                          { get; set; } = 8;
-    public string        PreferencesDirectory           { get; set; } = ".prefs/";
-    public PathTypes     PreferencesFileType            { get; set; } = PathTypes.External;
+    public bool            DisableAudio                   { get; set; } = false;
+    public int             AudioDeviceSimultaneousSources { get; set; } = 16;
+    public int             AudioDeviceBufferSize          { get; set; } = 512;
+    public int             AudioDeviceBufferCount         { get; set; } = 9;
+    public bool            Debug                          { get; set; } = false;
+    public StreamWriter?   DebugStream                    { get; set; } = new( Console.OpenStandardOutput(), Encoding.UTF8 );
+    public bool            TransparentFramebuffer         { get; set; } = false;
+    public HdpiMode        HdpiMode                       { get; set; } = HdpiMode.Logical;
+    public int             Depth                          { get; set; } = 16;
+    public int             Stencil                        { get; set; } = 0;
+    public int             Samples                        { get; set; } = 0;
+    public int             IdleFPS                        { get; set; } = 60;
+    public int             ForegroundFPS                  { get; set; } = 0;
+    public int             GLESContextMajorVersion        { get; set; } = GLData.DEFAULT_GL_MAJOR;
+    public int             GLESContextMinorVersion        { get; set; } = GLData.DEFAULT_GL_MINOR;
+    public int             GLContextRevision              { get; set; } = 0;
+    public GLEmulationType GLEmulation                    { get; set; } = GLEmulationType.GL20;
+    public int             Red                            { get; set; } = 8;
+    public int             Green                          { get; set; } = 8;
+    public int             Blue                           { get; set; } = 8;
+    public int             Alpha                          { get; set; } = 8;
+    public string          PreferencesDirectory           { get; set; } = ".prefs/";
+    public PathTypes       PreferencesFileType            { get; set; } = PathTypes.External;
 
     /// <summary>
     /// The maximum number of threads to use for network requests. Default is <see cref="int.MaxValue"/>.
@@ -107,8 +121,8 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
         Samples                        = config.Samples;
         IdleFPS                        = config.IdleFPS;
         ForegroundFPS                  = config.ForegroundFPS;
-        GLContextMajorVersion          = config.GLContextMajorVersion;
-        GLContextMinorVersion          = config.GLContextMinorVersion;
+        GLESContextMajorVersion        = config.GLESContextMajorVersion;
+        GLESContextMinorVersion        = config.GLESContextMinorVersion;
         GLContextRevision              = config.GLContextRevision;
         Red                            = config.Red;
         Green                          = config.Green;
@@ -134,8 +148,24 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    /// Sets the bit depth of the color, depth and stencil buffer as well as
-    /// multi-sampling.
+    /// Sets which OpenGL version to use to emulate OpenGL ES. If the given major/minor version
+    /// is not supported, the backend falls back to OpenGL ES 2.0 emulation through OpenGL 2.0.
+    /// The default parameters for major and minor should be 3 and 2 respectively to be compatible
+    /// with Mac OS X. Specifying major version 4 and minor version 2 will ensure that all OpenGL ES
+    /// 3.0 features are supported. Note however that Mac OS X does only support 3.2.
+    /// </summary>
+    /// <param name="glVersion"> which OpenGL ES emulation version to use </param>
+    /// <param name="glesMajorVersion"> OpenGL ES major version, use 3 as default </param>
+    /// <param name="glesMinorVersion"> OpenGL ES minor version, use 2 as default </param>
+    public void SetOpenGLEmulation( GLEmulationType glVersion, int glesMajorVersion, int glesMinorVersion )
+    {
+        this.GLEmulation             = glVersion;
+        this.GLESContextMajorVersion = glesMajorVersion;
+        this.GLESContextMinorVersion = glesMinorVersion;
+    }
+
+    /// <summary>
+    /// Sets the bit depth of the color, depth and stencil buffer as well as multi-sampling.
     /// </summary>
     /// <param name="r"> red bits (default 8) </param>
     /// <param name="g"> green bits (default 8) </param>
@@ -173,13 +203,13 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    /// Sets the vorrect values for <see cref="GLContextMajorVersion"/> and
-    /// <see cref="GLContextMinorVersion"/>. Defaults to 4 (major) and 6 (minor)
+    /// Sets the vorrect values for <see cref="GLESContextMajorVersion"/> and
+    /// <see cref="GLESContextMinorVersion"/>. Defaults to 4 (major) and 6 (minor)
     /// </summary>
     public void SetGLContextVersion( int major, int minor )
     {
-        GLContextMajorVersion = major;
-        GLContextMinorVersion = minor;
+        GLESContextMajorVersion = major;
+        GLESContextMinorVersion = minor;
     }
 
     /// <summary>

@@ -74,7 +74,7 @@ public class FloatTextureData : ITextureData
         {
             var amountOfFloats = 4;
 
-            if ( Gdx.Graphics.GraphicsType.Equals( GraphicsBackend.Type.OpenGL ) )
+            if ( Gdx.Graphics.GLVersion!.BackendType.Equals( GraphicsBackend.BackendType.OpenGL ) )
             {
                 if ( _internalFormat is IGL.GL_RGBA16_F or IGL.GL_RGBA32_F )
                 {

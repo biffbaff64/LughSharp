@@ -97,10 +97,12 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         // Config.Title becomes the name of the ApplicationListener if
         // it has no value at this point.
-        Config                       =   DesktopGLApplicationConfiguration.Copy( config );
-        Config.Title                 ??= listener.GetType().Name;
-        Config.GLContextMajorVersion =   4; //Gdx.GL.GetOpenGLVersion().major;
-        Config.GLContextMinorVersion =   6; //Gdx.GL.GetOpenGLVersion().minor;
+        Config       =   DesktopGLApplicationConfiguration.Copy( config );
+        Config.Title ??= listener.GetType().Name;
+
+        Config.SetOpenGLEmulation( DesktopGLApplicationConfiguration.GLEmulationType.GL30,
+                                   Config.GLESContextMajorVersion,
+                                   Config.GLESContextMinorVersion );
 
         // Initialise the persistant data manager
         Preferences = new Dictionary< string, IPreferences >();
@@ -175,7 +177,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         {
 //            Glfw.PollEvents();
             Glfw.WaitEvents();
-            
+
             var haveWindowsRendered = false;
             var targetFramerate     = FR_UNINITIALISED;
 
@@ -469,6 +471,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Glfw.MakeContextCurrent( windowHandle );
         Glfw.SwapInterval( config.VSyncEnabled ? 1 : 0 );
 
+        GLData.CreateCapabilities();
+
         InitGLVersion();
 
         if ( config.Debug )
@@ -493,14 +497,15 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     private void InitGLVersion()
     {
         Glfw.GetVersion( out var glMajor, out var glMinor, out var revision );
-        Glfw.WindowHint( WindowHint.ClientAPI, ClientAPI.OpenGLAPI );
-        Glfw.WindowHint( WindowHint.OpenGLProfile, OpenGLProfile.CoreProfile );
+
+        Glfw.WindowHint( WindowHint.ClientAPI, GLData.DEFAULT_CLIENT_API );
+        Glfw.WindowHint( WindowHint.OpenGLProfile, GLData.DEFAULT_OPENGL_PROFILE );
         Glfw.WindowHint( WindowHint.ContextVersionMajor, glMajor );
         Glfw.WindowHint( WindowHint.ContextVersionMinor, glMinor );
 
         Gdx.GL.Import();
 
-        Logger.Debug( $"GLFW : {glMajor}.{glMinor}.{revision} : glProfile: {OpenGLProfile.CoreProfile}" );
+        Logger.Debug( $"GLFW : {glMajor}.{glMinor}.{revision} : glProfile: {OGLProfile}" );
         Logger.Debug( $"OGLVersion: {Gdx.GL.GetOpenGLVersion().major}.{Gdx.GL.GetOpenGLVersion().minor}" );
 
         GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL );
@@ -709,10 +714,16 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Glfw.WindowHint( WindowHint.DepthBits, config.Depth );
         Glfw.WindowHint( WindowHint.Samples, config.Samples );
 
-        Glfw.WindowHint( WindowHint.ContextVersionMajor, config.GLContextMajorVersion );
-        Glfw.WindowHint( WindowHint.ContextVersionMinor, config.GLContextMinorVersion );
-        Glfw.WindowHint( WindowHint.ClientAPI, ClientAPI.OpenGLAPI );
-        Glfw.WindowHint( WindowHint.OpenGLProfile, OpenGLProfile.CoreProfile );
+        if ( config.GLEmulation is DesktopGLApplicationConfiguration.GLEmulationType.GL30
+                                   or DesktopGLApplicationConfiguration.GLEmulationType.GL31
+                                   or DesktopGLApplicationConfiguration.GLEmulationType.GL32 )
+        {
+            Glfw.WindowHint( WindowHint.ContextVersionMajor, config.GLESContextMajorVersion );
+            Glfw.WindowHint( WindowHint.ContextVersionMinor, config.GLESContextMinorVersion );
+        }
+
+        Glfw.WindowHint( WindowHint.ClientAPI, GLData.DEFAULT_CLIENT_API );
+        Glfw.WindowHint( WindowHint.OpenGLProfile, GLData.DEFAULT_OPENGL_PROFILE );
         Glfw.WindowHint( WindowHint.OpenGLForwardCompat, true );
 
         if ( config.TransparentFramebuffer )

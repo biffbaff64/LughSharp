@@ -102,7 +102,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     }
 
     /// <inheritdoc />
-    public override GraphicsBackend.Type GraphicsType => GraphicsBackend.Type.OpenGL; //TODO
+    public override GraphicsBackend.BackendType GraphicsType => GraphicsBackend.BackendType.OpenGLES; //TODO
 
     /// <inheritdoc />
     public override bool SupportsDisplayModeChange() => true;

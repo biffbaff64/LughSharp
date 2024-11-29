@@ -39,15 +39,15 @@ namespace Corelib.LibCore.Graphics.GLUtils;
 [PublicAPI, DebuggerDisplay( "DebugVersionString" )]
 public class GLVersion
 {
-    public string?              VendorString   { get; set; } = "Unknown";
-    public string?              RendererString { get; set; } = "Unknown";
-    public GraphicsBackend.Type GLtype         { get; set; }
+    public string?                     VendorString   { get; set; } = "Unknown";
+    public string?                     RendererString { get; set; } = "Unknown";
+    public GraphicsBackend.BackendType BackendType    { get; set; }
 
     // ========================================================================
 
-    private int _majorVersion       = 0;
-    private int _minorVersion       = 0;
-    private int _revisionVersion    = 0;
+    private int _majorVersion    = 0;
+    private int _minorVersion    = 0;
+    private int _revisionVersion = 0;
 
     // ========================================================================
     // ========================================================================
@@ -57,11 +57,12 @@ public class GLVersion
     /// <param name="appType"></param>
     public unsafe GLVersion( Platform.ApplicationType appType )
     {
-        GLtype = appType switch
+        BackendType = appType switch
         {
-            Platform.ApplicationType.Android   => GraphicsBackend.Type.OpenGLES,
-            Platform.ApplicationType.WindowsGL => GraphicsBackend.Type.OpenGL,
-            Platform.ApplicationType.WebGL     => GraphicsBackend.Type.WebGL,
+            Platform.ApplicationType.Android     => GraphicsBackend.BackendType.OpenGLES,
+            Platform.ApplicationType.WindowsGLES => GraphicsBackend.BackendType.OpenGLES,
+            Platform.ApplicationType.WindowsGL   => GraphicsBackend.BackendType.OpenGL,
+            Platform.ApplicationType.WebGL       => GraphicsBackend.BackendType.WebGL,
 
             var _ => throw new GdxRuntimeException( $"Unknown Platform ApplicationType: {appType}" ),
         };
@@ -74,7 +75,7 @@ public class GLVersion
         _majorVersion    = ( int )char.GetNumericValue( version[ 0 ] );
         _minorVersion    = ( int )char.GetNumericValue( version[ 2 ] );
         _revisionVersion = ( int )char.GetNumericValue( version[ 4 ] );
-        
+
         Logger.Debug( DebugVersionString() );
     }
 
@@ -105,7 +106,7 @@ public class GLVersion
     /// </summary>
     public string DebugVersionString()
     {
-        return $"Type: {GLtype} :: Version: {_majorVersion}.{_minorVersion}.{_revisionVersion} :: "
+        return $"Type: {BackendType} :: Version: {_majorVersion}.{_minorVersion}.{_revisionVersion} :: "
                + $"Vendor: {VendorString} :: Renderer: {RendererString}";
     }
 

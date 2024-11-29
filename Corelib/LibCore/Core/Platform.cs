@@ -50,6 +50,11 @@ public static class Platform
         WindowsGL,
 
         /// <summary>
+        /// LughSharp Windows Cross Platform Opengles Platform
+        /// </summary>
+        WindowsGLES,
+
+        /// <summary>
         /// LughSharp Windows Vulkan Platform
         /// </summary>
         WindowsVK,

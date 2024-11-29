@@ -90,6 +90,8 @@ public partial class GLBindings
         var majorVersion = ( int )char.GetNumericValue( version[ 0 ] );
         var minorVersion = ( int )char.GetNumericValue( version[ 2 ] );
 
+        Logger.Debug( $"Major version: {majorVersion}, Minor version: {minorVersion}" );
+        
         switch ( majorVersion )
         {
             case 1:

@@ -27,6 +27,14 @@ namespace Corelib.LibCore.Graphics.OpenGL;
 [PublicAPI]
 public class GLData
 {
+    public const int           DEFAULT_GL_MAJOR       = 3;
+    public const int           DEFAULT_GL_MINOR       = 2;
+    public const ClientAPI     DEFAULT_CLIENT_API     = ClientAPI.OpenGLAPI;
+    public const OpenGLProfile DEFAULT_OPENGL_PROFILE = OpenGLProfile.CoreProfile;
+
+    // ========================================================================
+
+    [PublicAPI]
     public enum ShaderParameterName : int
     {
         CompileStatus = IGL.GL_COMPILE_STATUS,
@@ -34,10 +42,18 @@ public class GLData
         ShaderType    = IGL.GL_SHADER_TYPE,
     }
 
+    [PublicAPI]
     public enum ProgramProperty : int
     {
         LinkStatus      = IGL.GL_LINK_STATUS,
         InfoLogLength   = IGL.GL_INFO_LOG_LENGTH,
         AttachedShaders = IGL.GL_ATTACHED_SHADERS,
+    }
+
+    // ========================================================================
+    // ========================================================================
+
+    public static void CreateCapabilities()
+    {
     }
 }

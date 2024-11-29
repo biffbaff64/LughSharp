@@ -31,7 +31,7 @@ public class GraphicsBackend
     /// The supported underlying graphics backends.
     /// </summary>
     [PublicAPI]
-    public enum Type
+    public enum BackendType
     {
         /// <summary>
         /// OpenGL graphics backend.
@@ -72,9 +72,10 @@ public class GraphicsBackend
     [PublicAPI, StructLayout( LayoutKind.Sequential )]
     public struct BackendInfo
     {
-        public Type                Type        { get; set; }
+        public BackendType         Type        { get; set; }
         public OpenGLSubCategories SubCategory { get; set; }
     }
     
     public BackendInfo Data { get; set; }
 }
+
