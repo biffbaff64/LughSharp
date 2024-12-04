@@ -87,6 +87,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     public int TotalRenderCalls { get; set; } = 0;
 
     // ========================================================================
+    // ========================================================================
 
     private readonly Color          _color          = new( 1, 1, 1, 1 );
     private readonly Matrix4        _combinedMatrix = new();
@@ -158,9 +159,7 @@ public class PolygonSpriteBatch : IPolygonBatch
             throw new ArgumentException( "Can't have more than 32767 vertices per batch: " + maxVertices );
         }
 
-        var vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
-
-        _mesh = new Mesh( vertexDataType,
+        _mesh = new Mesh( Mesh.VertexDataType.VertexBufferObjectWithVAO,
                           false,
                           maxVertices,
                           maxTriangles * 3,

@@ -175,7 +175,6 @@ public class SpriteBatch : IBatch
         RenderCalls = 0;
 
         Gdx.GL.glEnable( IGL.GL_TEXTURE_2D );
-        
         Gdx.GL.glDepthMask( false );
 
         if ( _customShader != null )
@@ -1375,8 +1374,7 @@ public class SpriteBatch : IBatch
     /// </summary>
     public static ShaderProgram CreateDefaultShader()
     {
-        const string VERTEX_SHADER = "#version 460\n"
-                                     + "in vec4 "
+        const string VERTEX_SHADER = "in vec4 "
                                      + ShaderProgram.POSITION_ATTRIBUTE
                                      + ";\n"
                                      + "in vec4 "
@@ -1403,8 +1401,7 @@ public class SpriteBatch : IBatch
                                      + ";\n"
                                      + "}\n";
 
-        const string FRAGMENT_SHADER = "#version 460\n"
-                                       + "#ifdef GL_ES\n"
+        const string FRAGMENT_SHADER = "#ifdef GL_ES\n"
                                        + "#define LOWP lowp\n"
                                        + "precision mediump float;\n"
                                        + "#else\n"
@@ -1495,7 +1492,9 @@ public class SpriteBatch : IBatch
     {
         if ( texture is not Texture or TextureRegion )
         {
-            return;
+            Logger.Debug( $"Supplied texture is not a valid Texture or TextureRegion" );
+            
+            throw new GdxRuntimeException( "Invalid Texture or TextureRegion" );
         }
         
         if ( texture == null )

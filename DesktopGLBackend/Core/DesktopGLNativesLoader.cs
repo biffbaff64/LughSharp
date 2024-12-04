@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using Corelib.LibCore.Utils;
-using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Core;
 
@@ -32,5 +31,6 @@ public class DesktopGLNativesLoader
 {
     public static void Load()
     {
+        GdxNativesLoader.Load();
     }
 }

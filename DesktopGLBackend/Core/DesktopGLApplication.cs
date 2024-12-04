@@ -148,14 +148,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
         catch ( Exception e )
         {
-            if ( e is SystemException exception )
-            {
-                throw exception;
-            }
-            else
-            {
-                throw new GdxRuntimeException( e );
-            }
+            throw ( e is SystemException ) ? e : new GdxRuntimeException( e );
         }
         finally
         {
@@ -175,8 +168,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         while ( _running && ( Windows.Count > 0 ) )
         {
-//            Glfw.PollEvents();
-            Glfw.WaitEvents();
+            Glfw.PollEvents();
 
             var haveWindowsRendered = false;
             var targetFramerate     = FR_UNINITIALISED;

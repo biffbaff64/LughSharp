@@ -649,16 +649,16 @@ public class BitmapFont
     [PublicAPI]
     public class BitmapFontData
     {
-        public string?     Name          { get; private set; }
-        public string[]?   ImagePaths    { get; private set; }
+        public string?     Name          { get; set; }
+        public string[]?   ImagePaths    { get; set; }
         public FileInfo    FontFile      { get; set; }
         public bool        Flipped       { get; set; }
         public float       PadTop        { get; set; }
         public float       PadRight      { get; set; }
         public float       PadBottom     { get; set; }
         public float       PadLeft       { get; set; }
-        public float       ScaleX        { get; private set; } = 1;
-        public float       ScaleY        { get; private set; } = 1;
+        public float       ScaleX        { get; set; } = 1;
+        public float       ScaleY        { get; set; } = 1;
         public bool        MarkupEnabled { get; set; }
         public Glyph?[]?[] Glyphs        { get; set; } = new Glyph[ PAGES ][];
 
@@ -707,7 +707,7 @@ public class BitmapFont
         /// <summary>
         /// The distance from one line of text to the next.
         /// </summary>
-        public float LineHeight { get; private set; }
+        public float LineHeight { get; set; }
 
         /// <summary>
         /// The distance from the top of most uppercase characters to the
@@ -715,18 +715,18 @@ public class BitmapFont
         /// first line, the cap height can be used to get the location of
         /// the baseline.
         /// </summary>
-        public float CapHeight { get; private set; } = 1;
+        public float CapHeight { get; set; } = 1;
 
         /// <summary>
         /// The distance from the cap height to the top of the tallest glyph.
         /// </summary>
-        public float Ascent { get; private set; }
+        public float Ascent { get; set; }
 
         /// <summary>
         /// The distance from the bottom of the glyph that extends the lowest
         /// to the baseline. This number is negative.
         /// </summary>
-        public float Descent { get; private set; }
+        public float Descent { get; set; }
 
         /// <summary>
         /// The distance to move down when \n is encountered.
@@ -1376,7 +1376,7 @@ public class BitmapFont
         /// <see cref="GetGlyphs"/>
         /// should be be used to shape a string
         /// of characters into a list of glyphs.
-        public Glyph? GetGlyph( char ch )
+        public virtual Glyph? GetGlyph( char ch )
         {
             return Glyphs[ ch / PAGE_SIZE ]?[ ch & ( PAGE_SIZE - 1 ) ];
         }
@@ -1396,7 +1396,7 @@ public class BitmapFont
         /// The glyph immediately before this run, or null if this is run is the
         /// first on a line of text.
         /// </param>
-        public void GetGlyphs( GlyphLayout.GlyphRun? run, string str, int start, int end, Glyph? lastGlyph )
+        public virtual void GetGlyphs( GlyphLayout.GlyphRun? run, string str, int start, int end, Glyph? lastGlyph )
         {
             ArgumentNullException.ThrowIfNull( run );
 

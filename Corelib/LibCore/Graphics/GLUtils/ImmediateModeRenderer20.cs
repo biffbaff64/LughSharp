@@ -317,8 +317,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     /// <returns></returns>
     private static string CreateVertexShader( bool hasNormals, bool hasColors, int numTexCoords )
     {
-        var shader = "#version 460\n"
-                     + "in vec4 "
+        var shader = "in vec4 "
                      + ShaderProgram.POSITION_ATTRIBUTE
                      + ";\n"
                      + ( hasNormals ? "in vec3 " + ShaderProgram.NORMAL_ATTRIBUTE + ";\n" : "" )
@@ -367,8 +366,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     /// <returns></returns>
     private static string CreateFragmentShader( bool hasColors, int numTexCoords )
     {
-        var shader = "#version 460\n"
-                     + "#ifdef GL_ES\n"
+        var shader = "#ifdef GL_ES\n"
                      + "precision mediump float;\n"
                      + "#endif\n";
 

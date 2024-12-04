@@ -86,14 +86,14 @@ public class ShaderProgram
     /// inject a #version line. Note that this is added as-is, you should include
     /// a newline (`\n`) if needed.
     /// </summary>
-    public static readonly string PrependVertexCode = "";
+    public static readonly string PrependVertexCode = "#version 460 core\n";
 
     /// <summary>
     /// code that is always added to every fragment shader code, typically used
     /// to inject a #version line. Note that this is added as-is, you should
     /// include a newline (`\n`) if needed.
     /// </summary>
-    public static readonly string PrependFragmentCode = "";
+    public static readonly string PrependFragmentCode = "#version 460 core\n";
     
     // ========================================================================
 
@@ -152,7 +152,11 @@ public class ShaderProgram
 
         CompileShaders( vertexShader, fragmentShader );
 
-        if ( IsCompiled )
+        if ( !IsCompiled )
+        {
+            Logger.Debug( $"Shader program {vertexShader} has not been compiled." );
+        }
+        else
         {
             FetchAttributes();
             FetchUniforms();

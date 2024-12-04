@@ -1274,8 +1274,7 @@ public class SpriteCache
 
     private static ShaderProgram CreateDefaultShader()
     {
-        const string VERTEX_SHADER = "#version 460\n"
-                                   + "in vec4 "
+        const string VERTEX_SHADER = "in vec4 "
                                    + ShaderProgram.POSITION_ATTRIBUTE
                                    + ";\n" //
                                    + "in vec4 "
@@ -1302,8 +1301,7 @@ public class SpriteCache
                                    + ";\n" //
                                    + "}\n";
 
-        const string FRAGMENT_SHADER = "#version 460\n"
-                                     + "#ifdef GL_ES\n"
+        const string FRAGMENT_SHADER = "#ifdef GL_ES\n"
                                      + "#define LOWP lowp\n"
                                      + "precision mediump float;\n"
                                      + "#endif\n"
