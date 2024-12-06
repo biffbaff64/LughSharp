@@ -25,11 +25,12 @@
 using System;
 using System.Collections.Generic;
 
-using Corelib.LibCore.Core;
-using Corelib.LibCore.Graphics;
-using Corelib.LibCore.Maths;
-using Corelib.LibCore.Utils;
-using Corelib.LibCore.Utils.Collections;
+using Corelib.Lugh.Core;
+using Corelib.Lugh.Graphics;
+using Corelib.Lugh.Graphics.Images;
+using Corelib.Lugh.Maths;
+using Corelib.Lugh.Utils;
+using Corelib.Lugh.Utils.Collections;
 
 using DesktopGLBackend.Core;
 using DesktopGLBackend.Graphics;
@@ -38,7 +39,7 @@ using DesktopGLBackend.Utils;
 
 using JetBrains.Annotations;
 
-using Platform = Corelib.LibCore.Core.Platform;
+using Platform = Corelib.Lugh.Core.Platform;
 
 namespace DesktopGLBackend.Window;
 

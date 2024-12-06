@@ -22,10 +22,10 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Audio;
-using Corelib.LibCore.Audio.OpenAL;
-using Corelib.LibCore.Utils;
-using Corelib.LibCore.Utils.Buffers;
+using Corelib.Lugh.Audio;
+using Corelib.Lugh.Audio.OpenAL;
+using Corelib.Lugh.Utils;
+using Corelib.Lugh.Utils.Buffers;
 using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Audio;

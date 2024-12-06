@@ -22,8 +22,8 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
-using Corelib.LibCore.Network;
+using Corelib.Lugh.Core;
+using Corelib.Lugh.Network;
 using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Core;

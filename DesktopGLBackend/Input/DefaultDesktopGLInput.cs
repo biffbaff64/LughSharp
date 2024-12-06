@@ -22,10 +22,10 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
-using Corelib.LibCore.Graphics.GLUtils;
-using Corelib.LibCore.Utils;
-using Corelib.LibCore.Utils.Exceptions;
+using Corelib.Lugh.Core;
+using Corelib.Lugh.Graphics.GLUtils;
+using Corelib.Lugh.Utils;
+using Corelib.Lugh.Utils.Exceptions;
 
 using DesktopGLBackend.Window;
 

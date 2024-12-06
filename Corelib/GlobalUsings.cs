@@ -61,10 +61,10 @@ global using DotGLFW;
 
 // ====================================================================--------
 // LughSharp
-global using Corelib.LibCore.Core;
+global using Corelib.Lugh.Core;
 
 // ====================================================================--------
-global using Vector2 = Corelib.LibCore.Maths.Vector2;
-global using Vector3 = Corelib.LibCore.Maths.Vector3;
+global using Vector2 = Corelib.Lugh.Maths.Vector2;
+global using Vector3 = Corelib.Lugh.Maths.Vector3;
 
 // ====================================================================--------

@@ -22,12 +22,12 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
-using Corelib.LibCore.Graphics.GLUtils;
-using Corelib.LibCore.Graphics.OpenGL;
-using Corelib.LibCore.Utils;
-using Corelib.LibCore.Utils.Collections;
-using Corelib.LibCore.Utils.Exceptions;
+using Corelib.Lugh.Core;
+using Corelib.Lugh.Graphics.GLUtils;
+using Corelib.Lugh.Graphics.OpenGL;
+using Corelib.Lugh.Utils;
+using Corelib.Lugh.Utils.Collections;
+using Corelib.Lugh.Utils.Exceptions;
 
 using DesktopGLBackend.Audio;
 using DesktopGLBackend.Audio.Mock;
@@ -37,7 +37,7 @@ using DesktopGLBackend.Utils;
 using DesktopGLBackend.Window;
 
 using Exception = System.Exception;
-using Platform = Corelib.LibCore.Core.Platform;
+using Platform = Corelib.Lugh.Core.Platform;
 
 namespace DesktopGLBackend.Core;
 
@@ -100,10 +100,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Config       =   DesktopGLApplicationConfiguration.Copy( config );
         Config.Title ??= listener.GetType().Name;
 
-        Config.SetOpenGLEmulation( DesktopGLApplicationConfiguration.GLEmulationType.GL30,
-                                   Config.GLESContextMajorVersion,
-                                   Config.GLESContextMinorVersion );
-
+        Config.SetOpenGLEmulation( DesktopGLApplicationConfiguration.GLEmulationType.GL30, 4, 2 );
+        
         // Initialise the persistant data manager
         Preferences = new Dictionary< string, IPreferences >();
 
@@ -123,7 +121,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         _sync = new Sync();
 
-        InitialiseGLFW();
+        InitialiseGlfw();
 
         Windows.Add( CreateWindow( Config, listener, 0 ) );
     }
@@ -349,7 +347,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     {
         ArgumentNullException.ThrowIfNull( dglWindow );
 
-        var windowHandle = CreateGLFWWindow( config, sharedContext );
+        var windowHandle = CreateGlfwWindow( config, sharedContext );
 
         dglWindow.Initialise( windowHandle, this );
         dglWindow.SetVisible( config.InitialVisibility );
@@ -374,7 +372,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     /// <param name="sharedContextWindow"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    private GLFW.Window CreateGLFWWindow( DesktopGLApplicationConfiguration config, long sharedContextWindow )
+    private GLFW.Window CreateGlfwWindow( DesktopGLApplicationConfiguration config, long sharedContextWindow )
     {
         SetWindowHints( config );
 
@@ -510,7 +508,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     /// 
     /// </summary>
     /// <exception cref="GdxRuntimeException"></exception>
-    public void InitialiseGLFW()
+    public void InitialiseGlfw()
     {
         try
         {
@@ -706,14 +704,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Glfw.WindowHint( WindowHint.DepthBits, config.Depth );
         Glfw.WindowHint( WindowHint.Samples, config.Samples );
 
-        if ( config.GLEmulation is DesktopGLApplicationConfiguration.GLEmulationType.GL30
-                                   or DesktopGLApplicationConfiguration.GLEmulationType.GL31
-                                   or DesktopGLApplicationConfiguration.GLEmulationType.GL32 )
-        {
-            Glfw.WindowHint( WindowHint.ContextVersionMajor, config.GLESContextMajorVersion );
-            Glfw.WindowHint( WindowHint.ContextVersionMinor, config.GLESContextMinorVersion );
-        }
-
+        Glfw.WindowHint( WindowHint.ContextVersionMajor, config.GLContextMajorVersion );
+        Glfw.WindowHint( WindowHint.ContextVersionMinor, config.GLContextMinorVersion );
         Glfw.WindowHint( WindowHint.ClientAPI, GLData.DEFAULT_CLIENT_API );
         Glfw.WindowHint( WindowHint.OpenGLProfile, GLData.DEFAULT_OPENGL_PROFILE );
         Glfw.WindowHint( WindowHint.OpenGLForwardCompat, true );

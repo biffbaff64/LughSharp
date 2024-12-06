@@ -24,7 +24,7 @@
 
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using Corelib.LibCore.Utils.Collections;
+using Corelib.Lugh.Utils.Collections;
 using JetBrains.Annotations;
 
 namespace Extensions.Source.Tools;
@@ -50,6 +50,9 @@ public class FileProcessor
     private static Comparison< FileInfo? > _comparator      = ( o1, o2 ) => string.Compare( o1?.Name, o2?.Name, StringComparison.Ordinal );
     private static Comparison< Entry >     _entryComparator = ( entry, entry1 ) => _comparator( entry.InputFile, entry1.InputFile );
 
+    // ========================================================================
+    // ========================================================================
+    
     public FileProcessor()
     {
         _outputSuffix  = string.Empty;

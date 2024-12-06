@@ -24,12 +24,13 @@
 
 using System;
 
-using Corelib.LibCore.Core;
-using Corelib.LibCore.Graphics;
-using Corelib.LibCore.Graphics.GLUtils;
-using Corelib.LibCore.Graphics.OpenGL;
-using Corelib.LibCore.Utils;
-using Corelib.LibCore.Utils.Exceptions;
+using Corelib.Lugh.Core;
+using Corelib.Lugh.Graphics;
+using Corelib.Lugh.Graphics.GLUtils;
+using Corelib.Lugh.Graphics.Images;
+using Corelib.Lugh.Graphics.OpenGL;
+using Corelib.Lugh.Utils;
+using Corelib.Lugh.Utils.Exceptions;
 
 using DesktopGLBackend.Core;
 using DesktopGLBackend.Utils;
@@ -102,7 +103,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     }
 
     /// <inheritdoc />
-    public override GraphicsBackend.BackendType GraphicsType => GraphicsBackend.BackendType.OpenGLES; //TODO
+    public override GraphicsBackend.BackendType GraphicsType => GraphicsBackend.BackendType.OpenGles; //TODO
 
     /// <inheritdoc />
     public override bool SupportsDisplayModeChange() => true;

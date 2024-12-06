@@ -22,16 +22,17 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Files;
-using Corelib.LibCore.Graphics;
-using Corelib.LibCore.Graphics.G2D;
-using Corelib.LibCore.Maths;
-using Corelib.LibCore.Utils;
-using Corelib.LibCore.Utils.Exceptions;
+using Corelib.Lugh.Files;
+using Corelib.Lugh.Graphics;
+using Corelib.Lugh.Graphics.G2D;
+using Corelib.Lugh.Graphics.Images;
+using Corelib.Lugh.Maths;
+using Corelib.Lugh.Utils;
+using Corelib.Lugh.Utils.Exceptions;
 
 using JetBrains.Annotations;
 
-using Color = Corelib.LibCore.Graphics.Color;
+using Color = Corelib.Lugh.Graphics.Color;
 
 namespace Extensions.Source.Freetype;
 
@@ -83,59 +84,14 @@ public class FreeTypeFontGenerator : IDisposable
 
         if ( CheckForBitmapFont() ) return;
 
-        setPixelSizes( 0, 15 );
+        SetPixelSizes( 0, 15 );
     }
 
-    private static int GetLoadingFlags( FreeTypeFontParameter parameter )
-    {
-        var loadingFlags = FreeType.FT_LOAD_DEFAULT;
-
-        loadingFlags |= parameter.Hinting switch
-        {
-            Hinting.None       => FreeType.FT_LOAD_NO_HINTING,
-            Hinting.Slight     => FreeType.FT_LOAD_TARGET_LIGHT,
-            Hinting.Medium     => FreeType.FT_LOAD_TARGET_NORMAL,
-            Hinting.Full       => FreeType.FT_LOAD_TARGET_MONO,
-            Hinting.AutoSlight => FreeType.FT_LOAD_FORCE_AUTOHINT | FreeType.FT_LOAD_TARGET_LIGHT,
-            Hinting.AutoMedium => FreeType.FT_LOAD_FORCE_AUTOHINT | FreeType.FT_LOAD_TARGET_NORMAL,
-            Hinting.AutoFull   => FreeType.FT_LOAD_FORCE_AUTOHINT | FreeType.FT_LOAD_TARGET_MONO,
-            var _              => 0,
-        };
-
-        return loadingFlags;
-    }
-
-    private bool LoadChar( int c )
-    {
-        return LoadChar( c, FreeType.FT_LOAD_DEFAULT | FreeType.FT_LOAD_FORCE_AUTOHINT );
-    }
-
-    private bool LoadChar( int c, int flags )
-    {
-        return _face.LoadChar( c, flags );
-    }
-
-    private bool CheckForBitmapFont()
-    {
-        var faceFlags = _face.GetFaceFlags();
-
-        if ( ( ( faceFlags & FreeType.FT_FACE_FLAG_FIXED_SIZES ) == FreeType.FT_FACE_FLAG_FIXED_SIZES )
-             && ( ( faceFlags & FreeType.FT_FACE_FLAG_HORIZONTAL ) == FreeType.FT_FACE_FLAG_HORIZONTAL ) )
-        {
-            if ( LoadChar( 32 ) )   //TODO:
-            {
-                var slot = _face.GetGlyph();
-
-                if ( slot.GetFormat() == 1651078259 )   //TODO:
-                {
-                    _bitmapped = true;
-                }
-            }
-        }
-
-        return _bitmapped;
-    }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="parameter"></param>
+    /// <returns></returns>
     public BitmapFont GenerateFont( FreeTypeFontParameter parameter )
     {
         return GenerateFont( parameter, new FreeTypeBitmapFontData() );
@@ -154,7 +110,7 @@ public class FreeTypeFontGenerator : IDisposable
 
         if ( updateTextureRegions ) data.Regions = [ ];
 
-        generateData( parameter, data );
+        GenerateData( parameter, data );
 
         if ( updateTextureRegions )
         {
@@ -184,23 +140,27 @@ public class FreeTypeFontGenerator : IDisposable
         return new BitmapFont( data, pageRegions, integer );
     }
 
-    /** Uses ascender and descender of font to calculate real height that makes all glyphs to fit in given pixel size. Source:
-     * http://nothings.org/stb/stb_truetype.h / stbtt_ScaleForPixelHeight */
+    /// <summary>
+    /// Uses ascender and descender of font to calculate real height that makes all glyphs to
+    /// fit in given pixel size.
+    /// </summary>
     public int ScaleForPixelHeight( int height )
     {
-        setPixelSizes( 0, height );
-        
+        SetPixelSizes( 0, height );
+
         var fontMetrics = _face.GetSize().GetMetrics();
-        var                  ascent      = FreeType.ToInt( fontMetrics.GetAscender() );
-        var                  descent     = FreeType.ToInt( fontMetrics.GetDescender() );
+        var ascent      = FreeType.ToInt( fontMetrics.GetAscender() );
+        var descent     = FreeType.ToInt( fontMetrics.GetDescender() );
 
         return ( height * height ) / ( ascent - descent );
     }
 
-    /** Uses max advance, ascender and descender of font to calculate real height that makes any n glyphs to fit in given pixel
-     * width.
-     * @param width the max width to fit (in pixels)
-     * @param numChars max number of characters that to fill width */
+    /// <summary>
+    /// Uses max advance, ascender and descender of font to calculate real height that makes
+    /// any n glyphs to fit in given pixel width.
+    /// </summary>
+    /// <param name="width"> the max width to fit (in pixels) </param>
+    /// <param name="numChars"> max number of characters that to fill width </param>
     public int ScaleForPixelWidth( int width, int numChars )
     {
         var fontMetrics    = _face.GetSize().GetMetrics();
@@ -210,26 +170,30 @@ public class FreeTypeFontGenerator : IDisposable
         var unscaledHeight = ascent - descent;
         var height         = ( unscaledHeight * width ) / ( advance * numChars );
 
-        setPixelSizes( 0, height );
+        SetPixelSizes( 0, height );
 
         return height;
     }
 
-    /** Uses max advance, ascender and descender of font to calculate real height that makes any n glyphs to fit in given pixel
-     * width and height.
-     * @param width the max width to fit (in pixels)
-     * @param height the max height to fit (in pixels)
-     * @param numChars max number of characters that to fill width */
+    /// <summary>
+    /// Uses max advance, ascender and descender of font to calculate real height that
+    /// makes any n glyphs to fit in given pixel width and height.
+    /// </summary>
+    /// <param name="width"> the max width to fit (in pixels) </param>
+    /// <param name="height"> the max height to fit (in pixels) </param>
+    /// <param name="numChars"> max number of characters that to fill width </param>
     public int ScaleToFitSquare( int width, int height, int numChars )
     {
         return Math.Min( ScaleForPixelHeight( height ), ScaleForPixelWidth( width, numChars ) );
     }
 
-    /** Returns null if glyph was not found in the font. If there is nothing to render, for example with various space characters,
-     * then {@link GlyphAndBitmap#bitmap} will be null. */
+    /// <summary>
+    /// Returns null if glyph was not found in the font. If there is nothing to render, for example
+    /// with various space characters, then <see cref="GlyphAndBitmap.Bitmap"/> will be null.
+    /// </summary>
     public GlyphAndBitmap? GenerateGlyphAndBitmap( int c, int size, bool flip )
     {
-        setPixelSizes( 0, size );
+        SetPixelSizes( 0, size );
 
         var fontMetrics = _face.GetSize().GetMetrics();
         var baseline    = FreeType.ToInt( fontMetrics.GetAscender() );
@@ -250,7 +214,7 @@ public class FreeTypeFontGenerator : IDisposable
         var slot = _face.GetGlyph();
 
         // Try to render to bitmap
-        FreeType.Bitmap bitmap;
+        FreeType.Bitmap? bitmap;
 
         if ( _bitmapped )
         {
@@ -266,8 +230,7 @@ public class FreeTypeFontGenerator : IDisposable
         }
 
         var metrics = slot.GetMetrics();
-
-        var glyph = new BitmapFont.Glyph();
+        var glyph   = new BitmapFont.Glyph();
 
         if ( bitmap != null )
         {
@@ -296,8 +259,11 @@ public class FreeTypeFontGenerator : IDisposable
         return result;
     }
 
-    /** Generates a new {@link BitmapFontData} instance, expert usage only. Throws a GdxRuntimeException if something went wrong.
-     * @param size the size in pixels */
+    /// <summary>
+    /// Generates a new <see cref="BitmapFont.BitmapFontData"/> instance, expert usage only.
+    /// Throws a <see cref="GdxRuntimeException"/> if something went wrong.
+    /// </summary>
+    /// <param name="size"> the size in pixels. </param>
     public FreeTypeBitmapFontData GenerateData( int size )
     {
         var parameter = new FreeTypeFontParameter
@@ -310,20 +276,12 @@ public class FreeTypeFontGenerator : IDisposable
 
     public FreeTypeBitmapFontData GenerateData( FreeTypeFontParameter parameter )
     {
-        return generateData( parameter, new FreeTypeBitmapFontData() );
-    }
-
-    void setPixelSizes( int width, int height )
-    {
-        this._pixelWidth  = width;
-        this._pixelHeight = height;
-
-        if ( !_bitmapped && !_face.SetPixelSizes( _pixelWidth, _pixelHeight ) ) throw new GdxRuntimeException( "Couldn't set size for font" );
+        return GenerateData( parameter, new FreeTypeBitmapFontData() );
     }
 
     /** Generates a new {@link BitmapFontData} instance, expert usage only. Throws a GdxRuntimeException if something went wrong.
      * @param parameter configures how the font is generated */
-    public FreeTypeBitmapFontData generateData( FreeTypeFontParameter parameter, FreeTypeBitmapFontData data )
+    public FreeTypeBitmapFontData GenerateData( FreeTypeFontParameter parameter, FreeTypeBitmapFontData data )
     {
         data.Name = _name + "-" + parameter.Size;
         var characters       = parameter.Characters.ToCharArray();
@@ -331,7 +289,7 @@ public class FreeTypeFontGenerator : IDisposable
         var incremental      = parameter.Incremental;
         var flags            = GetLoadingFlags( parameter );
 
-        setPixelSizes( 0, parameter.Size );
+        SetPixelSizes( 0, parameter.Size );
 
         // set general font data
         var fontMetrics = _face.GetSize().GetMetrics();
@@ -376,7 +334,10 @@ public class FreeTypeFontGenerator : IDisposable
             break;
         }
 
-        if ( data.XHeight == 0 ) throw new GdxRuntimeException( "No x-height character found in font" );
+        if ( data.XHeight == 0 )
+        {
+            throw new GdxRuntimeException( "No x-height character found in font" );
+        }
 
         // determine cap height
         foreach ( var capChar in data.CapChars )
@@ -388,7 +349,10 @@ public class FreeTypeFontGenerator : IDisposable
             break;
         }
 
-        if ( !_bitmapped && ( data.CapHeight == 1 ) ) throw new GdxRuntimeException( "No cap character found in font" );
+        if ( !_bitmapped && ( data.CapHeight == 1 ) )
+        {
+            throw new GdxRuntimeException( "No cap character found in font" );
+        }
 
         data.Ascent -= data.CapHeight;
         data.Down   =  -data.LineHeight;
@@ -400,8 +364,7 @@ public class FreeTypeFontGenerator : IDisposable
         }
 
         var ownsAtlas = false;
-
-        var packer = parameter.Packer;
+        var packer    = parameter.Packer;
 
         if ( packer == null )
         {
@@ -568,9 +531,12 @@ public class FreeTypeFontGenerator : IDisposable
         return data;
     }
 
-    /** @return null if glyph was not found. */
-    protected BitmapFont.Glyph? CreateGlyph( char c, FreeTypeBitmapFontData data, FreeTypeFontParameter parameter, FreeType.Stroker stroker,
-                                             float baseLine, PixmapPacker packer )
+    protected BitmapFont.Glyph? CreateGlyph( char c,
+                                             FreeTypeBitmapFontData data,
+                                             FreeTypeFontParameter parameter,
+                                             FreeType.Stroker stroker,
+                                             float baseLine,
+                                             PixmapPacker packer )
     {
         var missing = ( _face.GetCharIndex( c ) == 0 ) && ( c != 0 );
 
@@ -755,19 +721,24 @@ public class FreeTypeFontGenerator : IDisposable
         return glyph;
     }
 
-    /** check the font glyph exists for single UTF-32 code point */
+    /// <summary>
+    /// Check the font glyph exists for single UTF-32 code point
+    /// </summary>
     public bool HasGlyph( int charCode )
     {
-        // 0 stand for undefined character code
+        // 0 stands for undefined character code
         return _face.GetCharIndex( charCode ) != 0;
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return _name;
     }
 
-    /** Cleans up all resources of the generator. Call this if you no longer use the generator. */
+    /// <summary>
+    /// Cleans up all resources of the generator. Call this if you no longer use the generator.
+    /// </summary>
     public void Dispose()
     {
         _face.Dispose();
@@ -803,6 +774,62 @@ public class FreeTypeFontGenerator : IDisposable
         return _maxTextureSize;
     }
 
+    private static int GetLoadingFlags( FreeTypeFontParameter parameter )
+    {
+        var loadingFlags = FreeType.FT_LOAD_DEFAULT;
+
+        loadingFlags |= parameter.Hinting switch
+        {
+            Hinting.None       => FreeType.FT_LOAD_NO_HINTING,
+            Hinting.Slight     => FreeType.FT_LOAD_TARGET_LIGHT,
+            Hinting.Medium     => FreeType.FT_LOAD_TARGET_NORMAL,
+            Hinting.Full       => FreeType.FT_LOAD_TARGET_MONO,
+            Hinting.AutoSlight => FreeType.FT_LOAD_FORCE_AUTOHINT | FreeType.FT_LOAD_TARGET_LIGHT,
+            Hinting.AutoMedium => FreeType.FT_LOAD_FORCE_AUTOHINT | FreeType.FT_LOAD_TARGET_NORMAL,
+            Hinting.AutoFull   => FreeType.FT_LOAD_FORCE_AUTOHINT | FreeType.FT_LOAD_TARGET_MONO,
+            var _              => 0,
+        };
+
+        return loadingFlags;
+    }
+
+    private void SetPixelSizes( int width, int height )
+    {
+        this._pixelWidth  = width;
+        this._pixelHeight = height;
+
+        if ( !_bitmapped && !_face.SetPixelSizes( _pixelWidth, _pixelHeight ) )
+        {
+            throw new GdxRuntimeException( "Couldn't set size for font" );
+        }
+    }
+
+    private bool LoadChar( int c, int flags = FreeType.FT_LOAD_DEFAULT | FreeType.FT_LOAD_FORCE_AUTOHINT )
+    {
+        return _face.LoadChar( c, flags );
+    }
+
+    private bool CheckForBitmapFont()
+    {
+        var faceFlags = _face.GetFaceFlags();
+
+        if ( ( ( faceFlags & FreeType.FT_FACE_FLAG_FIXED_SIZES ) == FreeType.FT_FACE_FLAG_FIXED_SIZES )
+             && ( ( faceFlags & FreeType.FT_FACE_FLAG_HORIZONTAL ) == FreeType.FT_FACE_FLAG_HORIZONTAL ) )
+        {
+            if ( LoadChar( 32 ) ) //TODO:
+            {
+                var slot = _face.GetGlyph();
+
+                if ( slot.GetFormat() == 1651078259 ) //TODO:
+                {
+                    _bitmapped = true;
+                }
+            }
+        }
+
+        return _bitmapped;
+    }
+
     // ========================================================================
     // ========================================================================
 
@@ -834,6 +861,8 @@ public class FreeTypeFontGenerator : IDisposable
 
         private bool _dirty;
 
+        // ====================================================================
+
         public override BitmapFont.Glyph? GetGlyph( char ch )
         {
             var glyph = base.GetGlyph( ch );
@@ -844,7 +873,7 @@ public class FreeTypeFontGenerator : IDisposable
                 GdxRuntimeException.ThrowIfNull( Packer );
                 GdxRuntimeException.ThrowIfNull( Regions );
 
-                Generator.setPixelSizes( 0, Parameter.Size );
+                Generator.SetPixelSizes( 0, Parameter.Size );
                 var baseline = ( ( Flipped ? -Ascent : Ascent ) + CapHeight ) / ScaleY;
                 glyph = Generator.CreateGlyph( ch, this, Parameter, Stroker, baseline, Packer );
 

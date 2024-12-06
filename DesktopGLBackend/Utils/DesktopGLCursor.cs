@@ -22,8 +22,9 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Graphics;
-using Corelib.LibCore.Utils.Exceptions;
+using Corelib.Lugh.Graphics;
+using Corelib.Lugh.Graphics.Images;
+using Corelib.Lugh.Utils.Exceptions;
 using DesktopGLBackend.Window;
 using JetBrains.Annotations;
 

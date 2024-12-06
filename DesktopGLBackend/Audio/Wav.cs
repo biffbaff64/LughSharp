@@ -22,7 +22,7 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Utils.Exceptions;
+using Corelib.Lugh.Utils.Exceptions;
 using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Audio;

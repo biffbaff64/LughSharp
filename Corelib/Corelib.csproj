@@ -150,8 +150,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="native\Glfw\" />
-        <Folder Include="native\OpenGL\" />
         <Folder Include="ThirdParty\" />
     </ItemGroup>
 

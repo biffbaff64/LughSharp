@@ -22,9 +22,9 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Audio;
-using Corelib.LibCore.Audio.OpenAL;
-using Corelib.LibCore.Utils.Exceptions;
+using Corelib.Lugh.Audio;
+using Corelib.Lugh.Audio.OpenAL;
+using Corelib.Lugh.Utils.Exceptions;
 
 namespace DesktopGLBackend.Audio;
 

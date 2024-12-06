@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using JetBrains.Annotations;
+
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -32,7 +33,10 @@ namespace Extensions.Source.Tools.TexturePacker;
 [PublicAPI]
 public class ColorBleedEffect
 {
-    private static readonly int[] offsets = [ -1, -1, 0, -1, 1, -1, -1, 0, 1, 0, -1, 1, 0, 1, 1, 1 ];
+    private static readonly int[] _offsets = [ -1, -1, 0, -1, 1, -1, -1, 0, 1, 0, -1, 1, 0, 1, 1, 1 ];
+
+    // ========================================================================
+    // ========================================================================
 
     /// <summary>
     /// 
@@ -42,9 +46,8 @@ public class ColorBleedEffect
     /// <returns></returns>
     public static Image< Rgba32 > ProcessImage( Image< Rgba32 > image, int maxIterations )
     {
-        var width  = image.Width;
-        var height = image.Height;
-
+        var width          = image.Width;
+        var height         = image.Height;
         var processedImage = image.Clone();
 
         processedImage.Mutate( context =>
@@ -56,7 +59,7 @@ public class ColorBleedEffect
             var iterations  = 0;
             var lastPending = -1;
 
-            while ( mask.PendingSize > 0 && mask.PendingSize != lastPending && iterations < maxIterations )
+            while ( ( mask.PendingSize > 0 ) && ( mask.PendingSize != lastPending ) && ( iterations < maxIterations ) )
             {
                 lastPending = mask.PendingSize;
                 ExecuteIteration( pixels, mask, width, height );
@@ -68,7 +71,7 @@ public class ColorBleedEffect
             {
                 for ( var x = 0; x < width; x++ )
                 {
-                    processedImage[ x, y ] = pixels[ y * width + x ];
+                    processedImage[ x, y ] = pixels[ ( y * width ) + x ];
                 }
             }
         } );
@@ -97,15 +100,16 @@ public class ColorBleedEffect
             var b          = 0;
             var count      = 0;
 
-            for ( var i = 0; i < offsets.Length; i += 2 )
+            for ( var i = 0; i < _offsets.Length; i += 2 )
             {
-                var column = x + offsets[ i ];
-                var row    = y + offsets[ i + 1 ];
+                var column = x + _offsets[ i ];
+                var row    = y + _offsets[ i + 1 ];
 
-                if ( column < 0 || column >= width || row < 0 || row >= height )
+                if ( ( column < 0 ) || ( column >= width ) || ( row < 0 ) || ( row >= height ) )
                 {
                     column = x;
                     row    = y;
+
                     continue;
                 }
 
@@ -142,7 +146,7 @@ public class ColorBleedEffect
     /// <returns></returns>
     private static int GetPixelIndex( int width, int x, int y )
     {
-        return y * width + x;
+        return ( y * width ) + x;
     }
 
     // ========================================================================
@@ -156,25 +160,25 @@ public class ColorBleedEffect
     {
         public int PendingSize { get; private set; }
 
-        private readonly bool[] blank;
-        private readonly int[]  pending;
-        private readonly int[]  changing;
-        private          int    changingSize;
+        private readonly bool[] _blank;
+        private readonly int[]  _pending;
+        private readonly int[]  _changing;
+        private          int    _changingSize;
 
         public Mask( Rgba32[] pixels )
         {
             var n = pixels.Length;
 
-            blank    = new bool[ n ];
-            pending  = new int[ n ];
-            changing = new int[ n ];
+            _blank    = new bool[ n ];
+            _pending  = new int[ n ];
+            _changing = new int[ n ];
 
             for ( var i = 0; i < n; i++ )
             {
                 if ( pixels[ i ].A == 0 )
                 {
-                    blank[ i ]             = true;
-                    pending[ PendingSize ] = i;
+                    _blank[ i ]             = true;
+                    _pending[ PendingSize ] = i;
                     PendingSize++;
                 }
             }
@@ -187,7 +191,7 @@ public class ColorBleedEffect
         /// <returns></returns>
         public bool IsBlank( int index )
         {
-            return blank[ index ];
+            return _blank[ index ];
         }
 
         /// <summary>
@@ -203,10 +207,10 @@ public class ColorBleedEffect
                 throw new IndexOutOfRangeException( index.ToString() );
             }
 
-            var value = pending[ index ];
+            var value = _pending[ index ];
 
             PendingSize--;
-            pending[ index ] = pending[ PendingSize ];
+            _pending[ index ] = _pending[ PendingSize ];
 
             return value;
         }
@@ -218,7 +222,7 @@ public class ColorBleedEffect
         [PublicAPI]
         public class MaskIterator( Mask mask )
         {
-            private int index;
+            private int _index;
 
             /// <summary>
             /// 
@@ -226,7 +230,7 @@ public class ColorBleedEffect
             /// <returns></returns>
             public bool HasNext()
             {
-                return index < mask.PendingSize;
+                return _index < mask.PendingSize;
             }
 
             /// <summary>
@@ -236,12 +240,12 @@ public class ColorBleedEffect
             /// <exception cref="InvalidOperationException"></exception>
             public int Next()
             {
-                if ( index >= mask.PendingSize )
+                if ( _index >= mask.PendingSize )
                 {
-                    throw new InvalidOperationException( index.ToString() );
+                    throw new InvalidOperationException( _index.ToString() );
                 }
 
-                return mask.pending[ index++ ];
+                return mask._pending[ _index++ ];
             }
 
             /// <summary>
@@ -249,9 +253,9 @@ public class ColorBleedEffect
             /// </summary>
             public void MarkAsInProgress()
             {
-                index--;
-                mask.changing[ mask.changingSize ] = mask.RemoveIndex( index );
-                mask.changingSize++;
+                _index--;
+                mask._changing[ mask._changingSize ] = mask.RemoveIndex( _index );
+                mask._changingSize++;
             }
 
             /// <summary>
@@ -259,14 +263,14 @@ public class ColorBleedEffect
             /// </summary>
             public void Reset()
             {
-                index = 0;
+                _index = 0;
 
-                for ( var i = 0; i < mask.changingSize; i++ )
+                for ( var i = 0; i < mask._changingSize; i++ )
                 {
-                    mask.blank[ mask.changing[ i ] ] = false;
+                    mask._blank[ mask._changing[ i ] ] = false;
                 }
 
-                mask.changingSize = 0;
+                mask._changingSize = 0;
             }
         }
     }

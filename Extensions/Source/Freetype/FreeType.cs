@@ -22,9 +22,14 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Files;
-using Corelib.LibCore.Graphics;
-using Corelib.LibCore.Utils.Buffers;
+using Corelib.Lugh.Files;
+using Corelib.Lugh.Graphics;
+using Corelib.Lugh.Graphics.Images;
+using Corelib.Lugh.Utils.Buffers;
+using Corelib.Lugh.Utils.Collections;
+using Corelib.Lugh.Utils.Exceptions;
+
+using ICSharpCode.SharpZipLib.Core;
 
 using JetBrains.Annotations;
 
@@ -94,20 +99,20 @@ public class FreeType
     public const int FT_STROKER_LINEJOIN_MITER           = FT_STROKER_LINEJOIN_MITER_VARIABLE;
     public const int FT_STROKER_LINEJOIN_MITER_FIXED     = 3;
 
-    public readonly int FT_ENCODING_NONE           = 0;
-    public readonly int FT_ENCODING_MS_SYMBOL      = encode( 's', 'y', 'm', 'b' );
-    public readonly int FT_ENCODING_UNICODE        = encode( 'u', 'n', 'i', 'c' );
-    public readonly int FT_ENCODING_SJIS           = encode( 's', 'j', 'i', 's' );
-    public readonly int FT_ENCODING_GB2312         = encode( 'g', 'b', ' ', ' ' );
-    public readonly int FT_ENCODING_BIG5           = encode( 'b', 'i', 'g', '5' );
-    public readonly int FT_ENCODING_WANSUNG        = encode( 'w', 'a', 'n', 's' );
-    public readonly int FT_ENCODING_JOHAB          = encode( 'j', 'o', 'h', 'a' );
-    public readonly int FT_ENCODING_ADOBE_STANDARD = encode( 'A', 'D', 'O', 'B' );
-    public readonly int FT_ENCODING_ADOBE_EXPERT   = encode( 'A', 'D', 'B', 'E' );
-    public readonly int FT_ENCODING_ADOBE_CUSTOM   = encode( 'A', 'D', 'B', 'C' );
-    public readonly int FT_ENCODING_ADOBE_LATIN_1  = encode( 'l', 'a', 't', '1' );
-    public readonly int FT_ENCODING_OLD_LATIN_2    = encode( 'l', 'a', 't', '2' );
-    public readonly int FT_ENCODING_APPLE_ROMAN    = encode( 'a', 'r', 'm', 'n' );
+    public readonly int FtEncodingNone          = 0;
+    public readonly int FtEncodingMsSymbol      = Encode( 's', 'y', 'm', 'b' );
+    public readonly int FtEncodingUnicode       = Encode( 'u', 'n', 'i', 'c' );
+    public readonly int FtEncodingSjis          = Encode( 's', 'j', 'i', 's' );
+    public readonly int FtEncodingGb2312        = Encode( 'g', 'b', ' ', ' ' );
+    public readonly int FtEncodingBig5          = Encode( 'b', 'i', 'g', '5' );
+    public readonly int FtEncodingWansung       = Encode( 'w', 'a', 'n', 's' );
+    public readonly int FtEncodingJohab         = Encode( 'j', 'o', 'h', 'a' );
+    public readonly int FtEncodingAdobeStandard = Encode( 'A', 'D', 'O', 'B' );
+    public readonly int FtEncodingAdobeExpert   = Encode( 'A', 'D', 'B', 'E' );
+    public readonly int FtEncodingAdobeCustom   = Encode( 'A', 'D', 'B', 'C' );
+    public readonly int FtEncodingAdobeLatin1   = Encode( 'l', 'a', 't', '1' );
+    public readonly int FtEncodingOldLatin2     = Encode( 'l', 'a', 't', '2' );
+    public readonly int FtEncodingAppleRoman    = Encode( 'a', 'r', 'm', 'n' );
 
     // ========================================================================
     // ========================================================================
@@ -125,10 +130,15 @@ public class FreeType
     // ========================================================================
     // ========================================================================
 
-    private static int encode( char a, char b, char c, char d )
+    private static int Encode( char a, char b, char c, char d )
     {
         return ( a << 24 ) | ( b << 16 ) | ( c << 8 ) | d;
     }
+
+    // ========================================================================
+    // ========================================================================
+
+    private static extern int _getLastErrorCode();
 
     // ========================================================================
     // ========================================================================
@@ -139,6 +149,9 @@ public class FreeType
         internal long Address = address;
     }
 
+    // ========================================================================
+    // ========================================================================
+
     [PublicAPI]
     public class Library( long address ) : Pointer( address ), IDisposable
     {
@@ -146,19 +159,116 @@ public class FreeType
 
         public void Dispose()
         {
+            _doneFreeType( Address );
+
+            foreach ( var buffer in FontData.Values )
+            {
+                if ( BufferUtils.IsUnsafeByteBuffer( buffer ) )
+                {
+                    BufferUtils.DisposeUnsafeByteBuffer( buffer );
+                }
+            }
+
             GC.SuppressFinalize( this );
         }
 
         public Face NewFace( FileHandle fontFile, int faceIndex )
         {
             throw new NotImplementedException();
+            
+//            ByteBuffer? buffer = null;
+//
+//            try
+//            {
+//                buffer = fontFile.Map();
+//            }
+//            catch ( GdxRuntimeException )
+//            {
+//                // OK to ignore, some platforms do not support file mapping.
+//            }
+//
+//            if ( buffer == null )
+//            {
+//                InputStream input = fontFile.Read();
+//
+//                try
+//                {
+//                    var fileSize = ( int )fontFile.Length();
+//
+//                    if ( fileSize == 0 )
+//                    {
+//                        // Copy to a byte[] to get the size, then copy to the buffer.
+//                        byte[] data = StreamUtils.CopyStreamToByteArray( input, 1024 * 16 );
+//
+//                        buffer = BufferUtils.NewUnsafeByteBuffer( data.Length );
+//                        BufferUtils.Copy( data, 0, buffer, data.Length );
+//                    }
+//                    else
+//                    {
+//                        // Trust the specified file size.
+//                        buffer = BufferUtils.NewUnsafeByteBuffer( fileSize );
+//                        StreamUtils.CopyStream( input, buffer );
+//                    }
+//                }
+//                catch ( IOException ex )
+//                {
+//                    throw new GdxRuntimeException( ex );
+//                }
+//                finally
+//                {
+//                    StreamUtils.CloseQuietly( input );
+//                }
+//            }
+//
+//            return NewMemoryFace( buffer, faceIndex );
+        }
+
+        public Face NewMemoryFace( byte[] data, int dataSize, int faceIndex )
+        {
+            var buffer = BufferUtils.NewUnsafeByteBuffer( data.Length );
+            BufferUtils.Copy( data, 0, buffer, data.Length );
+
+            return NewMemoryFace( buffer, faceIndex );
+        }
+
+        public Face NewMemoryFace( ByteBuffer buffer, int faceIndex )
+        {
+            var face = _newMemoryFace( Address, buffer, buffer.Remaining(), faceIndex );
+
+            if ( face == 0 )
+            {
+                if ( BufferUtils.IsUnsafeByteBuffer( buffer ) )
+                {
+                    BufferUtils.DisposeUnsafeByteBuffer( buffer );
+                }
+
+                throw new GdxRuntimeException( $"Couldn't load font, FreeType error code: {_getLastErrorCode()}" );
+            }
+
+            FontData.Put( face, buffer );
+
+            return new Face( face, this );
         }
 
         public Stroker CreateStroker()
         {
-            throw new NotImplementedException();
+            var stroker = _strokerNew( Address );
+
+            if ( stroker == 0 )
+            {
+                throw new GdxRuntimeException( $"Couldn't create FreeType stroker, FreeType error code: {_getLastErrorCode()}" );
+            }
+
+            return new Stroker( stroker );
         }
+
+        private static extern void _doneFreeType( long library );
+        private static extern long _newMemoryFace( long library, ByteBuffer data, int dataSize, int faceIndex );
+        private static extern long _strokerNew( long library );
     }
+
+    // ========================================================================
+    // ========================================================================
 
     [PublicAPI]
     public class Face( long address, Library library ) : Pointer( address )
@@ -223,6 +333,9 @@ public class FreeType
         }
     }
 
+    // ========================================================================
+    // ========================================================================
+
     [PublicAPI]
     public class Size( long address ) : Pointer( address )
     {
@@ -235,6 +348,9 @@ public class FreeType
             return new SizeMetrics( _getMetrics( base.Address ) );
         }
     }
+
+    // ========================================================================
+    // ========================================================================
 
     [PublicAPI]
     public class SizeMetrics( long address ) : Pointer( address )
@@ -259,6 +375,9 @@ public class FreeType
             throw new NotImplementedException();
         }
     }
+
+    // ========================================================================
+    // ========================================================================
 
     [PublicAPI]
     public class GlyphSlot( long address ) : Pointer( address )
@@ -299,6 +418,9 @@ public class FreeType
         }
     }
 
+    // ========================================================================
+    // ========================================================================
+
     [PublicAPI]
     public class Glyph( long address ) : Pointer( address )
     {
@@ -333,6 +455,9 @@ public class FreeType
         }
     }
 
+    // ========================================================================
+    // ========================================================================
+
     [PublicAPI]
     public class Bitmap( long address ) : Pointer( address )
     {
@@ -340,7 +465,7 @@ public class FreeType
         {
             throw new NotImplementedException();
         }
-        
+
         public int GetRows()
         {
             throw new NotImplementedException();
@@ -362,31 +487,57 @@ public class FreeType
         }
     }
 
+    // ========================================================================
+    // ========================================================================
+
     [PublicAPI]
     public class GlyphMetrics( long address ) : Pointer( address )
     {
-        public int GetHoriAdvance()
-        {
-            throw new NotImplementedException();
-        }
+        public int GetWidth() => _getWidth( Address );
 
-        public int GetHeight()
-        {
-            throw new NotImplementedException();
-        }
+        public int GetHeight() => _getHeight( Address );
+
+        public int GetHoriBearingX() => _getHoriBearingX( Address );
+
+        public int GetHoriBearingY() => _getHoriBearingY( Address );
+
+        public int GetHoriAdvance() => _getHoriAdvance( Address );
+
+        public int GetVertBearingX() => _getVertBearingX( Address );
+
+        public int GetVertBearingY() => _getVertBearingY( Address );
+
+        public int GetVertAdvance() => _getVertAdvance( Address );
+
+        // ====================================================================
+
+        private static extern int _getWidth( long metrics );
+        private static extern int _getHeight( long metrics );
+        private static extern int _getHoriBearingX( long metrics );
+        private static extern int _getHoriBearingY( long metrics );
+        private static extern int _getHoriAdvance( long metrics );
+        private static extern int _getVertBearingX( long metrics );
+        private static extern int _getVertBearingY( long metrics );
+        private static extern int _getVertAdvance( long metrics );
     }
+
+    // ========================================================================
+    // ========================================================================
 
     [PublicAPI]
     public class Stroker( long address ) : Pointer( address )
     {
-        public void Set( int parameterBorderWidth, int ftStrokerLinecapRound, int ftStrokerLinejoinMiterFixed, int i )
+        public void Set( int radius, int lineCap, int lineJoin, int miterLimit )
         {
-            throw new NotImplementedException();
+            _set( Address, radius, lineCap, lineJoin, miterLimit );
         }
 
         public void Dispose()
         {
             throw new NotImplementedException();
         }
+
+        private static extern void _set( long stroker, int radius, int lineCap, int lineJoin, int miterLimit );
+        private static extern void _done( long stroker );
     }
 }

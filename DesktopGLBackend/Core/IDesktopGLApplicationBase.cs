@@ -22,8 +22,8 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
-using Corelib.LibCore.Graphics.GLUtils;
+using Corelib.Lugh.Core;
+using Corelib.Lugh.Graphics.GLUtils;
 
 using DesktopGLBackend.Audio;
 using DesktopGLBackend.Input;

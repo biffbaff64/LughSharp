@@ -22,8 +22,8 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
-using Corelib.LibCore.Graphics;
+using Corelib.Lugh.Core;
+using Corelib.Lugh.Graphics;
 using DesktopGLBackend.Core;
 using DesktopGLBackend.Graphics;
 using JetBrains.Annotations;

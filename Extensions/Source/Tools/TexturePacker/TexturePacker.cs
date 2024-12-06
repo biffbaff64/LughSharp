@@ -32,75 +32,76 @@ public class TexturePacker
     [PublicAPI]
     public class Page
     {
-        public string?       imageName      { get; set; }
-        public List< Rect >? outputRects    { get; set; }
-        public List< Rect >? remainingRects { get; set; }
-        public float         occupancy      { get; set; }
-        public int           x              { get; set; }
-        public int           y              { get; set; }
-        public int           width          { get; set; }
-        public int           height         { get; set; }
-        public int           imageWidth     { get; set; }
-        public int           imageHeight    { get; set; }
+        public string?       ImageName      { get; set; }
+        public List< Rect >? OutputRects    { get; set; }
+        public List< Rect >? RemainingRects { get; set; }
+        public float         Occupancy      { get; set; }
+        public int           X              { get; set; }
+        public int           Y              { get; set; }
+        public int           Width          { get; set; }
+        public int           Height         { get; set; }
+        public int           ImageWidth     { get; set; }
+        public int           ImageHeight    { get; set; }
     }
 
     [PublicAPI]
     public class Alias( Rect rect ) : IComparable< Alias >
     {
-        public string name           = rect.name;
-        public int    index          = rect.index;
-        public int[]  splits         = rect.splits;
-        public int[]  pads           = rect.pads;
-        public int    offsetX        = rect.offsetX;
-        public int    offsetY        = rect.offsetY;
-        public int    originalWidth  = rect.originalWidth;
-        public int    originalHeight = rect.originalHeight;
+        public string Name           = rect.Name;
+        public int    Index          = rect.Index;
+        public int[]  Splits         = rect.Splits;
+        public int[]  Pads           = rect.Pads;
+        public int    OffsetX        = rect.OffsetX;
+        public int    OffsetY        = rect.OffsetY;
+        public int    OriginalWidth  = rect.OriginalWidth;
+        public int    OriginalHeight = rect.OriginalHeight;
 
         public void Apply( Rect rect )
         {
-            rect.name           = name;
-            rect.index          = index;
-            rect.splits         = splits;
-            rect.pads           = pads;
-            rect.offsetX        = offsetX;
-            rect.offsetY        = offsetY;
-            rect.originalWidth  = originalWidth;
-            rect.originalHeight = originalHeight;
+            rect.Name           = Name;
+            rect.Index          = Index;
+            rect.Splits         = Splits;
+            rect.Pads           = Pads;
+            rect.OffsetX        = OffsetX;
+            rect.OffsetY        = OffsetY;
+            rect.OriginalWidth  = OriginalWidth;
+            rect.OriginalHeight = OriginalHeight;
         }
 
         public int CompareTo( Alias? o )
         {
-            return string.Compare( name, o?.name, StringComparison.Ordinal );
+            return string.Compare( Name, o?.Name, StringComparison.Ordinal );
         }
     }
 
     [PublicAPI]
     public class Rect : IComparable< Rect >
     {
-        public string name = string.Empty;
-        public int    offsetX;
-        public int    offsetY;
-        public int    regionWidth;
-        public int    regionHeight;
-        public int    originalWidth;
-        public int    originalHeight;
-        public int    x,     y;
-        public int    width, height; // Portion of page taken by this region, including padding.
-        public int    index;
-
-        public bool rotated;
+        public string Name = string.Empty;
+        public int    OffsetX;
+        public int    OffsetY;
+        public int    RegionWidth;
+        public int    RegionHeight;
+        public int    OriginalWidth;
+        public int    OriginalHeight;
+        public int    X;
+        public int    Y;
+        public int    Width;  // Portion of page taken by this region, including padding.
+        public int    Height; // Portion of page taken by this region, including padding.
+        public int    Index;
+        public bool   Rotated;
 
 //        public Set< Alias > aliases = new HashSet< Alias >();
-        public int[] splits    = null!;
-        public int[] pads      = null!;
-        public bool  canRotate = true;
+        public int[] Splits    = null!;
+        public int[] Pads      = null!;
+        public bool  CanRotate = true;
 
-        private bool isPatch;
+        private bool _isPatch;
 
 //        private BufferedImage image;
-        private FileInfo file = null!;
-        private int      score1;
-        private int      score2;
+        private FileInfo _file = null!;
+        private int      _score1;
+        private int      _score2;
 
         public Rect()
         {
@@ -108,10 +109,10 @@ public class TexturePacker
 
         public Rect( Rect rect )
         {
-            x      = rect.x;
-            y      = rect.y;
-            width  = rect.width;
-            height = rect.height;
+            X      = rect.X;
+            Y      = rect.Y;
+            Width  = rect.Width;
+            Height = rect.Height;
         }
 
 //        public Rect( BufferedImage source, int left, int top, int newWidth, int newHeight, bool isPatch )
@@ -133,7 +134,8 @@ public class TexturePacker
         /** Clears the image for this rect, which will be loaded from the specified file by {@link #getImage(ImageProcessor)}. */
         public void UnloadImage( FileInfo fileInfo )
         {
-            this.file = fileInfo;
+            this._file = fileInfo;
+
 //            image     = null;
         }
 
@@ -159,33 +161,35 @@ public class TexturePacker
 
         protected void Set( Rect rect )
         {
-            name = rect.name;
+            Name = rect.Name;
+
 //            image          = rect.image;
-            offsetX        = rect.offsetX;
-            offsetY        = rect.offsetY;
-            regionWidth    = rect.regionWidth;
-            regionHeight   = rect.regionHeight;
-            originalWidth  = rect.originalWidth;
-            originalHeight = rect.originalHeight;
-            x              = rect.x;
-            y              = rect.y;
-            width          = rect.width;
-            height         = rect.height;
-            index          = rect.index;
-            rotated        = rect.rotated;
+            OffsetX        = rect.OffsetX;
+            OffsetY        = rect.OffsetY;
+            RegionWidth    = rect.RegionWidth;
+            RegionHeight   = rect.RegionHeight;
+            OriginalWidth  = rect.OriginalWidth;
+            OriginalHeight = rect.OriginalHeight;
+            X              = rect.X;
+            Y              = rect.Y;
+            Width          = rect.Width;
+            Height         = rect.Height;
+            Index          = rect.Index;
+            Rotated        = rect.Rotated;
+
 //            aliases        = rect.aliases;
-            splits    = rect.splits;
-            pads      = rect.pads;
-            canRotate = rect.canRotate;
-            score1    = rect.score1;
-            score2    = rect.score2;
-            file      = rect.file;
-            isPatch   = rect.isPatch;
+            Splits    = rect.Splits;
+            Pads      = rect.Pads;
+            CanRotate = rect.CanRotate;
+            _score1    = rect._score1;
+            _score2    = rect._score2;
+            _file      = rect._file;
+            _isPatch   = rect._isPatch;
         }
 
         public int CompareTo( Rect? o )
         {
-            return string.Compare( name, o?.name, StringComparison.Ordinal );
+            return string.Compare( Name, o?.Name, StringComparison.Ordinal );
         }
 
         /// <inheritdoc />
@@ -216,7 +220,7 @@ public class TexturePacker
 
         public override string ToString()
         {
-            return name + ( index != -1 ? "_" + index : "" ) + "[" + x + "," + y + " " + width + "x" + height + "]";
+            return Name + ( Index != -1 ? "_" + Index : "" ) + "[" + X + "," + Y + " " + Width + "x" + Height + "]";
         }
 
         public static string GetAtlasName( string name, bool flattenPaths )

@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System;
-using Corelib.LibCore.Core;
+using Corelib.Lugh.Core;
 using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Input;

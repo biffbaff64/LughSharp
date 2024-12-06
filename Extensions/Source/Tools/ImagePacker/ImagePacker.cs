@@ -22,7 +22,7 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Utils.Exceptions;
+using Corelib.Lugh.Utils.Exceptions;
 using JetBrains.Annotations;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -65,6 +65,7 @@ public class ImagePacker
     private readonly bool _duplicateBorder;
     private readonly Node _root;
 
+    // ========================================================================
     // ========================================================================
 
     /// <summary>
@@ -111,8 +112,8 @@ public class ImagePacker
 
         node.LeaveName = name;
 
-        rect = new Rectangle( node.Rect.X + borderPixels / 2,
-                              node.Rect.Y + borderPixels / 2,
+        rect = new Rectangle( node.Rect.X + ( borderPixels / 2 ),
+                              node.Rect.Y + ( borderPixels / 2 ),
                               node.Rect.Width - borderPixels,
                               node.Rect.Height - borderPixels );
 
@@ -148,7 +149,7 @@ public class ImagePacker
         {
             var node = stack.Pop();
 
-            if ( node.LeaveName == null && node is { LeftChild: not null, RightChild: not null } )
+            if ( ( node.LeaveName == null ) && node is { LeftChild: not null, RightChild: not null } )
             {
                 stack.Push( node.RightChild );
                 stack.Push( node.LeftChild );
@@ -231,7 +232,7 @@ public class ImagePacker
             images[ i ] = CreateImage( rand.Next( 10, 61 ), rand.Next( 10, 61 ), color );
         }
 
-        Array.Sort( images, ( a, b ) => b.Width * b.Height - a.Width * a.Height );
+        Array.Sort( images, ( a, b ) => ( b.Width * b.Height ) - ( a.Width * a.Height ) );
 
         for ( var i = 0; i < images.Length; i++ )
         {

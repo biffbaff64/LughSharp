@@ -24,15 +24,12 @@
 
 using System.Text;
 
-using Corelib.LibCore.Core;
-using Corelib.LibCore.Graphics;
-using Corelib.LibCore.Graphics.GLUtils;
-using Corelib.LibCore.Graphics.OpenGL;
+using Corelib.Lugh.Core;
+using Corelib.Lugh.Graphics.GLUtils;
+using Corelib.Lugh.Graphics.OpenGL;
 
 using DesktopGLBackend.Graphics;
 using DesktopGLBackend.Window;
-
-using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Core;
 
@@ -42,13 +39,14 @@ namespace DesktopGLBackend.Core;
 [PublicAPI]
 public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 {
+    [PublicAPI]
     public enum GLEmulationType
     {
-        ANGLE_GLES20,
+        AngleGles20,
         GL20,
         GL30,
         GL31,
-        GL32
+        GL32,
     }
 
     #region properties
@@ -66,8 +64,8 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     public int             Samples                        { get; set; } = 0;
     public int             IdleFPS                        { get; set; } = 60;
     public int             ForegroundFPS                  { get; set; } = 0;
-    public int             GLESContextMajorVersion        { get; set; } = GLData.DEFAULT_GL_MAJOR;
-    public int             GLESContextMinorVersion        { get; set; } = GLData.DEFAULT_GL_MINOR;
+    public int             GLContextMajorVersion          { get; set; } = GLData.DEFAULT_GL_MAJOR;
+    public int             GLContextMinorVersion          { get; set; } = GLData.DEFAULT_GL_MINOR;
     public int             GLContextRevision              { get; set; } = 0;
     public GLEmulationType GLEmulation                    { get; set; } = GLEmulationType.GL20;
     public int             Red                            { get; set; } = 8;
@@ -121,8 +119,8 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
         Samples                        = config.Samples;
         IdleFPS                        = config.IdleFPS;
         ForegroundFPS                  = config.ForegroundFPS;
-        GLESContextMajorVersion        = config.GLESContextMajorVersion;
-        GLESContextMinorVersion        = config.GLESContextMinorVersion;
+        GLContextMajorVersion          = config.GLContextMajorVersion;
+        GLContextMinorVersion          = config.GLContextMinorVersion;
         GLContextRevision              = config.GLContextRevision;
         Red                            = config.Red;
         Green                          = config.Green;
@@ -159,9 +157,9 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// <param name="glesMinorVersion"> OpenGL ES minor version, use 2 as default </param>
     public void SetOpenGLEmulation( GLEmulationType glVersion, int glesMajorVersion, int glesMinorVersion )
     {
-        this.GLEmulation             = glVersion;
-        this.GLESContextMajorVersion = glesMajorVersion;
-        this.GLESContextMinorVersion = glesMinorVersion;
+        this.GLEmulation           = glVersion;
+        this.GLContextMajorVersion = glesMajorVersion;
+        this.GLContextMinorVersion = glesMinorVersion;
     }
 
     /// <summary>
@@ -203,13 +201,13 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    /// Sets the vorrect values for <see cref="GLESContextMajorVersion"/> and
-    /// <see cref="GLESContextMinorVersion"/>. Defaults to 4 (major) and 6 (minor)
+    /// Sets the vorrect values for <see cref="GLContextMajorVersion"/> and
+    /// <see cref="GLContextMinorVersion"/>. Defaults to 4 (major) and 6 (minor)
     /// </summary>
     public void SetGLContextVersion( int major, int minor )
     {
-        GLESContextMajorVersion = major;
-        GLESContextMinorVersion = minor;
+        GLContextMajorVersion = major;
+        GLContextMinorVersion = minor;
     }
 
     /// <summary>
