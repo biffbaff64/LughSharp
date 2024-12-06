@@ -7,685 +7,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37b16c66-7b00-439c-a185-d98ba849df85" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Corelib/Playground/RenderTarget.cs" afterDir="false" />
+    <list default="true" id="37b16c66-7b00-439c-a185-d98ba849df85" name="Changes" comment="Some namespace changes">
+      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/App.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/App.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/DesktopLauncher.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/DesktopLauncher.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/Keyboard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/Keyboard.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/MainGame.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/MainGame.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/AssetManagerTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/AssetManagerTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/ColorTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/ColorTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/Matrix4Test.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/Matrix4Test.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/Corelib.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Corelib.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/GlobalUsings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/GlobalUsings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/AssetDescriptor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/AssetLoaderParameters.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/AssetLoadingTask.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/AssetManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/IAssetErrorListener.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/AssetLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/AsynchronousAssetLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/BitmapFontLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/CubemapLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/ModelLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/MusicLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/ParticleEffectLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/PixmapLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/Resolvers/AbsoluteFileHandleResolver.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/Resolvers/ClasspathFileHandleResolver.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/Resolvers/ExternalFileHandleResolver.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/Resolvers/IFileHandleResolver.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/Resolvers/InternalFileHandleResolver.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/Resolvers/LocalFileHandleResolver.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/Resolvers/PrefixFileHandleResolver.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/Resolvers/ResolutionFileResolver.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/ShaderProgramLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/SkinLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/SoundLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/SynchronousAssetLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/TextureAtlasLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/Loaders/TextureLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/RefCountedContainer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/IAudio.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/IAudioDevice.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/IAudioRecorder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/IMusic.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/ISound.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Buffer16BitStereo.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/AudioBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/BitReserve.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Bitstream.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/BitstreamErrors.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/BitstreamException.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/CircularByteBuffer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Crc16.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoder.Parameters.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/DecoderErrors.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/DecoderException.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/ASubband.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/IFrameDecoder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/LayerI/SubbandLayer1.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/LayerI/SubbandLayer1IntensityStereo.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/LayerI/SubbandLayer1Stereo.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/LayerIDecoder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/LayerII/SubbandLayer2.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/LayerII/SubbandLayer2IntensityStereo.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/LayerII/SubbandLayer2Stereo.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/LayerIIDecoder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/LayerIII/ChannelData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/LayerIII/GranuleInfo.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/LayerIII/Layer3SideInfo.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/LayerIII/SBI.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/LayerIII/ScaleFactorData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/LayerIII/ScaleFactorTable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Decoders/LayerIIIDecoder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Equalizer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Header.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/Huffman.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/OutputChannels.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/PushbackStream.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/SampleBuffer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Decoding/SynthesisFilter.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/IO/RandomAccessFileStream.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/IO/RiffFile.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/IO/WaveFile.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/IO/WaveFileBuffer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/MP3SharpException.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/MP3Stream.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Readme.MD" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/SoundFormat.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/Maponus/Support/SupportClass.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/OpenAL/AL.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Audio/OpenAL/ALC.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/AbstractGraphics.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/AbstractInput.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/ApplicationAdapter.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/Game.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/Gdx.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/IApplication.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/IApplicationListener.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/IFiles.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/IGraphics.BufferFormatDescriptor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/IGraphics.DisplayMode.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/IGraphics.GdxMonitor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/IGraphics.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/IInput.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/IInputProcessor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/ILifecycleListener.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/INet.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/IPreferences.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/IScreen.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/InputAdapter.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/InputEventQueue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/InputMultiplexer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/LughVersion.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/Platform.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/ScreenAdapter.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Files/FileHandle.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Files/InputStream.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/BMPFormatStructs.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Cameras/Camera.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Cameras/OrthographicCamera.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Cameras/PerspectiveCamera.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Color.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Colors.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Cubemap.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/FPSLogger.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/FrameBuffers/FloatFrameBuffer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/FrameBuffers/FloatFrameBufferBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/FrameBuffers/FrameBuffer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/FrameBuffers/FrameBufferBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/FrameBuffers/FrameBufferCubemap.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/FrameBuffers/FrameBufferCubemapBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/FrameBuffers/FrameBufferRenderBufferAttachmentSpec.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/FrameBuffers/FrameBufferTextureAttachmentSpec.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/FrameBuffers/GLFrameBuffer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/FrameBuffers/GLFrameBufferBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/Animation.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/AtlasRegion.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/AtlasSprite.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/BitmapFont.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/BitmapFontCache.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/CpuSpriteBatch.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/DistanceFieldFont.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/Gdx2DPixmap.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/Gdx2DPixmapExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/Gdx2DPixmapUtils.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/GlyphLayout.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/IBatch.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/IPolygonBatch.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/NinePatch.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/ParticleEffect.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/ParticleEffectPool.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/ParticleEmitter.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/PixmapPacker.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/PixmapPackerIO.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/PolygonRegion.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/PolygonRegionLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/PolygonSprite.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/PolygonSpriteBatch.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/RepeatablePolygonSprite.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/Sprite.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/SpriteBatch.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/SpriteCache.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/TextureAtlas.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/TextureAtlasData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/TextureAtlasDataExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/TextureRegion.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Attribute.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Attributes/BlendingAttribute.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Attributes/ColorAttribute.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Attributes/CubemapAttribute.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Attributes/DepthTestAttribute.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Attributes/DirectionalLightsAttribute.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Attributes/FloatAttribute.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Attributes/IntAttribute.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Attributes/PointLightsAttribute.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Attributes/SpotLightsAttribute.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Attributes/TextureAttribute.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/AttributesGroup.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Decals/CameraGroupStrategy.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Decals/Decal.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Decals/DecalBatch.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Decals/DecalMaterial.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Decals/IGroupPlug.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Decals/IGroupStrategy.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Decals/PluggableGroupStrategy.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Decals/SimpleOrthoGroupStrategy.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Env/AmbientCubemap.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Env/BaseLight.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Env/DirectionalLight.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Env/DirectionalShadowLight.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Env/IShadowMap.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Env/PointLight.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Env/SphericalHarmonics.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Env/SpotLight.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Environment.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Loader/G3ModelLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Loader/ObjLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Material.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Model.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/ModelBatch.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/ModelCache.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/ModelInstance.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Models/Attribute.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Models/Data/ModelAnimation.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Models/Data/ModelData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Models/Data/ModelMaterial.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Models/Data/ModelMesh.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Models/Data/ModelMeshPart.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Models/Data/ModelNode.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Models/Data/ModelNodeAnimation.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Models/Data/ModelNodeKeyframe.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Models/Data/ModelNodePart.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Models/Data/ModelTexture.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Models/MeshPart.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Models/Node.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Models/NodeAnimation.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Models/NodeKeyframe.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Models/NodePart.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Batches/BillboardParticleBatch.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Batches/BufferedParticleBatch.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Batches/IParticleBatch.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Batches/ModelInstanceParticleBatch.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Batches/PointSpriteParticleBatch.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Emitters/Emitter.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Emitters/RegularEmitter.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Influencers/ColorInfluencer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Influencers/DynamicsInfluencer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Influencers/DynamicsModifier.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Influencers/Influencer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Influencers/ModelInfluencer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Influencers/ParticleControllerFinalizerInfluencer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Influencers/ParticleControllerInfluencer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Influencers/RegionInfluencer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Influencers/ScaleInfluencer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Influencers/SimpleInfluencer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Influencers/SpawnInfluencer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/ParallelArray.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/ParticleChannels.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/ParticleController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/ParticleControllerComponent.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/ParticleEffect.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/ParticleEffectLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/ParticleShader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/ParticleSorter.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/ParticleSystem.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Renderers/BillboardControllerRenderData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Renderers/BillboardRenderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Renderers/ModelInstanceControllereRenderData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Renderers/ModelInstanceRenderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Renderers/ParticleControllerControllerRenderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Renderers/ParticleControllerRenderData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Renderers/ParticleControllerRenderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Renderers/PointSpriteControllerRenderData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Renderers/PointSpriteRenderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/ResourceData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Values/CylinderSpawnShapeValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Values/EllipseSpawnShapeValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Values/GradientColorValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Values/LineSpawnShapeValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Values/MeshSpawnShapeValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Values/NumericValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Values/ParticleValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Values/PointSpawnShapeValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Values/PrimitiveSpawnShapeValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Values/RangedNumericValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Values/RectangleSpawnShapeValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Values/ScaledNumericValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Values/SpawnShapeValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Values/UnweightedMeshSpawnShapeValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Particles/Values/WeightMeshSpawnShapeValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Renderable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/RenderableProvider.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Shader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Shaders/BaseShader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Shaders/DefaultShader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Shaders/DepthShader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/AnimationController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/BaseAnimationController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/BaseShaderProvider.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/CameraInputController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/DefaultRenderableSorter.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/DefaultShaderProvider.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/DefaultTextureBinder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/DepthShaderProvider.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/FirstPersonCameraController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/IMeshPartBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/IRenderableSorter.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/IShaderProvider.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/ITextureBinder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/ITextureProvider.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/MeshBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/ModelBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/RenderContext.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/ShapeBuilders/ArrowShapeBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/ShapeBuilders/BaseShapeBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/ShapeBuilders/BoxShapeBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/ShapeBuilders/CapsuleShapeBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/ShapeBuilders/ConeShapeBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/ShapeBuilders/CylinderShapeBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/ShapeBuilders/EllipseShapeBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/ShapeBuilders/FrustrumShapeBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/ShapeBuilders/PatchShapeBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/ShapeBuilders/RenderableShapeBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/ShapeBuilders/SphereShapeBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/ShapeCache.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G3D/Utils/TextureDescriptor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLTexture.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/ETC1.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/ETC1TextureData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/FacedCubemapData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/FileTextureArrayData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/FileTextureData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/FloatTextureData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/GLOnlyTextureData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/GLVersion.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/HdpiMode.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/HdpiUtils.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/IImmediateModeRenderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/IIndexData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/IInstanceData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/IVertexData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/ImmediateModeRenderer20.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/IndexArray.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/IndexBufferObject.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/IndexBufferObjectSubData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/InstanceBufferObject.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/InstanceBufferObjectSubData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/KTXTextureData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/MipMapGenerator.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/MipMapTextureData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/PixmapTextureData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/ShaderProgram.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/ShapeRenderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/VertexArray.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/VertexBufferObject.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/VertexBufferObjectSubData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/VertexBufferObjectWithVAO.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GStructs.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GraphicsBackend.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/ICubemapData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/ICursor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/ITextureArrayData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/ITextureData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Mesh.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLFunctionDelegates.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLFunctionsLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/IGL.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/IGLBindings.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/PNGUtils.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Pixmap.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/PixmapFormat.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/PixmapFormatExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/PixmapIO.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Playground/BmpImage.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Playground/GLTest.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Playground/GraphicsAdapter.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Playground/GraphicsProfile.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Playground/GraphicsResource.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Playground/IImage.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Playground/ImageBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Playground/ImmutableColor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Playground/JpgImage.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Playground/PixelType.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Playground/PixmapDataTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Playground/PngImage.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Playground/TextureDataTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Profiling/BaseGLInterceptor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Profiling/GLInterceptor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Profiling/GLProfiler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Profiling/IGLErrorListener.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Texture.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/TextureArray.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/TextureDataFactory.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/VertexAttribute.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/VertexAttributes.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Viewport/ExtendViewport.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Viewport/FillViewport.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Viewport/FitViewport.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Viewport/ScalingViewport.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Viewport/ScreenViewport.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Viewport/StretchViewport.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Viewport/Viewport.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Input/GestureDetector.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Input/InputUtils.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Input/RemoteInput.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Input/RemoteSender.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/IImageResolver.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/IMapRenderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Map.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/MapGroupLayer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/MapLayer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/MapLayers.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/MapObject.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/MapObjects.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/MapProperties.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Objects/CircleMapObject.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Objects/EllipseMapObject.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Objects/PolygonMapObject.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Objects/PolylineMapObject.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Objects/RectangleMapObject.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Objects/TextureMapObject.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/ITiledMapTile.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/Loaders/AtlasTmxMapLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/Loaders/BaseTmxMapLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/Loaders/TmxMapLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/Objects/TiledMapTileMapObject.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/Renderers/BatchTiledMapRenderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/Renderers/HexagonalTiledMapRenderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/Renderers/ITiledMapRenderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/Renderers/IsometricStaggeredTiledMapRenderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/Renderers/IsometricTiledMapRenderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/Renderers/OrthoCachedTiledMapRenderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/Renderers/OrthogonalTiledMapRenderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/TiledMap.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/TiledMapImageLayer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/TiledMapTileLayer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/TiledMapTileSet.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/TiledMapTileSets.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/Tiles/AnimatedTiledMapTile.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maps/Tiled/Tiles/StaticTiledMapTile.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Affine2.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/BSpline.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Bezier.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Bresenham2.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/CatmullRomSpline.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Circle.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Collision/BoundingBox.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Collision/Ray.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Collision/Segment.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Collision/Sphere.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/ConvexHull.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/CumulativeDistribution.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/DelaunayTriangulator.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/EarClippingTriangulator.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Ellipse.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/FloatCounter.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Frustrum.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/GeometryUtils.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/GridPoint2.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/GridPoint3.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/IPath.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/IShape2D.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/IVector.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Interpolation.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Intersector.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/MathUtils.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Matrix3.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Matrix4.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Number.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/NumberUtils.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Plane.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Point2D.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Polygon.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Polyline.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Quaternion.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/RandomXS128.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/RectangleShape.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/SimpleVectors.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Vector2.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/Vector3.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Maths/WindowedMean.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Network/HttpParametersUtils.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Network/HttpRequestBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Network/HttpStatus.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Network/IHttpRequestHeader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Network/IHttpResponseHeader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Network/IServerSocket.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Network/ISocket.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Network/NetJavaImpl.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Network/NetJavaServerSocketImpl.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Network/NetJavaSocketImpl.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Network/ServerSocketHints.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Network/SocketHints.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Action.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/Actions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/AddAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/AddListenerAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/AfterAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/AlphaAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/ColorAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/CountdownEventAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/DelayAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/DelegateAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/EventAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/FloatAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/IntAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/LayoutAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/MoveByAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/MoveToAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/ParallelAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/RelativeTemporalAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/RemoveAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/RemoveActorAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/RemoveListenerAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/RepeatAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/RotateByAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/RotateToAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/RunnableAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/ScaleByAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/ScaleToAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/SequenceAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/SizeByAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/SizeToAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/TemporalAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/TimeScaleAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/TouchableAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actions/VisibleAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Actor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Event.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Group.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/IAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/IActor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/InputEvent.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Listeners/ActorGestureListener.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Listeners/ChangeListener.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Listeners/ClickListener.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Listeners/DragListener.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Listeners/DragScrollListener.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Listeners/FocusListener.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Listeners/IEventListener.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Listeners/InputListener.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Stage.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Touchable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/Button.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/ButtonGroup.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/Cell.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/CheckBox.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/Container.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/Dialog.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/DialogChangeListener.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/DialogFocusListener.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/DialogInputListener.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/HorizontalGroup.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/IOnScreenKeyboard.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/Image.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/ImageButton.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/ImageTextButton.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/Label.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/ListBox.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/ParticleEffectActor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/ProgressBar.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/ScrollPane.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/ScrollPaneListeners.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/SelectBox.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/Skin.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/Slider.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/SplitPane.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/Stack.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/Table.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/TextArea.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/TextButton.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/TextField.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/TextTooltip.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/Tooltip.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/TooltipManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/Touchpad.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/Tree.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/UISkin.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/Value.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/VerticalGroup.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/Widget.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/WidgetGroup.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/UI/Window.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Utils/ArraySelection.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Utils/BaseDrawable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Utils/DragAndDrop.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Utils/ICullable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Utils/IDisableable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Utils/IDrawable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Utils/ILayout.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Utils/ITransformDrawable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Utils/NinePatchDrawable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Utils/ScissorStack.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Utils/Selection.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Utils/SpriteDrawable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Utils/TextureRegionDrawable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Scenes/Scene2D/Utils/TiledDrawable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Align.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/BinaryHeap.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Bits.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Buffers/Buffer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Buffers/BufferUtils.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Buffers/ByteBuffer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Buffers/FloatBuffer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Buffers/GdxBufferUtils.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Buffers/HeapByteBuffer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Buffers/HeapByteBufferR.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Buffers/HeapFloatBuffer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Buffers/HeapFloatBufferR.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Buffers/HeapIntBuffer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Buffers/HeapIntBufferR.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Buffers/HeapShortBuffer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Buffers/HeapShortBufferR.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Buffers/IntBuffer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Buffers/ShortBuffer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/ByteOrder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/BytePointerToString.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Character.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Collections/Array.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Collections/ByteArray.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Collections/DelayedRemovalList.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Collections/DeleteCandidates/IPredicate.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Collections/DeleteCandidates/IdentityMap.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Collections/DeleteCandidates/PredicateIterable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Collections/DeleteCandidates/PredicateIterator.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Collections/DictionaryExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Collections/ListExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Collections/ObjectMap.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Collections/SnapshotArray.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/ComparableTimSort.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/DataInput.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/DataOutput.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/DataUtils.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Exceptions/AssetNotLoadedException.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Exceptions/BufferOverflowException.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Exceptions/BufferUnderflowException.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Exceptions/GdxRuntimeException.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Exceptions/ReadOnlyBufferException.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/FloatConstants.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/GdxNativesLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/IClipBoard.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/ICloseable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/IManaged.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/IReadable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/IResetable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/IRunnable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Logger.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Numbers/IntToByte.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/PerformanceCounter.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/PerformanceCounters.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Pooling/FlushablePool.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Pooling/IPoolable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Pooling/Pool.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Pooling/PooledLinkedList.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Pooling/Pools.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/PropertiesUtils.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/QuadTreeFloat.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/QuickSelect.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Scaling.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/ScreenUtils.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Selector.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/SingletonBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/SortUtils.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/StringTokenizer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/TimSort.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/TimeUtils.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Timer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/IGLAudio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/IGLAudio.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockAudio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockAudio.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockAudioDevice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockAudioDevice.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockAudioRecorder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockAudioRecorder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockMusic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockMusic.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockSound.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/Mock/MockSound.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/OpenALAudio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/OpenALAudio.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/OpenALAudioDevice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/OpenALAudioDevice.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/OpenALMusic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/OpenALMusic.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/OpenALSound.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/OpenALSound.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Audio/Wav.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Audio/Wav.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplicationConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLNativesLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLNativesLoader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLNet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLNet.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/IDesktopGLApplicationBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/IDesktopGLApplicationBase.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Files/DesktopGLFileHandle.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Files/DesktopGLFileHandle.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Files/DesktopGLFiles.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Files/DesktopGLFiles.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Graphics/DesktopGLGraphics.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Graphics/DesktopGLGraphics.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Input/DefaultDesktopGLInput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Input/DefaultDesktopGLInput.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Input/IDesktopGLInput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Input/IDesktopGLInput.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Utils/DesktopGLClipboard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Utils/DesktopGLClipboard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Utils/DesktopGLCursor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Utils/DesktopGLCursor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Utils/DesktopGLPreferences.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Utils/DesktopGLPreferences.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindowConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindowConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Window/IDesktopGLWindowListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Window/IDesktopGLWindowListener.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Extensions/Source/Freetype/FreeType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Freetype/FreeType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Extensions/Source/Freetype/FreeTypeFontGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Freetype/FreeTypeFontGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Extensions/Source/Tools/FileProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/FileProcessor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Extensions/Source/Tools/ImagePacker/ImagePacker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/ImagePacker/ImagePacker.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Extensions/Source/Tools/TexturePacker/ColorBleedEffect.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/TexturePacker/ColorBleedEffect.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Extensions/Source/Tools/TexturePacker/GridPacker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/TexturePacker/GridPacker.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Extensions/Source/Tools/TexturePacker/TexturePacker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/TexturePacker/TexturePacker.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LughSharp.sln" beforeDir="false" afterPath="$PROJECT_DIR$/LughSharp.sln" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -701,7 +31,7 @@
         <option value="Richard Ikin / Red 7 Projects &lt;richikin@gmail.com&gt;" />
       </list>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../ConsoleApp1" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -850,7 +180,7 @@
       <workItem from="1733411200080" duration="17954000" />
       <workItem from="1733482754151" duration="8022000" />
       <workItem from="1733506933117" duration="9680000" />
-      <workItem from="1733523241600" duration="1939000" />
+      <workItem from="1733523241600" duration="2390000" />
     </task>
     <task id="LOCAL-00001" summary="Major Restructuring">
       <option name="closed" value="true" />
@@ -1108,7 +438,23 @@
       <option name="project" value="LOCAL" />
       <updated>1733354055333</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Some namespace changes">
+      <option name="closed" value="true" />
+      <created>1733525245110</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1733525245110</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Some namespace changes">
+      <option name="closed" value="true" />
+      <created>1733525405228</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1733525405228</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1136,7 +482,8 @@
     <MESSAGE value="Shader problem fixes" />
     <MESSAGE value="Window creation working" />
     <MESSAGE value="Essential Update" />
-    <option name="LAST_COMMIT_MESSAGE" value="Essential Update" />
+    <MESSAGE value="Some namespace changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Some namespace changes" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
@@ -1205,6 +552,18 @@
           <option name="totalLines" value="215714" />
           <option name="info" value="" />
         </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1733525245900" />
+          <option name="linesCode" value="109355" />
+          <option name="totalLines" value="216054" />
+          <option name="info" value="" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1733525405889" />
+          <option name="linesCode" value="109355" />
+          <option name="totalLines" value="216054" />
+          <option name="info" value="" />
+        </TimePoint>
       </list>
     </option>
     <option name="genericTimePoints">
@@ -1268,6 +627,12 @@
           <option name="linesCode" value="109459" />
           <option name="totalLines" value="215714" />
           <option name="info" value="4 Dec 2024" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1733525405889" />
+          <option name="linesCode" value="109355" />
+          <option name="totalLines" value="216054" />
+          <option name="info" value="6 Dec 2024" />
         </TimePoint>
       </list>
     </option>
