@@ -1,7 +1,7 @@
-﻿// /////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 //  MIT License
 // 
-//  Copyright (c) 2024 Richard Ikin / Red 7 Projects
+//  Copyright (c) 2024 Richard Ikin / LughSharp Team
 // 
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,20 +22,20 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace Corelib.Playground;
+namespace LughGlfw.Glfw.Enums;
 
-//TODO: Better enum names needed
-public enum GraphicsProfile
+/// <summary>
+/// Specifies whether to use libdecor for window decorations where available.
+/// </summary>
+public enum WaylandLibDecor
 {
-    /// <summary>
-    /// Use a limited set of graphic features and capabilities, allowing the
-    /// game to support the widest variety of devices.
-    /// </summary>
-    Standard,
-    
-    /// <summary>
-    /// Use the largest available set of graphic features and capabilities to
-    /// target devices, that have more enhanced graphic capabilities.        
-    /// </summary>
-    Enhanced,
+  /// <summary>
+  /// Prefer libdecor for window decorations where available.
+  /// </summary>
+  PreferLibDecor = NativeGlfw.GLFW_WAYLAND_PREFER_LIBDECOR,
+
+  /// <summary>
+  /// Disable libdecor for window decorations where available.
+  /// </summary>
+  DisableLibDecor = NativeGlfw.GLFW_WAYLAND_DISABLE_LIBDECOR
 }

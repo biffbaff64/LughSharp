@@ -1,7 +1,7 @@
 ﻿// /////////////////////////////////////////////////////////////////////////////
 //  MIT License
 // 
-//  Copyright (c) 2024 Richard Ikin / Red 7 Projects
+//  Copyright (c) 2024 Richard Ikin / LughSharp Team
 // 
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,36 +22,31 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace Corelib.Lugh.Core;
+namespace Corelib.Playground;
 
-public partial interface IGraphics
+[PublicAPI]
+public class GraphicsObject
 {
-    /// <summary>
-    /// Class describing the bits per pixel, depth buffer precision,
-    /// stencil precision and number of MSAA samples.
-    /// </summary>
-    [PublicAPI]
-    public class BufferFormatDescriptor
+    private string? _name;
+    
+    public GraphicsObject( string? name = default )
     {
-        public int R       { get; set; } // number of bits per color channel.
-        public int G       { get; set; } // ...
-        public int B       { get; set; } // ...
-        public int A       { get; set; } // ...
-        public int Depth   { get; set; } // number of bits for depth buffer.
-        public int Stencil { get; set; } // number of bits for stencil buffer.
-        public int Samples { get; set; } // number of samples for multi-sample anti-aliasing (MSAA).
+        Name = name;
+    }
 
-        /// <summary>
-        /// Whether coverage sampling anti-aliasing is used. If so, you have to clear the coverage
-        /// buffer as well!
-        /// </summary>
-        public bool CoverageSampling { get; set; }
-
-        /// <inheritdoc/>
-        public override string ToString()
+    public string? Name
+    {
+        get => _name;
+        set
         {
-            return $"r - {R}, g - {G}, b - {B}, a - {A}, depth - {Depth}, stencil - "
-                   + $"{Stencil}, num samples - {Samples}, coverage sampling - {CoverageSampling}";
+            _name = value;
+            OnNameChanged( _name ?? string.Empty );
         }
     }
+
+    public virtual void OnNameChanged( string newName )
+    {
+    }
+    
+    public override string? ToString() => Name;
 }

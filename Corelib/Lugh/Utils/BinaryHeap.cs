@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -40,8 +40,8 @@ public record BinaryHeapNode
 }
 
 /// <summary>
-/// A binary heap that stores nodes which each have a float value and are
-/// sorted either lowest first or highest first.
+/// A binary heap that stores nodes which each have a float value and are sorted either
+/// lowest first or highest first.
 /// <para>
 /// The <see cref="BinaryHeapNode"/> class can be extended to store additional information.
 /// </para>
@@ -49,6 +49,24 @@ public record BinaryHeapNode
 [PublicAPI]
 public class BinaryHeap< T > where T : BinaryHeapNode
 {
+    // ========================================================================
+
+    #region properties
+
+    public int Size { get; set; }
+
+    /// <summary>
+    /// Returns true if the heap has one or more items.
+    /// </summary>
+    public virtual bool NotEmpty => Size > 0;
+
+    /// <summary>
+    /// Returns true if the heap is empty.
+    /// </summary>
+    public virtual bool IsEmpty => Size == 0;
+
+    #endregion properties
+
     // ========================================================================
 
     private const int DEFAULT_HEAP_CAPACITY = 16;
@@ -419,22 +437,4 @@ public class BinaryHeap< T > where T : BinaryHeapNode
 
         return buffer.ToString();
     }
-
-    // ========================================================================
-
-    #region properties
-
-    public int Size { get; set; }
-
-    /// <summary>
-    /// Returns true if the heap has one or more items.
-    /// </summary>
-    public virtual bool NotEmpty => Size > 0;
-
-    /// <summary>
-    /// Returns true if the heap is empty.
-    /// </summary>
-    public virtual bool IsEmpty => Size == 0;
-
-    #endregion properties
 }

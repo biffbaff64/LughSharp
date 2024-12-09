@@ -10,6 +10,8 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Corelib\Corelib.csproj" />
+        <ProjectReference Include="..\Extensions\Extensions.csproj" />
+        <ProjectReference Include="..\LughGlfw\LughGlfw.csproj" />
     </ItemGroup>
 
     <ItemGroup>

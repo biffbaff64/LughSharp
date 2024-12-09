@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -382,21 +382,19 @@ public class Bits
     }
 
     /// <summary>
-    /// Performs a logical <b>XOR</b> of this bit set with the bit set argument.
-    /// This bit set is modified so that a bit in it has the value true if and
-    /// only if one of the following statements holds:
-    /// <ul>
-    ///     <li>
-    ///     The bit initially has the value true, and the corresponding bit
-    ///     in the argument has the value false.
-    ///     </li>
-    ///     <li>
-    ///     The bit initially has the value false, and the corresponding bit
-    ///     in the argument has the value true.
-    ///     </li>
-    /// </ul>
+    /// Performs a logical <b>XOR</b> of this bit set with the bit set argument. This bit
+    /// set is modified so that a bit in it has the value true if and only if one of the
+    /// following statements holds:
+    /// <li>
+    /// The bit initially has the value true, and the corresponding bit in the argument has
+    /// the value false.
+    /// </li>
+    /// <li>
+    /// The bit initially has the value false, and the corresponding bit in the argument has
+    /// the value true.
+    /// </li>
     /// </summary>
-    /// <param name="other">  </param>
+    /// <param name="other">The other bitset.</param>
     public void Xor( Bits other )
     {
         var commonWords = Math.Min( _bits.Length, other._bits.Length );

@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -119,10 +119,12 @@ public class Pixmap : IDisposable
     }
 
     /// <summary>
+    /// Creates a new Pixmap instance from the given encoded image data. The image can be encoded
+    /// as JPEG, PNG or BMP. The size of data used is <b>len</b>, starting from <b>offset</b>.
     /// </summary>
-    /// <param name="encodedData"></param>
-    /// <param name="offset"></param>
-    /// <param name="len"></param>
+    /// <param name="encodedData"> A ByteBuffer holding the encoded data. </param>
+    /// <param name="offset"> The position in the data to start copying from. </param>
+    /// <param name="len"> The size of data to copy. </param>
     /// <exception cref="GdxRuntimeException"></exception>
     public Pixmap( ByteBuffer encodedData, int offset, int len )
     {
@@ -142,8 +144,9 @@ public class Pixmap : IDisposable
     }
 
     /// <summary>
+    /// Creates a new Pixmap from the supplied encoded data.
     /// </summary>
-    /// <param name="encodedData"></param>
+    /// <param name="encodedData"> A ByteBuffer holding the encoded data. </param>
     public Pixmap( ByteBuffer encodedData )
         : this( encodedData, encodedData.Position, encodedData.Remaining() )
     {
@@ -162,7 +165,7 @@ public class Pixmap : IDisposable
         try
         {
             var data = File.ReadAllBytes( file.FullName );
-            
+
             Gdx2DPixmap = new Gdx2DPixmap( data, 0, data.Length, 0 );
         }
         catch ( Exception e )
@@ -190,8 +193,25 @@ public class Pixmap : IDisposable
     /// <summary>
     /// Returns the OpenGL ES internal format of this Pixmap.
     /// </summary>
-    /// <returns> one of GL_ALPHA, GL_RGB, GL_RGBA, GL_LUMINANCE, or GL_LUMINANCE_ALPHA.</returns>
-    public int GLInternalFormat => Gdx2DPixmap.ToGLFormat( ( int )Gdx2DPixmap.Format );
+    /// <returns> one of GL_RG, GL_RGB, GL_RGBA, GL_RED, GL_DEPTH_COMPONENT, or GL_DEPTH_STENCIL.</returns>
+    public int GLInternalFormat
+    {
+        get
+        {
+            var format = Gdx2DPixmap.ToGLFormat( ( int )Gdx2DPixmap.Format );
+
+            if ( format != IGL.GL_RG
+                 && format != IGL.GL_RGB
+                 && format != IGL.GL_RGBA
+                 && format != IGL.GL_DEPTH_COMPONENT
+                 && format != IGL.GL_DEPTH_STENCIL )
+            {
+                throw new GdxRuntimeException( "Unsupported GLInternalFormat" );
+            }
+            
+            return format;
+        }
+    }
 
     /// <summary>
     /// Returns the OpenGL ES type of this Pixmap.

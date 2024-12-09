@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,34 +22,84 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using JetBrains.Annotations;
+using System.Runtime.InteropServices;
 
 namespace DesktopGLBackend.Window;
 
-[PublicAPI]
-public class DesktopWindowCallbacks
+public unsafe partial class DesktopGLWindow
 {
-    public static void GdxFocusCallback( GLFW.Window window, bool focusing )
+    public void GdxFocusCallback( GLFW.Window windowHandle, bool focused )
     {
+        if ( WindowListener != null )
+        {
+            if ( focused )
+            {
+                WindowListener.FocusGained();
+            }
+            else
+            {
+                WindowListener.FocusLost();
+            }
+
+            _focused = focused;
+        }
     }
 
-    public static void GdxIconifyCallback( GLFW.Window window, bool focusing )
+    public void GdxIconifyCallback( GLFW.Window windowHandle, bool iconified )
     {
+        if ( WindowListener != null )
+        {
+            WindowListener.Iconified( iconified );
+        }
+
+        _iconified = iconified;
+
+        if ( iconified )
+        {
+            ApplicationListener.Pause();
+        }
+        else
+        {
+            ApplicationListener.Resume();
+        }
     }
 
-    public static void GdxMaximizeCallback( GLFW.Window window, bool maximized )
+    public void GdxMaximizeCallback( GLFW.Window windowHandle, bool maximized )
     {
+        if ( WindowListener != null )
+        {
+            WindowListener.Maximized( maximized );
+        }
     }
 
-    public static void GdxWindowCloseCallback( GLFW.Window window )
+    public void GdxWindowCloseCallback( GLFW.Window windowHandle )
     {
+        if ( WindowListener != null )
+        {
+            if ( !WindowListener.CloseRequested() )
+            {
+                Glfw.SetWindowShouldClose( windowHandle, false );
+            }
+        }
     }
 
-    public static void GdxDropCallback( GLFW.Window window, string[] paths )
+    public void GdxDropCallback( GLFW.Window window, string[] paths )
     {
+        var files = new string[ paths.Length ];
+
+        Array.Copy( paths, 0, files, 0, paths.Length );
+
+        if ( WindowListener != null )
+        {
+            WindowListener.FilesDropped( files );
+        }
     }
 
-    public static void GdxRefreshCallback( GLFW.Window window )
+    public void GdxRefreshCallback( GLFW.Window window )
     {
+        if ( WindowListener != null )
+        {
+            WindowListener.RefreshRequested();
+        }
     }
 }

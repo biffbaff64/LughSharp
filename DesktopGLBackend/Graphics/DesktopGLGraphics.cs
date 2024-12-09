@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ using DesktopGLBackend.Window;
 namespace DesktopGLBackend.Graphics;
 
 [PublicAPI]
-public class DesktopGLGraphics : AbstractGraphics, IDisposable
+public unsafe class DesktopGLGraphics : AbstractGraphics, IDisposable
 {
     public DesktopGLWindow? GLWindow { get; set; }
 
@@ -126,9 +126,9 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         Gdx.GL.glViewport( 0, 0, width, height );
 
-        GLWindow.Listener.Update();
-        GLWindow.Listener.Resize( Width, Height );
-        GLWindow.Listener.Render();
+        GLWindow.ApplicationListener.Update();
+        GLWindow.ApplicationListener.Resize( Width, Height );
+        GLWindow.ApplicationListener.Render();
     }
 
     /// <summary>
@@ -141,15 +141,15 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         }
 
         Glfw.GetFramebufferSize( GLWindow.GlfwWindow, out var tmpWidth, out var tmpHeight );
-        
-        BackBufferWidth = tmpWidth;
+
+        BackBufferWidth  = tmpWidth;
         BackBufferHeight = tmpHeight;
-        
+
         Glfw.GetWindowSize( GLWindow.GlfwWindow, out tmpWidth, out tmpHeight );
 
-        LogicalWidth = tmpWidth;
+        LogicalWidth  = tmpWidth;
         LogicalHeight = tmpHeight;
-        
+
         BufferFormat = new IGraphics.BufferFormatDescriptor
         {
             R                = GLWindow.AppConfig.Red,
@@ -230,12 +230,12 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
             {
                 //Center window
                 Glfw.GetMonitorWorkarea( monitor, out var x, out var y, out var w, out var h );
-                Glfw.SetWindowPos( GLWindow?.GlfwWindow, x, y );
+                Glfw.SetWindowPos( GLWindow!.GlfwWindow, x, y );
 
                 GLWindow?.SetPosition( x + ( ( w - width ) / 2 ), y + ( ( h - height ) / 2 ) );
             }
 
-            Glfw.SetWindowSize( GLWindow?.GlfwWindow, width, height );
+            Glfw.SetWindowSize( GLWindow!.GlfwWindow, width, height );
         }
         else
         {
@@ -248,23 +248,23 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
             {
                 Glfw.GetMonitorWorkarea( monitor, out var x, out var y, out var w, out var h );
 
-                Glfw.SetWindowMonitor( GLWindow?.GlfwWindow,
-                                       monitor,
-                                       x + ( ( w - width ) / 2 ),
-                                       y + ( ( h - height ) / 2 ),
-                                       width,
-                                       height,
-                                       _displayModeBeforeFullscreen!.RefreshRate );
+                Glfw.SetWindowMonitor( GLWindow!.GlfwWindow,
+                                            monitor,
+                                            x + ( ( w - width ) / 2 ),
+                                            y + ( ( h - height ) / 2 ),
+                                            width,
+                                            height,
+                                            _displayModeBeforeFullscreen!.RefreshRate );
             }
             else
             {
-                Glfw.SetWindowMonitor( GLWindow?.GlfwWindow,
-                                       monitor,
-                                       _windowPosXBeforeFullscreen,
-                                       _windowPosYBeforeFullscreen,
-                                       width,
-                                       height,
-                                       _displayModeBeforeFullscreen!.RefreshRate );
+                Glfw.SetWindowMonitor( GLWindow!.GlfwWindow,
+                                            monitor,
+                                            _windowPosXBeforeFullscreen,
+                                            _windowPosYBeforeFullscreen,
+                                            width,
+                                            height,
+                                            _displayModeBeforeFullscreen!.RefreshRate );
             }
         }
 
@@ -343,7 +343,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         GdxRuntimeException.ThrowIfNull( GLWindow );
 
-        Glfw.SetCursor( GLWindow.GlfwWindow, ( ( DesktopGLCursor )cursor ).GLFWCursor );
+        Glfw.SetCursor( GLWindow.GlfwWindow, ( ( DesktopGLCursor )cursor ).GlfwCursor );
     }
 
     /// <summary>
@@ -352,9 +352,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <param name="systemCursor">The system cursor to use.</param>
     public override void SetSystemCursor( ICursor.SystemCursor systemCursor )
     {
-        GdxRuntimeException.ThrowIfNull( GLWindow?.GlfwWindow );
-
-        DesktopGLCursor.SetSystemCursor( GLWindow.GlfwWindow, systemCursor );
+        DesktopGLCursor.SetSystemCursor( GLWindow!.GlfwWindow, systemCursor );
     }
 
     // ========================================================================
@@ -406,12 +404,12 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
             {
                 // different monitor and/or refresh rate
                 Glfw.SetWindowMonitor( GLWindow.GlfwWindow,
-                                       newMode.MonitorHandle,
-                                       0,
-                                       0,
-                                       newMode.Width,
-                                       newMode.Height,
-                                       newMode.RefreshRate );
+                                            newMode.MonitorHandle,
+                                            0,
+                                            0,
+                                            newMode.Width,
+                                            newMode.Height,
+                                            newMode.RefreshRate );
             }
         }
         else
@@ -422,12 +420,12 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
             // switch from windowed to fullscreen
             Glfw.SetWindowMonitor( GLWindow.GlfwWindow,
-                                   newMode.MonitorHandle,
-                                   0,
-                                   0,
-                                   newMode.Width,
-                                   newMode.Height,
-                                   newMode.RefreshRate );
+                                        newMode.MonitorHandle,
+                                        0,
+                                        0,
+                                        newMode.Width,
+                                        newMode.Height,
+                                        newMode.RefreshRate );
         }
 
         UpdateFramebufferInfo();
@@ -511,7 +509,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// Describes a Display Mode for a <see cref="GLFW.Monitor"/>
     /// </summary>
     [PublicAPI]
-    public class DesktopGLDisplayMode : IGraphics.DisplayMode
+    public unsafe class DesktopGLDisplayMode : IGraphics.DisplayMode
     {
         /// <summary>
         /// The <see cref="GLFW.Monitor"/> this <see cref="IGraphics.DisplayMode"/> applies to.
@@ -537,22 +535,17 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     // ========================================================================
 
     /// <summary>
-    /// Wrapper for a <see cref="GLFW.Monitor"/> which adds virtual X & Y, plus a name.
+    /// Wrapper for a <see cref="Glfw.Monitor"/> which adds virtual X & Y, plus a name.
     /// Virtual positions are for multiple monitors.
     /// </summary>
     [PublicAPI]
-    public class DesktopGLMonitor : IGraphics.GdxMonitor
+    public unsafe class DesktopGLMonitor( GLFW.Monitor monitor, int virtualX, int virtualY, string name )
+        : IGraphics.GdxMonitor( virtualX, virtualY, name )
     {
         /// <summary>
-        /// The <see cref="GLFW.Monitor"/>.
+        /// The <see cref="Glfw.Monitor"/>.
         /// </summary>
-        public GLFW.Monitor MonitorHandle { get; private set; }
-
-        public DesktopGLMonitor( GLFW.Monitor monitor, int virtualX, int virtualY, string name )
-            : base( virtualX, virtualY, name )
-        {
-            MonitorHandle = monitor;
-        }
+        public GLFW.Monitor MonitorHandle { get; private set; } = monitor;
     }
 
     // ========================================================================

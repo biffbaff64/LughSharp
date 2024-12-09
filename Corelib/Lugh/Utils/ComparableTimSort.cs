@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -70,7 +70,6 @@ public class ComparableTimSort< T >
     // Asserts have been placed in if-statements for performace.
     // To enable them, set this field to true.
     // If you modify this class, please do test the asserts!
-    [UsedImplicitly]
     private const bool ALLOW_ASSERTS = false; // true;
 
     private readonly int[] _runBase;
@@ -98,6 +97,8 @@ public class ComparableTimSort< T >
     private T?[] _tmp;
     private int  _tmpCount;
 
+    // ========================================================================
+    
     public ComparableTimSort()
     {
         _tmp     = new T[ INITIAL_TMP_STORAGE_LENGTH ];
@@ -131,6 +132,12 @@ public class ComparableTimSort< T >
         _runLen  = new int[ stackLen ];
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="lo"></param>
+    /// <param name="hi"></param>
     public void DoSort( T[]? a, int lo, int hi )
     {
         ArgumentNullException.ThrowIfNull( a );
@@ -205,11 +212,21 @@ public class ComparableTimSort< T >
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="a"></param>
     public static void Sort( T[] a )
     {
         Sort( a, 0, a.Length );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="lo"></param>
+    /// <param name="hi"></param>
     public static void Sort( T[] a, int lo, int hi )
     {
         RangeCheck( a.Length, lo, hi );

@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ public interface IDesktopGLInput : IInput, IDisposable
     /// handle has changed.
     /// </summary>
     /// <param name="windowHandle"> The new handle. </param>
-    void WindowHandleChanged( GLFW.Window windowHandle );
+    unsafe void WindowHandleChanged( GLFW.Window windowHandle );
 
     /// <inheritdoc cref="InputEventQueue.Drain" />
     void Update();

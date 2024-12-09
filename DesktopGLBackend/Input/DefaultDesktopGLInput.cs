@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -38,9 +38,9 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
 {
     private const int DEFAULT_MAX_POINTERS = 1;
 
-    private readonly InputEventQueue  _eventQueue         = new();
-    private readonly bool[]           _justPressedButtons = new bool[ 5 ];
-    private readonly DesktopGLWindow? _window;
+    private readonly InputEventQueue _eventQueue         = new();
+    private readonly bool[]          _justPressedButtons = new bool[ 5 ];
+    private readonly DesktopGLWindow _window;
 
     private bool _justTouched;
     private char _lastCharacter;
@@ -55,7 +55,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     // ========================================================================
 
     /// <inheritdoc />
-    public DefaultDesktopGLInput( DesktopGLWindow? window )
+    public DefaultDesktopGLInput( DesktopGLWindow window )
     {
         ArgumentNullException.ThrowIfNull( window );
 
@@ -69,7 +69,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     #region From IDesktopGLInput
 
     /// <inheritdoc />
-    public void WindowHandleChanged( GLFW.Window? windowHandle )
+    public void WindowHandleChanged( GLFW.Window windowHandle )
     {
         ResetPollingStates();
 
@@ -166,7 +166,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     /// <inheritdoc />
     public override bool IsButtonPressed( int button )
     {
-        return Glfw.GetMouseButton( _window!.GlfwWindow, TranslateToMouseButton( button ) )
+        return Glfw.GetMouseButton( _window.GlfwWindow, TranslateToMouseButton( button ) )
                == InputState.Press;
     }
 
@@ -202,28 +202,30 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     /// <inheritdoc />
     public override void SetCursorCaught( bool caught )
     {
-        Glfw.SetInputMode( _window!.GlfwWindow, InputMode.Cursor, ( caught ? CursorMode.Disabled : CursorMode.Normal ) );
+        Glfw.SetInputMode( _window.GlfwWindow,
+                           InputMode.Cursor,
+                           ( caught ? CursorMode.Disabled : CursorMode.Normal ) );
     }
 
     /// <inheritdoc />
     public override bool IsCursorCaught()
     {
-        return Glfw.GetInputMode( _window!.GlfwWindow, InputMode.Cursor ) == CursorMode.Disabled;
+        return Glfw.GetInputMode( _window.GlfwWindow, InputMode.Cursor ) == CursorMode.Disabled;
     }
 
     /// <inheritdoc />
     public override void SetCursorPosition( int x, int y )
     {
-        if ( _window!.AppConfig.HdpiMode == HdpiMode.Pixels )
+        if ( _window.AppConfig.HdpiMode == HdpiMode.Pixels )
         {
-            var xScale = _window!.Graphics.LogicalWidth / ( float )_window!.Graphics.BackBufferWidth;
-            var yScale = _window!.Graphics.LogicalHeight / ( float )_window!.Graphics.BackBufferHeight;
+            var xScale = _window.Graphics.LogicalWidth / ( float )_window.Graphics.BackBufferWidth;
+            var yScale = _window.Graphics.LogicalHeight / ( float )_window.Graphics.BackBufferHeight;
 
             x = ( int )( x * xScale );
             y = ( int )( y * yScale );
         }
 
-        Glfw.SetCursorPos( _window!.GlfwWindow, x, y );
+        Glfw.SetCursorPos( _window.GlfwWindow, x, y );
     }
 
     public override bool IsPeripheralAvailable( IInput.Peripheral peripheral )
@@ -429,7 +431,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
                 PressedKeys[ gdxKey ]     = true;
                 JustPressedKeys[ gdxKey ] = true;
 
-                _window?.Graphics.RequestRendering();
+                _window.Graphics.RequestRendering();
                 _lastCharacter = ( char )0;
 
                 var character = CharacterForKeyCode( gdxKey );
@@ -449,7 +451,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
                 PressedKeyCount--;
                 PressedKeys[ gdxKey ] = false;
 
-                _window?.Graphics.RequestRendering();
+                _window.Graphics.RequestRendering();
 
                 _eventQueue.KeyUp( gdxKey, TimeUtils.NanoTime() );
 
@@ -460,7 +462,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
             {
                 if ( _lastCharacter != 0 )
                 {
-                    _window?.Graphics.RequestRendering();
+                    _window.Graphics.RequestRendering();
 
                     _eventQueue.KeyTyped( _lastCharacter, TimeUtils.NanoTime() );
                 }
@@ -483,7 +485,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         }
 
         _lastCharacter = ( char )codepoint;
-        _window?.Graphics.RequestRendering();
+        _window.Graphics.RequestRendering();
         _eventQueue.KeyTyped( ( char )codepoint, TimeUtils.NanoTime() );
     }
 
@@ -512,21 +514,21 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
             _justTouched                     = true;
             _justPressedButtons[ gdxButton ] = true;
 
-            _window?.Graphics.RequestRendering();
+            _window.Graphics.RequestRendering();
             _eventQueue.TouchDown( _mouseX, _mouseY, 0, gdxButton, time );
         }
         else
         {
             _mousePressed = Math.Max( 0, _mousePressed - 1 );
 
-            _window?.Graphics.RequestRendering();
+            _window.Graphics.RequestRendering();
             _eventQueue.TouchUp( _mouseX, _mouseY, 0, gdxButton, time );
         }
     }
 
     public void ScrollCallback( GLFW.Window window, double x, double y )
     {
-        _window?.Graphics.RequestRendering();
+        _window.Graphics.RequestRendering();
         _eventQueue.Scrolled( -( float )x, -( float )y, TimeUtils.NanoTime() );
     }
 
@@ -537,7 +539,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         _mouseX = _logicalMouseX = ( int )x;
         _mouseY = _logicalMouseY = ( int )y;
 
-        if ( _window?.AppConfig.HdpiMode == HdpiMode.Pixels )
+        if ( _window.AppConfig.HdpiMode == HdpiMode.Pixels )
         {
             // null check can be surpressed here because of above
             var xScale = _window.Graphics.BackBufferWidth / ( float )_window.Graphics.LogicalWidth;
@@ -549,7 +551,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
             _mouseY = ( int )( _mouseY * yScale );
         }
 
-        _window?.Graphics.RequestRendering();
+        _window.Graphics.RequestRendering();
 
         if ( _mousePressed > 0 )
         {

@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -49,34 +49,22 @@ public sealed class Align
     /// <summary>
     /// Returns TRUE if the supplied position is aligned to the LEFT.
     /// </summary>
-    public static bool IsLeft( int position )
-    {
-        return ( position & LEFT ) != 0;
-    }
+    public static bool IsLeft( int position ) => ( position & LEFT ) != 0;
 
     /// <summary>
     /// Returns TRUE if the supplied position is aligned to the RIGHT.
     /// </summary>
-    public static bool IsRight( int position )
-    {
-        return ( position & RIGHT ) != 0;
-    }
+    public static bool IsRight( int position ) => ( position & RIGHT ) != 0;
 
     /// <summary>
     /// Returns TRUE if the supplied position is aligned to the TOP.
     /// </summary>
-    public static bool IsTop( int position )
-    {
-        return ( position & TOP ) != 0;
-    }
+    public static bool IsTop( int position ) => ( position & TOP ) != 0;
 
     /// <summary>
     /// Returns TRUE if the supplied position is aligned to the BOTTOM.
     /// </summary>
-    public static bool IsBottom( int position )
-    {
-        return ( position & BOTTOM ) != 0;
-    }
+    public static bool IsBottom( int position ) => ( position & BOTTOM ) != 0;
 
     /// <summary>
     /// Returns TRUE if the supplied position is aligned horizontally central.

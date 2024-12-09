@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -74,6 +74,8 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     public int             Alpha                          { get; set; } = 8;
     public string          PreferencesDirectory           { get; set; } = ".prefs/";
     public PathTypes       PreferencesFileType            { get; set; } = PathTypes.External;
+    public bool            PauseWhenLostFocus             { get; set; }
+    public bool            PauseWhenMinimized             { get; set; } = true;
 
     /// <summary>
     /// The maximum number of threads to use for network requests. Default is <see cref="int.MaxValue"/>.
@@ -227,13 +229,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     public static IGraphics.DisplayMode GetDisplayMode()
     {
-        var videoMode = Glfw.GetVideoMode( Glfw.GetPrimaryMonitor() );
-
-        return new DesktopGLGraphics.DesktopGLDisplayMode( Glfw.GetPrimaryMonitor(),
-                                                           videoMode.Width,
-                                                           videoMode.Height,
-                                                           videoMode.RefreshRate,
-                                                           videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits );
+        return GetDisplayMode( Glfw.GetPrimaryMonitor() );
     }
 
     /// <summary>
@@ -253,7 +249,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// <summary>
     /// Return the available <see cref="IGraphics.DisplayMode"/>s of the primary monitor
     /// </summary>
-    public static IGraphics.DisplayMode[] GetDisplayModes()
+    public static unsafe IGraphics.DisplayMode[] GetDisplayModes()
     {
         GLFW.Vidmode[]? videoModes = Glfw.GetVideoModes( Glfw.GetPrimaryMonitor() );
 

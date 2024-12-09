@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -89,8 +89,8 @@ public abstract class AbstractGraphics : IGraphics
     // ========================================================================
     public abstract IGraphics.DisplayMode[] GetDisplayModes();
     public abstract IGraphics.DisplayMode GetDisplayMode();
-    public abstract IGraphics.DisplayMode[] GetDisplayModes( DotGLFW.Monitor monitor );
-    public abstract IGraphics.DisplayMode GetDisplayMode( DotGLFW.Monitor monitor );
+    public abstract IGraphics.DisplayMode[] GetDisplayModes( GLFW.Monitor monitor );
+    public abstract IGraphics.DisplayMode GetDisplayMode( GLFW.Monitor monitor );
 
     // ========================================================================
     public abstract bool SetWindowedMode( int width, int height );

@@ -1,7 +1,7 @@
-﻿// /////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 //  MIT License
 // 
-//  Copyright (c) 2024 Richard Ikin / Red 7 Projects
+//  Copyright (c) 2024 Richard Ikin / LughSharp Team
 // 
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,29 +22,25 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace Corelib.Lugh.Core;
+namespace LughGlfw.Glfw.Enums;
 
-public partial interface IGraphics
+/// <summary>
+///     OpenGL profile.
+/// </summary>
+public enum OpenGLProfile
 {
-    [PublicAPI]
-    public class GdxMonitor
-    {
-        public int    VirtualX { get; set; }
-        public int    VirtualY { get; set; }
-        public string Name     { get; set; }
+  /// <summary>
+  ///     Any OpenGL profile.
+  /// </summary>
+  AnyProfile = NativeGlfw.GLFW_OPENGL_ANY_PROFILE,
 
-        protected GdxMonitor( int virtualX, int virtualY, string name )
-        {
-            this.VirtualX = virtualX;
-            this.VirtualY = virtualY;
-            this.Name     = name;
-        }
+  /// <summary>
+  ///     OpenGL core profile.
+  /// </summary>
+  CoreProfile = NativeGlfw.GLFW_OPENGL_CORE_PROFILE,
 
-        /// <inheritdoc/>
-        /// <inheritdoc />
-        public override string ToString()
-        {
-            return $"VirtualX: {VirtualX}, VirtualY: {VirtualY}, Name: {Name}";
-        }
-    }
+  /// <summary>
+  ///     OpenGL compatibility profile.
+  /// </summary>
+  CompatProfile = NativeGlfw.GLFW_OPENGL_COMPAT_PROFILE,
 }

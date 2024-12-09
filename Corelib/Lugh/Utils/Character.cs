@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -56,11 +56,8 @@ public static class Character
     public const char MIN_LOW_SURROGATE = '\uDC00';
 
     /// <summary>
-    /// The minimum value of a
-    /// <a href="http://www.unicode.org/glossary/#supplementary_code_point">
-    /// Unicode supplementary c ode point
-    /// </a>
-    /// , constant {@code U+10000}.
+    /// The minimum value of a <a href="http://www.unicode.org/glossary/#supplementary_code_point">
+    /// Unicode supplementary code point</a>, constant {@code U+10000}.
     /// </summary>
     public const int MIN_SUPPLEMENTARY_CODE_POINT = 0x010000;
 
@@ -347,20 +344,14 @@ public static class Character
     public const sbyte DIRECTIONALITY_POP_DIRECTIONAL_FORMAT = 18;
 
     /// <summary>
-    /// The minimum value of a
-    /// <a href="http://www.unicode.org/glossary/#code_point">
-    /// Unicode code point
-    /// </a>
-    /// , constant {@code U+0000}.
+    /// The minimum value of a <a href="http://www.unicode.org/glossary/#code_point">
+    /// Unicode code point</a>, constant {@code U+0000}.
     /// </summary>
     public const int MIN_CODE_POINT = 0x000000;
 
     /// <summary>
-    /// The maximum value of a
-    /// <a href="http://www.unicode.org/glossary/#code_point">
-    /// Unicode code point
-    /// </a>
-    /// , constant {@code U+10FFFF}.
+    /// The maximum value of a <a href="http://www.unicode.org/glossary/#code_point">
+    /// Unicode code point</a>, constant {@code U+10FFFF}.
     /// </summary>
     public const int MAX_CODE_POINT = 0X10FFFF;
 
@@ -395,7 +386,7 @@ public static class Character
     /// Compares two <tt>char</tt> values numerically.
     /// The value returned is identical to what would be returned by:
     /// <code>
-    ///    CharHelper.ValueOf(x).CompareTo(CharHelper.ValueOf(y))
+    /// CharHelper.ValueOf(x).CompareTo(CharHelper.ValueOf(y))
     /// </code>
     /// </summary>
     /// <param name="x"> the first <tt>char</tt> to compare </param>

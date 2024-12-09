@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -102,7 +102,7 @@ public class PixmapFormat
             GDX_2D_FORMAT_RGBA4444        => 2,
             GDX_2D_FORMAT_RGB888          => 3,
             GDX_2D_FORMAT_RGBA8888        => 4,
-            _                             => 4,
+            var _                         => 4,
         };
     }
 
@@ -160,7 +160,30 @@ public class PixmapFormat
             GDX_2D_FORMAT_RGBA8888        => "GDX_2D_FORMAT_RGBA8888",
             GDX_2D_FORMAT_RGB565          => "GDX_2D_FORMAT_RGB565",
             GDX_2D_FORMAT_RGBA4444        => "GDX_2D_FORMAT_RGBA4444",
-            var _                         => "Unknown",
+            var _                         => $"Unknown format: {format}",
+        };
+    }
+
+    public static string GetGLFormatName( int format )
+    {
+        return format switch
+        {
+            IGL.GL_ALPHA           => "IGL.GL_ALPHA",
+            IGL.GL_LUMINANCE_ALPHA => "IGL.GL_LUMINANCE_ALPHA",
+            IGL.GL_RGB             => "IGL.GL_RGB",
+            IGL.GL_RGBA            => "IGL.GL_RGBA",
+            var _                  => $"Unknown format: {format}",
+        };
+    }
+
+    public static string GetGLTypeName( int format )
+    {
+        return format switch
+        {
+            IGL.GL_UNSIGNED_BYTE          => "IGL.GL_UNSIGNED_BYTE",
+            IGL.GL_UNSIGNED_SHORT_5_6_5   => "IGL.GL_UNSIGNED_SHORT_5_6_5",
+            IGL.GL_UNSIGNED_SHORT_4_4_4_4 => "IGL.GL_UNSIGNED_SHORT_4_4_4_4",
+            var _                         => $"Unknown format: {format}",
         };
     }
 }

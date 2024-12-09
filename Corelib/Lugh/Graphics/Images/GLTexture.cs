@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -460,21 +460,28 @@ public abstract class GLTexture : IDisposable
         {
             Logger.Debug( $"target: {target}" );
             Logger.Debug( $"mipLevel: {miplevel}" );
-            Logger.Debug( $"pixmap.GLInternalFormat: {pixmap.GLInternalFormat}" );
+            Logger.Debug( $"pixmap.GLInternalFormat: {PixmapFormat.GetGLFormatName( pixmap.GLInternalFormat )}" );
             Logger.Debug( $"pixmap.Width: {pixmap.Width}" );
             Logger.Debug( $"pixmap.Height: {pixmap.Height}" );
-            Logger.Debug( $"pixmap.GLFormat: {pixmap.GLFormat}" );
-            Logger.Debug( $"pixmap.GLType: {pixmap.GLType}" );
+            Logger.Debug( $"pixmap.GLFormat: {PixmapFormat.ToPixmapColorFormat( pixmap.GLFormat )}" );
+            Logger.Debug( $"pixmap.GLType: {PixmapFormat.GetGLTypeName( pixmap.GLType )}" );
             Logger.Debug( $"pixmap.PixelData.Length: {pixmap.PixelData.Length}" );
 
-            var a = pixmap.PixelData;
+            var a  = pixmap.PixelData;
+            var sb = new StringBuilder();
 
-            for ( var i = 0; i < 100; i += 10 )
+            const int BLOCK_SIZE = 20;
+            
+            for ( var i = 0; i < 100; i += BLOCK_SIZE )
             {
-                Logger.Debug( $"{a[ i + 0 ]},{a[ i + 1 ]},{a[ i + 2 ]},{a[ i + 3 ]},"
-                              + $"{a[ i + 4 ]},{a[ i + 5 ]},{a[ i + 6 ]},{a[ i + 7 ]},"
-                              + $"{a[ i + 8 ]},{a[ i + 9 ]},{a[ i + 10 ]},{a[ i + 11 ]},"
-                              + $"{a[ i + 12 ]},{a[ i + 13 ]},{a[ i + 14 ]},{a[ i + 15 ]}," );
+                sb.Clear();
+                
+                for ( var j = 0; j < BLOCK_SIZE; j++ )
+                {
+                    sb.Append( $"{a[i + j]}," );
+                }
+                
+                Logger.Debug( sb.ToString() );
             }
         }
     }
@@ -500,6 +507,8 @@ public abstract class GLTexture : IDisposable
     public virtual void Dispose()
     {
         Dispose( true );
+        
+        GC.SuppressFinalize( this );
     }
 
     protected virtual void Dispose( bool disposing )

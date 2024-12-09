@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,9 +33,9 @@ namespace DesktopGLBackend.Window;
 public interface IDesktopGLWindowListener
 {
     /// <summary>
-    /// Called after the GLFW window is created. Before this callback is received, it's
+    /// Called after the Glfw window is created. Before this callback is received, it's
     /// to use any <see cref="DesktopGLWindow"/> member functions which, for their part,
-    /// involve calling GLFW functions.
+    /// involve calling Glfw functions.
     /// <para>
     /// For the main window, this is an immediate callback from inside
     /// <see

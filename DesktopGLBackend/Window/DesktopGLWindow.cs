@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,22 +22,15 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
-
 using Corelib.Lugh.Core;
-using Corelib.Lugh.Graphics;
 using Corelib.Lugh.Graphics.Images;
 using Corelib.Lugh.Maths;
 using Corelib.Lugh.Utils;
-using Corelib.Lugh.Utils.Collections;
 
 using DesktopGLBackend.Core;
 using DesktopGLBackend.Graphics;
 using DesktopGLBackend.Input;
 using DesktopGLBackend.Utils;
-
-using JetBrains.Annotations;
 
 using Platform = Corelib.Lugh.Core.Platform;
 
@@ -47,11 +40,11 @@ namespace DesktopGLBackend.Window;
 /// Wrapper/Manager class for a <see cref="GLFW.Window"/>.
 /// </summary>
 [PublicAPI]
-public class DesktopGLWindow : IDisposable
+public partial class DesktopGLWindow : IDisposable
 {
     public GLFW.Window?                      GlfwWindow          { get; set; }
     public IDesktopGLWindowListener?         WindowListener      { get; set; }
-    public IApplicationListener              Listener            { get; set; }
+    public IApplicationListener              ApplicationListener { get; set; }
     public IDesktopGLInput                   Input               { get; set; } = null!;
     public DesktopGLApplicationConfiguration AppConfig           { get; set; }
     public DesktopGLGraphics                 Graphics            { get; set; } = null!;
@@ -73,12 +66,12 @@ public class DesktopGLWindow : IDisposable
 
     // ========================================================================
 
-    private readonly List< IRunnable.Runnable > _executedRunnables = [ ];
-    private readonly bool                       _iconified         = false;
-    private readonly List< IRunnable.Runnable > _runnables         = [ ];
-    private readonly Vector2                    _tmpV2             = new();
-
-    private bool _requestRendering = false;
+    private List< IRunnable.Runnable > _executedRunnables = [ ];
+    private bool                       _iconified         = false;
+    private bool                       _focused           = false;
+    private List< IRunnable.Runnable > _runnables         = [ ];
+    private Vector2                    _tmpV2             = new();
+    private bool                       _requestRendering  = false;
 
     // ========================================================================
     // ========================================================================
@@ -92,15 +85,15 @@ public class DesktopGLWindow : IDisposable
                             DesktopGLApplicationConfiguration config,
                             IDesktopGLApplicationBase application )
     {
-        Listener       = listener;
-        WindowListener = config.WindowListener;
-        AppConfig      = DesktopGLApplicationConfiguration.Copy( config );
+        ApplicationListener = listener;
+        WindowListener      = config.WindowListener;
+        AppConfig           = DesktopGLApplicationConfiguration.Copy( config );
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public void Initialise( GLFW.Window? window, IDesktopGLApplicationBase app )
+    public void Initialise( GLFW.Window window, IDesktopGLApplicationBase app )
     {
         this.GlfwWindow         = window;
         this.Input              = app.CreateInput( this );
@@ -111,12 +104,12 @@ public class DesktopGLWindow : IDisposable
         Gdx.Graphics = Graphics;
 
         //@formatter:off
-        Glfw.SetWindowFocusCallback     ( window, DesktopWindowCallbacks.GdxFocusCallback );
-        Glfw.SetWindowIconifyCallback   ( window, DesktopWindowCallbacks.GdxIconifyCallback );
-        Glfw.SetWindowMaximizeCallback  ( window, DesktopWindowCallbacks.GdxMaximizeCallback );
-        Glfw.SetWindowCloseCallback     ( window, DesktopWindowCallbacks.GdxWindowCloseCallback );
-        Glfw.SetDropCallback            ( window, DesktopWindowCallbacks.GdxDropCallback );
-        Glfw.SetWindowRefreshCallback   ( window, DesktopWindowCallbacks.GdxRefreshCallback );
+        Glfw.SetWindowFocusCallback     ( window, GdxFocusCallback );
+        Glfw.SetWindowIconifyCallback   ( window, GdxIconifyCallback );
+        Glfw.SetWindowMaximizeCallback  ( window, GdxMaximizeCallback );
+        Glfw.SetWindowCloseCallback     ( window, GdxWindowCloseCallback );
+        Glfw.SetDropCallback            ( window, GdxDropCallback );
+        Glfw.SetWindowRefreshCallback   ( window, GdxRefreshCallback );
         //@formatter:on
 
         WindowListener?.Created( this );
@@ -166,8 +159,8 @@ public class DesktopGLWindow : IDisposable
         if ( shouldRender )
         {
             Graphics.Update();
-            Listener.Update();
-            Listener.Render();
+            ApplicationListener.Update();
+            ApplicationListener.Render();
 
             Glfw.SwapBuffers( GlfwWindow );
         }
@@ -201,7 +194,7 @@ public class DesktopGLWindow : IDisposable
         Glfw.MakeContextCurrent( GlfwWindow );
 
         Gdx.GL.glGetError();
-        
+
         Gdx.Graphics = Graphics;
         Gdx.Input    = Input;
     }
@@ -219,7 +212,7 @@ public class DesktopGLWindow : IDisposable
 
     /// <summary>
     /// Returns <b>true</b> if this window should close. It establishes this
-    /// via <see cref="Glfw.WindowShouldClose(Window)"/>
+    /// via <see cref="Glfw.WindowShouldClose(GLFW.Window)"/>
     /// </summary>
     /// <returns></returns>
     public bool ShouldClose()
@@ -227,7 +220,7 @@ public class DesktopGLWindow : IDisposable
         return Glfw.WindowShouldClose( GlfwWindow );
     }
 
-    /// <inheritdoc cref="Glfw.SetWindowPos(Window,int,int)"/>
+    /// <inheritdoc cref="Glfw.SetWindowPos(GLFW.Window,int,int)"/>
     public void SetPosition( int x, int y )
     {
         Glfw.SetWindowPos( GlfwWindow, x, y );
@@ -316,7 +309,7 @@ public class DesktopGLWindow : IDisposable
     /// </summary>
     public void SetSizeLimits( int minWidth, int minHeight, int maxWidth, int maxHeight )
     {
-        SetSizeLimits( GlfwWindow!, minWidth, minHeight, maxWidth, maxHeight );
+        SetSizeLimits( GlfwWindow, minWidth, minHeight, maxWidth, maxHeight );
     }
 
     /// <summary>
@@ -400,7 +393,7 @@ public class DesktopGLWindow : IDisposable
             return;
         }
 
-        List< GLFW.Image > buffer = new( images.Length );
+        List< Image > buffer = new( images.Length );
 
         Pixmap?[] tmpPixmaps = new Pixmap[ images.Length ];
 
@@ -416,7 +409,7 @@ public class DesktopGLWindow : IDisposable
                 tmpPixmaps[ i ] = rgba;
             }
 
-            GLFW.Image icon = new()
+            Image icon = new()
             {
                 Width  = images[ i ].Width,
                 Height = images[ i ].Height,
@@ -441,8 +434,8 @@ public class DesktopGLWindow : IDisposable
     {
         if ( !ListenerInitialised )
         {
-            Listener.Create();
-            Listener.Resize( Graphics.Width, Graphics.Height );
+            ApplicationListener.Create();
+            ApplicationListener.Resize( Graphics.Width, Graphics.Height );
             ListenerInitialised = true;
         }
     }
@@ -456,14 +449,16 @@ public class DesktopGLWindow : IDisposable
     public void Dispose()
     {
         Dispose( true );
+        
+        GC.SuppressFinalize( this );
     }
 
     protected void Dispose( bool disposing )
     {
         if ( disposing )
         {
-            Listener.Pause();
-            Listener.Dispose();
+            ApplicationListener.Pause();
+            ApplicationListener.Dispose();
             DesktopGLCursor.Dispose( this );
             Graphics.Dispose();
             Input.Dispose();

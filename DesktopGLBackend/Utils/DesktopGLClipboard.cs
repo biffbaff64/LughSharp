@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,12 +25,11 @@
 using Corelib.Lugh.Core;
 using Corelib.Lugh.Utils;
 using DesktopGLBackend.Graphics;
-using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Utils;
 
 /// <summary>
-/// Clipboard implementation for desktop that uses the system clipboard via GLFW.
+/// Clipboard implementation for desktop that uses the system clipboard via Glfw.
 /// </summary>
 [PublicAPI]
 public class DesktopGLClipboard : IClipboard
@@ -44,9 +43,9 @@ public class DesktopGLClipboard : IClipboard
     /// <summary>
     /// Gets, or Sets, the current content of the clipboard.
     /// </summary>
-    public string? Contents
+    public unsafe string? Contents
     {
-        get => Glfw.GetClipboardString( ( ( DesktopGLGraphics ) Gdx.Graphics ).GLWindow?.GlfwWindow );
-        set => Glfw.SetClipboardString( ( ( DesktopGLGraphics ) Gdx.Graphics ).GLWindow?.GlfwWindow, value );
+        get => Glfw.GetClipboardString( ( ( DesktopGLGraphics ) Gdx.Graphics ).GLWindow!.GlfwWindow );
+        set => Glfw.SetClipboardString( ( ( DesktopGLGraphics ) Gdx.Graphics ).GLWindow!.GlfwWindow, value );
     }
 }

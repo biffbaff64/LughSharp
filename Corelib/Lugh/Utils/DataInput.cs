@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+// Copyright (c) 2024 Richard Ikin / LughSharp Team.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,13 +26,9 @@
 namespace Corelib.Lugh.Utils;
 
 [PublicAPI]
-public class DataInput : BinaryReader
+public class DataInput( Stream input ) : BinaryReader( input )
 {
     private char[] _chars = new char[ 32 ];
-
-    public DataInput( Stream input ) : base( input )
-    {
-    }
 
     /// <summary>
     /// Reads a 1-5 byte int.
