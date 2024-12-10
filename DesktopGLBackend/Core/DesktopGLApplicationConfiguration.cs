@@ -249,9 +249,9 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// <summary>
     /// Return the available <see cref="IGraphics.DisplayMode"/>s of the primary monitor
     /// </summary>
-    public static unsafe IGraphics.DisplayMode[] GetDisplayModes()
+    public static IGraphics.DisplayMode[] GetDisplayModes()
     {
-        GLFW.Vidmode[]? videoModes = Glfw.GetVideoModes( Glfw.GetPrimaryMonitor() );
+        var videoModes = Glfw.GetVideoModes( Glfw.GetPrimaryMonitor() );
 
         var result = new IGraphics.DisplayMode[ videoModes.Length ];
 
@@ -274,7 +274,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     public static IGraphics.DisplayMode[] GetDisplayModes( GLFW.Monitor monitor )
     {
-        GLFW.Vidmode[] videoModes = Glfw.GetVideoModes( monitor );
+        GLFW.VideoMode[] videoModes = Glfw.GetVideoModes( monitor );
 
         var result = new IGraphics.DisplayMode[ videoModes.Length ];
 

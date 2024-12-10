@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Glfw\Enums\" />
+      <Folder Include="Glfw\Structs\" />
     </ItemGroup>
 
 </Project>

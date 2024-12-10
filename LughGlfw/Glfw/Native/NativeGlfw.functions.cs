@@ -22,16 +22,18 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 
 namespace LughGlfw.Glfw.Native;
 
+[SuppressMessage( "ReSharper", "InconsistentNaming" )]
 public static unsafe partial class NativeGlfw
 {
     private const string LIBRARY_DLL = "glfw3";
 
-    private static DllLoader.GetProcAddressDelegate __getProcAddressForGLFWFunction;
+    private static DllLoader.GetProcAddressDelegate? __getProcAddressForGLFWFunction;
 
     private static T LoadFunction< T >( string name ) where T : Delegate
     {
@@ -49,7 +51,7 @@ public static unsafe partial class NativeGlfw
     /// <summary>
     /// <para>This function initializes the GLFW library. Before most GLFW functions can be used, GLFW must be initialized, and before an application terminates GLFW should be terminated in order to free any resources allocated during or after initialization.</para> <para>If this function fails, it calls <see cref="NativeGlfw.glfwTerminate" /> before returning. If it succeeds, you should call <see cref="NativeGlfw.glfwTerminate" /> before the application exits.</para> <para>Additional calls to this function after successful initialization but before termination will return <see cref="NativeGlfw.GLFW_TRUE" /> immediately.</para> <para>The <see cref="NativeGlfw.GLFW_PLATFORM" /> init hint controls which platforms are considered during initialization. This also depends on which platforms the library was compiled to support.</para> <para><b>Returns</b><para><see cref="NativeGlfw.GLFW_TRUE" /> if successful, or <see cref="NativeGlfw.GLFW_FALSE" /> if an <see href="https://www.glfw.org/docs/3.4/intro_guide.html#error_handling">error</see> occurred.</para></para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_PLATFORM_UNAVAILABLE" /> and <see cref="NativeGlfw.GLFW_PLATFORM_ERROR" />.</para></para> <para><b>Remarks</b><para>macOS: This function will change the current directory of the application to the <c>Contents/Resources</c> subdirectory of the application's bundle, if present. This can be disabled with the <see cref="NativeGlfw.GLFW_COCOA_CHDIR_RESOURCES" /> init hint.</para> <para> macOS: This function will create the main menu and dock icon for the application. If GLFW finds a <c>MainMenu.nib</c> it is loaded and assumed to contain a menu bar. Otherwise a minimal menu bar is created manually with common commands like Hide, Quit and About. The About entry opens a minimal about dialog with information from the application's bundle. The menu bar and dock icon can be disabled entirely with the <see cref="NativeGlfw.GLFW_COCOA_MENUBAR" /> init hint.</para> <para> Wayland, X11: If the library was compiled with support for both Wayland and X11, and the <see cref="NativeGlfw.GLFW_PLATFORM" /> init hint is set to <see cref="NativeGlfw.GLFW_ANY_PLATFORM" />, the <c>XDG_SESSION_TYPE</c> environment variable affects which platform is picked. If the environment variable is not set, or is set to something other than <c>wayland</c> or <c>x11</c>, the regular detection mechanism will be used instead.</para> <para> X11: This function will set the <c>LC_CTYPE</c> category of the application locale according to the current environment if that category is still "C". This is because the "C" locale breaks Unicode text input.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/intro_guide.html#intro_init">Initialization and termination</see> </para> <para> <see cref="NativeGlfw.glfwInitHint" /> </para> <para> <see cref="NativeGlfw.glfwInitAllocator" /> </para> <para> <see cref="NativeGlfw.glfwTerminate" /></para></para> <para><b>Since</b><para>Added in version 1.0. </para></para>
     /// </summary>
-    public static int glfwInit() => p_glfwInit();
+    public static int GlfwInit() => p_glfwInit();
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void d_glfwTerminate();
@@ -57,7 +59,7 @@ public static unsafe partial class NativeGlfw
     private static d_glfwTerminate p_glfwTerminate = LoadFunction< d_glfwTerminate >( "glfwTerminate" );
 
     /// <summary>
-    /// <para>This function destroys all remaining windows and cursors, restores any modified gamma ramps and frees any other allocated resources. Once this function is called, you must again call <see cref="NativeGlfw.glfwInit" /> successfully before you will be able to use most GLFW functions.</para> <para>If GLFW has been successfully initialized, this function should be called before the application exits. If initialization fails, there is no need to call this function, as it is called by <see cref="NativeGlfw.glfwInit" /> before it returns failure.</para> <para>This function has no effect if GLFW is not initialized.</para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_PLATFORM_ERROR" />.</para></para> <para><b>Remarks</b><para>This function may be called before <see cref="NativeGlfw.glfwInit" />.</para></para> <para><b>Warning</b><para>The contexts of any remaining windows must not be current on any other thread when this function is called.</para></para> <para><b>Reentrancy</b><para>This function must not be called from a callback.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/intro_guide.html#intro_init">Initialization and termination</see> </para> <para> <see cref="NativeGlfw.glfwInit" /></para></para> <para><b>Since</b><para>Added in version 1.0. </para></para>
+    /// <para>This function destroys all remaining windows and cursors, restores any modified gamma ramps and frees any other allocated resources. Once this function is called, you must again call <see cref="GlfwInit" /> successfully before you will be able to use most GLFW functions.</para> <para>If GLFW has been successfully initialized, this function should be called before the application exits. If initialization fails, there is no need to call this function, as it is called by <see cref="GlfwInit" /> before it returns failure.</para> <para>This function has no effect if GLFW is not initialized.</para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_PLATFORM_ERROR" />.</para></para> <para><b>Remarks</b><para>This function may be called before <see cref="GlfwInit" />.</para></para> <para><b>Warning</b><para>The contexts of any remaining windows must not be current on any other thread when this function is called.</para></para> <para><b>Reentrancy</b><para>This function must not be called from a callback.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/intro_guide.html#intro_init">Initialization and termination</see> </para> <para> <see cref="GlfwInit" /></para></para> <para><b>Since</b><para>Added in version 1.0. </para></para>
     /// </summary>
     public static void glfwTerminate() => p_glfwTerminate();
 
@@ -67,19 +69,19 @@ public static unsafe partial class NativeGlfw
     private static d_glfwInitHint p_glfwInitHint = LoadFunction< d_glfwInitHint >( "glfwInitHint" );
 
     /// <summary>
-    /// <para>This function sets hints for the next initialization of GLFW.</para> <para>The values you set hints to are never reset by GLFW, but they only take effect during initialization. Once GLFW has been initialized, any values you set will be ignored until the library is terminated and initialized again.</para> <para>Some hints are platform specific. These may be set on any platform but they will only affect their specific platform. Other platforms will ignore them. Setting these hints requires no platform specific headers or functions.</para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_INVALID_ENUM" /> and <see cref="NativeGlfw.GLFW_INVALID_VALUE" />.</para></para> <para><b>Remarks</b><para>This function may be called before <see cref="NativeGlfw.glfwInit" />.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para>init_hints </para> <para> <see cref="NativeGlfw.glfwInit" /></para></para> <para><b>Since</b><para>Added in version 3.3. </para></para>
+    /// <para>This function sets hints for the next initialization of GLFW.</para> <para>The values you set hints to are never reset by GLFW, but they only take effect during initialization. Once GLFW has been initialized, any values you set will be ignored until the library is terminated and initialized again.</para> <para>Some hints are platform specific. These may be set on any platform but they will only affect their specific platform. Other platforms will ignore them. Setting these hints requires no platform specific headers or functions.</para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_INVALID_ENUM" /> and <see cref="NativeGlfw.GLFW_INVALID_VALUE" />.</para></para> <para><b>Remarks</b><para>This function may be called before <see cref="GlfwInit" />.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para>init_hints </para> <para> <see cref="GlfwInit" /></para></para> <para><b>Since</b><para>Added in version 3.3. </para></para>
     /// </summary>
     public static void glfwInitHint( int hint, int value ) => p_glfwInitHint( hint, value );
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void d_glfwInitAllocator( GLFWallocator* allocator );
+    private delegate void d_glfwInitAllocator( GlfwAllocator* allocator );
 
     private static d_glfwInitAllocator p_glfwInitAllocator = LoadFunction< d_glfwInitAllocator >( "glfwInitAllocator" );
 
     /// <summary>
-    /// <para>To use the default allocator, call this function with a <c>NULL</c> argument.</para> <para>If you specify an allocator struct, every member must be a valid function pointer. If any member is <c>NULL</c>, this function will emit <see cref="NativeGlfw.GLFW_INVALID_VALUE" /> and the init allocator will be unchanged.</para> <para>The functions in the allocator must fulfil a number of requirements. See the documentation for <see cref="GlfwAllocatefun" />, <see cref="GlfwReallocatefun" /> and <see cref="GlfwDeallocatefun" /> for details.</para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_INVALID_VALUE" />.</para></para> <para><b>Pointer lifetime</b><para>The specified allocator is copied before this function returns.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/intro_guide.html#init_allocator">Custom heap memory allocator</see> </para> <para> <see cref="NativeGlfw.glfwInit" /></para></para> <para><b>Since</b><para>Added in version 3.4. </para></para>
+    /// <para>To use the default allocator, call this function with a <c>NULL</c> argument.</para> <para>If you specify an allocator struct, every member must be a valid function pointer. If any member is <c>NULL</c>, this function will emit <see cref="NativeGlfw.GLFW_INVALID_VALUE" /> and the init allocator will be unchanged.</para> <para>The functions in the allocator must fulfil a number of requirements. See the documentation for <see cref="GlfwAllocatefun" />, <see cref="GlfwReallocatefun" /> and <see cref="GlfwDeallocatefun" /> for details.</para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_INVALID_VALUE" />.</para></para> <para><b>Pointer lifetime</b><para>The specified allocator is copied before this function returns.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/intro_guide.html#init_allocator">Custom heap memory allocator</see> </para> <para> <see cref="GlfwInit" /></para></para> <para><b>Since</b><para>Added in version 3.4. </para></para>
     /// </summary>
-    public static void glfwInitAllocator( GLFWallocator* allocator ) => p_glfwInitAllocator( allocator );
+    public static void glfwInitAllocator( GlfwAllocator* allocator ) => p_glfwInitAllocator( allocator );
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void d_glfwInitVulkanLoader( PFN_vkGetInstanceProcAddr loader );
@@ -87,7 +89,7 @@ public static unsafe partial class NativeGlfw
     private static d_glfwInitVulkanLoader p_glfwInitVulkanLoader = LoadFunction< d_glfwInitVulkanLoader >( "glfwInitVulkanLoader" );
 
     /// <summary>
-    /// <para>This function sets the <c>vkGetInstanceProcAddr</c> function that GLFW will use for all Vulkan related entry point queries.</para> <para>This feature is mostly useful on macOS, if your copy of the Vulkan loader is in a location where GLFW cannot find it through dynamic loading, or if you are still using the static library version of the loader.</para> <para>If set to <c>NULL</c>, GLFW will try to load the Vulkan loader dynamically by its standard name and get this function from there. This is the default behavior.</para> <para>The standard name of the loader is <c>vulkan-1.dll</c> on Windows, <c>libvulkan.so.1</c> on Linux and other Unix-like systems and <c>libvulkan.1.dylib</c> on macOS. If your code is also loading it via these names then you probably don't need to use this function.</para> <para>The function address you set is never reset by GLFW, but it only takes effect during initialization. Once GLFW has been initialized, any updates will be ignored until the library is terminated and initialized again.</para> <para><b>Loader function signature</b><para>PFN_vkVoidFunction vkGetInstanceProcAddr(VkInstance instance, const char* name) For more information about this function, see the <see href="https://www.glfw.org/docs/3.4/https://www.khronos.org/registry/vulkan/">Vulkan Registry</see>.</para></para> <para><b>Errors</b><para>None.</para></para> <para><b>Remarks</b><para>This function may be called before <see cref="NativeGlfw.glfwInit" />.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/vulkan_guide.html#vulkan_loader">Finding the Vulkan loader</see> </para> <para> <see cref="NativeGlfw.glfwInit" /></para></para> <para><b>Since</b><para>Added in version 3.4. </para></para>
+    /// <para>This function sets the <c>vkGetInstanceProcAddr</c> function that GLFW will use for all Vulkan related entry point queries.</para> <para>This feature is mostly useful on macOS, if your copy of the Vulkan loader is in a location where GLFW cannot find it through dynamic loading, or if you are still using the static library version of the loader.</para> <para>If set to <c>NULL</c>, GLFW will try to load the Vulkan loader dynamically by its standard name and get this function from there. This is the default behavior.</para> <para>The standard name of the loader is <c>vulkan-1.dll</c> on Windows, <c>libvulkan.so.1</c> on Linux and other Unix-like systems and <c>libvulkan.1.dylib</c> on macOS. If your code is also loading it via these names then you probably don't need to use this function.</para> <para>The function address you set is never reset by GLFW, but it only takes effect during initialization. Once GLFW has been initialized, any updates will be ignored until the library is terminated and initialized again.</para> <para><b>Loader function signature</b><para>PFN_vkVoidFunction vkGetInstanceProcAddr(VkInstance instance, const char* name) For more information about this function, see the <see href="https://www.glfw.org/docs/3.4/https://www.khronos.org/registry/vulkan/">Vulkan Registry</see>.</para></para> <para><b>Errors</b><para>None.</para></para> <para><b>Remarks</b><para>This function may be called before <see cref="GlfwInit" />.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/vulkan_guide.html#vulkan_loader">Finding the Vulkan loader</see> </para> <para> <see cref="GlfwInit" /></para></para> <para><b>Since</b><para>Added in version 3.4. </para></para>
     /// </summary>
     public static void glfwInitVulkanLoader( PFN_vkGetInstanceProcAddr loader ) => p_glfwInitVulkanLoader( loader );
 
@@ -97,7 +99,7 @@ public static unsafe partial class NativeGlfw
     private static d_glfwGetVersion p_glfwGetVersion = LoadFunction< d_glfwGetVersion >( "glfwGetVersion" );
 
     /// <summary>
-    /// <para>This function retrieves the major, minor and revision numbers of the GLFW library. It is intended for when you are using GLFW as a shared library and want to ensure that you are using the minimum required version.</para> <para>Any or all of the version arguments may be <c>NULL</c>.</para> <para><b>Errors</b><para>None.</para></para> <para><b>Remarks</b><para>This function may be called before <see cref="NativeGlfw.glfwInit" />.</para></para> <para><b>Thread safety</b><para>This function may be called from any thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/intro_guide.html#intro_version">Version management</see> </para> <para> <see cref="NativeGlfw.glfwGetVersionString" /></para></para> <para><b>Since</b><para>Added in version 1.0. </para></para>
+    /// <para>This function retrieves the major, minor and revision numbers of the GLFW library. It is intended for when you are using GLFW as a shared library and want to ensure that you are using the minimum required version.</para> <para>Any or all of the version arguments may be <c>NULL</c>.</para> <para><b>Errors</b><para>None.</para></para> <para><b>Remarks</b><para>This function may be called before <see cref="GlfwInit" />.</para></para> <para><b>Thread safety</b><para>This function may be called from any thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/intro_guide.html#intro_version">Version management</see> </para> <para> <see cref="NativeGlfw.glfwGetVersionString" /></para></para> <para><b>Since</b><para>Added in version 1.0. </para></para>
     /// </summary>
     public static void glfwGetVersion( IntPtr major, IntPtr minor, IntPtr rev ) => p_glfwGetVersion( major, minor, rev );
 
@@ -107,7 +109,7 @@ public static unsafe partial class NativeGlfw
     private static d_glfwGetVersionString p_glfwGetVersionString = LoadFunction< d_glfwGetVersionString >( "glfwGetVersionString" );
 
     /// <summary>
-    /// <para>This function returns the compile-time generated <see href="https://www.glfw.org/docs/3.4/intro_guide.html#intro_version_string">version string</see> of the GLFW library binary. It describes the version, platforms, compiler and any platform or operating system specific compile-time options. It should not be confused with the OpenGL or OpenGL ES version string, queried with <c>glGetString</c>.</para> <para>Do not use the version string to parse the GLFW library version. The <see cref="NativeGlfw.glfwGetVersion" /> function provides the version of the running library binary in numerical format.</para> <para>Do not use the version string to parse what platforms are supported. The <see cref="NativeGlfw.glfwPlatformSupported" /> function lets you query platform support.</para> <para><b>Returns</b><para>The ASCII encoded GLFW version string.</para></para> <para><b>Errors</b><para>None.</para></para> <para><b>Remarks</b><para>This function may be called before <see cref="NativeGlfw.glfwInit" />.</para></para> <para><b>Pointer lifetime</b><para>The returned string is static and compile-time generated.</para></para> <para><b>Thread safety</b><para>This function may be called from any thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/intro_guide.html#intro_version">Version management</see> </para> <para> <see cref="NativeGlfw.glfwGetVersion" /></para></para> <para><b>Since</b><para>Added in version 3.0. </para></para>
+    /// <para>This function returns the compile-time generated <see href="https://www.glfw.org/docs/3.4/intro_guide.html#intro_version_string">version string</see> of the GLFW library binary. It describes the version, platforms, compiler and any platform or operating system specific compile-time options. It should not be confused with the OpenGL or OpenGL ES version string, queried with <c>glGetString</c>.</para> <para>Do not use the version string to parse the GLFW library version. The <see cref="NativeGlfw.glfwGetVersion" /> function provides the version of the running library binary in numerical format.</para> <para>Do not use the version string to parse what platforms are supported. The <see cref="NativeGlfw.glfwPlatformSupported" /> function lets you query platform support.</para> <para><b>Returns</b><para>The ASCII encoded GLFW version string.</para></para> <para><b>Errors</b><para>None.</para></para> <para><b>Remarks</b><para>This function may be called before <see cref="GlfwInit" />.</para></para> <para><b>Pointer lifetime</b><para>The returned string is static and compile-time generated.</para></para> <para><b>Thread safety</b><para>This function may be called from any thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/intro_guide.html#intro_version">Version management</see> </para> <para> <see cref="NativeGlfw.glfwGetVersion" /></para></para> <para><b>Since</b><para>Added in version 3.0. </para></para>
     /// </summary>
     public static IntPtr glfwGetVersionString() => p_glfwGetVersionString();
 
@@ -117,7 +119,7 @@ public static unsafe partial class NativeGlfw
     private static d_glfwGetError p_glfwGetError = LoadFunction< d_glfwGetError >( "glfwGetError" );
 
     /// <summary>
-    /// <para>This function returns and clears the <see href="https://www.glfw.org/docs/3.4/group__errors.html">error code</see> of the last error that occurred on the calling thread, and optionally a UTF-8 encoded human-readable description of it. If no error has occurred since the last call, it returns <see cref="NativeGlfw.GLFW_NO_ERROR" /> (zero) and the description pointer is set to <c>NULL</c>.</para> <para><b>Returns</b><para>The last error code for the calling thread, or <see cref="NativeGlfw.GLFW_NO_ERROR" /> (zero).</para></para> <para><b>Errors</b><para>None.</para></para> <para><b>Pointer lifetime</b><para>The returned string is allocated and freed by GLFW. You should not free it yourself. It is guaranteed to be valid only until the next error occurs or the library is terminated.</para></para> <para><b>Remarks</b><para>This function may be called before <see cref="NativeGlfw.glfwInit" />.</para></para> <para><b>Thread safety</b><para>This function may be called from any thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/intro_guide.html#error_handling">Error handling</see> </para> <para> <see cref="NativeGlfw.glfwSetErrorCallback" /></para></para> <para><b>Since</b><para>Added in version 3.3. </para></para>
+    /// <para>This function returns and clears the <see href="https://www.glfw.org/docs/3.4/group__errors.html">error code</see> of the last error that occurred on the calling thread, and optionally a UTF-8 encoded human-readable description of it. If no error has occurred since the last call, it returns <see cref="NativeGlfw.GLFW_NO_ERROR" /> (zero) and the description pointer is set to <c>NULL</c>.</para> <para><b>Returns</b><para>The last error code for the calling thread, or <see cref="NativeGlfw.GLFW_NO_ERROR" /> (zero).</para></para> <para><b>Errors</b><para>None.</para></para> <para><b>Pointer lifetime</b><para>The returned string is allocated and freed by GLFW. You should not free it yourself. It is guaranteed to be valid only until the next error occurs or the library is terminated.</para></para> <para><b>Remarks</b><para>This function may be called before <see cref="GlfwInit" />.</para></para> <para><b>Thread safety</b><para>This function may be called from any thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/intro_guide.html#error_handling">Error handling</see> </para> <para> <see cref="NativeGlfw.glfwSetErrorCallback" /></para></para> <para><b>Since</b><para>Added in version 3.3. </para></para>
     /// </summary>
     public static int glfwGetError( IntPtr description ) => p_glfwGetError( description );
 
@@ -127,27 +129,29 @@ public static unsafe partial class NativeGlfw
     private static d_glfwSetErrorCallback p_glfwSetErrorCallback = LoadFunction< d_glfwSetErrorCallback >( "glfwSetErrorCallback" );
 
     /// <summary>
-    /// <para>This function sets the error callback, which is called with an error code and a human-readable description each time a GLFW error occurs.</para> <para>The error code is set before the callback is called. Calling <see cref="NativeGlfw.glfwGetError" /> from the error callback will return the same value as the error code argument.</para> <para>The error callback is called on the thread where the error occurred. If you are using GLFW from multiple threads, your error callback needs to be written accordingly.</para> <para>Because the description string may have been generated specifically for that error, it is not guaranteed to be valid after the callback has returned. If you wish to use it after the callback returns, you need to make a copy.</para> <para>Once set, the error callback remains set even after the library has been terminated.</para> <para><b>Returns</b><para>The previously set callback, or <c>NULL</c> if no callback was set.</para></para> <para><b>Callback signature</b><para>void callback_name(int error_code, const char* description) For more information about the callback parameters, see the <see href="https://www.glfw.org/docs/3.4/group__init.html#ga8184701785c096b3862a75cda1bf44a3">callback pointer type</see>.</para></para> <para><b>Errors</b><para>None.</para></para> <para><b>Remarks</b><para>This function may be called before <see cref="NativeGlfw.glfwInit" />.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/intro_guide.html#error_handling">Error handling</see> </para> <para> <see cref="NativeGlfw.glfwGetError" /></para></para> <para><b>Since</b><para>Added in version 3.0. </para></para>
+    /// <para>This function sets the error callback, which is called with an error code and a human-readable description each time a GLFW error occurs.</para> <para>The error code is set before the callback is called. Calling <see cref="NativeGlfw.glfwGetError" /> from the error callback will return the same value as the error code argument.</para> <para>The error callback is called on the thread where the error occurred. If you are using GLFW from multiple threads, your error callback needs to be written accordingly.</para> <para>Because the description string may have been generated specifically for that error, it is not guaranteed to be valid after the callback has returned. If you wish to use it after the callback returns, you need to make a copy.</para> <para>Once set, the error callback remains set even after the library has been terminated.</para> <para><b>Returns</b><para>The previously set callback, or <c>NULL</c> if no callback was set.</para></para> <para><b>Callback signature</b><para>void callback_name(int error_code, const char* description) For more information about the callback parameters, see the <see href="https://www.glfw.org/docs/3.4/group__init.html#ga8184701785c096b3862a75cda1bf44a3">callback pointer type</see>.</para></para> <para><b>Errors</b><para>None.</para></para> <para><b>Remarks</b><para>This function may be called before <see cref="GlfwInit" />.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/intro_guide.html#error_handling">Error handling</see> </para> <para> <see cref="NativeGlfw.glfwGetError" /></para></para> <para><b>Since</b><para>Added in version 3.0. </para></para>
     /// </summary>
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWerrorfun glfwSetErrorCallback( GLFWerrorfun callback )
+    public static GlfwErrorfun? glfwSetErrorCallback( GlfwErrorfun? callback )
     {
-        System.IntPtr __callback_native;
-        __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWerrorfun  ____callback_native_managed;
+        System.IntPtr __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
+
         System.IntPtr ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetErrorCallback( __callback_native );
         }
+        
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWerrorfun >( ____callback_native_retVal_native ) : null;
+        
+        var ____callback_native_managed = ____callback_native_retVal_native != default
+            ? Marshal.PtrToStructure< GlfwErrorfun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWerrorfun _currentGLFWerrorfun;
+    internal static GlfwErrorfun? CurrentGlfwErrorfun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate int d_glfwGetPlatform();
@@ -165,7 +169,7 @@ public static unsafe partial class NativeGlfw
     private static d_glfwPlatformSupported p_glfwPlatformSupported = LoadFunction< d_glfwPlatformSupported >( "glfwPlatformSupported" );
 
     /// <summary>
-    /// <para>This function returns whether the library was compiled with support for the specified platform. The platform must be one of <see cref="NativeGlfw.GLFW_PLATFORM_WIN32" />, <see cref="NativeGlfw.GLFW_PLATFORM_COCOA" />, <see cref="NativeGlfw.GLFW_PLATFORM_WAYLAND" />, <see cref="NativeGlfw.GLFW_PLATFORM_X11" /> or <see cref="NativeGlfw.GLFW_PLATFORM_NULL" />.</para> <para><b>Returns</b><para><see cref="NativeGlfw.GLFW_TRUE" /> if the platform is supported, or <see cref="NativeGlfw.GLFW_FALSE" /> otherwise.</para></para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_INVALID_ENUM" />.</para></para> <para><b>Remarks</b><para>This function may be called before <see cref="NativeGlfw.glfwInit" />.</para></para> <para><b>Thread safety</b><para>This function may be called from any thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/intro_guide.html#platform">Runtime platform selection</see> </para> <para> <see cref="NativeGlfw.glfwGetPlatform" /></para></para> <para><b>Since</b><para>Added in version 3.4. </para></para>
+    /// <para>This function returns whether the library was compiled with support for the specified platform. The platform must be one of <see cref="NativeGlfw.GLFW_PLATFORM_WIN32" />, <see cref="NativeGlfw.GLFW_PLATFORM_COCOA" />, <see cref="NativeGlfw.GLFW_PLATFORM_WAYLAND" />, <see cref="NativeGlfw.GLFW_PLATFORM_X11" /> or <see cref="NativeGlfw.GLFW_PLATFORM_NULL" />.</para> <para><b>Returns</b><para><see cref="NativeGlfw.GLFW_TRUE" /> if the platform is supported, or <see cref="NativeGlfw.GLFW_FALSE" /> otherwise.</para></para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_INVALID_ENUM" />.</para></para> <para><b>Remarks</b><para>This function may be called before <see cref="GlfwInit" />.</para></para> <para><b>Thread safety</b><para>This function may be called from any thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/intro_guide.html#platform">Runtime platform selection</see> </para> <para> <see cref="NativeGlfw.glfwGetPlatform" /></para></para> <para><b>Since</b><para>Added in version 3.4. </para></para>
     /// </summary>
     public static int glfwPlatformSupported( int platform ) => p_glfwPlatformSupported( platform );
 
@@ -270,42 +274,42 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWmonitorfun glfwSetMonitorCallback( GLFWmonitorfun callback )
+    public static GlfwMonitorfun glfwSetMonitorCallback( GlfwMonitorfun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWmonitorfun ____callback_native_managed;
+        GlfwMonitorfun ____callback_native_managed;
         System.IntPtr  ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetMonitorCallback( __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWmonitorfun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwMonitorfun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWmonitorfun _currentGLFWmonitorfun;
+    internal static GlfwMonitorfun CurrentGlfwMonitorfun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate GLFWvidmode* d_glfwGetVideoModes( GlfwMonitor* monitor, IntPtr count );
+    private delegate GlfwVideoMode* d_glfwGetVideoModes( GlfwMonitor* monitor, IntPtr count );
 
     private static d_glfwGetVideoModes p_glfwGetVideoModes = LoadFunction< d_glfwGetVideoModes >( "glfwGetVideoModes" );
 
     /// <summary>
     /// <para>This function returns an array of all video modes supported by the specified monitor. The returned array is sorted in ascending order, first by color bit depth (the sum of all channel depths), then by resolution area (the product of width and height), then resolution width and finally by refresh rate.</para> <para><b>Returns</b><para>An array of video modes, or <c>NULL</c> if an <see href="https://www.glfw.org/docs/3.4/intro_guide.html#error_handling">error</see> occurred.</para></para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_NOT_INITIALIZED" /> and <see cref="NativeGlfw.GLFW_PLATFORM_ERROR" />.</para></para> <para><b>Pointer lifetime</b><para>The returned array is allocated and freed by GLFW. You should not free it yourself. It is valid until the specified monitor is disconnected, this function is called again for that monitor or the library is terminated.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/monitor_guide.html#monitor_modes">Video modes</see> </para> <para> <see cref="NativeGlfw.glfwGetVideoMode" /></para></para> <para><b>Since</b><para>Added in version 1.0. GLFW 3: Changed to return an array of modes for a specific monitor. </para></para>
     /// </summary>
-    public static GLFWvidmode* glfwGetVideoModes( GlfwMonitor* monitor, IntPtr count ) => p_glfwGetVideoModes( monitor, count );
+    public static GlfwVideoMode* glfwGetVideoModes( GlfwMonitor* monitor, IntPtr count ) => p_glfwGetVideoModes( monitor, count );
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate GLFWvidmode* d_glfwGetVideoMode( GlfwMonitor* monitor );
+    private delegate GlfwVideoMode* d_glfwGetVideoMode( GlfwMonitor* monitor );
 
     private static d_glfwGetVideoMode p_glfwGetVideoMode = LoadFunction< d_glfwGetVideoMode >( "glfwGetVideoMode" );
 
     /// <summary>
     /// <para>This function returns the current video mode of the specified monitor. If you have created a full screen window for that monitor, the return value will depend on whether that window is iconified.</para> <para><b>Returns</b><para>The current mode of the monitor, or <c>NULL</c> if an <see href="https://www.glfw.org/docs/3.4/intro_guide.html#error_handling">error</see> occurred.</para></para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_NOT_INITIALIZED" /> and <see cref="NativeGlfw.GLFW_PLATFORM_ERROR" />.</para></para> <para><b>Pointer lifetime</b><para>The returned array is allocated and freed by GLFW. You should not free it yourself. It is valid until the specified monitor is disconnected or the library is terminated.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/monitor_guide.html#monitor_modes">Video modes</see> </para> <para> <see cref="NativeGlfw.glfwGetVideoModes" /></para></para> <para><b>Since</b><para>Added in version 3.0. Replaces <c>glfwGetDesktopMode</c>. </para></para>
     /// </summary>
-    public static GLFWvidmode* glfwGetVideoMode( GlfwMonitor* monitor ) => p_glfwGetVideoMode( monitor );
+    public static GlfwVideoMode* glfwGetVideoMode( GlfwMonitor* monitor ) => p_glfwGetVideoMode( monitor );
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void d_glfwSetGamma( GlfwMonitor* monitor, float gamma );
@@ -318,24 +322,24 @@ public static unsafe partial class NativeGlfw
     public static void glfwSetGamma( GlfwMonitor* monitor, float gamma ) => p_glfwSetGamma( monitor, gamma );
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate GLFWgammaramp* d_glfwGetGammaRamp( GlfwMonitor* monitor );
+    private delegate GlfwGammaRamp* d_glfwGetGammaRamp( GlfwMonitor* monitor );
 
     private static d_glfwGetGammaRamp p_glfwGetGammaRamp = LoadFunction< d_glfwGetGammaRamp >( "glfwGetGammaRamp" );
 
     /// <summary>
     /// <para>This function returns the current gamma ramp of the specified monitor.</para> <para><b>Returns</b><para>The current gamma ramp, or <c>NULL</c> if an <see href="https://www.glfw.org/docs/3.4/intro_guide.html#error_handling">error</see> occurred.</para></para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_NOT_INITIALIZED" />, <see cref="NativeGlfw.GLFW_PLATFORM_ERROR" /> and <see cref="NativeGlfw.GLFW_FEATURE_UNAVAILABLE" /> (see remarks).</para></para> <para><b>Remarks</b><para>Wayland: Gamma handling is a privileged protocol, this function will thus never be implemented and emits <see cref="NativeGlfw.GLFW_FEATURE_UNAVAILABLE" /> while returning <c>NULL</c>.</para></para> <para><b>Pointer lifetime</b><para>The returned structure and its arrays are allocated and freed by GLFW. You should not free them yourself. They are valid until the specified monitor is disconnected, this function is called again for that monitor or the library is terminated.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/monitor_guide.html#monitor_gamma">Gamma ramp</see></para></para> <para><b>Since</b><para>Added in version 3.0. </para></para>
     /// </summary>
-    public static GLFWgammaramp* glfwGetGammaRamp( GlfwMonitor* monitor ) => p_glfwGetGammaRamp( monitor );
+    public static GlfwGammaRamp* glfwGetGammaRamp( GlfwMonitor* monitor ) => p_glfwGetGammaRamp( monitor );
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void d_glfwSetGammaRamp( GlfwMonitor* monitor, GLFWgammaramp* ramp );
+    private delegate void d_glfwSetGammaRamp( GlfwMonitor* monitor, GlfwGammaRamp* ramp );
 
     private static d_glfwSetGammaRamp p_glfwSetGammaRamp = LoadFunction< d_glfwSetGammaRamp >( "glfwSetGammaRamp" );
 
     /// <summary>
     /// <para>This function sets the current gamma ramp for the specified monitor. The original gamma ramp for that monitor is saved by GLFW the first time this function is called and is restored by <see cref="NativeGlfw.glfwTerminate" />.</para> <para>The software controlled gamma ramp is applied in addition to the hardware gamma correction, which today is usually an approximation of sRGB gamma. This means that setting a perfectly linear ramp, or gamma 1.0, will produce the default (usually sRGB-like) behavior.</para> <para>For gamma correct rendering with OpenGL or OpenGL ES, see the <see cref="NativeGlfw.GLFW_SRGB_CAPABLE" /> hint.</para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_NOT_INITIALIZED" />, <see cref="NativeGlfw.GLFW_PLATFORM_ERROR" /> and <see cref="NativeGlfw.GLFW_FEATURE_UNAVAILABLE" /> (see remarks).</para></para> <para><b>Remarks</b><para>The size of the specified gamma ramp should match the size of the current ramp for that monitor.</para> <para> Windows: The gamma ramp size must be 256.</para> <para> Wayland: Gamma handling is a privileged protocol, this function will thus never be implemented and emits <see cref="NativeGlfw.GLFW_FEATURE_UNAVAILABLE" />.</para></para> <para><b>Pointer lifetime</b><para>The specified gamma ramp is copied before this function returns.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/monitor_guide.html#monitor_gamma">Gamma ramp</see></para></para> <para><b>Since</b><para>Added in version 3.0. </para></para>
     /// </summary>
-    public static void glfwSetGammaRamp( GlfwMonitor* monitor, GLFWgammaramp* ramp ) => p_glfwSetGammaRamp( monitor, ramp );
+    public static void glfwSetGammaRamp( GlfwMonitor* monitor, GlfwGammaRamp* ramp ) => p_glfwSetGammaRamp( monitor, ramp );
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void d_glfwDefaultWindowHints();
@@ -428,14 +432,14 @@ public static unsafe partial class NativeGlfw
     public static void glfwSetWindowTitle( GlfwWindow* window, IntPtr title ) => p_glfwSetWindowTitle( window, title );
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void d_glfwSetWindowIcon( GlfwWindow* window, int count, GLFWimage* images );
+    private delegate void d_glfwSetWindowIcon( GlfwWindow* window, int count, GlfwImage* images );
 
     private static d_glfwSetWindowIcon p_glfwSetWindowIcon = LoadFunction< d_glfwSetWindowIcon >( "glfwSetWindowIcon" );
 
     /// <summary>
     /// <para>This function sets the icon of the specified window. If passed an array of candidate images, those of or closest to the sizes desired by the system are selected. If no images are specified, the window reverts to its default icon.</para> <para>The pixels are 32-bit, little-endian, non-premultiplied RGBA, i.e. eight bits per channel with the red channel first. They are arranged canonically as packed sequential rows, starting from the top-left corner.</para> <para>The desired image sizes varies depending on platform and system settings. The selected images will be rescaled as needed. Good sizes include 16x16, 32x32 and 48x48.</para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_NOT_INITIALIZED" />, <see cref="NativeGlfw.GLFW_INVALID_VALUE" />, <see cref="NativeGlfw.GLFW_PLATFORM_ERROR" /> and <see cref="NativeGlfw.GLFW_FEATURE_UNAVAILABLE" /> (see remarks).</para></para> <para><b>Pointer lifetime</b><para>The specified image data is copied before this function returns.</para></para> <para><b>Remarks</b><para>macOS: Regular windows do not have icons on macOS. This function will emit <see cref="NativeGlfw.GLFW_FEATURE_UNAVAILABLE" />. The dock icon will be the same as the application bundle's icon. For more information on bundles, see the <see href="https://www.glfw.org/docs/3.4/https://developer.apple.com/library/mac/documentation/CoreFoundation/Conceptual/CFBundles/">Bundle Programming Guide</see> in the Mac Developer Library.</para> <para> Wayland: There is no existing protocol to change an icon, the window will thus inherit the one defined in the application's desktop file. This function will emit <see cref="NativeGlfw.GLFW_FEATURE_UNAVAILABLE" />.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/window_guide.html#window_icon">Window icon</see></para></para> <para><b>Since</b><para>Added in version 3.2. </para></para>
     /// </summary>
-    public static void glfwSetWindowIcon( GlfwWindow* window, int count, GLFWimage* images ) => p_glfwSetWindowIcon( window, count, images );
+    public static void glfwSetWindowIcon( GlfwWindow* window, int count, GlfwImage* images ) => p_glfwSetWindowIcon( window, count, images );
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void d_glfwGetWindowPos( GlfwWindow* window, IntPtr xpos, IntPtr ypos );
@@ -688,22 +692,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWwindowposfun glfwSetWindowPosCallback( GlfwWindow* window, GLFWwindowposfun callback )
+    public static GlfwWindowposfun glfwSetWindowPosCallback( GlfwWindow* window, GlfwWindowposfun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWwindowposfun ____callback_native_managed;
+        GlfwWindowposfun ____callback_native_managed;
         System.IntPtr    ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetWindowPosCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWwindowposfun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwWindowposfun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWwindowposfun _currentGLFWwindowposfun;
+    internal static GlfwWindowposfun CurrentGlfwWindowposfun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate IntPtr d_glfwSetWindowSizeCallback( GlfwWindow* window, IntPtr callback );
@@ -716,22 +720,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWwindowsizefun glfwSetWindowSizeCallback( GlfwWindow* window, GLFWwindowsizefun callback )
+    public static GlfwWindowsizefun glfwSetWindowSizeCallback( GlfwWindow* window, GlfwWindowsizefun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWwindowsizefun ____callback_native_managed;
+        GlfwWindowsizefun ____callback_native_managed;
         System.IntPtr     ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetWindowSizeCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWwindowsizefun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwWindowsizefun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWwindowsizefun _currentGLFWwindowsizefun;
+    internal static GlfwWindowsizefun CurrentGlfwWindowsizefun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate IntPtr d_glfwSetWindowCloseCallback( GlfwWindow* window, IntPtr callback );
@@ -744,22 +748,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWwindowclosefun glfwSetWindowCloseCallback( GlfwWindow* window, GLFWwindowclosefun callback )
+    public static GlfwWindowclosefun glfwSetWindowCloseCallback( GlfwWindow* window, GlfwWindowclosefun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWwindowclosefun ____callback_native_managed;
+        GlfwWindowclosefun ____callback_native_managed;
         System.IntPtr      ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetWindowCloseCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWwindowclosefun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwWindowclosefun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWwindowclosefun _currentGLFWwindowclosefun;
+    internal static GlfwWindowclosefun CurrentGlfwWindowclosefun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate IntPtr d_glfwSetWindowRefreshCallback( GlfwWindow* window, IntPtr callback );
@@ -772,22 +776,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWwindowrefreshfun glfwSetWindowRefreshCallback( GlfwWindow* window, GLFWwindowrefreshfun callback )
+    public static GlfwWindowrefreshfun glfwSetWindowRefreshCallback( GlfwWindow* window, GlfwWindowrefreshfun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWwindowrefreshfun ____callback_native_managed;
+        GlfwWindowrefreshfun ____callback_native_managed;
         System.IntPtr        ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetWindowRefreshCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWwindowrefreshfun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwWindowrefreshfun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWwindowrefreshfun _currentGLFWwindowrefreshfun;
+    internal static GlfwWindowrefreshfun CurrentGlfwWindowrefreshfun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate IntPtr d_glfwSetWindowFocusCallback( GlfwWindow* window, IntPtr callback );
@@ -800,22 +804,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWwindowfocusfun glfwSetWindowFocusCallback( GlfwWindow* window, GLFWwindowfocusfun callback )
+    public static GlfwWindowfocusfun glfwSetWindowFocusCallback( GlfwWindow* window, GlfwWindowfocusfun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWwindowfocusfun ____callback_native_managed;
+        GlfwWindowfocusfun ____callback_native_managed;
         System.IntPtr      ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetWindowFocusCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWwindowfocusfun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwWindowfocusfun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWwindowfocusfun _currentGLFWwindowfocusfun;
+    internal static GlfwWindowfocusfun CurrentGlfwWindowfocusfun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate IntPtr d_glfwSetWindowIconifyCallback( GlfwWindow* window, IntPtr callback );
@@ -828,22 +832,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWwindowiconifyfun glfwSetWindowIconifyCallback( GlfwWindow* window, GLFWwindowiconifyfun callback )
+    public static GlfwWindowiconifyfun glfwSetWindowIconifyCallback( GlfwWindow* window, GlfwWindowiconifyfun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWwindowiconifyfun ____callback_native_managed;
+        GlfwWindowiconifyfun ____callback_native_managed;
         System.IntPtr        ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetWindowIconifyCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWwindowiconifyfun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwWindowiconifyfun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWwindowiconifyfun _currentGLFWwindowiconifyfun;
+    internal static GlfwWindowiconifyfun CurrentGlfwWindowiconifyfun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate IntPtr d_glfwSetWindowMaximizeCallback( GlfwWindow* window, IntPtr callback );
@@ -856,22 +860,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWwindowmaximizefun glfwSetWindowMaximizeCallback( GlfwWindow* window, GLFWwindowmaximizefun callback )
+    public static GlfwWindowMaximizefun glfwSetWindowMaximizeCallback( GlfwWindow* window, GlfwWindowMaximizefun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWwindowmaximizefun ____callback_native_managed;
+        GlfwWindowMaximizefun ____callback_native_managed;
         System.IntPtr         ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetWindowMaximizeCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWwindowmaximizefun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwWindowMaximizefun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWwindowmaximizefun _currentGLFWwindowmaximizefun;
+    internal static GlfwWindowMaximizefun CurrentGlfwWindowMaximizefun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate IntPtr d_glfwSetFramebufferSizeCallback( GlfwWindow* window, IntPtr callback );
@@ -884,22 +888,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWframebuffersizefun glfwSetFramebufferSizeCallback( GlfwWindow* window, GLFWframebuffersizefun callback )
+    public static GlfwFrameBufferSizefun glfwSetFramebufferSizeCallback( GlfwWindow* window, GlfwFrameBufferSizefun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWframebuffersizefun ____callback_native_managed;
+        GlfwFrameBufferSizefun ____callback_native_managed;
         System.IntPtr          ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetFramebufferSizeCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWframebuffersizefun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwFrameBufferSizefun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWframebuffersizefun _currentGLFWframebuffersizefun;
+    internal static GlfwFrameBufferSizefun CurrentGlfwFrameBufferSizefun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate IntPtr d_glfwSetWindowContentScaleCallback( GlfwWindow* window, IntPtr callback );
@@ -912,22 +916,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWwindowcontentscalefun glfwSetWindowContentScaleCallback( GlfwWindow* window, GLFWwindowcontentscalefun callback )
+    public static GlfwWindowContentScalefun glfwSetWindowContentScaleCallback( GlfwWindow* window, GlfwWindowContentScalefun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWwindowcontentscalefun ____callback_native_managed;
+        GlfwWindowContentScalefun ____callback_native_managed;
         System.IntPtr             ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetWindowContentScaleCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWwindowcontentscalefun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwWindowContentScalefun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWwindowcontentscalefun _currentGLFWwindowcontentscalefun;
+    internal static GlfwWindowContentScalefun CurrentGlfwWindowContentScalefun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void d_glfwPollEvents();
@@ -1060,14 +1064,14 @@ public static unsafe partial class NativeGlfw
     public static void glfwSetCursorPos( GlfwWindow* window, double xpos, double ypos ) => p_glfwSetCursorPos( window, xpos, ypos );
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate GlfwCursor* d_glfwCreateCursor( GLFWimage* image, int xhot, int yhot );
+    private delegate GlfwCursor* d_glfwCreateCursor( GlfwImage* image, int xhot, int yhot );
 
     private static d_glfwCreateCursor p_glfwCreateCursor = LoadFunction< d_glfwCreateCursor >( "glfwCreateCursor" );
 
     /// <summary>
     /// <para>Creates a new custom cursor image that can be set for a window with <see cref="NativeGlfw.glfwSetCursor" />. The cursor can be destroyed with <see cref="NativeGlfw.glfwDestroyCursor" />. Any remaining cursors are destroyed by <see cref="NativeGlfw.glfwTerminate" />.</para> <para>The pixels are 32-bit, little-endian, non-premultiplied RGBA, i.e. eight bits per channel with the red channel first. They are arranged canonically as packed sequential rows, starting from the top-left corner.</para> <para>The cursor hotspot is specified in pixels, relative to the upper-left corner of the cursor image. Like all other coordinate systems in GLFW, the X-axis points to the right and the Y-axis points down.</para> <para><b>Returns</b><para>The handle of the created cursor, or <c>NULL</c> if an <see href="https://www.glfw.org/docs/3.4/intro_guide.html#error_handling">error</see> occurred.</para></para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_NOT_INITIALIZED" />, <see cref="NativeGlfw.GLFW_INVALID_VALUE" /> and <see cref="NativeGlfw.GLFW_PLATFORM_ERROR" />.</para></para> <para><b>Pointer lifetime</b><para>The specified image data is copied before this function returns.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/input_guide.html#cursor_object">Cursor objects</see> </para> <para> <see cref="NativeGlfw.glfwDestroyCursor" /> </para> <para> <see cref="NativeGlfw.glfwCreateStandardCursor" /></para></para> <para><b>Since</b><para>Added in version 3.1. </para></para>
     /// </summary>
-    public static GlfwCursor* glfwCreateCursor( GLFWimage* image, int xhot, int yhot ) => p_glfwCreateCursor( image, xhot, yhot );
+    public static GlfwCursor* glfwCreateCursor( GlfwImage* image, int xhot, int yhot ) => p_glfwCreateCursor( image, xhot, yhot );
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GlfwCursor* d_glfwCreateStandardCursor( int shape );
@@ -1110,22 +1114,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWkeyfun glfwSetKeyCallback( GlfwWindow* window, GLFWkeyfun callback )
+    public static GlfwKeyfun glfwSetKeyCallback( GlfwWindow* window, GlfwKeyfun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWkeyfun    ____callback_native_managed;
+        GlfwKeyfun    ____callback_native_managed;
         System.IntPtr ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetKeyCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWkeyfun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwKeyfun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWkeyfun _currentGLFWkeyfun;
+    internal static GlfwKeyfun CurrentGlfwKeyfun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate IntPtr d_glfwSetCharCallback( GlfwWindow* window, IntPtr callback );
@@ -1138,22 +1142,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWcharfun glfwSetCharCallback( GlfwWindow* window, GLFWcharfun callback )
+    public static GlfwCharfun glfwSetCharCallback( GlfwWindow* window, GlfwCharfun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWcharfun   ____callback_native_managed;
+        GlfwCharfun   ____callback_native_managed;
         System.IntPtr ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetCharCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWcharfun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwCharfun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWcharfun _currentGLFWcharfun;
+    internal static GlfwCharfun CurrentGlfwCharfun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate IntPtr d_glfwSetCharModsCallback( GlfwWindow* window, IntPtr callback );
@@ -1166,22 +1170,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWcharmodsfun glfwSetCharModsCallback( GlfwWindow* window, GLFWcharmodsfun callback )
+    public static GlfwCharmodsfun glfwSetCharModsCallback( GlfwWindow* window, GlfwCharmodsfun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWcharmodsfun ____callback_native_managed;
+        GlfwCharmodsfun ____callback_native_managed;
         System.IntPtr   ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetCharModsCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWcharmodsfun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwCharmodsfun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWcharmodsfun _currentGLFWcharmodsfun;
+    internal static GlfwCharmodsfun CurrentGlfwCharmodsfun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate IntPtr d_glfwSetMouseButtonCallback( GlfwWindow* window, IntPtr callback );
@@ -1194,22 +1198,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWmousebuttonfun glfwSetMouseButtonCallback( GlfwWindow* window, GLFWmousebuttonfun callback )
+    public static GlfwMouseButtonfun glfwSetMouseButtonCallback( GlfwWindow* window, GlfwMouseButtonfun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWmousebuttonfun ____callback_native_managed;
+        GlfwMouseButtonfun ____callback_native_managed;
         System.IntPtr      ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetMouseButtonCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWmousebuttonfun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwMouseButtonfun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWmousebuttonfun _currentGLFWmousebuttonfun;
+    internal static GlfwMouseButtonfun CurrentGlfwMouseButtonfun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate IntPtr d_glfwSetCursorPosCallback( GlfwWindow* window, IntPtr callback );
@@ -1222,22 +1226,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWcursorposfun glfwSetCursorPosCallback( GlfwWindow* window, GLFWcursorposfun callback )
+    public static GlfwCursorposfun glfwSetCursorPosCallback( GlfwWindow* window, GlfwCursorposfun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWcursorposfun ____callback_native_managed;
+        GlfwCursorposfun ____callback_native_managed;
         System.IntPtr    ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetCursorPosCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWcursorposfun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwCursorposfun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWcursorposfun _currentGLFWcursorposfun;
+    internal static GlfwCursorposfun CurrentGlfwCursorPosfun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate IntPtr d_glfwSetCursorEnterCallback( GlfwWindow* window, IntPtr callback );
@@ -1250,22 +1254,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWcursorenterfun glfwSetCursorEnterCallback( GlfwWindow* window, GLFWcursorenterfun callback )
+    public static GlfwCursorenterfun glfwSetCursorEnterCallback( GlfwWindow* window, GlfwCursorenterfun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWcursorenterfun ____callback_native_managed;
+        GlfwCursorenterfun ____callback_native_managed;
         System.IntPtr      ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetCursorEnterCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWcursorenterfun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwCursorenterfun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWcursorenterfun _currentGLFWcursorenterfun;
+    internal static GlfwCursorenterfun CurrentGlfwCursorEnterfun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate IntPtr d_glfwSetScrollCallback( GlfwWindow* window, IntPtr callback );
@@ -1278,22 +1282,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWscrollfun glfwSetScrollCallback( GlfwWindow* window, GLFWscrollfun callback )
+    public static GlfwScrollfun glfwSetScrollCallback( GlfwWindow* window, GlfwScrollfun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWscrollfun ____callback_native_managed;
+        GlfwScrollfun ____callback_native_managed;
         System.IntPtr ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetScrollCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWscrollfun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwScrollfun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWscrollfun _currentGLFWscrollfun;
+    internal static GlfwScrollfun CurrentGlfwScrollfun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate IntPtr d_glfwSetDropCallback( GlfwWindow* window, IntPtr callback );
@@ -1306,22 +1310,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWdropfun glfwSetDropCallback( GlfwWindow* window, GLFWdropfun callback )
+    public static GlfwDropfun glfwSetDropCallback( GlfwWindow* window, GlfwDropfun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWdropfun   ____callback_native_managed;
+        GlfwDropfun   ____callback_native_managed;
         System.IntPtr ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetDropCallback( window, __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWdropfun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwDropfun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWdropfun _currentGLFWdropfun;
+    internal static GlfwDropfun CurrentGlfwDropfun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate int d_glfwJoystickPresent( int jid );
@@ -1424,22 +1428,22 @@ public static unsafe partial class NativeGlfw
     /// <remarks>
     /// WARNING! Be aware that the supplied callback is NOT cached in any way to prevent it from being garbage collected. You must do that yourself to prevent potential crashes due to glfw calling a garbage collected delegate.
     /// </remarks>
-    public static GLFWjoystickfun glfwSetJoystickCallback( GLFWjoystickfun callback )
+    public static GlfwJoystickfun glfwSetJoystickCallback( GlfwJoystickfun callback )
     {
         System.IntPtr __callback_native;
         __callback_native = callback != null ? Marshal.GetFunctionPointerForDelegate( callback ) : default;
-        GLFWjoystickfun ____callback_native_managed;
+        GlfwJoystickfun ____callback_native_managed;
         System.IntPtr   ____callback_native_retVal_native;
         {
             ____callback_native_retVal_native = p_glfwSetJoystickCallback( __callback_native );
         }
         System.GC.KeepAlive( __callback_native );
-        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GLFWjoystickfun >( ____callback_native_retVal_native ) : null;
+        ____callback_native_managed = ____callback_native_retVal_native != default ? Marshal.PtrToStructure< GlfwJoystickfun >( ____callback_native_retVal_native ) : null;
 
         return ____callback_native_managed;
     }
 
-    internal static GLFWjoystickfun _currentGLFWjoystickfun;
+    internal static GlfwJoystickfun? CurrentGlfwJoystickfun;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate int d_glfwUpdateGamepadMappings( IntPtr @string );
@@ -1462,14 +1466,14 @@ public static unsafe partial class NativeGlfw
     public static IntPtr glfwGetGamepadName( int jid ) => p_glfwGetGamepadName( jid );
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate int d_glfwGetGamepadState( int jid, GLFWgamepadstate* state );
+    private delegate int d_glfwGetGamepadState( int jid, GlfwGamepadState* state );
 
     private static d_glfwGetGamepadState p_glfwGetGamepadState = LoadFunction< d_glfwGetGamepadState >( "glfwGetGamepadState" );
 
     /// <summary>
-    /// <para>This function retrieves the state of the specified joystick remapped to an Xbox-like gamepad.</para> <para>If the specified joystick is not present or does not have a gamepad mapping this function will return <see cref="NativeGlfw.GLFW_FALSE" /> but will not generate an error. Call <see cref="NativeGlfw.glfwJoystickPresent" /> to check whether it is present regardless of whether it has a mapping.</para> <para>The Guide button may not be available for input as it is often hooked by the system or the Steam client.</para> <para>Not all devices have all the buttons or axes provided by <see cref="NativeGlfw.GLFWgamepadstate" />. Unavailable buttons and axes will always report <see cref="NativeGlfw.GLFW_RELEASE" /> and 0.0 respectively.</para> <para><b>Returns</b><para><see cref="NativeGlfw.GLFW_TRUE" /> if successful, or <see cref="NativeGlfw.GLFW_FALSE" /> if no joystick is connected, it has no gamepad mapping or an <see href="https://www.glfw.org/docs/3.4/intro_guide.html#error_handling">error</see> occurred.</para></para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_NOT_INITIALIZED" /> and <see cref="NativeGlfw.GLFW_INVALID_ENUM" />.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/input_guide.html#gamepad">Gamepad input</see> </para> <para> <see cref="NativeGlfw.glfwUpdateGamepadMappings" /> </para> <para> <see cref="NativeGlfw.glfwJoystickIsGamepad" /></para></para> <para><b>Since</b><para>Added in version 3.3. </para></para>
+    /// <para>This function retrieves the state of the specified joystick remapped to an Xbox-like gamepad.</para> <para>If the specified joystick is not present or does not have a gamepad mapping this function will return <see cref="NativeGlfw.GLFW_FALSE" /> but will not generate an error. Call <see cref="NativeGlfw.glfwJoystickPresent" /> to check whether it is present regardless of whether it has a mapping.</para> <para>The Guide button may not be available for input as it is often hooked by the system or the Steam client.</para> <para>Not all devices have all the buttons or axes provided by <see cref="GlfwGamepadState" />. Unavailable buttons and axes will always report <see cref="NativeGlfw.GLFW_RELEASE" /> and 0.0 respectively.</para> <para><b>Returns</b><para><see cref="NativeGlfw.GLFW_TRUE" /> if successful, or <see cref="NativeGlfw.GLFW_FALSE" /> if no joystick is connected, it has no gamepad mapping or an <see href="https://www.glfw.org/docs/3.4/intro_guide.html#error_handling">error</see> occurred.</para></para> <para><b>Errors</b><para>Possible errors include <see cref="NativeGlfw.GLFW_NOT_INITIALIZED" /> and <see cref="NativeGlfw.GLFW_INVALID_ENUM" />.</para></para> <para><b>Thread safety</b><para>This function must only be called from the main thread.</para></para> <para><b>See also</b><para><see href="https://www.glfw.org/docs/3.4/input_guide.html#gamepad">Gamepad input</see> </para> <para> <see cref="NativeGlfw.glfwUpdateGamepadMappings" /> </para> <para> <see cref="NativeGlfw.glfwJoystickIsGamepad" /></para></para> <para><b>Since</b><para>Added in version 3.3. </para></para>
     /// </summary>
-    public static int glfwGetGamepadState( int jid, GLFWgamepadstate* state ) => p_glfwGetGamepadState( jid, state );
+    public static int glfwGetGamepadState( int jid, GlfwGamepadState* state ) => p_glfwGetGamepadState( jid, state );
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void d_glfwSetClipboardString( GlfwWindow* window, IntPtr @string );

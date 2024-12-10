@@ -58,20 +58,14 @@ internal static class DllLoader
 
         if ( RuntimeInformation.IsOSPlatform( OSPlatform.Windows ) )
         {
-            string assemblyPathInRuntimes = Path.Combine(
-                                                         assemblyDirectory,
-                                                         "runtimes",
-                                                         Environment.Is64BitProcess ? "win-x64" : "win-x86",
-                                                         "native",
-                                                         $"{libraryName}.dll"
-                                                        );
+            var assemblyPathInRuntimes = Path.Combine( assemblyDirectory!,
+                                                       "runtimes",
+                                                       Environment.Is64BitProcess ? "win-x64" : "win-x86",
+                                                       "native",
+                                                       $"{libraryName}.dll" );
 
-            string assemblyPathNextToExe = Path.Combine(
-                                                        assemblyDirectory,
-                                                        $"{libraryName}.dll"
-                                                       );
-
-            string assemblyPath = File.Exists( assemblyPathNextToExe ) ? assemblyPathNextToExe : assemblyPathInRuntimes;
+            var assemblyPathNextToExe = Path.Combine( assemblyDirectory!, $"{libraryName}.dll" );
+            var assemblyPath          = File.Exists( assemblyPathNextToExe ) ? assemblyPathNextToExe : assemblyPathInRuntimes;
 
             // Discard the result, we only need it to be 
             // loaded into the process for later access
@@ -83,20 +77,14 @@ internal static class DllLoader
         if ( RuntimeInformation.IsOSPlatform( OSPlatform.OSX ) )
         {
             var runtimeSuffix = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "arm64" : "x64";
-            string assemblyPathInRuntimes = Path.Combine(
-                                                         assemblyDirectory,
-                                                         "runtimes",
-                                                         $"osx-{runtimeSuffix}",
-                                                         "native",
-                                                         $"lib{libraryName}.dylib"
-                                                        );
+            var assemblyPathInRuntimes = Path.Combine( assemblyDirectory!,
+                                                       "runtimes",
+                                                       $"osx-{runtimeSuffix}",
+                                                       "native",
+                                                       $"lib{libraryName}.dylib" );
 
-            string assemblyPathNextToExe = Path.Combine(
-                                                        assemblyDirectory,
-                                                        $"lib{libraryName}.dylib"
-                                                       );
-
-            string assemblyPath = File.Exists( assemblyPathNextToExe ) ? assemblyPathNextToExe : assemblyPathInRuntimes;
+            var assemblyPathNextToExe = Path.Combine( assemblyDirectory!, $"lib{libraryName}.dylib" );
+            var assemblyPath          = File.Exists( assemblyPathNextToExe ) ? assemblyPathNextToExe : assemblyPathInRuntimes;
 
             // Discard the result, we only need it to be 
             // loaded into the process for later access

@@ -40,7 +40,7 @@ namespace DesktopGLBackend.Window;
 /// Wrapper/Manager class for a <see cref="GLFW.Window"/>.
 /// </summary>
 [PublicAPI]
-public partial class DesktopGLWindow : IDisposable
+public unsafe partial class DesktopGLWindow : IDisposable
 {
     public GLFW.Window?                      GlfwWindow          { get; set; }
     public IDesktopGLWindowListener?         WindowListener      { get; set; }

@@ -344,13 +344,13 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     /// <param name="dglWindow"></param>
     /// <param name="config"></param>
     /// <param name="sharedContext"></param>
-    public DesktopGLWindow CreateWindow( DesktopGLWindow? dglWindow,
+    public unsafe DesktopGLWindow CreateWindow( DesktopGLWindow? dglWindow,
                                          DesktopGLApplicationConfiguration config,
                                          long sharedContext )
     {
         ArgumentNullException.ThrowIfNull( dglWindow );
 
-        GLFW.Window windowHandle = CreateGlfwWindow( config, sharedContext );
+        var windowHandle = CreateGlfwWindow( config, sharedContext );
 
         dglWindow.Initialise( windowHandle, this );
         dglWindow.SetVisible( config.InitialVisibility );
@@ -383,11 +383,11 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     /// <param name="sharedContextWindow"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    private GLFW.Window CreateGlfwWindow( DesktopGLApplicationConfiguration config, long sharedContextWindow )
+    private unsafe GLFW.Window CreateGlfwWindow( DesktopGLApplicationConfiguration config, long sharedContextWindow )
     {
         SetWindowHints( config );
 
-        GLFW.Window windowHandle;
+        GLFW.Window? windowHandle;
 
         if ( config.FullscreenMode != null )
         {
@@ -412,7 +412,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
                                               GLFW.Window.NULL );
         }
 
-        if ( windowHandle == null )
+        if ( windowHandle.Equals( null ) )
         {
             throw new NullReferenceException( "Failed to create window!" );
         }
@@ -524,7 +524,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     /// <exception cref="GdxRuntimeException"></exception>
     public void InitialiseGlfw()
     {
-        AnglePlatform
         try
         {
             if ( !_glfwInitialised )

@@ -1,7 +1,7 @@
 ﻿// /////////////////////////////////////////////////////////////////////////////
 //  MIT License
 // 
-//  Copyright (c) 2024 Richard Ikin / LughSharp Team
+//  Copyright (c) 2024 Richard Ikin / Red 7 Projects
 // 
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +22,21 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using LughGlfw.Glfw.Enums;
+namespace LughGlfw.Glfw;
 
-namespace LughGlfw.Glfw.Structs;
-
+/// <inheritdoc cref="NativeGlfw.GlfwGammaRamp"/>
 [PublicAPI]
-public partial class Gamepadstate
+public class GammaRamp
 {
-    /// <summary>
-    /// Get the state of a gamepad button.
-    /// </summary>
-    /// <param name="button">The button to check.</param>
-    /// <returns>The state of the button.</returns>
-    public static InputState GetButtonState( GamepadButton button ) => ( InputState )Buttons[ ( int )button ];
+    /// <inheritdoc cref="NativeGlfw.GlfwGammaRamp.Red"/>
+    public ushort[] Red { get; set; } = [ ];
 
-    /// <summary>
-    /// Get the state of a gamepad axis.
-    /// </summary>
-    /// <param name="axis">The axis to check.</param>
-    /// <returns>The state of the axis.</returns>
-    public static float GetAxis( GamepadAxis axis ) => Axes[ ( int )axis ];
+    /// <inheritdoc cref="NativeGlfw.GlfwGammaRamp.Green"/>
+    public ushort[] Green { get; set; } = [ ];
+
+    /// <inheritdoc cref="NativeGlfw.GlfwGammaRamp.Blue"/>
+    public ushort[] Blue { get; set; } = [ ];
+
+    /// <inheritdoc cref="NativeGlfw.GlfwGammaRamp.Size"/>
+    public uint Size { get; set; }
 }

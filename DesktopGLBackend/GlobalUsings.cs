@@ -24,6 +24,10 @@
 
 global using JetBrains.Annotations;
 
-global using DotGLFW;
-global using GLFW = DotGLFW;
+global using LughGlfw;
+global using LughGlfw.Glfw;
+global using LughGlfw.Glfw.Enums;
+global using LughGlfw.Glfw.Native;
+
+global using GLFW = LughGlfw.Glfw;
 
