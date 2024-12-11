@@ -29,13 +29,13 @@ namespace LughGlfw.Glfw;
 public class Allocator
 {
     /// <inheritdoc cref="NativeGlfw.GlfwAllocator.Allocate"/>
-    public NativeGlfw.GlfwAllocatefun? Allocate { get; set; }
+    public NativeGlfw.GlfwAllocatefun Allocate { get; set; } = null!;
 
     /// <inheritdoc cref="NativeGlfw.GlfwAllocator.Reallocate"/>
-    public NativeGlfw.GlfwAllocatefun? Reallocate { get; set; }
+    public NativeGlfw.GlfwAllocatefun Reallocate { get; set; } = null!;
 
     /// <inheritdoc cref="NativeGlfw.GlfwAllocator.Deallocate"/>
-    public NativeGlfw.GlfwAllocatefun? Deallocate { get; set; }
+    public NativeGlfw.GlfwAllocatefun Deallocate { get; set; } = null!;
 
     /// <inheritdoc cref="NativeGlfw.GlfwAllocator.User"/>
     public IntPtr User { get; set; }

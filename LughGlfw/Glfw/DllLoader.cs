@@ -29,8 +29,6 @@ namespace LughGlfw.Glfw;
 [PublicAPI]
 internal static class DllLoader
 {
-    internal delegate IntPtr GetProcAddressDelegate( string name );
-
     internal static class Win32
     {
         [DllImport( "kernel32.dll", SetLastError = true )]
@@ -40,6 +38,8 @@ internal static class DllLoader
         internal static extern IntPtr GetProcAddress( IntPtr hModule, string procedureName );
     }
 
+    // ========================================================================
+    
     internal static class Unix
     {
         [DllImport( "libdl" )]
@@ -51,6 +51,10 @@ internal static class DllLoader
         [DllImport( "libdl" )]
         internal static extern IntPtr dlerror();
     }
+
+    // ========================================================================
+
+    internal delegate IntPtr GetProcAddressDelegate( string name );
 
     internal static GetProcAddressDelegate GetLoadFunctionPointerDelegate( string libraryName )
     {
@@ -67,13 +71,21 @@ internal static class DllLoader
             var assemblyPathNextToExe = Path.Combine( assemblyDirectory!, $"{libraryName}.dll" );
             var assemblyPath          = File.Exists( assemblyPathNextToExe ) ? assemblyPathNextToExe : assemblyPathInRuntimes;
 
-            // Discard the result, we only need it to be 
-            // loaded into the process for later access
+            // Discard the result, we only need it to be loaded into the process for later access
             var library = Win32.LoadLibrary( assemblyPath );
 
-            return name => Win32.GetProcAddress( library, name );
+            return ( GetProcAddressDelegate )( name =>
+            {
+                #if DEBUG
+                Console.WriteLine( $"Requested procedure name: {name}" );
+                #endif
+                
+                return Win32.GetProcAddress( library, name );
+            } );
         }
 
+        // --------------------------------------------------------------------
+        
         if ( RuntimeInformation.IsOSPlatform( OSPlatform.OSX ) )
         {
             var runtimeSuffix = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "arm64" : "x64";
@@ -101,6 +113,8 @@ internal static class DllLoader
             return name => Unix.dlsym( library, name );
         }
 
+        // --------------------------------------------------------------------
+
         // Assume linux
         {
             var library = Unix.dlopen( $"lib{libraryName}.so", 2 );
@@ -116,4 +130,6 @@ internal static class DllLoader
             return name => Unix.dlsym( library, name );
         }
     }
+    
+    // ========================================================================
 }

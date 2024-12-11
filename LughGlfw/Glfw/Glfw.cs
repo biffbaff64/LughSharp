@@ -44,11 +44,15 @@ public static class Glfw
         return GlfwInit() == GLFW_TRUE;
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwTerminate"/>
     public static void Terminate()
     {
         glfwTerminate();
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwInitHint"/>
     /// <param name="hint">The hint to set. Use the static fields in <see cref="InitHint"/>.</param>
@@ -56,8 +60,11 @@ public static class Glfw
     public static void InitHint< T >( InitHint< T > hint, T value ) where T : struct
     {
         var newValue = Convert.ToInt32( value );
+
         glfwInitHint( hint.Hint, newValue );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwInitAllocator"/>
     public static unsafe void InitAllocator( Allocator? allocator )
@@ -82,10 +89,13 @@ public static class Glfw
         };
 
         var ptr = Marshal.AllocHGlobal( Marshal.SizeOf< GlfwAllocator >() );
+
         Marshal.StructureToPtr( glfwAllocator, ptr, false );
         glfwInitAllocator( ( GlfwAllocator* )ptr );
         Marshal.FreeHGlobal( ptr );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwGetVersion"/>
     public static void InitVulkanLoader( NativeGlfw.PFN_vkGetInstanceProcAddr loader )
@@ -93,15 +103,23 @@ public static class Glfw
         glfwInitVulkanLoader( loader );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwGetVersion"/>
     public static unsafe void GetVersion( out int major, out int minor, out int revision )
     {
-        int uMajor, uMinor, uRevision;
+        int uMajor;
+        int uMinor;
+        int uRevision;
+
         glfwGetVersion( ( nint )( &uMajor ), ( nint )( &uMinor ), ( nint )( &uRevision ) );
+
         major    = uMajor;
         minor    = uMinor;
         revision = uRevision;
     }
+
+    // ========================================================================
 
     // The native function returns a statically allocated string, so we just do a copy here.
     /// <inheritdoc cref="glfwGetVersionString"/>
@@ -110,29 +128,36 @@ public static class Glfw
         return CopyStringFromUnmanaged( glfwGetVersionString(), Encoding.UTF8 );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwGetError"/>
     public static ErrorCode GetError( out string description )
     {
         var descriptionPtr = IntPtr.Zero;
-        int error          = glfwGetError( descriptionPtr );
+        var error          = glfwGetError( descriptionPtr );
+
         description = CopyStringFromUnmanaged( descriptionPtr, Encoding.UTF8 );
 
         return ( ErrorCode )error;
     }
 
-    private static GlfwErrorCallback _errorCallback;
+    // ========================================================================
+
+    private static GlfwErrorCallback _errorCallback = null!;
 
     /// <inheritdoc cref="glfwSetErrorCallback" path="/summary"/>
     public static GlfwErrorCallback SetErrorCallback( GlfwErrorCallback callback )
     {
-        return SetCallback(
-                           ref _errorCallback,
-                           ref CurrentGlfwErrorfun,
-                           callback,
-                           ( int errorCode, IntPtr description ) => _errorCallback?.Invoke( ( ErrorCode )errorCode, CopyStringFromUnmanaged( description, Encoding.UTF8 ) ),
-                           native => glfwSetErrorCallback( native )
-                          );
+        return SetCallback( ref _errorCallback,
+                            ref CurrentGlfwErrorfun!,
+                            callback,
+                            ( int errorCode, IntPtr description ) => _errorCallback.Invoke
+                                ( ( ErrorCode )errorCode,
+                                  CopyStringFromUnmanaged( description, Encoding.UTF8 ) ),
+                            native => glfwSetErrorCallback( native! ) );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwGetPlatform"/>
     public static Platform GetPlatform()
@@ -140,11 +165,15 @@ public static class Glfw
         return ( Platform )glfwGetPlatform();
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwPlatformSupported"/>
     public static bool PlatformSupported( Platform platform )
     {
         return glfwPlatformSupported( ( int )platform ) == GLFW_TRUE;
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwGetMonitors"/>
     public static unsafe Monitor[] GetMonitors()
@@ -167,6 +196,8 @@ public static class Glfw
         return monitors;
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwGetPrimaryMonitor"/>
     public static unsafe Monitor GetPrimaryMonitor()
     {
@@ -174,6 +205,8 @@ public static class Glfw
 
         return new Monitor( ptr );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwGetMonitorPos"/>
     public static unsafe void GetMonitorPos( Monitor monitor, out int x, out int y )
@@ -183,6 +216,8 @@ public static class Glfw
         x = uX;
         y = uY;
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwGetMonitorWorkarea"/>
     public static unsafe void GetMonitorWorkarea( Monitor monitor, out int x, out int y, out int width, out int height )
@@ -195,6 +230,8 @@ public static class Glfw
         height = uHeight;
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwGetMonitorPhysicalSize"/>
     public static unsafe void GetMonitorPhysicalSize( Monitor monitor, out int width, out int height )
     {
@@ -203,6 +240,8 @@ public static class Glfw
         width  = uWidth;
         height = uHeight;
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwGetMonitorContentScale"/>
     public static unsafe void GetMonitorContentScale( Monitor monitor, out float xscale, out float yscale )
@@ -213,6 +252,8 @@ public static class Glfw
         yscale = uYscale;
     }
 
+    // ========================================================================
+
     // Name string pointer is allocated by GLFW and should not be freed by the caller.
     // We only copy the string here.
     /// <inheritdoc cref="glfwGetMonitorName"/>
@@ -221,17 +262,23 @@ public static class Glfw
         return CopyStringFromUnmanaged( glfwGetMonitorName( monitor ), Encoding.UTF8 );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwSetMonitorUserPointer"/>
     public static unsafe void SetMonitorUserPointer( Monitor monitor, IntPtr pointer )
     {
         glfwSetMonitorUserPointer( monitor, pointer );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwGetMonitorUserPointer"/>
     public static unsafe IntPtr GetMonitorUserPointer( Monitor monitor )
     {
         return glfwGetMonitorUserPointer( monitor );
     }
+
+    // ========================================================================
 
     private static GlfwMonitorCallback _monitorCallback;
 
@@ -248,9 +295,11 @@ public static class Glfw
                                var managedEvent   = ( ConnectionState )@event;
                                _monitorCallback?.Invoke( managedMonitor, managedEvent );
                            },
-                           native => glfwSetMonitorCallback( native )
+                           native => glfwSetMonitorCallback( native! )
                           );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwGetVideoModes"/>
     public static unsafe VideoMode[] GetVideoModes( Monitor monitor )
@@ -276,10 +325,12 @@ public static class Glfw
         } ).ToArray();
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwGetVideoMode"/>
     public static unsafe VideoMode GetVideoMode( Monitor monitor )
     {
-        GlfwVideoMode* nativeMode = glfwGetVideoMode( monitor );
+        var nativeMode = glfwGetVideoMode( monitor );
 
         return new VideoMode
         {
@@ -292,11 +343,15 @@ public static class Glfw
         };
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwSetGamma"/>
     public static unsafe void SetGamma( Monitor monitor, float gamma )
     {
         glfwSetGamma( monitor, gamma );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwGetGammaRamp"/>
     public static unsafe GammaRamp GetGammaRamp( Monitor monitor )
@@ -315,6 +370,8 @@ public static class Glfw
             Blue  = blue
         };
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwSetGammaRamp"/>
     public static unsafe void SetGammaRamp( Monitor monitor, GammaRamp ramp )
@@ -339,11 +396,15 @@ public static class Glfw
         Marshal.FreeHGlobal( bluePtr );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwDefaultWindowHints"/>
     public static void DefaultWindowHints()
     {
         glfwDefaultWindowHints();
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwWindowHint"/>
     /// <param name="hint">The hint to set. Use the static fields in <see cref="WindowHint"/>.</param>
@@ -354,11 +415,15 @@ public static class Glfw
         glfwWindowHint( hint.Hint, newValue );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwWindowHintString"/>
     public static void WindowHintString( WindowHint< string > hint, string value )
     {
         MarshalStringAndFree( Encoding.UTF8, value, ptr => glfwWindowHintString( hint.Hint, ptr ) );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwCreateWindow"/>
     public static unsafe Window CreateWindow( int width, int height, string title, Monitor monitor, Window share )
@@ -371,11 +436,15 @@ public static class Glfw
         } );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwDestroyWindow"/>
     public static unsafe void DestroyWindow( Window window )
     {
         glfwDestroyWindow( window );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwWindowShouldClose"/>
     public static unsafe bool WindowShouldClose( Window window )
@@ -383,11 +452,15 @@ public static class Glfw
         return glfwWindowShouldClose( window ) == GLFW_TRUE;
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwSetWindowShouldClose"/>
     public static unsafe void SetWindowShouldClose( Window window, bool value )
     {
         glfwSetWindowShouldClose( window, value ? GLFW_TRUE : GLFW_FALSE );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwGetWindowTitle"/>
     public static unsafe string GetWindowTitle( Window window )
@@ -395,11 +468,15 @@ public static class Glfw
         return CopyStringFromUnmanaged( glfwGetWindowTitle( window ), Encoding.UTF8 );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwSetWindowTitle"/>
     public static unsafe void SetWindowTitle( Window window, string title )
     {
         MarshalStringAndFree( Encoding.UTF8, title, titlePtr => glfwSetWindowTitle( window, titlePtr ) );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref = "glfwSetWindowIcon" />
     public static unsafe void SetWindowIcon( Window window, Image[] images )
@@ -423,6 +500,8 @@ public static class Glfw
         Marshal.FreeHGlobal( nativeImagesPtr );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwGetWindowPos"/>
     public static unsafe void GetWindowPos( Window window, out int x, out int y )
     {
@@ -432,11 +511,15 @@ public static class Glfw
         y = uY;
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwSetWindowPos"/>
     public static unsafe void SetWindowPos( Window window, int x, int y )
     {
         glfwSetWindowPos( window, x, y );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwGetWindowSize"/>
     public static unsafe void GetWindowSize( Window window, out int width, out int height )
@@ -447,11 +530,15 @@ public static class Glfw
         height = uHeight;
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwSetWindowSize"/>
     public static unsafe void SetWindowSizeLimits( Window window, int minWidth, int minHeight, int maxWidth, int maxHeight )
     {
         glfwSetWindowSizeLimits( window, minWidth, minHeight, maxWidth, maxHeight );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwSetWindowAspectRatio"/>
     public static unsafe void SetWindowAspectRatio( Window window, int numerator, int denominator )
@@ -459,11 +546,15 @@ public static class Glfw
         glfwSetWindowAspectRatio( window, numerator, denominator );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwSetWindowSize"/>
     public static unsafe void SetWindowSize( Window window, int width, int height )
     {
         glfwSetWindowSize( window, width, height );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwGetFramebufferSize"/>
     public static unsafe void GetFramebufferSize( Window window, out int width, out int height )
@@ -473,6 +564,8 @@ public static class Glfw
         width  = uWidth;
         height = uHeight;
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwGetWindowFrameSize"/>
     public static unsafe void GetWindowFrameSize( Window window, out int left, out int top, out int right, out int bottom )
@@ -485,6 +578,8 @@ public static class Glfw
         bottom = uBottom;
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwGetWindowContentScale"/>
     public static unsafe void GetWindowContentScale( Window window, out float xScale, out float yScale )
     {
@@ -494,11 +589,15 @@ public static class Glfw
         yScale = uYScale;
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwGetWindowOpacity"/>
     public static unsafe float GetWindowOpacity( Window window )
     {
         return glfwGetWindowOpacity( window );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwSetWindowOpacity"/>
     public static unsafe void SetWindowOpacity( Window window, float opacity )
@@ -506,11 +605,15 @@ public static class Glfw
         glfwSetWindowOpacity( window, opacity );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwIconifyWindow"/>
     public static unsafe void IconifyWindow( Window window )
     {
         glfwIconifyWindow( window );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwRestoreWindow"/>
     public static unsafe void RestoreWindow( Window window )
@@ -518,11 +621,15 @@ public static class Glfw
         glfwRestoreWindow( window );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwMaximizeWindow"/>
     public static unsafe void MaximizeWindow( Window window )
     {
         glfwMaximizeWindow( window );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwShowWindow"/>
     public static unsafe void ShowWindow( Window window )
@@ -530,11 +637,15 @@ public static class Glfw
         glfwShowWindow( window );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwHideWindow"/>
     public static unsafe void HideWindow( Window window )
     {
         glfwHideWindow( window );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwFocusWindow"/>
     public static unsafe void FocusWindow( Window window )
@@ -542,11 +653,15 @@ public static class Glfw
         glfwFocusWindow( window );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwRequestWindowAttention"/>
     public static unsafe void RequestWindowAttention( Window window )
     {
         glfwRequestWindowAttention( window );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwGetWindowMonitor"/>
     public static unsafe Monitor GetWindowMonitor( Window window )
@@ -554,19 +669,25 @@ public static class Glfw
         return new Monitor( ( nint )glfwGetWindowMonitor( window ) );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwSetWindowMonitor"/>
     public static unsafe void SetWindowMonitor( Window window, Monitor monitor, int x, int y, int width, int height, int refreshRate )
     {
         glfwSetWindowMonitor( window, monitor, x, y, width, height, refreshRate );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwGetWindowAttrib"/>
     public static unsafe T GetWindowAttrib< T >( Window window, WindowAttribType< T > attrib ) where T : struct
     {
-        int value = glfwGetWindowAttrib( window, attrib.Attribute );
+        var value = glfwGetWindowAttrib( window, attrib.Attribute );
 
         return ( T )Convert.ChangeType( value, typeof( T ) );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwSetWindowAttrib"/>
     public static unsafe void SetWindowAttrib< T >( Window window, WindowAttribType< T > attrib, T value ) where T : struct
@@ -575,17 +696,23 @@ public static class Glfw
         glfwSetWindowAttrib( window, attrib.Attribute, intValue );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwSetWindowUserPointer"/>
     public static unsafe void SetWindowUserPointer( Window window, IntPtr pointer )
     {
         glfwSetWindowUserPointer( window, pointer );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwGetWindowUserPointer"/>
     public static unsafe IntPtr GetWindowUserPointer( Window window )
     {
         return glfwGetWindowUserPointer( window );
     }
+
+    // ========================================================================
 
     private static GlfwWindowPosCallback _windowPosCallback;
 
@@ -596,8 +723,10 @@ public static class Glfw
                             ref CurrentGlfwWindowposfun,
                             callback,
                             ( GlfwWindow* w, int x, int y ) => _windowPosCallback?.Invoke( new Window( ( nint )w ), x, y ),
-                            native => glfwSetWindowPosCallback( window, native ) );
+                            native => glfwSetWindowPosCallback( window, native! ) );
     }
+
+    // ========================================================================
 
     private static GlfwWindowSizeCallback _windowSizeCallback;
 
@@ -609,9 +738,11 @@ public static class Glfw
                            ref CurrentGlfwWindowsizefun,
                            callback,
                            ( GlfwWindow* w, int width, int height ) => _windowSizeCallback?.Invoke( new Window( ( nint )w ), width, height ),
-                           native => glfwSetWindowSizeCallback( window, native )
+                           native => glfwSetWindowSizeCallback( window, native! )
                           );
     }
+
+    // ========================================================================
 
     private static GlfwWindowCloseCallback _windowCloseCallback;
 
@@ -623,9 +754,11 @@ public static class Glfw
                            ref CurrentGlfwWindowclosefun,
                            callback,
                            ( GlfwWindow* w ) => _windowCloseCallback?.Invoke( new Window( ( nint )w ) ),
-                           native => glfwSetWindowCloseCallback( window, native )
+                           native => glfwSetWindowCloseCallback( window, native! )
                           );
     }
+
+    // ========================================================================
 
     private static GlfwWindowRefreshCallback _windowRefreshCallback;
 
@@ -637,9 +770,11 @@ public static class Glfw
                            ref CurrentGlfwWindowrefreshfun,
                            callback,
                            ( GlfwWindow* w ) => _windowRefreshCallback?.Invoke( new Window( ( nint )w ) ),
-                           native => glfwSetWindowRefreshCallback( window, native )
+                           native => glfwSetWindowRefreshCallback( window, native! )
                           );
     }
+
+    // ========================================================================
 
     private static GlfwWindowFocusCallback _windowFocusCallback;
 
@@ -651,9 +786,11 @@ public static class Glfw
                            ref CurrentGlfwWindowfocusfun,
                            callback,
                            ( GlfwWindow* w, int focused ) => _windowFocusCallback?.Invoke( new Window( ( nint )w ), focused == GLFW_TRUE ),
-                           native => glfwSetWindowFocusCallback( window, native )
+                           native => glfwSetWindowFocusCallback( window, native! )
                           );
     }
+
+    // ========================================================================
 
     private static GlfwWindowIconifyCallback _windowIconifyCallback;
 
@@ -664,8 +801,10 @@ public static class Glfw
                             ref CurrentGlfwWindowiconifyfun,
                             callback,
                             ( GlfwWindow* w, int iconified ) => _windowIconifyCallback?.Invoke( new Window( ( nint )w ), iconified == GLFW_TRUE ),
-                            native => glfwSetWindowIconifyCallback( window, native ) );
+                            native => glfwSetWindowIconifyCallback( window, native! ) );
     }
+
+    // ========================================================================
 
     private static GlfwWindowMaximizeCallback _windowMaximizeCallback;
 
@@ -677,9 +816,11 @@ public static class Glfw
                            ref CurrentGlfwWindowMaximizefun,
                            callback,
                            ( GlfwWindow* w, int maximized ) => _windowMaximizeCallback?.Invoke( new Window( ( nint )w ), maximized == GLFW_TRUE ),
-                           native => glfwSetWindowMaximizeCallback( window, native )
+                           native => glfwSetWindowMaximizeCallback( window, native! )
                           );
     }
+
+    // ========================================================================
 
     private static GlfwFramebufferSizeCallback _framebufferSizeCallback;
 
@@ -690,8 +831,10 @@ public static class Glfw
                             ref CurrentGlfwFrameBufferSizefun,
                             callback,
                             ( GlfwWindow* w, int width, int height ) => _framebufferSizeCallback?.Invoke( new Window( ( nint )w ), width, height ),
-                            native => glfwSetFramebufferSizeCallback( window, native ) );
+                            native => glfwSetFramebufferSizeCallback( window, native! ) );
     }
+
+    // ========================================================================
 
     private static GlfwWindowContentScaleCallback _windowContentScaleCallback;
 
@@ -702,8 +845,10 @@ public static class Glfw
                             ref CurrentGlfwWindowContentScalefun,
                             callback,
                             ( GlfwWindow* w, float xScale, float yScale ) => _windowContentScaleCallback?.Invoke( new Window( ( nint )w ), xScale, yScale ),
-                            native => glfwSetWindowContentScaleCallback( window, native ) );
+                            native => glfwSetWindowContentScaleCallback( window, native! ) );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwPollEvents"/>
     public static void PollEvents()
@@ -711,11 +856,15 @@ public static class Glfw
         glfwPollEvents();
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwWaitEvents"/>
     public static void WaitEvents()
     {
         glfwWaitEvents();
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwWaitEventsTimeout"/>
     public static void WaitEventsTimeout( double timeout )
@@ -723,28 +872,36 @@ public static class Glfw
         glfwWaitEventsTimeout( timeout );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwPostEmptyEvent"/>
     public static void PostEmptyEvent()
     {
         glfwPostEmptyEvent();
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwGetInputMode"/>
     public static unsafe T GetInputMode< T >( Window window, InputModeType< T > mode ) where T : Enum
     {
-        int modeAsInt   = mode.Mode;
-        int currentMode = glfwGetInputMode( window, modeAsInt );
+        var modeAsInt   = mode.Mode;
+        var currentMode = glfwGetInputMode( window, modeAsInt );
 
         return ( T )Enum.ToObject( typeof( T ), currentMode );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwSetInputMode"/>
     public static unsafe void SetInputMode< T >( Window window, InputModeType< T > mode, T value ) where T : Enum
     {
-        int modeAsInt  = mode.Mode;
+        var modeAsInt  = mode.Mode;
         var valueAsInt = Convert.ToInt32( value );
         glfwSetInputMode( window, modeAsInt, valueAsInt );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwRawMouseMotionSupported"/>
     public static bool RawMouseMotionSupported()
@@ -752,11 +909,15 @@ public static class Glfw
         return glfwRawMouseMotionSupported() == GLFW_TRUE;
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwGetKeyName"/>
     public static string GetKeyName( Key key, int scancode )
     {
         return CopyStringFromUnmanaged( glfwGetKeyName( ( int )key, scancode ), Encoding.UTF8 );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwGetKeyScancode"/>
     public static int GetKeyScancode( Key key )
@@ -764,17 +925,23 @@ public static class Glfw
         return glfwGetKeyScancode( ( int )key );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwGetKey"/>
     public static unsafe InputState GetKey( Window window, Key key )
     {
         return ( InputState )glfwGetKey( window, ( int )key );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwGetMouseButton"/>
     public static unsafe InputState GetMouseButton( Window window, MouseButton button )
     {
         return ( InputState )glfwGetMouseButton( window, ( int )button );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwGetCursorPos"/>
     public static unsafe void GetCursorPos( Window window, out double xpos, out double ypos )
@@ -785,11 +952,15 @@ public static class Glfw
         ypos = uYpos;
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwSetCursorPos"/>
     public static unsafe void SetCursorPos( Window window, double xpos, double ypos )
     {
         glfwSetCursorPos( window, xpos, ypos );
     }
+
+    // ========================================================================
 
     /// <inheritdoc cref="glfwCreateCursor"/>
     public static unsafe Cursor CreateCursor( Image image, int xhot, int yhot )
@@ -807,6 +978,8 @@ public static class Glfw
         return new Cursor( ( nint )cursor );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwCreateStandardCursor"/>
     public static unsafe Cursor CreateStandardCursor( CursorShape shape )
     {
@@ -815,17 +988,23 @@ public static class Glfw
         return new Cursor( ( nint )cursor );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwDestroyCursor"/>
     public static unsafe void DestroyCursor( Cursor cursor )
     {
         glfwDestroyCursor( cursor );
     }
 
+    // ========================================================================
+
     /// <inheritdoc cref="glfwSetCursor"/>
     public static unsafe void SetCursor( Window window, Cursor cursor )
     {
         glfwSetCursor( window, cursor );
     }
+
+    // ========================================================================
 
     private static GlfwKeyCallback _keyCallback;
 
@@ -845,9 +1024,11 @@ public static class Glfw
                                var managedMods     = ( ModifierKey )mods;
                                _keyCallback?.Invoke( managedWindow, managedKey, managedScancode, managedAction, managedMods );
                            },
-                           native => glfwSetKeyCallback( window, native )
+                           native => glfwSetKeyCallback( window, native! )
                           );
     }
+
+    // ========================================================================
 
     private static GlfwCharCallback _charCallback;
 
@@ -855,8 +1036,8 @@ public static class Glfw
     public static unsafe GlfwCharCallback SetCharCallback( Window window, GlfwCharCallback callback )
     {
         return SetCallback(
-                           ref _charCallback,
-                           ref CurrentGlfwCharfun,
+                           ref _charCallback!,
+                           ref CurrentGlfwCharfun!,
                            callback,
                            ( GlfwWindow* w, uint codepoint ) =>
                            {
@@ -864,9 +1045,11 @@ public static class Glfw
                                var managedCodepoint = codepoint;
                                _charCallback?.Invoke( managedWindow, managedCodepoint );
                            },
-                           native => glfwSetCharCallback( window, native )
+                           native => glfwSetCharCallback( window, native! )
                           );
     }
+
+    // ========================================================================
 
     private static GlfwCharModsCallback? _charModsCallback;
 
@@ -875,7 +1058,7 @@ public static class Glfw
     {
         return SetCallback(
                            ref _charModsCallback,
-                           ref CurrentGlfwCharmodsfun,
+                           ref CurrentGlfwCharmodsfun!,
                            callback,
                            ( GlfwWindow* w, uint codepoint, int mods ) =>
                            {
@@ -884,79 +1067,79 @@ public static class Glfw
                                var managedMods      = ( ModifierKey )mods;
                                _charModsCallback?.Invoke( managedWindow, managedCodepoint, managedMods );
                            },
-                           native => glfwSetCharModsCallback( window, native )
+                           native => glfwSetCharModsCallback( window, native! )
                           );
     }
+
+    // ========================================================================
 
     private static GlfwMouseButtonCallback? _mouseButtonCallback;
 
     /// <inheritdoc cref="glfwSetMouseButtonCallback" path="/summary"/>
     public static unsafe GlfwMouseButtonCallback SetMouseButtonCallback( Window window, GlfwMouseButtonCallback callback )
     {
-        return SetCallback(
-                           ref _mouseButtonCallback,
-                           ref CurrentGlfwMouseButtonfun,
-                           callback,
-                           ( GlfwWindow* w, int button, int action, int mods ) =>
-                           {
-                               var managedWindow = new Window( ( nint )w );
-                               var managedButton = ( MouseButton )button;
-                               var managedAction = ( InputState )action;
-                               var managedMods   = ( ModifierKey )mods;
-                               _mouseButtonCallback?.Invoke( managedWindow, managedButton, managedAction, managedMods );
-                           },
-                           native => glfwSetMouseButtonCallback( window, native )
-                          );
+        return SetCallback( ref _mouseButtonCallback,
+                            ref CurrentGlfwMouseButtonfun!,
+                            callback,
+                            ( GlfwWindow* w, int button, int action, int mods ) =>
+                            {
+                                var managedWindow = new Window( ( nint )w );
+                                var managedButton = ( MouseButton )button;
+                                var managedAction = ( InputState )action;
+                                var managedMods   = ( ModifierKey )mods;
+                                _mouseButtonCallback?.Invoke( managedWindow, managedButton, managedAction, managedMods );
+                            },
+                            native => glfwSetMouseButtonCallback( window, native! ) );
     }
+
+    // ========================================================================
 
     private static GlfwCursorPosCallback? _cursorPosCallback;
 
     /// <inheritdoc cref="glfwSetCursorPosCallback" path="/summary"/> 
     public static unsafe GlfwCursorPosCallback SetCursorPosCallback( Window window, GlfwCursorPosCallback callback )
     {
-        return SetCallback(
-                           ref _cursorPosCallback,
-                           ref CurrentGlfwCursorPosfun,
-                           callback,
-                           ( GlfwWindow* w, double xpos, double ypos ) =>
-                           {
-                               var managedWindow = new Window( ( nint )w );
-                               var managedXpos   = xpos;
-                               var managedYpos   = ypos;
-                               _cursorPosCallback?.Invoke( managedWindow, managedXpos, managedYpos );
-                           },
-                           native => glfwSetCursorPosCallback( window, native )
-                          );
+        return SetCallback( ref _cursorPosCallback,
+                            ref CurrentGlfwCursorPosfun!,
+                            callback,
+                            ( GlfwWindow* w, double xpos, double ypos ) =>
+                            {
+                                var managedWindow = new Window( ( nint )w );
+                                var managedXpos   = xpos;
+                                var managedYpos   = ypos;
+                                _cursorPosCallback?.Invoke( managedWindow, managedXpos, managedYpos );
+                            },
+                            native => glfwSetCursorPosCallback( window, native! ) );
     }
+
+    // ========================================================================
 
     private static GlfwCursorEnterCallback? _cursorEnterCallback;
 
     /// <inheritdoc cref="glfwSetCursorEnterCallback" path="/summary"/>
     public static unsafe GlfwCursorEnterCallback SetCursorEnterCallback( Window window, GlfwCursorEnterCallback callback )
     {
-        return SetCallback(
-                           ref _cursorEnterCallback,
-                           ref CurrentGlfwCursorEnterfun,
-                           callback,
-                           ( GlfwWindow* w, int entered ) =>
-                           {
-                               var managedWindow  = new Window( ( nint )w );
-                               var managedEntered = entered == GLFW_TRUE;
-                               _cursorEnterCallback?.Invoke( managedWindow, managedEntered );
-                           },
-                           native => glfwSetCursorEnterCallback( window, native )
-                          );
+        return SetCallback( ref _cursorEnterCallback,
+                            ref CurrentGlfwCursorEnterfun!,
+                            callback,
+                            ( GlfwWindow* w, int entered ) =>
+                            {
+                                var managedWindow  = new Window( ( nint )w );
+                                var managedEntered = entered == GLFW_TRUE;
+                                _cursorEnterCallback?.Invoke( managedWindow, managedEntered );
+                            },
+                            native => glfwSetCursorEnterCallback( window, native! ) );
     }
 
     // ========================================================================
-    
+
     private static GlfwScrollCallback? _scrollCallback;
 
     /// <inheritdoc cref="glfwSetScrollCallback" path="/summary"/>
     public static unsafe GlfwScrollCallback SetScrollCallback( Window window, GlfwScrollCallback callback )
     {
         return SetCallback( ref _scrollCallback,
-                            ref CurrentGlfwScrollfun,
+                            ref CurrentGlfwScrollfun!,
                             callback,
                             ( GlfwWindow* w, double xoffset, double yoffset ) =>
                             {
@@ -969,7 +1152,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     private static GlfwDropCallback? _dropCallback;
 
     /// <inheritdoc cref="glfwSetDropCallback" path="/summary"/>
@@ -995,7 +1178,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwJoystickPresent"/>
     public static bool JoystickPresent( Joystick jid )
     {
@@ -1003,7 +1186,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetJoystickAxes"/>
     public static unsafe float[] GetJoystickAxes( Joystick jid )
     {
@@ -1014,7 +1197,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetJoystickButtons"/>
     public static unsafe byte[] GetJoystickButtons( Joystick jid )
     {
@@ -1025,7 +1208,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetJoystickHats"/>
     public static unsafe byte[] GetJoystickHats( Joystick jid )
     {
@@ -1036,7 +1219,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetJoystickName"/>
     public static string GetJoystickName( Joystick jid )
     {
@@ -1044,7 +1227,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetJoystickGUID"/>
     public static string GetJoystickGuid( Joystick jid )
     {
@@ -1052,7 +1235,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwSetJoystickUserPointer"/>
     public static void SetJoystickUserPointer( Joystick jid, IntPtr pointer )
     {
@@ -1060,7 +1243,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetJoystickUserPointer"/>
     public static IntPtr GetJoystickUserPointer( Joystick jid )
     {
@@ -1068,7 +1251,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwJoystickIsGamepad"/>
     public static bool JoystickIsGamepad( Joystick jid )
     {
@@ -1076,7 +1259,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     private static GlfwJoystickCallback? _joystickCallback;
 
     /// <inheritdoc cref="glfwSetJoystickCallback" path="/summary"/>
@@ -1095,7 +1278,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwUpdateGamepadMappings"/>
     public static bool UpdateGamepadMappings( string newMappings )
     {
@@ -1104,7 +1287,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetGamepadName"/>
     public static string GetGamepadName( Joystick jid )
     {
@@ -1112,7 +1295,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetGamepadState"/>
     public static unsafe bool GetGamepadState( Joystick jid, out Gamepadstate state )
     {
@@ -1130,15 +1313,15 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwSetClipboardString"/>
-    public static unsafe void SetClipboardString( Window window, string @string )
+    public static unsafe void SetClipboardString( Window window, string str )
     {
-        MarshalStringAndFree( Encoding.UTF8, @string, strPtr => glfwSetClipboardString( window, strPtr ) );
+        MarshalStringAndFree( Encoding.UTF8, str, strPtr => glfwSetClipboardString( window, strPtr ) );
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetClipboardString"/>
     public static unsafe string GetClipboardString( Window window )
     {
@@ -1146,71 +1329,47 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetTime"/>
-    public static double GetTime()
-    {
-        return glfwGetTime();
-    }
+    public static double GetTime() => glfwGetTime();
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwSetTime"/>
-    public static void SetTime( double time )
-    {
-        glfwSetTime( time );
-    }
+    public static void SetTime( double time ) => glfwSetTime( time );
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetTimerValue"/>
-    public static ulong GetTimerValue()
-    {
-        return glfwGetTimerValue();
-    }
+    public static ulong GetTimerValue() => glfwGetTimerValue();
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetTimerFrequency"/>
-    public static ulong GetTimerFrequency()
-    {
-        return glfwGetTimerFrequency();
-    }
+    public static ulong GetTimerFrequency() => glfwGetTimerFrequency();
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwMakeContextCurrent"/>
-    public static unsafe void MakeContextCurrent( GlfwWindow* window )
-    {
-        glfwMakeContextCurrent( window );
-    }
+    public static unsafe void MakeContextCurrent( GlfwWindow* window ) => glfwMakeContextCurrent( window );
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetCurrentContext"/>
-    public static unsafe Window GetCurrentContext()
-    {
-        return new Window( ( nint )glfwGetCurrentContext() );
-    }
+    public static unsafe Window GetCurrentContext() => new( ( nint )glfwGetCurrentContext() );
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwSwapBuffers"/>
-    public static unsafe void SwapBuffers( GlfwWindow* window )
-    {
-        glfwSwapBuffers( window );
-    }
+    public static unsafe void SwapBuffers( GlfwWindow* window ) => glfwSwapBuffers( window );
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwSwapInterval"/>
-    public static void SwapInterval( int interval )
-    {
-        glfwSwapInterval( interval );
-    }
+    public static void SwapInterval( int interval ) => glfwSwapInterval( interval );
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwExtensionSupported"/>
     public static bool ExtensionSupported( string extension )
     {
@@ -1218,15 +1377,12 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwVulkanSupported"/>
-    public static bool VulkanSupported()
-    {
-        return glfwVulkanSupported() == GLFW_TRUE;
-    }
+    public static bool VulkanSupported() => glfwVulkanSupported() == GLFW_TRUE;
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetRequiredInstanceExtensions"/>
     public static unsafe string[] GetRequiredInstanceExtensions()
     {
@@ -1244,7 +1400,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetProcAddress"/>
     public static IntPtr GetProcAddress( string procname )
     {
@@ -1252,7 +1408,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetInstanceProcAddress"/>
     public static IntPtr GetInstanceProcAddress( IntPtr instance, string procname )
     {
@@ -1261,7 +1417,7 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwGetPhysicalDevicePresentationSupport"/>
     public static bool GetPhysicalDevicePresentationSupport( IntPtr instance, IntPtr device, uint queuefamily )
     {
@@ -1269,34 +1425,27 @@ public static class Glfw
     }
 
     // ========================================================================
-    
+
     /// <inheritdoc cref="glfwCreateWindowSurface"/>
     public static unsafe int CreateWindowSurface( IntPtr instance, GlfwWindow* window, IntPtr allocator, IntPtr surface )
     {
         return glfwCreateWindowSurface( instance, window, allocator, surface );
     }
-    
+
     // ========================================================================
-    
-    private static TM SetCallback< TM, TU >( ref TM? managedField,
-                                             ref TU? nativeField,
-                                             TM? newManaged,
-                                             TU? newNative,
-                                             Action< TU? > setter ) where TM : Delegate where TU : Delegate
+
+    private static TM SetCallback< TM, TU >( ref TM managedField,
+                                             ref TU nativeField,
+                                             TM newManaged,
+                                             TU newNative,
+                                             Action< TU > setter ) where TM : Delegate where TU : Delegate
     {
         var oldManaged = managedField;
-        managedField = newManaged!;
 
-        if ( newManaged is null )
-        {
-            nativeField = null;
-            setter( null );
-        }
-        else
-        {
-            nativeField = newNative;
-            setter( newNative );
-        }
+        managedField = newManaged;
+        nativeField = newNative;
+
+        setter( newNative );
 
         if ( oldManaged == null )
         {

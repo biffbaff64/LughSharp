@@ -8,37 +8,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37b16c66-7b00-439c-a185-d98ba849df85" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Allocator.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Cursor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/CursorShape.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/ErrorCode.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/GamepadAxis.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/GamepadButton.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/Joystick.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/Key.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/ModifierKey.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/MouseButton.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LughGlfw/Glfw/GammaRamp.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Image.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Monitor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LughGlfw/Glfw/VideoMode.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Window.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidBackend/AndroidBackend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidBackend/AndroidBackend.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Corelib/Corelib.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Corelib.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/GlobalUsings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/GlobalUsings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplicationConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/DesktopGLBackend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/DesktopGLBackend.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/GlobalUsings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/GlobalUsings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Extensions/Extensions.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Extensions.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Delegates.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Delegates.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Allocator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Allocator.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/DllLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LughGlfw/Glfw/DllLoader.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Glfw.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Glfw.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Native/NativeGlfw.TypeDefs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Native/NativeGlfw.TypeDefs.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Native/NativeGlfw.functions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Native/NativeGlfw.functions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Structs/GamepadState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LughGlfw/Glfw/GamepadState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LughGlfw/GlobalUsings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LughGlfw/GlobalUsings.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LughGlfw/LughGlfw.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/LughGlfw/LughGlfw.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -160,7 +135,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "CodeInspectionSettingsId",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -250,7 +225,8 @@
       <workItem from="1733768128653" duration="13000" />
       <workItem from="1733768203998" duration="206000" />
       <workItem from="1733768432179" duration="11528000" />
-      <workItem from="1733848176440" duration="19671000" />
+      <workItem from="1733848176440" duration="19973000" />
+      <workItem from="1733928333080" duration="22843000" />
     </task>
     <task id="LOCAL-00001" summary="Major Restructuring">
       <option name="closed" value="true" />
@@ -540,7 +516,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733785169629</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="LughGlfw updates">
+      <option name="closed" value="true" />
+      <created>1733873188506</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1733873188506</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -570,7 +554,8 @@
     <MESSAGE value="Essential Update" />
     <MESSAGE value="Some namespace changes" />
     <MESSAGE value="Code tidying, namespace restructuring, LughGlfw added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Code tidying, namespace restructuring, LughGlfw added" />
+    <MESSAGE value="LughGlfw updates" />
+    <option name="LAST_COMMIT_MESSAGE" value="LughGlfw updates" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
@@ -663,6 +648,12 @@
           <option name="totalLines" value="222368" />
           <option name="info" value="" />
         </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1733873189398" />
+          <option name="linesCode" value="113033" />
+          <option name="totalLines" value="224282" />
+          <option name="info" value="" />
+        </TimePoint>
       </list>
     </option>
     <option name="genericTimePoints">
@@ -738,6 +729,12 @@
           <option name="linesCode" value="112380" />
           <option name="totalLines" value="222368" />
           <option name="info" value="9 Dec 2024" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1733873189398" />
+          <option name="linesCode" value="113033" />
+          <option name="totalLines" value="224282" />
+          <option name="info" value="10 Dec 2024" />
         </TimePoint>
       </list>
     </option>

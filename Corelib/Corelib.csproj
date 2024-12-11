@@ -146,9 +146,15 @@
         <Content Include="Assets\lsans-15.png">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <None Remove="lib\glfw3.dll" />
+        <None Remove="runtimes\win-x64\native\glfw3.dll" />
+        <Content Include="runtimes\win-x64\native\glfw3.dll">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="runtimes\win-x64\native\" />
         <Folder Include="ThirdParty\" />
     </ItemGroup>
 
