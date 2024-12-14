@@ -93,78 +93,78 @@ public unsafe class GLTest
     {
         Logger.Checkpoint();
 
-        vertexShader = Gdx.GL.glCreateShader( IGL.GL_VERTEX_SHADER );
+        vertexShader = Gdx.GL.CreateShader( IGL.GL_VERTEX_SHADER );
         
-        Gdx.GL.glShaderSource( vertexShader, vertexShaderSource );
-        Gdx.GL.glCompileShader( vertexShader );
+        Gdx.GL.ShaderSource( vertexShader, vertexShaderSource );
+        Gdx.GL.CompileShader( vertexShader );
 
 //        var infoLog = new int[ 512 ];
-//        Gdx.GL.glGetShaderiv( vertexShader, IGL.GL_COMPILE_STATUS, ref infoLog );
-//        Gdx.GL.glGetShaderInfoLog( vertexShader, infoLog.Length );
+//        Gdx.GL.GetShaderiv( vertexShader, IGL.GL_COMPILE_STATUS, ref infoLog );
+//        Gdx.GL.GetShaderInfoLog( vertexShader, infoLog.Length );
 //        Logger.Debug( $"Error: Compilation failed: {infoLog}" );
         
-        fragmentShader = Gdx.GL.glCreateShader( IGL.GL_FRAGMENT_SHADER );
+        fragmentShader = Gdx.GL.CreateShader( IGL.GL_FRAGMENT_SHADER );
         
-        Gdx.GL.glShaderSource( fragmentShader, fragmentShaderSource );
-        Gdx.GL.glCompileShader( fragmentShader );
+        Gdx.GL.ShaderSource( fragmentShader, fragmentShaderSource );
+        Gdx.GL.CompileShader( fragmentShader );
         
-        shaderProgram = Gdx.GL.glCreateProgram();
+        shaderProgram = Gdx.GL.CreateProgram();
         
-        Gdx.GL.glAttachShader( shaderProgram, vertexShader );
-        Gdx.GL.glAttachShader( shaderProgram, fragmentShader );
-        Gdx.GL.glLinkProgram( shaderProgram );
-        Gdx.GL.glUseProgram( shaderProgram );
+        Gdx.GL.AttachShader( shaderProgram, vertexShader );
+        Gdx.GL.AttachShader( shaderProgram, fragmentShader );
+        Gdx.GL.LinkProgram( shaderProgram );
+        Gdx.GL.UseProgram( shaderProgram );
 
-//        Gdx.GL.glGetProgramiv( shaderProgram, IGL.GL_LINK_STATUS, ref infoLog );
-//        Gdx.GL.glGetProgramInfoLog( shaderProgram, infoLog.Length );
+//        Gdx.GL.GetProgramiv( shaderProgram, IGL.GL_LINK_STATUS, ref infoLog );
+//        Gdx.GL.GetProgramInfoLog( shaderProgram, infoLog.Length );
 //        Logger.Debug( $"Error: Linking failed: {infoLog}" );
         
-        Gdx.GL.glDeleteShader( vertexShader );
-        Gdx.GL.glDeleteShader( fragmentShader );
+        Gdx.GL.DeleteShader( vertexShader );
+        Gdx.GL.DeleteShader( fragmentShader );
 
         fixed ( uint* vao = &VAO )
         {
-            Gdx.GL.glGenVertexArrays( 1, vao );
+            Gdx.GL.GenVertexArrays( 1, vao );
         }
 
         fixed ( uint* vbo = &VBO )
         {
-            Gdx.GL.glGenBuffers( 1, vbo );
+            Gdx.GL.GenBuffers( 1, vbo );
         }
 
         fixed ( uint* ebo = &EBO )
         {
-            Gdx.GL.glGenBuffers( 1, ebo );
+            Gdx.GL.GenBuffers( 1, ebo );
         }
         
-        Gdx.GL.glBindVertexArray( VAO );
+        Gdx.GL.BindVertexArray( VAO );
         
-        Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, VBO );
-        Gdx.GL.glBufferData( IGL.GL_ARRAY_BUFFER, vertices, IGL.GL_STATIC_DRAW );
+        Gdx.GL.BindBuffer( IGL.GL_ARRAY_BUFFER, VBO );
+        Gdx.GL.BufferData( IGL.GL_ARRAY_BUFFER, vertices, IGL.GL_STATIC_DRAW );
 
-        Gdx.GL.glBindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, EBO );
-        Gdx.GL.glBufferData( IGL.GL_ELEMENT_ARRAY_BUFFER, indices, IGL.GL_STATIC_DRAW );
+        Gdx.GL.BindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, EBO );
+        Gdx.GL.BufferData( IGL.GL_ELEMENT_ARRAY_BUFFER, indices, IGL.GL_STATIC_DRAW );
         
-        Gdx.GL.glVertexAttribPointer( 0, 3, IGL.GL_FLOAT, false, 3 * sizeof( float ), ( void* )0 );
-        Gdx.GL.glEnableVertexAttribArray( 0 );
+        Gdx.GL.VertexAttribPointer( 0, 3, IGL.GL_FLOAT, false, 3 * sizeof( float ), ( void* )0 );
+        Gdx.GL.EnableVertexAttribArray( 0 );
         
-        Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
-        Gdx.GL.glBindVertexArray( 0 );
+        Gdx.GL.BindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL.BindVertexArray( 0 );
     }
 
     public void Draw2()
     {
-        Gdx.GL.glUseProgram( shaderProgram );
-        Gdx.GL.glBindVertexArray( VAO );
-        Gdx.GL.glDrawElements( IGL.GL_TRIANGLES, 6, IGL.GL_UNSIGNED_INT, indices );
+        Gdx.GL.UseProgram( shaderProgram );
+        Gdx.GL.BindVertexArray( VAO );
+        Gdx.GL.DrawElements( IGL.GL_TRIANGLES, 6, IGL.GL_UNSIGNED_INT, indices );
     }
 
     public void Dispose()
     {
-//        Gdx.GL.glDeleteVertexArrays( 1, &VAO );
-//        Gdx.GL.glDeleteBuffers( 1, &VBO );
-//        Gdx.GL.glDeleteBuffers( 1, &EBO );
-//        Gdx.GL.glDeleteProgram( shaderProgram );
+//        Gdx.GL.DeleteVertexArrays( 1, &VAO );
+//        Gdx.GL.DeleteBuffers( 1, &VBO );
+//        Gdx.GL.DeleteBuffers( 1, &EBO );
+//        Gdx.GL.DeleteProgram( shaderProgram );
     }
 }
 

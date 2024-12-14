@@ -162,7 +162,7 @@ public abstract class GLTexture : IDisposable
     /// </summary>
     /// <param name="glTarget"></param>
     protected GLTexture( int glTarget )
-        : this( glTarget, Gdx.GL.glGenTexture() )
+        : this( glTarget, Gdx.GL.GenTexture() )
     {
     }
 
@@ -189,7 +189,7 @@ public abstract class GLTexture : IDisposable
     /// </summary>
     public void Bind()
     {
-        Gdx.GL.glBindTexture( GLTarget, GLTextureHandle );
+        Gdx.GL.BindTexture( GLTarget, GLTextureHandle );
     }
 
     /// <summary>
@@ -198,8 +198,8 @@ public abstract class GLTexture : IDisposable
     /// <param name="unit"> the unit (0 to MAX_TEXTURE_UNITS).  </param>
     public void Bind( int unit )
     {
-        Gdx.GL.glActiveTexture( IGL.GL_TEXTURE0 + unit );
-        Gdx.GL.glBindTexture( GLTarget, ( uint )GLTextureHandle );
+        Gdx.GL.ActiveTexture( IGL.GL_TEXTURE0 + unit );
+        Gdx.GL.BindTexture( GLTarget, ( uint )GLTextureHandle );
     }
 
     /// <summary>
@@ -215,13 +215,13 @@ public abstract class GLTexture : IDisposable
     {
         if ( force || ( UWrap != u ) )
         {
-            Gdx.GL.glTexParameteri( GLTarget, IGL.GL_TEXTURE_WRAP_S, ( int )u );
+            Gdx.GL.TexParameteri( GLTarget, IGL.GL_TEXTURE_WRAP_S, ( int )u );
             UWrap = u;
         }
 
         if ( force || ( VWrap != v ) )
         {
-            Gdx.GL.glTexParameteri( GLTarget, IGL.GL_TEXTURE_WRAP_T, ( int )v );
+            Gdx.GL.TexParameteri( GLTarget, IGL.GL_TEXTURE_WRAP_T, ( int )v );
             VWrap = v;
         }
     }
@@ -239,8 +239,8 @@ public abstract class GLTexture : IDisposable
 
         Bind();
 
-        Gdx.GL.glTexParameteri( GLTarget, IGL.GL_TEXTURE_WRAP_S, ( int )u );
-        Gdx.GL.glTexParameteri( GLTarget, IGL.GL_TEXTURE_WRAP_T, ( int )v );
+        Gdx.GL.TexParameteri( GLTarget, IGL.GL_TEXTURE_WRAP_S, ( int )u );
+        Gdx.GL.TexParameteri( GLTarget, IGL.GL_TEXTURE_WRAP_T, ( int )v );
     }
 
     /// <summary>
@@ -257,13 +257,13 @@ public abstract class GLTexture : IDisposable
     {
         if ( force || ( MinFilter != minFilter ) )
         {
-            Gdx.GL.glTexParameteri( GLTarget, IGL.GL_TEXTURE_MIN_FILTER, ( int )minFilter );
+            Gdx.GL.TexParameteri( GLTarget, IGL.GL_TEXTURE_MIN_FILTER, ( int )minFilter );
             MinFilter = minFilter;
         }
 
         if ( force || ( MagFilter != magFilter ) )
         {
-            Gdx.GL.glTexParameteri( GLTarget, IGL.GL_TEXTURE_MAG_FILTER, ( int )magFilter );
+            Gdx.GL.TexParameteri( GLTarget, IGL.GL_TEXTURE_MAG_FILTER, ( int )magFilter );
             MagFilter = magFilter;
         }
     }
@@ -281,8 +281,8 @@ public abstract class GLTexture : IDisposable
 
         Bind();
 
-        Gdx.GL.glTexParameteri( GLTarget, IGL.GL_TEXTURE_MIN_FILTER, ( int )minFilter );
-        Gdx.GL.glTexParameteri( GLTarget, IGL.GL_TEXTURE_MAG_FILTER, ( int )magFilter );
+        Gdx.GL.TexParameteri( GLTarget, IGL.GL_TEXTURE_MIN_FILTER, ( int )minFilter );
+        Gdx.GL.TexParameteri( GLTarget, IGL.GL_TEXTURE_MAG_FILTER, ( int )magFilter );
     }
 
     /// <summary>
@@ -314,7 +314,7 @@ public abstract class GLTexture : IDisposable
             return AnisotropicFilterLevel;
         }
 
-        Gdx.GL.glTexParameterf( IGL.GL_TEXTURE_2D, IGL.GL_TEXTURE_MAX_ANISOTROPY_EXT, level );
+        Gdx.GL.TexParameterf( IGL.GL_TEXTURE_2D, IGL.GL_TEXTURE_MAX_ANISOTROPY_EXT, level );
 
         return AnisotropicFilterLevel = level;
     }
@@ -342,7 +342,7 @@ public abstract class GLTexture : IDisposable
 
         Bind();
 
-        Gdx.GL.glTexParameterf( IGL.GL_TEXTURE_2D, IGL.GL_TEXTURE_MAX_ANISOTROPY_EXT, level );
+        Gdx.GL.TexParameterf( IGL.GL_TEXTURE_2D, IGL.GL_TEXTURE_MAX_ANISOTROPY_EXT, level );
 
         return AnisotropicFilterLevel = level;
     }
@@ -365,7 +365,7 @@ public abstract class GLTexture : IDisposable
         {
             var buffer = new float[ 16 ];
 
-            Gdx.GL.glGetFloatv( IGL.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, ref buffer );
+            Gdx.GL.GetFloatv( IGL.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, ref buffer );
 
             return _maxAnisotropicFilterLevel = buffer[ 0 ];
         }
@@ -427,7 +427,7 @@ public abstract class GLTexture : IDisposable
             disposePixmap = true;
         }
 
-        Gdx.GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, 1 );
+        Gdx.GL.PixelStorei( IGL.GL_UNPACK_ALIGNMENT, 1 );
 
         if ( data.UseMipMaps )
         {
@@ -437,7 +437,7 @@ public abstract class GLTexture : IDisposable
         {
             DebugUploadImageData( target, miplevel, pixmap );
 
-            Gdx.GL.glTexImage2D( target,
+            Gdx.GL.TexImage2D( target,
                                  miplevel,
                                  pixmap.GLInternalFormat,
                                  pixmap.Width,
@@ -496,7 +496,7 @@ public abstract class GLTexture : IDisposable
     {
         if ( GLTextureHandle != 0 )
         {
-            Gdx.GL.glDeleteTextures( ( uint )GLTextureHandle );
+            Gdx.GL.DeleteTextures( ( uint )GLTextureHandle );
             GLTextureHandle = 0;
         }
     }

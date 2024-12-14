@@ -8,13 +8,104 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37b16c66-7b00-439c-a185-d98ba849df85" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/IGLBindingsExtra.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/MainGame.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/MainGame.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidBackend/AndroidBackend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidBackend/AndroidBackend.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Corelib/Corelib.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Corelib.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Allocator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Allocator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/DllLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LughGlfw/Glfw/DllLoader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Glfw.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Glfw.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Native/NativeGlfw.functions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LughGlfw/Glfw/Native/NativeGlfw.functions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LughGlfw/LughGlfw.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/LughGlfw/LughGlfw.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/GlobalUsings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/GlobalUsings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Core/Gdx.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Core/Gdx.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Cubemap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Cubemap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/FrameBuffers/FrameBuffer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/FrameBuffers/FrameBuffer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/FrameBuffers/FrameBufferCubemap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/FrameBuffers/FrameBufferCubemap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/FrameBuffers/GLFrameBuffer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/FrameBuffers/GLFrameBuffer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/G2D/PixmapPacker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/G2D/PixmapPacker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/G2D/PolygonSpriteBatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/G2D/PolygonSpriteBatch.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/G2D/SpriteBatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/G2D/SpriteBatch.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/G2D/SpriteCache.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/G2D/SpriteCache.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/ETC1TextureData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/ETC1TextureData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/FacedCubemapData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/FacedCubemapData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/FileTextureArrayData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/FileTextureArrayData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/FloatTextureData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/FloatTextureData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/GLOnlyTextureData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/GLOnlyTextureData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/GLVersion.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/GLVersion.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/HdpiUtils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/HdpiUtils.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/IndexBufferObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/IndexBufferObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/IndexBufferObjectSubData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/IndexBufferObjectSubData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/InstanceBufferObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/InstanceBufferObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/InstanceBufferObjectSubData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/InstanceBufferObjectSubData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/KTXTextureData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/KTXTextureData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/MipMapGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/MipMapGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/ShaderProgram.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/ShaderProgram.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/VertexBufferObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/VertexBufferObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/VertexBufferObjectSubData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/VertexBufferObjectSubData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/VertexBufferObjectWithVAO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/VertexBufferObjectWithVAO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Images/GLTexture.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Images/GLTexture.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Images/Pixmap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Images/Pixmap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Images/Texture.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Images/Texture.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Images/TextureArray.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Images/TextureArray.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Mesh.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Mesh.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLBindings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLBindings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLFunctionDelegates.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLFunctionDelegates.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLFunctionsLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLFunctionsLoader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/IGLBindings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/IGLBindings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Profiling/BaseGLInterceptor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Profiling/BaseGLInterceptor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Profiling/GLInterceptor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Profiling/GLInterceptor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Maps/Tiled/Renderers/OrthoCachedTiledMapRenderer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Maps/Tiled/Renderers/OrthoCachedTiledMapRenderer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Scenes/Scene2D/Stage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Scenes/Scene2D/Stage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Scenes/Scene2D/Utils/ScissorStack.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Scenes/Scene2D/Utils/ScissorStack.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Utils/Buffers/BufferUtils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Utils/Buffers/BufferUtils.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Utils/ScreenUtils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Utils/ScreenUtils.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Playground/GLTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Playground/GLTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplicationConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/DesktopGLBackend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/DesktopGLBackend.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/GlobalUsings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/GlobalUsings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Graphics/DesktopGLGraphics.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Graphics/DesktopGLGraphics.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Input/DefaultDesktopGLInput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Input/DefaultDesktopGLInput.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindow.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/Extensions.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Extensions.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Allocator.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Cursor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Delegates.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/DllLoader.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/AnglePlatform.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/ClientAPI.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/ConnectionState.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/ContextCreationAPI.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/ContextReleaseBehaviour.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/ContextRobustness.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/CursorMode.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/CursorShape.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/ErrorCode.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/GamepadAxis.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/GamepadButton.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/InitHint.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/InputMode.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/InputState.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/Joystick.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/Key.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/ModifierKey.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/MouseButton.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/OpenGLProfile.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/Platform.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/WaylandLibDecor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/WindowAttribute.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Enums/WindowHint.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/GamepadState.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/GammaRamp.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Glfw.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Image.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Playground/Image.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Monitor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Native/NativeGlfw.Macros.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Native/NativeGlfw.TypeDefs.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Native/NativeGlfw.functions.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/VideoMode.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Glfw/Window.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/GlobalUsings.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/LughGlfw.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughGlfw/Notice.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LughSharp.sln" beforeDir="false" afterPath="$PROJECT_DIR$/LughSharp.sln" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,27 +140,10 @@
     <setting file="file://$PROJECT_DIR$/../Archive/OpenGL/GLBindings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../LughSharp OpenTK Testing/DesktopGLBackend/GlobalUsings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLBindings.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/IGLBindings.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/Enums/AnglePlatform.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/Enums/ClientAPI.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/Enums/ConnectionState.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/Enums/ContextCreationAPI.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/Enums/ContextReleaseBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/Enums/ContextRobustness.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/Enums/CursorMode.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/Enums/InitHint.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/Enums/InputMode.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/Enums/InputState.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/Enums/OpenGLProfile.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/Enums/Platform.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/Enums/WaylandLibDecor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/Enums/WindowAttribute.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/Enums/WindowHint.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/GamepadState.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/Glfw/Glfw.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LughGlfw/GlobalUsings.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/IGLBindings.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/0fb6ac59fb1edbe4ed3ad62661df0eb7eacd7903/src/libraries/System.Private.CoreLib/src/System/String.Comparison.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/0fb6ac59fb1edbe4ed3ad62661df0eb7eacd7903/src/libraries/System.Private.CoreLib/src/System/Text/StringBuilder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ae7b821dd3ae45b4a8027ef197e5363fb1e910/cb/285b4223/Action`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c7959eeb5551412ca099f9cce026c00d2000/0e/d803b0e5/StbiImageBase.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c7959eeb5551412ca099f9cce026c00d2000/80/94d73dc6/Stbi.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c7959eeb5551412ca099f9cce026c00d2000/de/0733946c/StbiImage.cs" root0="SKIP_HIGHLIGHTING" />
@@ -99,6 +173,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bd5746eccd5dba7f8c4555cdbaee2ed9c78aad2adc5c3488e86ac5d5032d2/NativeGlfw.Macros.gen.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c9a673d9f85df4a9a378cfa1b3b8dc53a5153206817ff5d64d8a68f9e8d917b/Struct.Vidmode.gen.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/cab8551295715970c39fdf5bccd26c5f95c55e9ea2829dcd1ea47a43328d8f/Enum.ErrorCode.gen.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d34fd5bb1bae90f26dc59ca29671df440ba176795417f1d2a69e92f968a9/Image.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/da255149761443df39a5570ac232ce545bb9d59957124a899333744fce711/Struct.Window.gen.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/df95dcb5f7d5f9d9e8a9d65490424979ffa8c6a1648a60c11d736da216f34/Enum.GamepadAxis.gen.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/dfe9f24f6764c17b1d75c367e8e8e6a647c72bf726399197b14121504dd231/Enum.Key.gen.cs" root0="SKIP_HIGHLIGHTING" />
@@ -122,23 +197,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Project.ConsoleApp1.executor": "Run",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "XThreadsFramesViewSplitterKey": "0.28463203",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Project.ConsoleApp1.executor&quot;: &quot;Run&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.28463203&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C#&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -226,7 +301,16 @@
       <workItem from="1733768203998" duration="206000" />
       <workItem from="1733768432179" duration="11528000" />
       <workItem from="1733848176440" duration="19973000" />
-      <workItem from="1733928333080" duration="22843000" />
+      <workItem from="1733928333080" duration="22972000" />
+      <workItem from="1734019960188" duration="577000" />
+      <workItem from="1734020562653" duration="800000" />
+      <workItem from="1734021710446" duration="880000" />
+      <workItem from="1734023048945" duration="1062000" />
+      <workItem from="1734025936639" duration="121000" />
+      <workItem from="1734026124131" duration="14898000" />
+      <workItem from="1734044855234" duration="1793000" />
+      <workItem from="1734104708231" duration="23533000" />
+      <workItem from="1734192910259" duration="18629000" />
     </task>
     <task id="LOCAL-00001" summary="Major Restructuring">
       <option name="closed" value="true" />
@@ -524,7 +608,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733873188506</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="LughGlfw updates">
+      <option name="closed" value="true" />
+      <created>1733960148483</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1733960148483</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -654,6 +746,12 @@
           <option name="totalLines" value="224282" />
           <option name="info" value="" />
         </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1733960149229" />
+          <option name="linesCode" value="113063" />
+          <option name="totalLines" value="245253" />
+          <option name="info" value="" />
+        </TimePoint>
       </list>
     </option>
     <option name="genericTimePoints">
@@ -735,6 +833,12 @@
           <option name="linesCode" value="113033" />
           <option name="totalLines" value="224282" />
           <option name="info" value="10 Dec 2024" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1733960149229" />
+          <option name="linesCode" value="113063" />
+          <option name="totalLines" value="245253" />
+          <option name="info" value="11 Dec 2024" />
         </TimePoint>
       </list>
     </option>

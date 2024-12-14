@@ -70,14 +70,14 @@ public class HdpiUtils
           && ( ( Gdx.Graphics.Width != Gdx.Graphics.BackBufferWidth )
             || ( Gdx.Graphics.Height != Gdx.Graphics.BackBufferHeight ) ) )
         {
-            Gdx.GL.glScissor( ToBackBufferX( x ),
+            Gdx.GL.Scissor( ToBackBufferX( x ),
                               ToBackBufferY( y ),
                               ToBackBufferX( width ),
                               ToBackBufferY( height ) );
         }
         else
         {
-            Gdx.GL.glScissor( x, y, width, height );
+            Gdx.GL.Scissor( x, y, width, height );
         }
     }
 
@@ -92,14 +92,14 @@ public class HdpiUtils
           && ( ( Gdx.Graphics.Width != Gdx.Graphics.BackBufferWidth )
             || ( Gdx.Graphics.Height != Gdx.Graphics.BackBufferHeight ) ) )
         {
-            Gdx.GL.glViewport( ToBackBufferX( x ),
+            Gdx.GL.Viewport( ToBackBufferX( x ),
                                ToBackBufferY( y ),
                                ToBackBufferX( width ),
                                ToBackBufferY( height ) );
         }
         else
         {
-            Gdx.GL.glViewport( x, y, width, height );
+            Gdx.GL.Viewport( x, y, width, height );
         }
     }
 

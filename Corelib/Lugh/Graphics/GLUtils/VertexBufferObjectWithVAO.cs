@@ -83,7 +83,7 @@ public class VertexBufferObjectWithVAO : IVertexData
         _buffer.Flip();
         _byteBuffer.Flip();
 
-        _bufferHandle = ( int ) Gdx.GL.glGenBuffer();
+        _bufferHandle = ( int ) Gdx.GL.GenBuffer();
         _usage        = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
 
         CreateVAO();
@@ -101,7 +101,7 @@ public class VertexBufferObjectWithVAO : IVertexData
         _buffer.Flip();
         _byteBuffer.Flip();
 
-        _bufferHandle = ( int ) Gdx.GL.glGenBuffer();
+        _bufferHandle = ( int ) Gdx.GL.GenBuffer();
         _usage        = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
 
         CreateVAO();
@@ -185,7 +185,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// <param name="locations"> array containing the attribute locations.  </param>
     public void Bind( ShaderProgram shader, int[]? locations = null )
     {
-        Gdx.GL.glBindVertexArray( ( uint ) _vaoHandle );
+        Gdx.GL.BindVertexArray( ( uint ) _vaoHandle );
 
         BindAttributes( shader, locations );
 
@@ -202,7 +202,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// <param name="locations"> array containing the attribute locations.  </param>
     public void Unbind( ShaderProgram? shader, int[]? locations = null )
     {
-        Gdx.GL.glBindVertexArray( 0 );
+        Gdx.GL.BindVertexArray( 0 );
         _isBound = false;
     }
 
@@ -211,7 +211,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// </summary>
     public void Invalidate()
     {
-        _bufferHandle = ( int ) Gdx.GL.glGenBuffer();
+        _bufferHandle = ( int ) Gdx.GL.GenBuffer();
 
         CreateVAO();
 
@@ -224,8 +224,8 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// </summary>
     public void Dispose()
     {
-        Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
-        Gdx.GL.glDeleteBuffers( ( uint ) _bufferHandle );
+        Gdx.GL.BindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL.DeleteBuffers( ( uint ) _bufferHandle );
 
         _bufferHandle = 0;
 
@@ -241,11 +241,11 @@ public class VertexBufferObjectWithVAO : IVertexData
     {
         if ( _isBound )
         {
-            Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
+            Gdx.GL.BindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
 
             fixed ( void* ptr = &_byteBuffer.BackingArray()[ 0 ] )
             {
-                Gdx.GL.glBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, ptr, _usage );
+                Gdx.GL.BufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, ptr, _usage );
             }
 
             _isDirty = false;
@@ -283,7 +283,7 @@ public class VertexBufferObjectWithVAO : IVertexData
 
         if ( !stillValid )
         {
-            Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
+            Gdx.GL.BindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
 
             UnbindAttributes( shader );
 
@@ -342,13 +342,13 @@ public class VertexBufferObjectWithVAO : IVertexData
     {
         if ( _isDirty )
         {
-            Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
+            Gdx.GL.BindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
 
             _byteBuffer.Limit = _buffer.Limit * 4;
 
             fixed ( void* ptr = &_byteBuffer.BackingArray()[ 0 ] )
             {
-                Gdx.GL.glBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, ptr, _usage );
+                Gdx.GL.BufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, ptr, _usage );
             }
 
             _isDirty = false;
@@ -361,7 +361,7 @@ public class VertexBufferObjectWithVAO : IVertexData
 
         fixed ( int* intptr = &_tmpHandle.BackingArray()[ 0 ] )
         {
-            Gdx.GL.glGenVertexArrays( 1, ( uint* ) intptr );
+            Gdx.GL.GenVertexArrays( 1, ( uint* ) intptr );
         }
 
         _vaoHandle = _tmpHandle.Get();
@@ -378,7 +378,7 @@ public class VertexBufferObjectWithVAO : IVertexData
 
             fixed ( int* intptr = &_tmpHandle.BackingArray()[ 0 ] )
             {
-                Gdx.GL.glDeleteVertexArrays( 1, ( uint* ) intptr );
+                Gdx.GL.DeleteVertexArrays( 1, ( uint* ) intptr );
             }
 
             _vaoHandle = -1;

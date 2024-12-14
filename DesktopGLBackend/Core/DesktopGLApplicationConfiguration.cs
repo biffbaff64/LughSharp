@@ -274,7 +274,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     public static IGraphics.DisplayMode[] GetDisplayModes( GLFW.Monitor monitor )
     {
-        GLFW.VideoMode[] videoModes = Glfw.GetVideoModes( monitor );
+        var videoModes = Glfw.GetVideoModes( monitor );
 
         var result = new IGraphics.DisplayMode[ videoModes.Length ];
 

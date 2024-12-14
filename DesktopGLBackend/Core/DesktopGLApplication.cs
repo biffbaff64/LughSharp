@@ -345,8 +345,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     /// <param name="config"></param>
     /// <param name="sharedContext"></param>
     public unsafe DesktopGLWindow CreateWindow( DesktopGLWindow? dglWindow,
-                                         DesktopGLApplicationConfiguration config,
-                                         long sharedContext )
+                                                DesktopGLApplicationConfiguration config,
+                                                long sharedContext )
     {
         ArgumentNullException.ThrowIfNull( dglWindow );
 
@@ -357,12 +357,12 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         for ( var i = 0; i < 2; i++ )
         {
-            Gdx.GL.glClearColor( config.InitialBackgroundColor.R,
+            Gdx.GL.ClearColor( config.InitialBackgroundColor.R,
                                  config.InitialBackgroundColor.G,
                                  config.InitialBackgroundColor.B,
                                  config.InitialBackgroundColor.A );
 
-            Gdx.GL.glClear( IGL.GL_COLOR_BUFFER_BIT );
+            Gdx.GL.Clear( IGL.GL_COLOR_BUFFER_BIT );
             Glfw.SwapBuffers( windowHandle );
         }
 
@@ -478,7 +478,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         if ( config.Debug )
         {
-            Gdx.GL.glEnable( IGL.GL_DEBUG_OUTPUT );
+            Gdx.GL.Enable( IGL.GL_DEBUG_OUTPUT );
 
 //            GlDebugCallback = Glfw.DebugMessageCallback( config.debugStream );
 //            SetGLDebugMessageControl( GLDebugMessageSeverity.Notification, false );
@@ -508,14 +508,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         Gdx.GL.Import();
 
-        Logger.Debug( $"Glfw : {glMajor}.{glMinor}.{revision} : glProfile: {OGLProfile}" );
-
+        Logger.Debug( $"Glfw      : {glMajor}.{glMinor}.{revision} : glProfile: {OGLProfile}" );
         Logger.Debug( $"OGLVersion: {Gdx.GL.GetOpenGLVersion().major}.{Gdx.GL.GetOpenGLVersion().minor}" );
 
         GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL );
-
-        // Set the flag indicating that OpenGL has been initialized.
-        _glfwInitialised = true;
     }
 
     /// <summary>
@@ -530,7 +526,11 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
             {
                 DesktopGLNativesLoader.Load();
 
-                _errorCallback = ( error, description ) => { Logger.Error( $"ErrorCode: {error}, {description}" ); };
+                _errorCallback = ( error, description ) =>
+                {
+                    Logger.Checkpoint();
+                    Logger.Error( $"ErrorCode: {error}, {description}" );
+                };
 
                 Glfw.SetErrorCallback( _errorCallback );
                 Glfw.InitHint( InitHint.JoystickHatButtons, false );

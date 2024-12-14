@@ -11,10 +11,10 @@
     <ItemGroup>
         <ProjectReference Include="..\Corelib\Corelib.csproj" />
         <ProjectReference Include="..\Extensions\Extensions.csproj" />
-        <ProjectReference Include="..\LughGlfw\LughGlfw.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="DotGLFW" Version="1.2.0" />
       <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
     </ItemGroup>
 

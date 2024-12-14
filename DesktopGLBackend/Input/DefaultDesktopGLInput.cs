@@ -29,8 +29,6 @@ using Corelib.Lugh.Utils.Exceptions;
 
 using DesktopGLBackend.Window;
 
-using JetBrains.Annotations;
-
 namespace DesktopGLBackend.Input;
 
 [PublicAPI]
@@ -69,7 +67,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     #region From IDesktopGLInput
 
     /// <inheritdoc />
-    public void WindowHandleChanged( GLFW.Window windowHandle )
+    public void WindowHandleChanged( GLFW.Window? windowHandle )
     {
         ResetPollingStates();
 

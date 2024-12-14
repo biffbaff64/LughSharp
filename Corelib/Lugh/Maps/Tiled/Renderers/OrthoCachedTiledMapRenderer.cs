@@ -170,8 +170,8 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
 
         if ( Blending )
         {
-            Gdx.GL.glEnable( IGL.GL_BLEND );
-            Gdx.GL.glBlendFunc( IGL.GL_SRC_ALPHA, IGL.GL_ONE_MINUS_SRC_ALPHA );
+            Gdx.GL.Enable( IGL.GL_BLEND );
+            Gdx.GL.BlendFunc( IGL.GL_SRC_ALPHA, IGL.GL_ONE_MINUS_SRC_ALPHA );
         }
 
         SpriteCache.Begin();
@@ -193,7 +193,7 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
 
         if ( Blending )
         {
-            Gdx.GL.glDisable( IGL.GL_BLEND );
+            Gdx.GL.Disable( IGL.GL_BLEND );
         }
     }
 
@@ -232,8 +232,8 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
 
         if ( Blending )
         {
-            Gdx.GL.glEnable( IGL.GL_BLEND );
-            Gdx.GL.glBlendFunc( IGL.GL_SRC_ALPHA, IGL.GL_ONE_MINUS_SRC_ALPHA );
+            Gdx.GL.Enable( IGL.GL_BLEND );
+            Gdx.GL.BlendFunc( IGL.GL_SRC_ALPHA, IGL.GL_ONE_MINUS_SRC_ALPHA );
         }
 
         SpriteCache?.Begin();
@@ -253,7 +253,7 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
 
         if ( Blending )
         {
-            Gdx.GL.glDisable( IGL.GL_BLEND );
+            Gdx.GL.Disable( IGL.GL_BLEND );
         }
     }
 

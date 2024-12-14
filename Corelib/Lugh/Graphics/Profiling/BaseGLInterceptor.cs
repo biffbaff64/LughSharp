@@ -94,12 +94,12 @@ public abstract class BaseGLInterceptor
     /// </summary>
     protected void CheckErrors()
     {
-        var error = Gdx.GL.glGetError();
+        var error = Gdx.GL.GetError();
 
         while ( error != IGL.GL_NO_ERROR )
         {
             GLProfiler.Listener.OnError( error );
-            error = Gdx.GL.glGetError();
+            error = Gdx.GL.GetError();
         }
     }
 }

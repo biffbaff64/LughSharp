@@ -438,7 +438,7 @@ public class KtxTextureData : ITextureData, ICubemapData
         {
             fixed ( int* ptr = &buffer.BackingArray()[ 0 ] )
             {
-                Gdx.GL.glGetIntegerv( IGL.GL_UNPACK_ALIGNMENT, ptr );
+                Gdx.GL.GetIntegerv( IGL.GL_UNPACK_ALIGNMENT, ptr );
             }
         }
 
@@ -446,7 +446,7 @@ public class KtxTextureData : ITextureData, ICubemapData
 
         if ( previousUnpackAlignment != 4 )
         {
-            Gdx.GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, 4 );
+            Gdx.GL.PixelStorei( IGL.GL_UNPACK_ALIGNMENT, 4 );
         }
 
         var glInternalFormat = _glInternalFormat;
@@ -508,7 +508,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                                 {
                                     fixed ( void* ptr = &pixmap.ByteBuffer.BackingArray()[ 0 ] )
                                     {
-                                        Gdx.GL.glTexImage2D( target + face,
+                                        Gdx.GL.TexImage2D( target + face,
                                                              level,
                                                              pixmap.GLInternalFormat,
                                                              pixmap.Width,
@@ -528,7 +528,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                                 {
                                     fixed ( void* dataptr = &data.BackingArray()[ 0 ] )
                                     {
-                                        Gdx.GL.glCompressedTexImage2D( target + face,
+                                        Gdx.GL.CompressedTexImage2D( target + face,
                                                                        level,
                                                                        glInternalFormat,
                                                                        pixelWidth,
@@ -547,7 +547,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                             {
                                 fixed ( void* dataptr = &data.BackingArray()[ 0 ] )
                                 {
-                                    Gdx.GL.glCompressedTexImage2D( target + face,
+                                    Gdx.GL.CompressedTexImage2D( target + face,
                                                                    level,
                                                                    glInternalFormat,
                                                                    pixelWidth,
@@ -565,7 +565,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                         {
                             fixed ( void* dataptr = &data.BackingArray()[ 0 ] )
                             {
-                                Gdx.GL.glTexImage2D( target + face,
+                                Gdx.GL.TexImage2D( target + face,
                                                      level,
                                                      glInternalFormat,
                                                      pixelWidth,
@@ -597,12 +597,12 @@ public class KtxTextureData : ITextureData, ICubemapData
 
         if ( previousUnpackAlignment != 4 )
         {
-            Gdx.GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, previousUnpackAlignment );
+            Gdx.GL.PixelStorei( IGL.GL_UNPACK_ALIGNMENT, previousUnpackAlignment );
         }
 
         if ( UseMipMaps )
         {
-            Gdx.GL.glGenerateMipmap( target );
+            Gdx.GL.GenerateMipmap( target );
         }
 
         // dispose data once transfered to GPU

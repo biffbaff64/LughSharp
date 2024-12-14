@@ -22,21 +22,9 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace LughGlfw.Glfw;
+namespace Corelib.Playground;
 
-/// <inheritdoc cref="NativeGlfw.GlfwGammaRamp"/>
-[PublicAPI]
-public class GammaRamp
+public class Image
 {
-    /// <inheritdoc cref="NativeGlfw.GlfwGammaRamp.Red"/>
-    public ushort[] Red { get; set; } = [ ];
-
-    /// <inheritdoc cref="NativeGlfw.GlfwGammaRamp.Green"/>
-    public ushort[] Green { get; set; } = [ ];
-
-    /// <inheritdoc cref="NativeGlfw.GlfwGammaRamp.Blue"/>
-    public ushort[] Blue { get; set; } = [ ];
-
-    /// <inheritdoc cref="NativeGlfw.GlfwGammaRamp.Size"/>
-    public uint Size { get; set; }
+    
 }

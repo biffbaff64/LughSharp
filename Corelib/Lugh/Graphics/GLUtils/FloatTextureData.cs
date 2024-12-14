@@ -121,7 +121,7 @@ public class FloatTextureData : ITextureData
             {
                 fixed ( void* ptr = &( ( Buffer ) Buffer ).BackingArray()[ 0 ] )
                 {
-                    Gdx.GL.glTexImage2D( target,
+                    Gdx.GL.TexImage2D( target,
                                          0,
                                          IGL.GL_RGBA,
                                          Width,
@@ -146,7 +146,7 @@ public class FloatTextureData : ITextureData
             {
                 fixed ( void* ptr = &( ( Buffer ) Buffer ).BackingArray()[ 0 ] )
                 {
-                    Gdx.GL.glTexImage2D( target,
+                    Gdx.GL.TexImage2D( target,
                                          0,
                                          _internalFormat,
                                          Width,

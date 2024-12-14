@@ -124,7 +124,7 @@ public unsafe class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         GLWindow.MakeCurrent();
 
-        Gdx.GL.glViewport( 0, 0, width, height );
+        Gdx.GL.Viewport( 0, 0, width, height );
 
         GLWindow.ApplicationListener.Update();
         GLWindow.ApplicationListener.Resize( Width, Height );
@@ -208,11 +208,11 @@ public unsafe class DesktopGLGraphics : AbstractGraphics, IDisposable
         {
             if ( enable )
             {
-                Gdx.GL.glEnable( IGL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+                Gdx.GL.Enable( IGL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
             }
             else
             {
-                Gdx.GL.glDisable( IGL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+                Gdx.GL.Disable( IGL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
             }
         }
     }
@@ -472,8 +472,8 @@ public unsafe class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     private void UpdateGLVersion()
     {
-//        var vendorString   = Gdx.GL.glGetString( IGL.GL_VENDOR );
-//        var rendererString = Gdx.GL.glGetString( IGL.GL_RENDERER );
+//        var vendorString   = Gdx.GL.GetString( IGL.GL_VENDOR );
+//        var rendererString = Gdx.GL.GetString( IGL.GL_RENDERER );
 
 //        GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
 //                                   vendorString,

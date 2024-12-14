@@ -98,7 +98,7 @@ public class GLOnlyTextureData : ITextureData
 
     public unsafe void ConsumeCustomData( int target )
     {
-        Gdx.GL.glTexImage2D( target,
+        Gdx.GL.TexImage2D( target,
                              MipLevel,
                              InternalFormat,
                              Width,

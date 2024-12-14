@@ -86,7 +86,7 @@ public class MipMapGenerator
         {
             fixed ( void* ptr = &pixmap.PixelData[ 0 ] )
             {
-                Gdx.GL.glTexImage2D( target,
+                Gdx.GL.TexImage2D( target,
                                      0,
                                      pixmap.GLInternalFormat,
                                      pixmap.Width,
@@ -98,7 +98,7 @@ public class MipMapGenerator
             }
         }
 
-        Gdx.GL.glGenerateMipmap( target );
+        Gdx.GL.GenerateMipmap( target );
     }
 
     private static unsafe void GenerateMipMapDesktop( int target, Pixmap pixmap, int textureWidth, int textureHeight )
@@ -108,7 +108,7 @@ public class MipMapGenerator
         {
             fixed ( void* ptr = &pixmap.PixelData[ 0 ] )
             {
-                Gdx.GL.glTexImage2D( target,
+                Gdx.GL.TexImage2D( target,
                                      0,
                                      pixmap.GLInternalFormat,
                                      pixmap.Width,
@@ -119,7 +119,7 @@ public class MipMapGenerator
                                      ptr );
             }
 
-            Gdx.GL.glGenerateMipmap( target );
+            Gdx.GL.GenerateMipmap( target );
         }
         else
         {
@@ -131,7 +131,7 @@ public class MipMapGenerator
     {
         fixed ( void* ptr = &pixmap.PixelData[ 0 ] )
         {
-            Gdx.GL.glTexImage2D( target,
+            Gdx.GL.TexImage2D( target,
                                  0,
                                  pixmap.GLInternalFormat,
                                  pixmap.Width,
@@ -167,7 +167,7 @@ public class MipMapGenerator
 
             fixed ( void* ptr = &pixmap.PixelData[ 0 ] )
             {
-                Gdx.GL.glTexImage2D( target,
+                Gdx.GL.TexImage2D( target,
                                      level,
                                      pixmap.GLInternalFormat,
                                      pixmap.Width,

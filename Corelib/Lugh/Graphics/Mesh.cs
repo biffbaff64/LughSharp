@@ -783,7 +783,7 @@ public class Mesh
                 {
                     fixed ( void* ptr = &buffer.BackingArray()[ 0 ] )
                     {
-                        Gdx.GL.glDrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, ptr );
+                        Gdx.GL.DrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, ptr );
                     }
                 }
 
@@ -792,7 +792,7 @@ public class Mesh
             }
             else
             {
-                Gdx.GL.glDrawArrays( primitiveType, offset, count );
+                Gdx.GL.DrawArrays( primitiveType, offset, count );
             }
         }
         else
@@ -817,7 +817,7 @@ public class Mesh
                 {
                     unsafe
                     {
-                        Gdx.GL.glDrawElementsInstanced( primitiveType,
+                        Gdx.GL.DrawElementsInstanced( primitiveType,
                             count,
                             IGL.GL_UNSIGNED_SHORT,
                             ( void* )( offset * 2 ),
@@ -828,7 +828,7 @@ public class Mesh
                 {
                     unsafe
                     {
-                        Gdx.GL.glDrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, ( void* )( offset * 2 ) );
+                        Gdx.GL.DrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, ( void* )( offset * 2 ) );
                     }
                 }
             }
@@ -836,11 +836,11 @@ public class Mesh
             {
                 if ( IsInstanced && ( numInstances > 0 ) )
                 {
-                    Gdx.GL.glDrawArraysInstanced( primitiveType, offset, count, numInstances );
+                    Gdx.GL.DrawArraysInstanced( primitiveType, offset, count, numInstances );
                 }
                 else
                 {
-                    Gdx.GL.glDrawArrays( primitiveType, offset, count );
+                    Gdx.GL.DrawArrays( primitiveType, offset, count );
                 }
             }
         }

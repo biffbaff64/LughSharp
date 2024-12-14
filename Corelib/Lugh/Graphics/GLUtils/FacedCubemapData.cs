@@ -150,9 +150,9 @@ public class FacedCubemapData : ICubemapData
                     disposePixmap = true;
                 }
 
-                Gdx.GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, 1 );
+                Gdx.GL.PixelStorei( IGL.GL_UNPACK_ALIGNMENT, 1 );
 
-                Gdx.GL.glTexImage2D( IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                Gdx.GL.TexImage2D( IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                                      0,
                                      pixmap.GLInternalFormat,
                                      pixmap.Width,

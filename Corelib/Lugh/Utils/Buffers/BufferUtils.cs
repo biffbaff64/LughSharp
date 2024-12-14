@@ -33,9 +33,8 @@ namespace Corelib.Lugh.Utils.Buffers;
 [PublicAPI]
 public static partial class BufferUtils
 {
-    private static readonly List< ByteBuffer > _unsafeBuffers = [ ];
-
-    private static int _allocatedUnsafe = 0;
+    private static List< ByteBuffer > _unsafeBuffers   = [ ];
+    private static int                _allocatedUnsafe = 0;
 
     // ========================================================================
     // ========================================================================
@@ -149,9 +148,25 @@ public static partial class BufferUtils
     /// <param name="dst"> The destination Buffer, its position is used as an offset. </param>
     public static void Copy( float[] src, int srcOffset, int numElements, Buffer dst )
     {
+        Array.Copy( src, srcOffset, dst.Hb, PositionInBytes( dst ), numElements );
+        
 //        CopyJni( src, srcOffset, dst, PositionInBytes( dst ), numElements << 2 );
+//        
+//        return;
+//        
+//        /*
+//            memcpy(dst + dstOffset, src + srcOffset, numBytes);
+//        */
+//        static void CopyJni( float[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes )
+//        {
+//            for ( int source = srcOffset, dest = dstOffset; numBytes > 0; source++, dest++ )
+//            {
+//                dst.Hb[ dest ] = src[ source ];
+//                numBytes--;
+//            }
+//        }
     }
-
+    
     /// <summary>
     /// Copies numFloats floats from src starting at offset to dst. Dst is assumed to
     /// be a direct buffer. The method will crash if that is not the case. The position
@@ -171,7 +186,7 @@ public static partial class BufferUtils
         {
             ByteBuffer  => numElements << 2,
             FloatBuffer => numElements,
-            _           => dst.Limit,
+            var _       => dst.Limit,
         };
 
         Array.Copy( src, offset, dst.Hb, 0, numElements );
@@ -194,8 +209,7 @@ public static partial class BufferUtils
             ByteBuffer               => dst.Position,
             ShortBuffer              => dst.Position << 1,
             IntBuffer or FloatBuffer => dst.Position << 2,
-            var _ => throw new GdxRuntimeException
-                ( $"Can't get position for {dst.GetType().Name} instance" ),
+            var _                    => throw new GdxRuntimeException( $"Can't get position for {dst.GetType().Name} instance" ),
         };
     }
 
@@ -212,8 +226,7 @@ public static partial class BufferUtils
             ByteBuffer               => bytes,
             ShortBuffer              => bytes >>> 1,
             IntBuffer or FloatBuffer => bytes >>> 2,
-            var _ => throw new GdxRuntimeException
-                ( $"Can't copy to a {dst.GetType().Name} instance" ),
+            var _                    => throw new GdxRuntimeException( $"Can't copy to a {dst.GetType().Name} instance" ),
         };
     }
 
@@ -230,14 +243,13 @@ public static partial class BufferUtils
             ByteBuffer               => elements,
             ShortBuffer              => elements << 1,
             IntBuffer or FloatBuffer => elements << 2,
-            var _ => throw new GdxRuntimeException
-                ( $"Can't copy to a {dst.GetType().Name} instance" ),
+            var _                    => throw new GdxRuntimeException( $"Can't copy to a {dst.GetType().Name} instance" ),
         };
     }
 
     public static ByteBuffer NewUnsafeByteBuffer( int numBytes )
     {
-        ByteBuffer buffer = _newDisposableByteBuffer( numBytes );
+        ByteBuffer buffer = NewByteBuffer( numBytes );    // _newDisposableByteBuffer( numBytes );
 
         buffer.Order( ByteOrder.NativeOrder );
         _allocatedUnsafe += numBytes;
@@ -262,8 +274,7 @@ public static partial class BufferUtils
         {
             if ( !_unsafeBuffers.Remove( buffer ) )
             {
-                throw new ArgumentException
-                    ( "buffer not allocated with NewUnsafeByteBuffer, or is already disposed" );
+                throw new ArgumentException( "buffer not allocated with NewUnsafeByteBuffer, or is already disposed" );
             }
         }
 
@@ -280,7 +291,7 @@ public static partial class BufferUtils
         }
     }
 
-    private static extern ByteBuffer _newDisposableByteBuffer( int numBytes );
+//    private static extern ByteBuffer _newDisposableByteBuffer( int numBytes );
 
     // ========================================================================
     // CHAR
@@ -289,12 +300,10 @@ public static partial class BufferUtils
     public static char GetChar( ByteBuffer bb, int bi, bool bigEndian )
     {
         return bigEndian
-            ? MakeChar( bb.Hb![ ( byte )bi ],
-                        bb.Hb![ ( byte )( bi + 1 ) ] )
+            ? MakeChar( bb.Hb![ ( byte )bi ], bb.Hb![ ( byte )( bi + 1 ) ] )
 
             // ---------------------------------------
-            : MakeChar( bb.Hb![ ( byte )( bi + 1 ) ],
-                        bb.Hb![ ( byte )bi ] );
+            : MakeChar( bb.Hb![ ( byte )( bi + 1 ) ], bb.Hb![ ( byte )bi ] );
     }
 
     public static void PutChar( ByteBuffer bb, int bi, char x, bool bigEndian )
@@ -316,12 +325,10 @@ public static partial class BufferUtils
     public static short GetShort( ByteBuffer bb, int bi, bool bigEndian )
     {
         return bigEndian
-            ? MakeShort( bb.Hb![ ( byte )bi ],
-                         bb.Hb![ ( byte )( bi + 1 ) ] )
+            ? MakeShort( bb.Hb![ ( byte )bi ], bb.Hb![ ( byte )( bi + 1 ) ] )
 
             // ---------------------------------------
-            : MakeShort( bb.Hb![ ( byte )( bi + 1 ) ],
-                         bb.Hb![ ( byte )bi ] );
+            : MakeShort( bb.Hb![ ( byte )( bi + 1 ) ], bb.Hb![ ( byte )bi ] );
     }
 
     public static void PutShort( ByteBuffer bb, int bi, short x, bool bigEndian )

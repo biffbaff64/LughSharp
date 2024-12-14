@@ -193,7 +193,7 @@ public unsafe partial class DesktopGLWindow : IDisposable
     {
         Glfw.MakeContextCurrent( GlfwWindow );
 
-        Gdx.GL.glGetError();
+        Gdx.GL.GetError();
 
         Gdx.Graphics = Graphics;
         Gdx.Input    = Input;

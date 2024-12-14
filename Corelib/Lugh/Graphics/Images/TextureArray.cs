@@ -82,7 +82,7 @@ public class TextureArray : GLTexture, IManaged
     /// <param name="data"></param>
     /// <exception cref="GdxRuntimeException"></exception>
     public TextureArray( ITextureArrayData data )
-        : base( IGL.GL_TEXTURE_2D_ARRAY, Gdx.GL.glGenTexture() )
+        : base( IGL.GL_TEXTURE_2D_ARRAY, Gdx.GL.GenTexture() )
     {
         _data = null!;
 
@@ -157,7 +157,7 @@ public class TextureArray : GLTexture, IManaged
 
         Bind();
 
-        Gdx.GL.glTexImage3D( IGL.GL_TEXTURE_2D_ARRAY,
+        Gdx.GL.TexImage3D( IGL.GL_TEXTURE_2D_ARRAY,
                              0,
                              data.InternalFormat,
                              data.Width,
@@ -178,7 +178,7 @@ public class TextureArray : GLTexture, IManaged
         SetFilter( MinFilter, MagFilter );
         SetWrap( UWrap, VWrap );
         
-        Gdx.GL.glBindTexture( GLTarget, 0 );
+        Gdx.GL.BindTexture( GLTarget, 0 );
     }
 
     /// <summary>
@@ -192,7 +192,7 @@ public class TextureArray : GLTexture, IManaged
             throw new GdxRuntimeException( "Tried to reload an unmanaged TextureArray" );
         }
 
-        GLTextureHandle = Gdx.GL.glGenTexture();
+        GLTextureHandle = Gdx.GL.GenTexture();
 
         Load( _data );
     }

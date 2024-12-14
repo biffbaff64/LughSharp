@@ -157,7 +157,7 @@ public class FileTextureArrayData : ITextureArrayData
                 {
                     fixed ( void* ptr = &pixmap.PixelData[ 0 ] )
                     {
-                        Gdx.GL.glTexSubImage3D( IGL.GL_TEXTURE_2D_ARRAY,
+                        Gdx.GL.TexSubImage3D( IGL.GL_TEXTURE_2D_ARRAY,
                                                 0,
                                                 0,
                                                 0,
@@ -173,7 +173,7 @@ public class FileTextureArrayData : ITextureArrayData
 
                 if ( _useMipMaps )
                 {
-                    Gdx.GL.glGenerateMipmap( IGL.GL_TEXTURE_2D_ARRAY );
+                    Gdx.GL.GenerateMipmap( IGL.GL_TEXTURE_2D_ARRAY );
                 }
 
                 if ( disposePixmap )

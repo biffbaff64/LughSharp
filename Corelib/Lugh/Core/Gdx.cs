@@ -179,6 +179,16 @@ public static class Gdx
         }
         set => _net = value;
     }
+
+    public static void GLErrorCheck()
+    {
+        int error;
+
+        if ( ( error = GL.glGetError() ) != IGL.GL_NO_ERROR )
+        {
+            Logger.Error( $"GL Error: {error}" );
+        }
+    }
     
     // ========================================================================
 
@@ -192,50 +202,6 @@ public static class Gdx
         "Bind what's bruised in me. " +
         "Heal what's sick in me. " +
         "Revive whatever peace & love has died in me.";
-
-    // ========================================================================
-    // Don't Ask...
-
-    /*
-     * Common Carp
-     * Mirror Carp
-     * Leather Carp
-     * Grass Carp
-     * Orfe
-     * Roach
-     * Pike
-     * Perch
-     * Zander
-     * Rudd
-     * Dace
-     * Grayling
-     * Bream
-     * Rainbow Trout
-     * Brown Trout
-     * Sea Trout
-     * Gudgeon
-     * Stone Loach
-     * Spined Loach
-     * Crucian Carp
-     * Tench
-     * Chub
-     * Barbel
-     * Salmon
-     * Ruffe
-     * StickleBack
-     * Minnow
-     * Eel
-     * Silver Bream
-     * Bullhead
-     * Smelt
-     * Catfish
-     * Allis Shad
-     * Twaite Shad
-     * Brook Lamprey
-     * Bitterling
-     * PumpkinSeed
-     * Ide
-     */
 
     // ========================================================================
 }

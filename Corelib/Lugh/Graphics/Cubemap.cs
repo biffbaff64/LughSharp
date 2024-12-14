@@ -159,7 +159,7 @@ public class Cubemap : GLTexture, IManaged
 
         data.ConsumeCubemapData();
 
-        Gdx.GL.glBindTexture( GLTarget, 0 );
+        Gdx.GL.BindTexture( GLTarget, 0 );
     }
 
     /// <summary>
@@ -173,7 +173,7 @@ public class Cubemap : GLTexture, IManaged
             throw new GdxRuntimeException( "Tried to reload an unmanaged Cubemap" );
         }
 
-        GLTextureHandle = Gdx.GL.glGenTexture();
+        GLTextureHandle = Gdx.GL.GenTexture();
 
         Load( Data );
     }
@@ -267,7 +267,7 @@ public class Cubemap : GLTexture, IManaged
                     // unload the c, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
 
-                    cubemap.GLTextureHandle = Gdx.GL.glGenTexture();
+                    cubemap.GLTextureHandle = Gdx.GL.GenTexture();
                     AssetManager.AddToLoadqueue( fileName, typeof( Cubemap ), parameter );
                 }
             }

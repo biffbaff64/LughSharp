@@ -185,7 +185,7 @@ public class VertexBufferObjectSubData : IVertexData
     /// <param name="locations"> array containing the attribute locations.</param>
     public unsafe void Bind( ShaderProgram shader, int[]? locations = null )
     {
-        Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
+        Gdx.GL.BindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
 
         if ( _isDirty )
         {
@@ -193,7 +193,7 @@ public class VertexBufferObjectSubData : IVertexData
 
             fixed ( void* ptr = &ByteBuffer.BackingArray()[ 0 ] )
             {
-                Gdx.GL.glBufferData( IGL.GL_ARRAY_BUFFER, ByteBuffer.Limit, ptr, _usage );
+                Gdx.GL.BufferData( IGL.GL_ARRAY_BUFFER, ByteBuffer.Limit, ptr, _usage );
             }
 
             _isDirty = false;
@@ -280,7 +280,7 @@ public class VertexBufferObjectSubData : IVertexData
             }
         }
 
-        Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL.BindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
         _isBound = false;
     }
 
@@ -289,11 +289,11 @@ public class VertexBufferObjectSubData : IVertexData
     /// </summary>
     private unsafe int CreateBufferObject()
     {
-        var result = Gdx.GL.glGenBuffer();
+        var result = Gdx.GL.GenBuffer();
 
-        Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, result );
-        Gdx.GL.glBufferData( IGL.GL_ARRAY_BUFFER, ByteBuffer.Capacity, null!, _usage );
-        Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL.BindBuffer( IGL.GL_ARRAY_BUFFER, result );
+        Gdx.GL.BufferData( IGL.GL_ARRAY_BUFFER, ByteBuffer.Capacity, null!, _usage );
+        Gdx.GL.BindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
 
         return ( int ) result;
     }
@@ -304,7 +304,7 @@ public class VertexBufferObjectSubData : IVertexData
         {
             fixed ( void* ptr = &ByteBuffer.BackingArray()[ 0 ] )
             {
-                Gdx.GL.glBufferSubData( IGL.GL_ARRAY_BUFFER, 0, ByteBuffer.Limit, ptr );
+                Gdx.GL.BufferSubData( IGL.GL_ARRAY_BUFFER, 0, ByteBuffer.Limit, ptr );
             }
 
             _isDirty = false;
@@ -326,8 +326,8 @@ public class VertexBufferObjectSubData : IVertexData
     /// </summary>
     public void Dispose()
     {
-        Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
-        Gdx.GL.glDeleteBuffers( ( uint ) _bufferHandle );
+        Gdx.GL.BindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL.DeleteBuffers( ( uint ) _bufferHandle );
         _bufferHandle = 0;
     }
 }
