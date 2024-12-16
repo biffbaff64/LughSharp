@@ -24,6 +24,7 @@
 
 using Corelib.Lugh.Graphics.OpenGL;
 using Corelib.Lugh.Maths;
+using Corelib.Lugh.Utils;
 
 namespace Corelib.Lugh.Graphics.Profiling;
 
@@ -41,6 +42,10 @@ public abstract class BaseGLInterceptor
     // ========================================================================
     // ========================================================================
 
+    protected BaseGLInterceptor() : this( new GLProfiler( Gdx.Graphics ) )
+    {
+    }
+    
     /// <summary>
     /// Constructs a new BaseGLInterceptor instance, setting the <see cref="GLProfiler"/>
     /// to the supplied instance.
@@ -98,6 +103,7 @@ public abstract class BaseGLInterceptor
 
         while ( error != IGL.GL_NO_ERROR )
         {
+            Logger.Checkpoint();
             GLProfiler.Listener.OnError( error );
             error = Gdx.GL.GetError();
         }

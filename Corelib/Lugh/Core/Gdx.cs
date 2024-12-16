@@ -184,7 +184,7 @@ public static class Gdx
     {
         int error;
 
-        if ( ( error = GL.glGetError() ) != IGL.GL_NO_ERROR )
+        if ( ( error = GL.GetError() ) != IGL.GL_NO_ERROR )
         {
             Logger.Error( $"GL Error: {error}" );
         }

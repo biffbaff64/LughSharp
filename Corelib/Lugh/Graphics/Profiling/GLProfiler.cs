@@ -54,34 +54,6 @@ public class GLProfiler
         Listener    = new GLLoggingListener();
     }
 
-    /// <summary>
-    /// Returns the total gl calls made since the last reset
-    /// </summary>
-    public int Calls => Interceptor.Calls;
-
-    /// <summary>
-    /// Returns the total amount of texture bindings made since the last reset
-    /// </summary>
-    public int TextureBindings => Interceptor.TextureBindings;
-
-    /// <summary>
-    /// Returns the total amount of draw calls made since the last reset
-    /// </summary>
-    public int DrawCalls => Interceptor.DrawCalls;
-
-    /// <summary>
-    /// </summary>
-    /// <returns>
-    /// the total amount of shader switches made since the last reset
-    /// </returns>
-    public int ShaderSwitches => Interceptor.ShaderSwitches;
-
-    /// <summary>
-    /// Returns <see cref="FloatCounter"/> containing information about rendered
-    /// vertices since the last reset.
-    /// </summary>
-    public FloatCounter VertexCount => Interceptor.VertexCount;
-
     // ========================================================================
 
     /// <summary>
@@ -123,4 +95,34 @@ public class GLProfiler
 
         Enabled = false;
     }
+    
+    // ------------------------------------------------------------------------
+    
+    /// <summary>
+    /// Returns the total gl calls made since the last reset
+    /// </summary>
+    public int Calls => Interceptor.Calls;
+
+    /// <summary>
+    /// Returns the total amount of texture bindings made since the last reset
+    /// </summary>
+    public int TextureBindings => Interceptor.TextureBindings;
+
+    /// <summary>
+    /// Returns the total amount of draw calls made since the last reset
+    /// </summary>
+    public int DrawCalls => Interceptor.DrawCalls;
+
+    /// <summary>
+    /// </summary>
+    /// <returns>
+    /// the total amount of shader switches made since the last reset
+    /// </returns>
+    public int ShaderSwitches => Interceptor.ShaderSwitches;
+
+    /// <summary>
+    /// Returns <see cref="FloatCounter"/> containing information about rendered
+    /// vertices since the last reset.
+    /// </summary>
+    public FloatCounter VertexCount => Interceptor.VertexCount;
 }

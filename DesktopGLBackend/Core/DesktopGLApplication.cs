@@ -27,6 +27,7 @@ using System.Diagnostics.CodeAnalysis;
 using Corelib.Lugh.Core;
 using Corelib.Lugh.Graphics.GLUtils;
 using Corelib.Lugh.Graphics.OpenGL;
+using Corelib.Lugh.Graphics.Profiling;
 using Corelib.Lugh.Utils;
 using Corelib.Lugh.Utils.Collections;
 using Corelib.Lugh.Utils.Exceptions;
@@ -34,6 +35,7 @@ using Corelib.Lugh.Utils.Exceptions;
 using DesktopGLBackend.Audio;
 using DesktopGLBackend.Audio.Mock;
 using DesktopGLBackend.Files;
+using DesktopGLBackend.Graphics;
 using DesktopGLBackend.Input;
 using DesktopGLBackend.Utils;
 using DesktopGLBackend.Window;
@@ -79,6 +81,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     private          IntPtr             _currentContext;
     private          bool               _running         = true;
     private          bool               _glfwInitialised = false;
+    private          GLProfiler         _glProfiler;
 
     // ========================================================================
     // ========================================================================
@@ -127,6 +130,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         InitialiseGlfw();
 
         Windows.Add( CreateWindow( Config, listener, 0 ) );
+
+//        _glProfiler = new GLProfiler( Gdx.Graphics );
+//        _glProfiler.Enable();
     }
 
     // ========================================================================
@@ -358,9 +364,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         for ( var i = 0; i < 2; i++ )
         {
             Gdx.GL.ClearColor( config.InitialBackgroundColor.R,
-                                 config.InitialBackgroundColor.G,
-                                 config.InitialBackgroundColor.B,
-                                 config.InitialBackgroundColor.A );
+                               config.InitialBackgroundColor.G,
+                               config.InitialBackgroundColor.B,
+                               config.InitialBackgroundColor.A );
 
             Gdx.GL.Clear( IGL.GL_COLOR_BUFFER_BIT );
             Glfw.SwapBuffers( windowHandle );

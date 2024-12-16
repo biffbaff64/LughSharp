@@ -955,2485 +955,2907 @@ public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler 
     public void ProgramUniform1uiv( uint program, int location, uint[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform1uiv( program, location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform2i( uint program, int location, int v0, int v1 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform2i( program, location, v0, v1 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniform2iv( uint program, int location, int count, int* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform2iv( program, location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform2iv( uint program, int location, int[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform2iv( program, location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform2f( uint program, int location, float v0, float v1 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform2f( program, location, v0, v1 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniform2fv( uint program, int location, int count, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform2fv( program, location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform2fv( uint program, int location, float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform2fv( program, location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform2d( uint program, int location, double v0, double v1 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform2d( program, location, v0, v1 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniform2dv( uint program, int location, int count, double* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform2dv( program, location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform2dv( uint program, int location, double[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform2dv( program, location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform2ui( uint program, int location, uint v0, uint v1 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform2ui( program, location, v0, v1 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniform2uiv( uint program, int location, int count, uint* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform2uiv( program, location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform2uiv( uint program, int location, uint[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform2uiv( program, location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform3i( uint program, int location, int v0, int v1, int v2 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform3i( program, location, v0, v1, v2 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniform3iv( uint program, int location, int count, int* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform3iv( program, location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform3iv( uint program, int location, int[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform3iv( program, location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform3f( uint program, int location, float v0, float v1, float v2 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform3f( program, location, v0, v1, v2 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniform3fv( uint program, int location, int count, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform3fv( program, location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform3fv( uint program, int location, float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform3fv( program, location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform3d( uint program, int location, double v0, double v1, double v2 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform3d( program, location, v0, v1, v2 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniform3dv( uint program, int location, int count, double* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform3dv( program, location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform3dv( uint program, int location, double[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform3dv( program, location, value) ;
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform3ui( uint program, int location, uint v0, uint v1, uint v2 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform3ui( program, location, v0, v1, v2) ;
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniform3uiv( uint program, int location, int count, uint* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform3uiv( program, location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform3uiv( uint program, int location, uint[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform3uiv( program, location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform4i( uint program, int location, int v0, int v1, int v2, int v3 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform4i( program, location, v0, v1, v2, v3 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniform4iv( uint program, int location, int count, int* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform4iv( program, location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform4iv( uint program, int location, int[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform4iv( program, location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform4f( uint program, int location, float v0, float v1, float v2, float v3 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform4f( program, location, v0, v1, v2, v3 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniform4fv( uint program, int location, int count, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform4fv( program, location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform4fv( uint program, int location, float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform4fv( program, location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform4d( uint program, int location, double v0, double v1, double v2, double v3 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform4d( program, location, v0, v1, v2, v3 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniform4dv( uint program, int location, int count, double* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform4dv( program, location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform4dv( uint program, int location, double[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform4dv( program, location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform4ui( uint program, int location, uint v0, uint v1, uint v2, uint v3 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform4ui( program, location, v0, v1, v2, v3 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniform4uiv( uint program, int location, int count, uint* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform4uiv( program, location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniform4uiv( uint program, int location, uint[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniform4uiv( program, location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix2fv( uint program, int location, int count, bool transpose, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix2fv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix2fv( uint program, int location, bool transpose, float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix2fv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix3fv( uint program, int location, int count, bool transpose, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix3fv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix3fv( uint program, int location, bool transpose, float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix3fv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix4fv( uint program, int location, int count, bool transpose, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix4fv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix4fv( uint program, int location, bool transpose, float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix4fv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix2dv( uint program, int location, int count, bool transpose, double* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix2dv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix2dv( uint program, int location, bool transpose, double[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix2dv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix3dv( uint program, int location, int count, bool transpose, double* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix3dv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix3dv( uint program, int location, bool transpose, double[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix3dv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix4dv( uint program, int location, int count, bool transpose, double* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix4dv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix4dv( uint program, int location, bool transpose, double[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix4dv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix2x3fv( uint program, int location, int count, bool transpose, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix2x3fv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix2x3fv( uint program, int location, bool transpose, float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix2x3fv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix3x2fv( uint program, int location, int count, bool transpose, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix3x2fv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix3x2fv( uint program, int location, bool transpose, float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix3x2fv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix2x4fv( uint program, int location, int count, bool transpose, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix2x4fv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix2x4fv( uint program, int location, bool transpose, float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix2x4fv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix4x2fv( uint program, int location, int count, bool transpose, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix4x2fv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix4x2fv( uint program, int location, bool transpose, float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix4x2fv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix3x4fv( uint program, int location, int count, bool transpose, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix3x4fv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix3x4fv( uint program, int location, bool transpose, float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix3x4fv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix4x3fv( uint program, int location, int count, bool transpose, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix4x3fv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix4x3fv( uint program, int location, bool transpose, float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix4x3fv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix2x3dv( uint program, int location, int count, bool transpose, double* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix2x3dv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix2x3dv( uint program, int location, bool transpose, double[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix2x3dv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix3x2dv( uint program, int location, int count, bool transpose, double* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix3x2dv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix3x2dv( uint program, int location, bool transpose, double[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix3x2dv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix2x4dv( uint program, int location, int count, bool transpose, double* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix2x4dv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix2x4dv( uint program, int location, bool transpose, double[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix2x4dv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix4x2dv( uint program, int location, int count, bool transpose, double* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix4x2dv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix4x2dv( uint program, int location, bool transpose, double[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix4x2dv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix3x4dv( uint program, int location, int count, bool transpose, double* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix3x4dv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix3x4dv( uint program, int location, bool transpose, double[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix3x4dv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ProgramUniformMatrix4x3dv( uint program, int location, int count, bool transpose, double* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix4x3dv( program, location, count, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ProgramUniformMatrix4x3dv( uint program, int location, bool transpose, double[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ProgramUniformMatrix4x3dv( program, location, transpose, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ValidateProgramPipeline( uint pipeline )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ValidateProgramPipeline( pipeline );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetProgramPipelineInfoLog( uint pipeline, int bufSize, int* length, byte* infoLog )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetProgramPipelineInfoLog( pipeline, bufSize, length, infoLog );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public string GetProgramPipelineInfoLog( uint pipeline, int bufSize )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.GetProgramPipelineInfoLog( pipeline, bufSize );
+        CheckErrors();
+        
+        return result;
     }
 
     /// <inheritdoc />
     public void VertexAttribL1d( uint index, double x )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribL1d( index, x );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexAttribL2d( uint index, double x, double y )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribL2d( index, x, y );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexAttribL3d( uint index, double x, double y, double z )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribL3d( index, x, y, z );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexAttribL4d( uint index, double x, double y, double z, double w )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribL4d( index, x, y, z, w );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void VertexAttribL1dv( uint index, double* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribL1dv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexAttribL1dv( uint index, double[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribL1dv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void VertexAttribL2dv( uint index, double* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribL2dv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexAttribL2dv( uint index, double[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribL2dv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void VertexAttribL3dv( uint index, double* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribL3dv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexAttribL3dv( uint index, double[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribL3dv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void VertexAttribL4dv( uint index, double* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribL4dv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexAttribL4dv( uint index, double[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribL4dv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void VertexAttribLPointer( uint index, int size, int type, int stride, void* pointer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribLPointer( index, size, type, stride, pointer );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexAttribLPointer( uint index, int size, int type, int stride, int pointer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribLPointer( index, size, type, stride, pointer );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetVertexAttribLdv( uint index, int pname, double* parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetVertexAttribLdv( index, pname, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetVertexAttribLdv( uint index, int pname, ref double[] parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetVertexAttribLdv( index, pname, ref parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ViewportArrayv( uint first, int count, float* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ViewportArrayv( first, count, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ViewportArrayv( uint first, int count, params float[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ViewportArrayv( first, count, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ViewportIndexedf( uint index, float x, float y, float w, float h )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ViewportIndexedf( index, x, y, w, h );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ViewportIndexedfv( uint index, float* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ViewportIndexedfv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ViewportIndexedfv( uint index, params float[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ViewportIndexedfv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ScissorArrayv( uint first, int count, int* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ScissorArrayv( first, count, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ScissorArrayv( uint first, int count, params int[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ScissorArrayv( first, count, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ScissorIndexed( uint index, int left, int bottom, int width, int height )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ScissorIndexed( index, left, bottom, width, height );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ScissorIndexedv( uint index, int* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ScissorIndexedv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ScissorIndexedv( uint index, params int[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ScissorIndexedv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void DepthRangeArrayv( uint first, int count, double* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DepthRangeArrayv( first, count, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void DepthRangeArrayv( uint first, int count, params double[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DepthRangeArrayv( first, count, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void DepthRangeIndexed( uint index, double n, double f )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DepthRangeIndexed( index, n, f );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetFloati_v( int target, uint index, float* data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetFloati_v( target, index, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetFloati_v( int target, uint index, ref float[] data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetFloati_v( target, index, ref data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetDoublei_v( int target, uint index, double* data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetDoublei_v( target, index, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetDoublei_v( int target, uint index, ref double[] data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetDoublei_v( target, index, ref data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void DrawArraysInstancedBaseInstance( int mode, int first, int count, int instancecount, uint baseinstance )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DrawArraysInstancedBaseInstance( mode, first, count, instancecount, baseinstance );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void DrawElementsInstancedBaseInstance( int mode, int count, int type, void* indices, int instancecount, uint baseinstance )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DrawElementsInstancedBaseInstance( mode, count, type, indices, instancecount, baseinstance );
+        CheckErrors();
     }
 
     /// <inheritdoc />
-    public void DrawElementsInstancedBaseInstance< T >( int mode, int count, int type, T[] indices, int instancecount, uint baseinstance ) where T : unmanaged, IUnsignedNumber< T >
+    public void DrawElementsInstancedBaseInstance< T >( int mode, int count, int type, T[] indices, int instancecount, uint baseinstance )
+        where T : unmanaged, IUnsignedNumber< T >
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DrawElementsInstancedBaseInstance( mode, count, type, indices, instancecount, baseinstance );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void DrawElementsInstancedBaseVertexBaseInstance( int mode, int count, int type, void* indices, int instancecount, int basevertex, uint baseinstance )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DrawElementsInstancedBaseVertexBaseInstance( mode, count, type, indices, instancecount, basevertex, baseinstance );
+        CheckErrors();
     }
 
     /// <inheritdoc />
-    public void DrawElementsInstancedBaseVertexBaseInstance< T >( int mode, int count, int type, T[] indices, int instancecount, int basevertex, uint baseinstance ) where T : unmanaged, IUnsignedNumber< T >
+    public void DrawElementsInstancedBaseVertexBaseInstance< T >( int mode, int count, int type, T[] indices, int instancecount, int basevertex, uint baseinstance )
+        where T : unmanaged, IUnsignedNumber< T >
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DrawElementsInstancedBaseVertexBaseInstance( mode, count, type, indices, instancecount, basevertex, baseinstance );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetInternalformativ( int target, int internalformat, int pname, int bufSize, int* parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetInternalformativ( target, internalformat, pname, bufSize, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetInternalformativ( int target, int internalformat, int pname, int bufSize, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetInternalformativ( target, internalformat, pname, bufSize, ref parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetActiveAtomicCounterBufferiv( uint program, uint bufferIndex, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetActiveAtomicCounterBufferiv( program, bufferIndex, pname, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetActiveAtomicCounterBufferiv( uint program, uint bufferIndex, int pname, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetActiveAtomicCounterBufferiv( program, bufferIndex, pname, ref parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void BindImageTexture( uint unit, uint texture, int level, bool layered, int layer, int access, int format )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BindImageTexture( unit, texture, level, layered, layer, access, format );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void MemoryBarrier( uint barriers )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.MemoryBarrier( barriers );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TexStorage1D( int target, int levels, int internalformat, int width )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TexStorage1D( target, levels, internalformat, width);
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TexStorage2D( int target, int levels, int internalformat, int width, int height )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TexStorage2D( target, levels, internalformat, width, height );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TexStorage3D( int target, int levels, int internalformat, int width, int height, int depth )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TexStorage3D( target, levels, internalformat, width, height, depth );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void DrawTransformFeedbackInstanced( int mode, uint id, int instancecount )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DrawTransformFeedbackInstanced( mode, id, instancecount );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void DrawTransformFeedbackStreamInstanced( int mode, uint id, uint stream, int instancecount )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DrawTransformFeedbackStreamInstanced( mode, id, stream, instancecount );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetPointerv( int pname, void** parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetPointerv( pname, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetPointerv( int pname, ref IntPtr[] parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetPointerv( pname, ref parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ClearBufferData( int target, int internalformat, int format, int type, void* data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearBufferData( target, internalformat, format, type, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ClearBufferData< T >( int target, int internalformat, int format, int type, T[] data ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearBufferData( target, internalformat, format, type, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ClearBufferSubData( int target, int internalformat, int offset, int size, int format, int type, void* data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearBufferSubData( target, internalformat, offset, size, format, type, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ClearBufferSubData< T >( int target, int internalformat, int offset, int size, int format, int type, T[] data ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearBufferSubData( target, internalformat, offset, size, format, type, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
-    public void DispatchCompute( uint num_groups_x, uint num_groups_y, uint num_groups_z )
+    public void DispatchCompute( uint numGroupsX, uint numGroupsY, uint numGroupsZ )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DispatchCompute( numGroupsX, numGroupsY, numGroupsZ );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void DispatchComputeIndirect( void* indirect )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DispatchComputeIndirect( indirect );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void DispatchComputeIndirect( GLBindings.DispatchIndirectCommand indirect )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DispatchComputeIndirect( indirect );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void CopyImageSubData( uint srcName, int srcTarget, int srcLevel, int srcX, int srcY, int srcZ, uint dstName, int dstTarget, int dstLevel, int dstX, int dstY, int dstZ, int srcWidth, int srcHeight, int srcDepth )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CopyImageSubData( srcName, srcTarget, srcLevel, srcX, srcY, srcZ, dstName, dstTarget, dstLevel, dstX, dstY, dstZ, srcWidth, srcHeight, srcDepth );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void FramebufferParameteri( int target, int pname, int param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.FramebufferParameteri( target, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetFramebufferParameteriv( int target, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetFramebufferParameteriv( target, pname, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetFramebufferParameteriv( int target, int pname, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetFramebufferParameteriv( target, pname, ref parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetInternalformati64v( int target, int internalformat, int pname, int count, long* parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetInternalformati64v( target, internalformat, pname, count, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetInternalformati64v( int target, int internalformat, int pname, int count, ref long[] parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetInternalformati64v( target, internalformat, pname, count, ref parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void InvalidateTexSubImage( uint texture, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.InvalidateTexSubImage( texture, level, xoffset, yoffset, zoffset, width, height, depth );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void InvalidateTexImage( uint texture, int level )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.InvalidateTexImage( texture, level );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void InvalidateBufferSubData( uint buffer, int offset, int length )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.InvalidateBufferSubData( buffer, offset, length );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void InvalidateBufferData( uint buffer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.InvalidateBufferData( buffer );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void InvalidateFramebuffer( int target, int numAttachments, int* attachments )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.InvalidateFramebuffer( target, numAttachments, attachments );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void InvalidateFramebuffer( int target, int numAttachments, int[] attachments )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.InvalidateFramebuffer( target, numAttachments, attachments );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void InvalidateSubFramebuffer( int target, int numAttachments, int* attachments, int x, int y, int width, int height )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.InvalidateSubFramebuffer( target, numAttachments, attachments, x, y, width, height );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void InvalidateSubFramebuffer( int target, int numAttachments, int[] attachments, int x, int y, int width, int height )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.InvalidateSubFramebuffer( target, numAttachments, attachments, x, y, width, height );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void MultiDrawArraysIndirect( int mode, void* indirect, int drawcount, int stride )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.MultiDrawArraysIndirect( mode, indirect, drawcount, stride );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void MultiDrawArraysIndirect( int mode, GLBindings.DrawArraysIndirectCommand indirect, int drawcount, int stride )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.MultiDrawArraysIndirect( mode, indirect, drawcount, stride );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void MultiDrawElementsIndirect( int mode, int type, void* indirect, int drawcount, int stride )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.MultiDrawElementsIndirect( mode, type, indirect, drawcount, stride );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void MultiDrawElementsIndirect( int mode, int type, GLBindings.DrawElementsIndirectCommand indirect, int drawcount, int stride )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.MultiDrawElementsIndirect( mode, type, indirect, drawcount, stride );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetProgramInterfaceiv( uint program, int programInterface, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetProgramInterfaceiv( program, programInterface, pname, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetProgramInterfaceiv( uint program, int programInterface, int pname, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetProgramInterfaceiv( program, programInterface, pname, ref parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe uint GetProgramResourceIndex( uint program, int programInterface, byte* name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.GetProgramResourceIndex( program, programInterface, name );
+        CheckErrors();
+        
+        return result;
     }
 
     /// <inheritdoc />
     public uint GetProgramResourceIndex( uint program, int programInterface, string name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.GetProgramResourceIndex( program, programInterface, name );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public unsafe void GetProgramResourceName( uint program, int programInterface, uint index, int bufSize, int* length, byte* name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetProgramResourceName( program, programInterface, index, bufSize, length, name );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public string GetProgramResourceName( uint program, int programInterface, uint index, int bufSize )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.GetProgramResourceName( program, programInterface, index, bufSize );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public unsafe void GetProgramResourceiv( uint program, int programInterface, uint index, int propCount, int* props, int bufSize, int* length, int* parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetProgramResourceiv( program, programInterface, index, propCount, props, bufSize, length, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetProgramResourceiv( uint program, int programInterface, uint index, int[] props, int bufSize, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetProgramResourceiv( program, programInterface, index, props, bufSize, ref parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe int GetProgramResourceLocation( uint program, int programInterface, byte* name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.GetProgramResourceLocation( program, programInterface, name );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public int GetProgramResourceLocation( uint program, int programInterface, string name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.GetProgramResourceLocation( program, programInterface, name );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public unsafe int GetProgramResourceLocationIndex( uint program, int programInterface, byte* name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.GetProgramResourceLocationIndex( program, programInterface, name );
+        CheckErrors();
+        
+        return result;
     }
 
     /// <inheritdoc />
     public int GetProgramResourceLocationIndex( uint program, int programInterface, string name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.GetProgramResourceLocationIndex( program, programInterface, name );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public void ShaderStorageBlockBinding( uint program, uint storageBlockIndex, uint storageBlockBinding )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ShaderStorageBlockBinding( program, storageBlockIndex, storageBlockBinding );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TexBufferRange( int target, int internalformat, uint buffer, int offset, int size )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TexBufferRange( target, internalformat, buffer, offset, size );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TexStorage2DMultisample( int target, int samples, int internalformat, int width, int height, bool fixedsamplelocations )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TexStorage2DMultisample( target, samples, internalformat, width, height, fixedsamplelocations );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TexStorage3DMultisample( int target, int samples, int internalformat, int width, int height, int depth, bool fixedsamplelocations )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TexStorage3DMultisample( target, samples, internalformat, width, height, depth, fixedsamplelocations );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TextureView( uint texture, int target, uint origtexture, int internalformat, uint minlevel, uint numlevels, uint minlayer, uint numlayers )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureView( texture, target, origtexture, internalformat, minlevel, numlevels, minlayer, numlayers );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void BindVertexBuffer( uint bindingindex, uint buffer, int offset, int stride )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BindVertexBuffer( bindingindex, buffer, offset, stride );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexAttribFormat( uint attribindex, int size, int type, bool normalized, uint relativeoffset )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribFormat( attribindex, size, type, normalized, relativeoffset );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexAttribIFormat( uint attribindex, int size, int type, uint relativeoffset )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribIFormat( attribindex, size, type, relativeoffset );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexAttribLFormat( uint attribindex, int size, int type, uint relativeoffset )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribLFormat( attribindex, size, type, relativeoffset );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexAttribBinding( uint attribindex, uint bindingindex )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexAttribBinding( attribindex, bindingindex );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexBindingDivisor( uint bindingindex, uint divisor )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexBindingDivisor( bindingindex, divisor );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void DebugMessageControl( int source, int type, int severity, int count, uint* ids, bool enabled )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DebugMessageControl( source, type, severity, count, ids, enabled );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void DebugMessageControl( int source, int type, int severity, uint[] ids, bool enabled )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DebugMessageControl( source, type, severity, ids, enabled );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void DebugMessageInsert( int source, int type, uint id, int severity, int length, byte* buf )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DebugMessageInsert( source, type, id, severity, length, buf );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void DebugMessageInsert( int source, int type, uint id, int severity, string buf )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DebugMessageInsert( source, type, id, severity, buf );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void DebugMessageCallback( GLBindings.GLDEBUGPROC callback, void* userParam )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DebugMessageCallback( callback, userParam );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void DebugMessageCallback( GLBindings.GLDEBUGPROCSAFE callback, void* userParam )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DebugMessageCallback( callback, userParam );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe uint GetDebugMessageLog( uint count, int bufsize, int* sources, int* types, uint* ids, int* severities, int* lengths, byte* messageLog )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.GetDebugMessageLog( count, bufsize, sources, types, ids, severities, lengths, messageLog );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public uint GetDebugMessageLog( uint count, int bufSize, out int[] sources, out int[] types, out uint[] ids, out int[] severities, out string[] messageLog )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.GetDebugMessageLog( count, bufSize, out sources, out types, out ids, out severities, out messageLog );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public unsafe void PushDebugGroup( int source, uint id, int length, byte* message )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.PushDebugGroup( source, id, length, message );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void PushDebugGroup( int source, uint id, string message )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.PushDebugGroup( source, id, message );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void PopDebugGroup()
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.PopDebugGroup();
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ObjectLabel( int identifier, uint name, int length, byte* label )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ObjectLabel( identifier, name, length, label );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ObjectLabel( int identifier, uint name, string label )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ObjectLabel( identifier, name, label );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetObjectLabel( int identifier, uint name, int bufSize, int* length, byte* label )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetObjectLabel( identifier, name, bufSize, length, label );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public string GetObjectLabel( int identifier, uint name, int bufSize )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.GetObjectLabel( identifier, name, bufSize );
+        CheckErrors();
+        
+        return result;
     }
 
     /// <inheritdoc />
     public unsafe void ObjectPtrLabel( void* ptr, int length, byte* label )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ObjectPtrLabel( ptr, length, label );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ObjectPtrLabel( IntPtr ptr, string label )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ObjectPtrLabel( ptr, label );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetObjectPtrLabel( void* ptr, int bufSize, int* length, byte* label )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetObjectPtrLabel( ptr, bufSize, length, label );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public string GetObjectPtrLabel( IntPtr ptr, int bufSize )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.GetObjectPtrLabel( ptr, bufSize );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public unsafe void BufferStorage( int target, int size, void* data, uint flags )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BufferStorage( target, size, data, flags );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void BufferStorage< T >( int target, T[] data, uint flags ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BufferStorage( target, data, flags );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ClearTexImage( uint texture, int level, int format, int type, void* data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearTexImage( texture, level, format, type, data) ;
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ClearTexImage< T >( uint texture, int level, int format, int type, T[] data ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearTexImage( texture, level, format, type, data ) ;
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ClearTexSubImage( uint texture, int level, int xOffset, int yOffset, int zOffset, int width, int height, int depth, int format, int type, void* data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearTexSubImage( texture, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ClearTexSubImage< T >( uint texture, int level, int xOffset, int yOffset, int zOffset, int width, int height, int depth, int format, int type, T[] data ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearTexSubImage( texture, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void BindBuffersBase( int target, uint first, int count, uint* buffers )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BindBuffersBase( target, first, count, buffers );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void BindBuffersBase( int target, uint first, uint[] buffers )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BindBuffersBase( target, first, buffers );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void BindBuffersRange( int target, uint first, int count, uint* buffers, int* offsets, int* sizes )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BindBuffersRange( target, first, count, buffers, offsets, sizes );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void BindBuffersRange( int target, uint first, uint[] buffers, int[] offsets, int[] sizes )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BindBuffersRange( target, first, buffers, offsets, sizes );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void BindTextures( uint first, int count, uint* textures )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BindTextures( first, count, textures );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void BindTextures( uint first, uint[] textures )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BindTextures( first, textures );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void BindSamplers( uint first, int count, uint* samplers )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BindSamplers( first, count, samplers );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void BindSamplers( uint first, uint[] samplers )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BindSamplers( first, samplers );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void BindImageTextures( uint first, int count, uint* textures )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BindImageTextures( first, count, textures );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void BindImageTextures( uint first, uint[] textures )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BindImageTextures( first, textures );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void BindVertexBuffers( uint first, int count, uint* buffers, int* offsets, int* strides )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BindVertexBuffers( first, count, buffers, offsets, strides );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void BindVertexBuffers( uint first, uint[] buffers, int[] offsets, int[] strides )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BindVertexBuffers( first, buffers, offsets, strides );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ClipControl( int origin, int depth )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClipControl( origin, depth );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void CreateTransformFeedbacks( int n, uint* ids )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CreateTransformFeedbacks( n, ids );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public uint[] CreateTransformFeedbacks( int n )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.CreateTransformFeedbacks(n);
+        CheckErrors();
+        
+        return result;
     }
 
     /// <inheritdoc />
     public uint CreateTransformFeedbacks()
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.CreateTransformFeedbacks();
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public void TransformFeedbackBufferBase( uint xfb, uint index, uint buffer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TransformFeedbackBufferBase( xfb, index, buffer );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TransformFeedbackBufferRange( uint xfb, uint index, uint buffer, int offset, int size )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TransformFeedbackBufferRange( xfb, index, buffer, offset, size );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetTransformFeedbackiv( uint xfb, int pname, int* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTransformFeedbackiv( xfb, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetTransformFeedbackiv( uint xfb, int pname, ref int[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTransformFeedbackiv( xfb, pname, ref param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetTransformFeedbacki_v( uint xfb, int pname, uint index, int* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTransformFeedbacki_v( xfb, pname, index, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetTransformFeedbacki_v( uint xfb, int pname, uint index, ref int[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTransformFeedbacki_v( xfb, pname, index, ref param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetTransformFeedbacki64_v( uint xfb, int pname, uint index, long* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTransformFeedbacki64_v( xfb, pname, index, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetTransformFeedbacki64_v( uint xfb, int pname, uint index, ref long[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTransformFeedbacki64_v( xfb, pname, index, ref param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void CreateBuffers( int n, uint* buffers )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CreateBuffers( n, buffers );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public uint[] CreateBuffers( int n )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.CreateBuffers( n );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public uint CreateBuffer()
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.CreateBuffer();
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public unsafe void NamedBufferStorage( uint buffer, int size, void* data, uint flags )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.NamedBufferStorage( buffer, size, data, flags );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void NamedBufferStorage< T >( uint buffer, int size, T[] data, uint flags ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.NamedBufferStorage( buffer, size, data, flags );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void NamedBufferData( uint buffer, int size, void* data, int usage )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.NamedBufferData( buffer, size, data, usage );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void NamedBufferData< T >( uint buffer, int size, T[] data, int usage ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.NamedBufferData( buffer, size, data, usage );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void NamedBufferSubData( uint buffer, int offset, int size, void* data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.NamedBufferSubData( buffer, offset, size, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void NamedBufferSubData< T >( uint buffer, int offset, int size, T[] data ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.NamedBufferSubData( buffer, offset, size, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void CopyNamedBufferSubData( uint readBuffer, uint writeBuffer, int readOffset, int writeOffset, int size )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CopyNamedBufferSubData( readBuffer, writeBuffer, readOffset, writeOffset, size );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ClearNamedBufferData( uint buffer, int internalformat, int format, int type, void* data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearNamedBufferData( buffer, internalformat, format, type, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ClearNamedBufferData< T >( uint buffer, int internalformat, int format, int type, T[] data ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearNamedBufferData( buffer, internalformat, format, type, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ClearNamedBufferSubData( uint buffer, int internalformat, int offset, int size, int format, int type, void* data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearNamedBufferSubData( buffer, internalformat, offset, size, format, type, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ClearNamedBufferSubData< T >( uint buffer, int internalformat, int offset, int size, int format, int type, T[] data ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearNamedBufferSubData( buffer, internalformat, offset, size, format, type, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void* MapNamedBuffer( uint buffer, int access )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.MapNamedBuffer( buffer, access );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public Span< T > MapNamedBuffer< T >( uint buffer, int access ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.MapNamedBuffer< T >( buffer, access );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public unsafe void* MapNamedBufferRange( uint buffer, int offset, int length, uint access )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.MapNamedBufferRange( buffer, offset, length, access );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public Span< T > MapNamedBufferRange< T >( uint buffer, int offset, int length, uint access ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.MapNamedBufferRange< T >( buffer, offset, length, access );
+        CheckErrors();
+        
+        return result;
     }
 
     /// <inheritdoc />
     public bool UnmapNamedBuffer( uint buffer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.UnmapNamedBuffer( buffer );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public void FlushMappedNamedBufferRange( uint buffer, int offset, int length )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.FlushMappedNamedBufferRange( buffer, offset, length );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetNamedBufferParameteriv( uint buffer, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetNamedBufferParameteriv( buffer, pname, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetNamedBufferParameteriv( uint buffer, int pname, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetNamedBufferParameteriv( buffer, pname, ref parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetNamedBufferParameteri64v( uint buffer, int pname, long* parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetNamedBufferParameteri64v( buffer, pname, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetNamedBufferParameteri64v( uint buffer, int pname, ref long[] parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetNamedBufferParameteri64v( buffer, pname, ref parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetNamedBufferPointerv( uint buffer, int pname, void** parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetNamedBufferPointerv( buffer, pname, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetNamedBufferPointerv( uint buffer, int pname, ref IntPtr[] parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetNamedBufferPointerv( buffer, pname, ref parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetNamedBufferSubData( uint buffer, int offset, int size, void* data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetNamedBufferSubData( buffer, offset, size, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public T[] GetNamedBufferSubData< T >( uint buffer, int offset, int size ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.GetNamedBufferSubData< T >( buffer, offset, size );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public unsafe void CreateFramebuffers( int n, uint* framebuffers )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CreateFramebuffers( n, framebuffers );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public uint[] CreateFramebuffers( int n )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.CreateFramebuffers( n );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public uint CreateFramebuffer()
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.CreateFramebuffer();
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public void NamedFramebufferRenderbuffer( uint framebuffer, int attachment, int renderbuffertarget, uint renderbuffer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.NamedFramebufferRenderbuffer( framebuffer, attachment, renderbuffertarget, renderbuffer );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void NamedFramebufferParameteri( uint framebuffer, int pname, int param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.NamedFramebufferParameteri( framebuffer, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void NamedFramebufferTexture( uint framebuffer, int attachment, uint texture, int level )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.NamedFramebufferTexture( framebuffer, attachment, texture, level );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void NamedFramebufferTextureLayer( uint framebuffer, int attachment, uint texture, int level, int layer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.NamedFramebufferTextureLayer( framebuffer, attachment, texture, level, layer );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void NamedFramebufferDrawBuffer( uint framebuffer, int buf )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.NamedFramebufferDrawBuffer( framebuffer, buf );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void NamedFramebufferDrawBuffers( uint framebuffer, int n, int* bufs )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.NamedFramebufferDrawBuffers( framebuffer, n, bufs );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void NamedFramebufferDrawBuffers( uint framebuffer, int[] bufs )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.NamedFramebufferDrawBuffers( framebuffer, bufs );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void NamedFramebufferReadBuffer( uint framebuffer, int src )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.NamedFramebufferReadBuffer( framebuffer, src );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void InvalidateNamedFramebufferData( uint framebuffer, int numAttachments, int* attachments )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.InvalidateNamedFramebufferData( framebuffer, numAttachments, attachments );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void InvalidateNamedFramebufferData( uint framebuffer, int[] attachments )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.InvalidateNamedFramebufferData( framebuffer, attachments );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void InvalidateNamedFramebufferSubData( uint framebuffer, int numAttachments, int* attachments, int x, int y, int width, int height )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.InvalidateNamedFramebufferSubData( framebuffer, numAttachments, attachments, x, y, width, height );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void InvalidateNamedFramebufferSubData( uint framebuffer, int[] attachments, int x, int y, int width, int height )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.InvalidateNamedFramebufferSubData( framebuffer, attachments, x, y, width, height );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ClearNamedFramebufferiv( uint framebuffer, int buffer, int drawbuffer, int* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearNamedFramebufferiv( framebuffer, buffer, drawbuffer, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ClearNamedFramebufferiv( uint framebuffer, int buffer, int drawbuffer, int[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearNamedFramebufferiv( framebuffer, buffer, drawbuffer, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ClearNamedFramebufferuiv( uint framebuffer, int buffer, int drawbuffer, uint* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearNamedFramebufferuiv( framebuffer, buffer, drawbuffer, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ClearNamedFramebufferuiv( uint framebuffer, int buffer, int drawbuffer, uint[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearNamedFramebufferuiv( framebuffer, buffer, drawbuffer, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void ClearNamedFramebufferfv( uint framebuffer, int buffer, int drawbuffer, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearNamedFramebufferfv( framebuffer, buffer, drawbuffer, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ClearNamedFramebufferfv( uint framebuffer, int buffer, int drawbuffer, float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearNamedFramebufferfv( framebuffer, buffer, drawbuffer, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void ClearNamedFramebufferfi( uint framebuffer, int buffer, float depth, int stencil )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.ClearNamedFramebufferfi( framebuffer, buffer, depth, stencil );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void BlitNamedFramebuffer( uint readFramebuffer, uint drawFramebuffer, int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, uint mask, int filter )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BlitNamedFramebuffer( readFramebuffer, drawFramebuffer, srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public int CheckNamedFramebufferStatus( uint framebuffer, int target )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.CheckNamedFramebufferStatus( framebuffer, target );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public unsafe void GetNamedFramebufferParameteriv( uint framebuffer, int pname, int* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetNamedFramebufferParameteriv( framebuffer, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetNamedFramebufferParameteriv( uint framebuffer, int pname, ref int[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetNamedFramebufferParameteriv( framebuffer, pname, ref param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void GetNamedFramebufferAttachmentParameteriv( uint framebuffer, int attachment, int pname, int* params_ )
+    public unsafe void GetNamedFramebufferAttachmentParameteriv( uint framebuffer, int attachment, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetNamedFramebufferAttachmentParameteriv( framebuffer, attachment, pname, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
-    public void GetNamedFramebufferAttachmentParameteriv( uint framebuffer, int attachment, int pname, ref int[] params_ )
+    public void GetNamedFramebufferAttachmentParameteriv( uint framebuffer, int attachment, int pname, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetNamedFramebufferAttachmentParameteriv( framebuffer, attachment, pname, ref parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void CreateRenderbuffers( int n, uint* renderbuffers )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CreateRenderbuffers( n, renderbuffers );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public uint[] CreateRenderbuffers( int n )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.CreateRenderbuffers( n );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public uint CreateRenderbuffer()
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.CreateRenderbuffer();
+        CheckErrors();
+        
+        return result;
     }
 
     /// <inheritdoc />
     public void NamedRenderbufferStorage( uint renderbuffer, int internalformat, int width, int height )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.NamedRenderbufferStorage( renderbuffer, internalformat, width, height );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void NamedRenderbufferStorageMultisample( uint renderbuffer, int samples, int internalformat, int width, int height )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.NamedRenderbufferStorageMultisample( renderbuffer, samples, internalformat, width, height );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetNamedRenderbufferParameteriv( uint renderbuffer, int pname, int* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetNamedRenderbufferParameteriv( renderbuffer, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetNamedRenderbufferParameteriv( uint renderbuffer, int pname, ref int[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetNamedRenderbufferParameteriv( renderbuffer, pname, ref param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void CreateTextures( int target, int n, uint* textures )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CreateTextures( target, n, textures );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public uint[] CreateTextures( int target, int n )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.CreateTextures( target, n );
+        CheckErrors();
+        
+        return result;
     }
 
     /// <inheritdoc />
     public uint CreateTexture( int target )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.CreateTexture( target );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public void TextureBuffer( uint texture, int internalformat, uint buffer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureBuffer( texture, internalformat, buffer );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TextureBufferRange( uint texture, int internalformat, uint buffer, int offset, int size )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureBufferRange( texture, internalformat, buffer, offset, size );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TextureStorage1D( uint texture, int levels, int internalformat, int width )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureStorage1D( texture, levels, internalformat, width );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TextureStorage2D( uint texture, int levels, int internalformat, int width, int height )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureStorage2D( texture, levels, internalformat, width, height );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TextureStorage3D( uint texture, int levels, int internalformat, int width, int height, int depth )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureStorage3D( texture, levels, internalformat, width, height, depth );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TextureStorage2DMultisample( uint texture, int samples, int internalformat, int width, int height, bool fixedsamplelocations )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureStorage2DMultisample( texture, samples, internalformat, width, height, fixedsamplelocations );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TextureStorage3DMultisample( uint texture, int samples, int internalformat, int width, int height, int depth, bool fixedsamplelocations )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureStorage3DMultisample( texture, samples, internalformat, width, height, depth, fixedsamplelocations );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void TextureSubImage1D( uint texture, int level, int xoffset, int width, int format, int type, void* pixels )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureSubImage1D( texture, level, xoffset, width, format, type, pixels );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TextureSubImage1D< T >( uint texture, int level, int xoffset, int width, int format, int type, T[] pixels ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureSubImage1D( texture, level, xoffset, width, format, type, pixels );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void TextureSubImage2D( uint texture, int level, int xoffset, int yoffset, int width, int height, int format, int type, void* pixels )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureSubImage2D( texture, level, xoffset, yoffset, width, height, format, type, pixels );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TextureSubImage2D< T >( uint texture, int level, int xoffset, int yoffset, int width, int height, int format, int type, T[] pixels ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureSubImage2D( texture, level, xoffset, yoffset, width, height, format, type, pixels );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void TextureSubImage3D( uint texture, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, void* pixels )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureSubImage3D( texture, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TextureSubImage3D< T >( uint texture, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, T[] pixels ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureSubImage3D( texture, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void CompressedTextureSubImage1D( uint texture, int level, int xoffset, int width, int format, int imageSize, void* data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CompressedTextureSubImage1D( texture, level, xoffset, width, format, imageSize, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void CompressedTextureSubImage1D( uint texture, int level, int xoffset, int width, int format, int imageSize, byte[] data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CompressedTextureSubImage1D( texture, level, xoffset, width, format, imageSize, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void CompressedTextureSubImage2D( uint texture, int level, int xoffset, int yoffset, int width, int height, int format, int imageSize, void* data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CompressedTextureSubImage2D( texture, level, xoffset, yoffset, width, height, format, imageSize, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void CompressedTextureSubImage2D( uint texture, int level, int xoffset, int yoffset, int width, int height, int format, int imageSize, byte[] data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CompressedTextureSubImage2D( texture, level, xoffset, yoffset, width, height, format, imageSize, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void CompressedTextureSubImage3D( uint texture, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int imageSize, void* data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CompressedTextureSubImage3D( texture, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void CompressedTextureSubImage3D( uint texture, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int imageSize, byte[] data )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CompressedTextureSubImage3D( texture, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void CopyTextureSubImage1D( uint texture, int level, int xoffset, int x, int y, int width )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CopyTextureSubImage1D( texture, level, xoffset, x, y, width );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void CopyTextureSubImage2D( uint texture, int level, int xoffset, int yoffset, int x, int y, int width, int height )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CopyTextureSubImage2D( texture, level, xoffset, yoffset, x, y, width, height );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void CopyTextureSubImage3D( uint texture, int level, int xoffset, int yoffset, int zoffset, int x, int y, int width, int height )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CopyTextureSubImage3D( texture, level, xoffset, yoffset, zoffset, x, y, width, height );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TextureParameterf( uint texture, int pname, float param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureParameterf( texture, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void TextureParameterfv( uint texture, int pname, float* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureParameterfv( texture, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TextureParameterfv( uint texture, int pname, float[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureParameterfv( texture, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TextureParameteri( uint texture, int pname, int param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureParameteri( texture, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void TextureParameterIiv( uint texture, int pname, int* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureParameterIiv( texture, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TextureParameterIiv( uint texture, int pname, int[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureParameterIiv( texture, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void TextureParameterIuiv( uint texture, int pname, uint* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureParameterIuiv( texture, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TextureParameterIuiv( uint texture, int pname, uint[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureParameterIuiv( texture, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void TextureParameteriv( uint texture, int pname, int* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureParameteriv( texture, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void TextureParameteriv( uint texture, int pname, int[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.TextureParameteriv( texture, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GenerateTextureMipmap( uint texture )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GenerateTextureMipmap( texture );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void BindTextureUnit( uint unit, uint texture )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.BindTextureUnit( unit, texture );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetTextureImage( uint texture, int level, int format, int type, int bufSize, void* pixels )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTextureImage( texture, level, format, type, bufSize, pixels );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public T[] GetTextureImage< T >( uint texture, int level, int format, int type, int bufSize ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.GetTextureImage< T >( texture, level, format, type, bufSize );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public unsafe void GetCompressedTextureImage( uint texture, int level, int bufSize, void* pixels )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetCompressedTextureImage( texture, level, bufSize, pixels );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public byte[] GetCompressedTextureImage( uint texture, int level, int bufSize )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.GetCompressedTextureImage( texture, level, bufSize );
+        CheckErrors();
+        
+        return result;
     }
 
     /// <inheritdoc />
     public unsafe void GetTextureLevelParameterfv( uint texture, int level, int pname, float* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTextureLevelParameterfv( texture, level, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetTextureLevelParameterfv( uint texture, int level, int pname, ref float[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTextureLevelParameterfv( texture, level, pname, ref param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetTextureLevelParameteriv( uint texture, int level, int pname, int* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTextureLevelParameteriv( texture, level, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetTextureLevelParameteriv( uint texture, int level, int pname, ref int[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTextureLevelParameteriv( texture, level, pname, ref param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetTextureParameterfv( uint texture, int pname, float* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTextureParameterfv( texture, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetTextureParameterfv( uint texture, int pname, ref float[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTextureParameterfv( texture, pname, ref param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetTextureParameterIiv( uint texture, int pname, int* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTextureParameterIiv( texture, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetTextureParameterIiv( uint texture, int pname, ref int[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTextureParameterIiv( texture, pname, ref param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetTextureParameterIuiv( uint texture, int pname, uint* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTextureParameterIuiv( texture, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetTextureParameterIuiv( uint texture, int pname, ref uint[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTextureParameterIuiv( texture, pname, ref param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetTextureParameteriv( uint texture, int pname, int* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTextureParameteriv( texture, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void GetTextureParameteriv( uint texture, int pname, ref int[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.GetTextureParameteriv( texture, pname, ref param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void CreateVertexArrays( int n, uint* arrays )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.CreateVertexArrays( n, arrays );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public uint[] CreateVertexArrays( int n )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.CreateVertexArrays( n );
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public uint CreateVertexArray()
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.CreateVertexArray();
+        CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public void DisableVertexArrayAttrib( uint vaobj, uint index )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.DisableVertexArrayAttrib( vaobj, index );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void EnableVertexArrayAttrib( uint vaobj, uint index )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.EnableVertexArrayAttrib( vaobj, index );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexArrayElementBuffer( uint vaobj, uint buffer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexArrayElementBuffer( vaobj, buffer );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexArrayVertexBuffer( uint vaobj, uint bindingindex, uint buffer, int offset, int stride )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexArrayVertexBuffer( vaobj, bindingindex, buffer, offset, stride );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void VertexArrayVertexBuffers( uint vaobj, uint first, int count, uint* buffers, int* offsets, int* strides )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexArrayVertexBuffers( vaobj, first, count, buffers, offsets, strides );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexArrayVertexBuffers( uint vaobj, uint first, uint[] buffers, int[] offsets, int[] strides )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexArrayVertexBuffers( vaobj, first, buffers, offsets, strides );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexArrayAttribBinding( uint vaobj, uint attribindex, uint bindingindex )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexArrayAttribBinding( vaobj, attribindex, bindingindex );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexArrayAttribFormat( uint vaobj, uint attribindex, int size, int type, bool normalized, uint relativeoffset )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexArrayAttribFormat( vaobj, attribindex, size, type, normalized, relativeoffset );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexArrayAttribIFormat( uint vaobj, uint attribindex, int size, int type, uint relativeoffset )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexArrayAttribIFormat( vaobj, attribindex, size, type, relativeoffset );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexArrayAttribLFormat( uint vaobj, uint attribindex, int size, int type, uint relativeoffset )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.VertexArrayAttribLFormat( vaobj, attribindex, size, type, relativeoffset );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void VertexArrayBindingDivisor( uint vaobj, uint bindingindex, uint divisor )
     {
         Calls++;
-        Gdx.GL.\nCheckErrors();
+        Gdx.GL.VertexArrayBindingDivisor( vaobj, bindingindex, divisor );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void GetVertexArrayiv( uint vaobj, int pname, int* param )
     {
         Calls++;
-        Gdx.GL.GetVertexArrayiv( uint vaobj, int pname, int * param );
+        Gdx.GL.GetVertexArrayiv( vaobj, pname, param );
         CheckErrors();
     }
 
@@ -3441,7 +3863,7 @@ public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler 
     public void GetVertexArrayiv( uint vaobj, int pname, ref int[] param )
     {
         Calls++;
-        Gdx.GL.GetVertexArrayiv( uint vaobj, int pname, ref int[] param );
+        Gdx.GL.GetVertexArrayiv( vaobj, pname, ref param );
         CheckErrors();
     }
 
@@ -3449,7 +3871,7 @@ public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler 
     public unsafe void GetVertexArrayIndexediv( uint vaobj, uint index, int pname, int* param )
     {
         Calls++;
-        Gdx.GL.GetVertexArrayIndexediv( uint vaobj, uint index, int pname, int * param );
+        Gdx.GL.GetVertexArrayIndexediv( vaobj, index, pname, param );
         CheckErrors();
     }
 
@@ -3457,8 +3879,8 @@ public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler 
     public void GetVertexArrayIndexediv( uint vaobj, uint index, int pname, ref int[] param )
     {
         Calls++;
-        Gdx.GL.GetVertexArrayIndexediv( uint vaobj, uint index, int pname, ref int[] param );
-            CheckErrors();
+        Gdx.GL.GetVertexArrayIndexediv( vaobj, index, pname, ref param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
@@ -3613,8 +4035,10 @@ public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler 
     public byte[] GetTextureSubImage( uint texture, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, int bufSize )
     {
         Calls++;
-        Gdx.GL.GetTextureSubImage( texture, level, xoffset, yoffset, zoffset, width, height, depth, format, type, bufSize );
+        var result = Gdx.GL.GetTextureSubImage( texture, level, xoffset, yoffset, zoffset, width, height, depth, format, type, bufSize );
         CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
@@ -3629,16 +4053,20 @@ public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler 
     public byte[] GetCompressedTextureSubImage( uint texture, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int bufSize )
     {
         Calls++;
-        Gdx.GL.GetCompressedTextureSubImage( texture, level, xoffset, yoffset, zoffset, width, height, depth, bufSize );
+        var result = Gdx.GL.GetCompressedTextureSubImage( texture, level, xoffset, yoffset, zoffset, width, height, depth, bufSize );
         CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
     public int GetGraphicsResetStatus()
     {
         Calls++;
-        Gdx.GL.GetGraphicsResetStatus();
+        var result = Gdx.GL.GetGraphicsResetStatus();
         CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
@@ -3653,8 +4081,10 @@ public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler 
     public byte[] GetnCompressedTexImage( int target, int lod, int bufSize )
     {
         Calls++;
-        Gdx.GL.GetnCompressedTexImage( target, lod, bufSize );
+        var result = Gdx.GL.GetnCompressedTexImage( target, lod, bufSize );
         CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
@@ -3669,8 +4099,10 @@ public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler 
     public byte[] GetnTexImage( int target, int level, int format, int type, int bufSize )
     {
         Calls++;
-        Gdx.GL.GetnTexImage( target, level, format, type, bufSize );
+        var result = Gdx.GL.GetnTexImage( target, level, format, type, bufSize );
         CheckErrors();
+
+        return result;
     }
 
     /// <inheritdoc />
