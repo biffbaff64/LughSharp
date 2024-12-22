@@ -103,7 +103,7 @@ public class FileHandle
     /// <summary>
     /// The path of the file as specified on construction, e.g.
     /// <code>
-    /// Gdx.Files.Internal("dir/file.png") -> dir/file.png.
+    /// GdxApi.Files.Internal("dir/file.png") -> dir/file.png.
     /// </code>
     /// <para>
     /// Backward slashes will be replaced by forward slashes.

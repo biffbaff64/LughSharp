@@ -82,7 +82,7 @@ public class Mesh
         _indices       = indices;
         _isVertexArray = isVertexArray;
 
-        AddManagedMesh( Gdx.App, this );
+        AddManagedMesh( GdxApi.App, this );
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public class Mesh
         _indices       = new IndexBufferObject( isStatic, maxIndices );
         _isVertexArray = false;
 
-        AddManagedMesh( Gdx.App, this );
+        AddManagedMesh( GdxApi.App, this );
     }
 
     /// <summary>
@@ -120,7 +120,7 @@ public class Mesh
         _indices       = new IndexBufferObject( isStatic, maxIndices );
         _isVertexArray = false;
 
-        AddManagedMesh( Gdx.App, this );
+        AddManagedMesh( GdxApi.App, this );
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class Mesh
         _indices       = new IndexBufferObject( staticIndices, maxIndices );
         _isVertexArray = false;
 
-        AddManagedMesh( Gdx.App, this );
+        AddManagedMesh( GdxApi.App, this );
     }
 
     /// <summary>
@@ -189,6 +189,7 @@ public class Mesh
         switch ( type )
         {
             case VertexDataType.VertexBufferObject:
+                Logger.Checkpoint();
                 _vertices      = new VertexBufferObject( isStatic, maxVertices, attributes );
                 _indices       = new IndexBufferObject( isStatic, maxIndices );
                 _isVertexArray = false;
@@ -196,6 +197,7 @@ public class Mesh
                 break;
 
             case VertexDataType.VertexBufferObjectSubData:
+                Logger.Checkpoint();
                 _vertices      = new VertexBufferObjectSubData( isStatic, maxVertices, attributes );
                 _indices       = new IndexBufferObjectSubData( isStatic, maxIndices );
                 _isVertexArray = false;
@@ -203,14 +205,18 @@ public class Mesh
                 break;
 
             case VertexDataType.VertexBufferObjectWithVAO:
+                Logger.Checkpoint();
                 _vertices      = new VertexBufferObjectWithVAO( isStatic, maxVertices, attributes );
+                Logger.Checkpoint();
                 _indices       = new IndexBufferObjectSubData( isStatic, maxIndices );
+                Logger.Checkpoint();
                 _isVertexArray = false;
 
                 break;
 
             case VertexDataType.VertexArray:
             default:
+                Logger.Checkpoint();
                 _vertices      = new VertexArray( maxVertices, attributes );
                 _indices       = new IndexArray( maxIndices );
                 _isVertexArray = true;
@@ -218,7 +224,9 @@ public class Mesh
                 break;
         }
 
-        AddManagedMesh( Gdx.App, this );
+        AddManagedMesh( GdxApi.App, this );
+        
+        Logger.Debug( "Mesh created");
     }
 
     #endregion constructors
@@ -783,7 +791,7 @@ public class Mesh
                 {
                     fixed ( void* ptr = &buffer.BackingArray()[ 0 ] )
                     {
-                        Gdx.GL.DrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, ptr );
+                        GdxApi.Bindings.DrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, ptr );
                     }
                 }
 
@@ -792,7 +800,7 @@ public class Mesh
             }
             else
             {
-                Gdx.GL.DrawArrays( primitiveType, offset, count );
+                GdxApi.Bindings.DrawArrays( primitiveType, offset, count );
             }
         }
         else
@@ -817,7 +825,7 @@ public class Mesh
                 {
                     unsafe
                     {
-                        Gdx.GL.DrawElementsInstanced( primitiveType,
+                        GdxApi.Bindings.DrawElementsInstanced( primitiveType,
                             count,
                             IGL.GL_UNSIGNED_SHORT,
                             ( void* )( offset * 2 ),
@@ -828,7 +836,7 @@ public class Mesh
                 {
                     unsafe
                     {
-                        Gdx.GL.DrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, ( void* )( offset * 2 ) );
+                        GdxApi.Bindings.DrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, ( void* )( offset * 2 ) );
                     }
                 }
             }
@@ -836,11 +844,11 @@ public class Mesh
             {
                 if ( IsInstanced && ( numInstances > 0 ) )
                 {
-                    Gdx.GL.DrawArraysInstanced( primitiveType, offset, count, numInstances );
+                    GdxApi.Bindings.DrawArraysInstanced( primitiveType, offset, count, numInstances );
                 }
                 else
                 {
-                    Gdx.GL.DrawArrays( primitiveType, offset, count );
+                    GdxApi.Bindings.DrawArrays( primitiveType, offset, count );
                 }
             }
         }
@@ -1766,9 +1774,9 @@ public class Mesh
     /// </summary>
     public void Dispose()
     {
-        if ( _meshes[ Gdx.App ] != null )
+        if ( _meshes[ GdxApi.App ] != null )
         {
-            _meshes[ Gdx.App ]?.Remove( this );
+            _meshes[ GdxApi.App ]?.Remove( this );
         }
 
         _vertices.Dispose();

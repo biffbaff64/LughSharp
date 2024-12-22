@@ -82,7 +82,7 @@ public class TextureArray : GLTexture, IManaged
     /// <param name="data"></param>
     /// <exception cref="GdxRuntimeException"></exception>
     public TextureArray( ITextureArrayData data )
-        : base( IGL.GL_TEXTURE_2D_ARRAY, Gdx.GL.GenTexture() )
+        : base( IGL.GL_TEXTURE_2D_ARRAY, GdxApi.Bindings.GenTexture() )
     {
         _data = null!;
 
@@ -90,7 +90,7 @@ public class TextureArray : GLTexture, IManaged
 
         if ( data.Managed )
         {
-            AddManagedTexture( Gdx.App, this );
+            AddManagedTexture( GdxApi.App, this );
         }
     }
 
@@ -123,7 +123,7 @@ public class TextureArray : GLTexture, IManaged
     /// <summary>
     /// Gets the number of managed TextureArrays currently loaded.
     /// </summary>
-    public int NumManagedTextureArrays => _managedTextureArrays[ Gdx.App ].Count;
+    public int NumManagedTextureArrays => _managedTextureArrays[ GdxApi.App ].Count;
 
     /// <summary>
     /// </summary>
@@ -135,7 +135,7 @@ public class TextureArray : GLTexture, IManaged
 
         for ( var i = 0; i < internalPaths.Length; i++ )
         {
-            handles[ i ] = Gdx.Files.Internal( internalPaths[ i ] ).File;
+            handles[ i ] = GdxApi.Files.Internal( internalPaths[ i ] ).File;
         }
 
         return handles;
@@ -157,7 +157,7 @@ public class TextureArray : GLTexture, IManaged
 
         Bind();
 
-        Gdx.GL.TexImage3D( IGL.GL_TEXTURE_2D_ARRAY,
+        GdxApi.Bindings.TexImage3D( IGL.GL_TEXTURE_2D_ARRAY,
                              0,
                              data.InternalFormat,
                              data.Width,
@@ -178,7 +178,7 @@ public class TextureArray : GLTexture, IManaged
         SetFilter( MinFilter, MagFilter );
         SetWrap( UWrap, VWrap );
         
-        Gdx.GL.BindTexture( GLTarget, 0 );
+        GdxApi.Bindings.BindTexture( GLTarget, 0 );
     }
 
     /// <summary>
@@ -192,7 +192,7 @@ public class TextureArray : GLTexture, IManaged
             throw new GdxRuntimeException( "Tried to reload an unmanaged TextureArray" );
         }
 
-        GLTextureHandle = Gdx.GL.GenTexture();
+        GLTextureHandle = GdxApi.Bindings.GenTexture();
 
         Load( _data );
     }

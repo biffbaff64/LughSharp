@@ -39,10 +39,10 @@ public abstract class AbstractGraphics : IGraphics
     public IGraphics.BufferFormatDescriptor BufferFormat { get; set; } = null!;
     public IGLBindings                      GL           { get; set; } = null!;
 
-    public int BackBufferWidth  { get; set; }
-    public int BackBufferHeight { get; set; }
-    public int LogicalWidth     { get; set; }
-    public int LogicalHeight    { get; set; }
+    public int BackBufferWidth  { get; set; } = 0;
+    public int BackBufferHeight { get; set; } = 0;
+    public int LogicalWidth     { get; set; } = 0;
+    public int LogicalHeight    { get; set; } = 0;
 
     public virtual int                         Width               { get; }
     public virtual int                         Height              { get; }

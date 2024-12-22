@@ -67,7 +67,7 @@ public class Texture : GLTexture, IManaged
     public override int  Width              => TextureData.Width;
     public override int  Height             => TextureData.Height;
     public override int  Depth              => 0;
-    public          int  NumManagedTextures => _managedTextures[ Gdx.App ].Count;
+    public          int  NumManagedTextures => _managedTextures[ GdxApi.App ].Count;
     public          bool IsManaged          => TextureData is { IsManaged: true };
 
     // ========================================================================
@@ -82,7 +82,7 @@ public class Texture : GLTexture, IManaged
     /// </summary>
     /// <param name="internalPath"></param>
     public Texture( string internalPath )
-        : this( Gdx.Files.Internal( internalPath ).File, false )
+        : this( GdxApi.Files.Internal( internalPath ).File, false )
     {
     }
 
@@ -147,7 +147,7 @@ public class Texture : GLTexture, IManaged
     /// Creates a new Texture using the supplied <see cref="ITextureData"/>.
     /// </summary>
     public Texture( ITextureData data )
-        : this( IGL.GL_TEXTURE_2D, Gdx.GL.GenTexture(), data )
+        : this( IGL.GL_TEXTURE_2D, GdxApi.Bindings.GenTexture(), data )
     {
     }
 
@@ -169,7 +169,7 @@ public class Texture : GLTexture, IManaged
 
         if ( data.IsManaged )
         {
-            AddManagedTexture( Gdx.App, this );
+            AddManagedTexture( GdxApi.App, this );
         }
     }
 
@@ -198,7 +198,7 @@ public class Texture : GLTexture, IManaged
         UnsafeSetWrap( UWrap, VWrap, true );
         UnsafeSetAnisotropicFilter( AnisotropicFilterLevel, true );
 
-        Gdx.GL.BindTexture( GLTarget, 0 );
+        GdxApi.Bindings.BindTexture( GLTarget, 0 );
     }
 
     /// <summary>
@@ -212,7 +212,7 @@ public class Texture : GLTexture, IManaged
             throw new GdxRuntimeException( "Tried to reload unmanaged Texture" );
         }
 
-        GLTextureHandle = Gdx.GL.GenTexture();
+        GLTextureHandle = GdxApi.Bindings.GenTexture();
 
         Load( TextureData );
     }
@@ -234,7 +234,7 @@ public class Texture : GLTexture, IManaged
 
         Bind();
 
-        Gdx.GL.TexSubImage2D( GLTarget,
+        GdxApi.Bindings.TexSubImage2D( GLTarget,
                                 0, x, y,
                                 pixmap.Width,
                                 pixmap.Height,
@@ -317,7 +317,7 @@ public class Texture : GLTexture, IManaged
 
                     // unload the texture, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
-                    texture.GLTextureHandle = Gdx.GL.GenTexture();
+                    texture.GLTextureHandle = GdxApi.Bindings.GenTexture();
                     AssetManager.AddToLoadqueue( fileName, typeof( Texture ), parameters );
                 }
             }
@@ -404,7 +404,7 @@ public class Texture : GLTexture, IManaged
 
             if ( TextureData is { IsManaged: true } )
             {
-                _managedTextures[ Gdx.App ].Remove( this );
+                _managedTextures[ GdxApi.App ].Remove( this );
             }
         }
     }

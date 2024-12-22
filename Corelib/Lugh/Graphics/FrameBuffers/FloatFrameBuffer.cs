@@ -95,7 +95,7 @@ public class FloatFrameBuffer : FrameBuffer
 
         var result = new Texture( data );
 
-        if ( Gdx.App.AppType == Platform.ApplicationType.WindowsGL )
+        if ( GdxApi.App.AppType == Platform.ApplicationType.WindowsGL )
         {
             result.SetFilter( Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
         }

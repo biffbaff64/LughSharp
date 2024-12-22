@@ -28,7 +28,7 @@ namespace Corelib.Lugh.Graphics.OpenGL;
 public class GLData
 {
     public const int           DEFAULT_GL_MAJOR       = 3;
-    public const int           DEFAULT_GL_MINOR       = 2;
+    public const int           DEFAULT_GL_MINOR       = 3;
     public const ClientAPI     DEFAULT_CLIENT_API     = ClientAPI.OpenGLAPI;
     public const OpenGLProfile DEFAULT_OPENGL_PROFILE = OpenGLProfile.CoreProfile;
 

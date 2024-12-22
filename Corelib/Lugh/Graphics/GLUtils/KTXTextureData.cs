@@ -438,7 +438,7 @@ public class KtxTextureData : ITextureData, ICubemapData
         {
             fixed ( int* ptr = &buffer.BackingArray()[ 0 ] )
             {
-                Gdx.GL.GetIntegerv( IGL.GL_UNPACK_ALIGNMENT, ptr );
+                GdxApi.Bindings.GetIntegerv( IGL.GL_UNPACK_ALIGNMENT, ptr );
             }
         }
 
@@ -446,7 +446,7 @@ public class KtxTextureData : ITextureData, ICubemapData
 
         if ( previousUnpackAlignment != 4 )
         {
-            Gdx.GL.PixelStorei( IGL.GL_UNPACK_ALIGNMENT, 4 );
+            GdxApi.Bindings.PixelStorei( IGL.GL_UNPACK_ALIGNMENT, 4 );
         }
 
         var glInternalFormat = _glInternalFormat;
@@ -482,10 +482,10 @@ public class KtxTextureData : ITextureData, ICubemapData
                 if ( textureDimensions == 1 )
                 {
                     // if (compressed)
-                    // Gdx.gl.glCompressedTexImage1D(target + face, level, glInternalFormat, pixelWidth, 0, faceLodSize,
+                    // GdxApi.gl.glCompressedTexImage1D(target + face, level, glInternalFormat, pixelWidth, 0, faceLodSize,
                     // data);
                     // else
-                    // Gdx.gl.glTexImage1D(target + face, level, glInternalFormat, pixelWidth, 0, glFormat, glType, data);
+                    // GdxApi.gl.glTexImage1D(target + face, level, glInternalFormat, pixelWidth, 0, glFormat, glType, data);
                 }
                 else if ( textureDimensions == 2 )
                 {
@@ -498,7 +498,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                     {
                         if ( glInternalFormat == ETC1.ETC1_RGB8_OES )
                         {
-                            if ( !Gdx.Graphics.SupportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
+                            if ( !GdxApi.Graphics.SupportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
                             {
                                 ETC1 etc1    = new();
                                 var  etcData = new ETC1.ETC1Data( pixelWidth, pixelHeight, data, 0, etc1 );
@@ -508,7 +508,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                                 {
                                     fixed ( void* ptr = &pixmap.ByteBuffer.BackingArray()[ 0 ] )
                                     {
-                                        Gdx.GL.TexImage2D( target + face,
+                                        GdxApi.Bindings.TexImage2D( target + face,
                                                              level,
                                                              pixmap.GLInternalFormat,
                                                              pixmap.Width,
@@ -528,7 +528,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                                 {
                                     fixed ( void* dataptr = &data.BackingArray()[ 0 ] )
                                     {
-                                        Gdx.GL.CompressedTexImage2D( target + face,
+                                        GdxApi.Bindings.CompressedTexImage2D( target + face,
                                                                        level,
                                                                        glInternalFormat,
                                                                        pixelWidth,
@@ -547,7 +547,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                             {
                                 fixed ( void* dataptr = &data.BackingArray()[ 0 ] )
                                 {
-                                    Gdx.GL.CompressedTexImage2D( target + face,
+                                    GdxApi.Bindings.CompressedTexImage2D( target + face,
                                                                    level,
                                                                    glInternalFormat,
                                                                    pixelWidth,
@@ -565,7 +565,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                         {
                             fixed ( void* dataptr = &data.BackingArray()[ 0 ] )
                             {
-                                Gdx.GL.TexImage2D( target + face,
+                                GdxApi.Bindings.TexImage2D( target + face,
                                                      level,
                                                      glInternalFormat,
                                                      pixelWidth,
@@ -586,10 +586,10 @@ public class KtxTextureData : ITextureData, ICubemapData
 //                    }
 
                     // if (compressed)
-                    // Gdx.gl.glCompressedTexImage3D(target + face, level, glInternalFormat, pixelWidth, pixelHeight, pixelDepth, 0,
+                    // GdxApi.gl.glCompressedTexImage3D(target + face, level, glInternalFormat, pixelWidth, pixelHeight, pixelDepth, 0,
                     // faceLodSize, data);
                     // else
-                    // Gdx.gl.glTexImage3D(target + face, level, glInternalFormat, pixelWidth, pixelHeight, pixelDepth, 0, glFormat,
+                    // GdxApi.gl.glTexImage3D(target + face, level, glInternalFormat, pixelWidth, pixelHeight, pixelDepth, 0, glFormat,
                     // glType, data);
                 }
             }
@@ -597,12 +597,12 @@ public class KtxTextureData : ITextureData, ICubemapData
 
         if ( previousUnpackAlignment != 4 )
         {
-            Gdx.GL.PixelStorei( IGL.GL_UNPACK_ALIGNMENT, previousUnpackAlignment );
+            GdxApi.Bindings.PixelStorei( IGL.GL_UNPACK_ALIGNMENT, previousUnpackAlignment );
         }
 
         if ( UseMipMaps )
         {
-            Gdx.GL.GenerateMipmap( target );
+            GdxApi.Bindings.GenerateMipmap( target );
         }
 
         // dispose data once transfered to GPU

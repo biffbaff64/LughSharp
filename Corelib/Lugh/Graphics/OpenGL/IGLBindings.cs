@@ -33,7 +33,7 @@ public partial interface IGLBindings
 {
     /// <summary>
     /// Returns a Tuple holding the version of OpenGL being used, obtained by
-    /// calling <see cref="glGetString"/> with the parameter IGL.GL_VERSION.
+    /// calling <see cref="GetString"/> with the parameter IGL.GL_VERSION.
     /// </summary>
     ( int major, int minor ) GetOpenGLVersion();
 
@@ -7380,8 +7380,7 @@ public partial interface IGLBindings
     /// <summary>
     /// Loads OpenGL functions using the specified loader delegate.
     /// </summary>
-    public delegate IntPtr GetProcAddressHandler( string funcName );
+    public delegate IntPtr GetProcAddressDelegate( string funcName );
 
-    void Import( GetProcAddressHandler loader );
     void Import();
 }

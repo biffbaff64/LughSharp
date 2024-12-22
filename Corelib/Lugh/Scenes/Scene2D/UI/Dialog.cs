@@ -370,7 +370,7 @@ public class Dialog : Window
         //                          if ( keycode == keycode2 )
         //                          {
         // Delay a frame to eat the keyTyped event.
-        //                              Gdx.App.PostRunnable
+        //                              GdxApi.App.PostRunnable
         //                                  ( new IRunnable
         //                                        (
         //                                        _ =>

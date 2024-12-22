@@ -211,10 +211,10 @@ public class GestureDetector : InputAdapter
         if ( pointer == 0 )
         {
             _pointer1.Set( x, y );
-            _touchDownTime = Gdx.Input.GetCurrentEventTime();
+            _touchDownTime = GdxApi.Input.GetCurrentEventTime();
             _tracker.Start( x, y, _touchDownTime );
 
-            if ( Gdx.Input.IsTouched( 1 ) )
+            if ( GdxApi.Input.IsTouched( 1 ) )
             {
                 // Start pinch.
                 _inTapRectangle = false;
@@ -292,7 +292,7 @@ public class GestureDetector : InputAdapter
         }
 
         // update tracker
-        _tracker.Update( x, y, Gdx.Input.GetCurrentEventTime() );
+        _tracker.Update( x, y, GdxApi.Input.GetCurrentEventTime() );
 
         // check if we are still tapping.
         if ( _inTapRectangle && !IsWithinTapRectangle( x, y, _tapRectangleCenterX, _tapRectangleCenterY ) )
@@ -373,12 +373,12 @@ public class GestureDetector : InputAdapter
             if ( pointer == 0 )
             {
                 // first pointer has lifted off, set up panning to use the second pointer...
-                _tracker.Start( _pointer2.X, _pointer2.Y, Gdx.Input.GetCurrentEventTime() );
+                _tracker.Start( _pointer2.X, _pointer2.Y, GdxApi.Input.GetCurrentEventTime() );
             }
             else
             {
                 // second pointer has lifted off, set up panning to use the first pointer...
-                _tracker.Start( _pointer1.X, _pointer1.Y, Gdx.Input.GetCurrentEventTime() );
+                _tracker.Start( _pointer1.X, _pointer1.Y, GdxApi.Input.GetCurrentEventTime() );
             }
 
             return false;
@@ -393,7 +393,7 @@ public class GestureDetector : InputAdapter
         }
 
         // handle fling
-        var time = Gdx.Input.GetCurrentEventTime();
+        var time = GdxApi.Input.GetCurrentEventTime();
 
         if ( ( time - _touchDownTime ) <= _maxFlingDelay )
         {

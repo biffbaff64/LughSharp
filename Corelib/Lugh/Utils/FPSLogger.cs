@@ -57,7 +57,7 @@ public class FPSLogger
         // Log FPS if at least one second has passed
         if ( elapsedTime.TotalSeconds >= 1 )
         {
-            var fps = Gdx.Graphics.GetFramesPerSecond();
+            var fps = GdxApi.Graphics.GetFramesPerSecond();
 
             if ( fps <= _bound )
             {

@@ -121,13 +121,13 @@ public class ETC1TextureData : ITextureData
             throw new GdxRuntimeException( "No data to consume!" );
         }
 
-        if ( !Gdx.Graphics.SupportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
+        if ( !GdxApi.Graphics.SupportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
         {
             var pixmap = _etc1.DecodeImage( _data, Pixmap.ColorFormat.RGB565 );
 
             fixed ( void* ptr = &pixmap.PixelData[ 0 ] )
             {
-                Gdx.GL.TexImage2D( target,
+                GdxApi.Bindings.TexImage2D( target,
                                      0,
                                      pixmap.GLInternalFormat,
                                      pixmap.Width,
@@ -150,7 +150,7 @@ public class ETC1TextureData : ITextureData
         {
             fixed ( void* ptr = &_data.CompressedData.BackingArray()[ 0 ] )
             {
-                Gdx.GL.CompressedTexImage2D( target,
+                GdxApi.Bindings.CompressedTexImage2D( target,
                                                0,
                                                ETC1.ETC1_RGB8_OES,
                                                Width,
@@ -162,7 +162,7 @@ public class ETC1TextureData : ITextureData
 
             if ( UseMipMaps )
             {
-                Gdx.GL.GenerateMipmap( IGL.GL_TEXTURE_2D );
+                GdxApi.Bindings.GenerateMipmap( IGL.GL_TEXTURE_2D );
             }
         }
 

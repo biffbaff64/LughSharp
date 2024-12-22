@@ -1390,9 +1390,9 @@ public class Cell : IResetable
     /// </summary>
     public Cell? GetCellDefaults()
     {
-        if ( ( _files == null ) || ( _files != Gdx.Files ) )
+        if ( ( _files == null ) || ( _files != GdxApi.Files ) )
         {
-            _files = Gdx.Files;
+            _files = GdxApi.Files;
 
             _defaults = new Cell
             {

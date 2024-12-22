@@ -40,7 +40,7 @@ namespace DesktopGLBackend.Window;
 /// Wrapper/Manager class for a <see cref="GLFW.Window"/>.
 /// </summary>
 [PublicAPI]
-public unsafe partial class DesktopGLWindow : IDisposable
+public partial class DesktopGLWindow : IDisposable
 {
     public GLFW.Window?                      GlfwWindow          { get; set; }
     public IDesktopGLWindowListener?         WindowListener      { get; set; }
@@ -48,6 +48,7 @@ public unsafe partial class DesktopGLWindow : IDisposable
     public IDesktopGLInput                   Input               { get; set; } = null!;
     public DesktopGLApplicationConfiguration AppConfig           { get; set; }
     public DesktopGLGraphics                 Graphics            { get; set; } = null!;
+    public IDesktopGLApplicationBase         Application         { get; set; }
     public bool                              ListenerInitialised { get; set; } = false;
 
     /// <summary>
@@ -67,9 +68,9 @@ public unsafe partial class DesktopGLWindow : IDisposable
     // ========================================================================
 
     private List< IRunnable.Runnable > _executedRunnables = [ ];
+    private List< IRunnable.Runnable > _runnables         = [ ];
     private bool                       _iconified         = false;
     private bool                       _focused           = false;
-    private List< IRunnable.Runnable > _runnables         = [ ];
     private Vector2                    _tmpV2             = new();
     private bool                       _requestRendering  = false;
 
@@ -88,20 +89,21 @@ public unsafe partial class DesktopGLWindow : IDisposable
         ApplicationListener = listener;
         WindowListener      = config.WindowListener;
         AppConfig           = DesktopGLApplicationConfiguration.Copy( config );
+        Application         = application;
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public void Initialise( GLFW.Window window, IDesktopGLApplicationBase app )
+    public void Create( GLFW.Window window )
     {
         this.GlfwWindow         = window;
-        this.Input              = app.CreateInput( this );
+        this.Input              = Application.CreateInput( this );
         this.Graphics           = new DesktopGLGraphics( this );
-        this.Graphics.GLVersion = app.GLVersion;
+        this.Graphics.GLVersion = Application.GLVersion;
 
-        Gdx.Input    = Input;
-        Gdx.Graphics = Graphics;
+        GdxApi.Input    = Input;
+        GdxApi.Graphics = Graphics;
 
         //@formatter:off
         Glfw.SetWindowFocusCallback     ( window, GdxFocusCallback );
@@ -175,7 +177,7 @@ public unsafe partial class DesktopGLWindow : IDisposable
 
     /// <summary>
     /// Post a <see cref="IRunnable.Runnable"/> to this window's event queue. Use this if
-    /// you access statics like <see cref="Gdx.Graphics"/> in your runnable instead
+    /// you access statics like <see cref="GdxApi.Graphics"/> in your runnable instead
     /// of <see cref="DesktopGLApplication.PostRunnable(IRunnable.Runnable)"/>".
     /// </summary>
     public void PostRunnable( IRunnable.Runnable runnable )
@@ -191,12 +193,14 @@ public unsafe partial class DesktopGLWindow : IDisposable
     /// </summary>
     public void MakeCurrent()
     {
+        GdxApi.Graphics = Graphics;
+        GdxApi.Bindings       = Graphics.GL;
+        GdxApi.Input    = Input;
+
         Glfw.MakeContextCurrent( GlfwWindow );
-
-        Gdx.GL.GetError();
-
-        Gdx.Graphics = Graphics;
-        Gdx.Input    = Input;
+        
+        Logger.Debug( $"Context is {( Glfw.GetCurrentContext() == null ? "NULL" : "Set" )}" );
+        Logger.Debug( $"Current Thread ID: {Environment.CurrentManagedThreadId}" );
     }
 
     /// <summary>
@@ -364,7 +368,7 @@ public unsafe partial class DesktopGLWindow : IDisposable
 
         for ( var i = 0; i < imagePaths.Length; i++ )
         {
-            pixmaps[ i ] = new Pixmap( Gdx.Files.GetFileHandle( imagePaths[ i ], imageFileType ).File );
+            pixmaps[ i ] = new Pixmap( GdxApi.Files.GetFileHandle( imagePaths[ i ], imageFileType ).File );
         }
 
         SetIcon( window, pixmaps );
@@ -449,7 +453,7 @@ public unsafe partial class DesktopGLWindow : IDisposable
     public void Dispose()
     {
         Dispose( true );
-        
+
         GC.SuppressFinalize( this );
     }
 

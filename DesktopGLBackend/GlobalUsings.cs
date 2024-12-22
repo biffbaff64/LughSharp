@@ -27,3 +27,6 @@ global using JetBrains.Annotations;
 global using DotGLFW;
 global using GLFW = DotGLFW;
 
+global using static Corelib.Lugh.Core.Gdx;
+
+

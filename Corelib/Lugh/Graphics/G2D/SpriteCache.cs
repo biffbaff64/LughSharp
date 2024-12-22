@@ -57,11 +57,11 @@ namespace Corelib.Lugh.Graphics.G2D;
 /// the SpriteCache's matrices must be updated. For example:
 /// </para>
 /// <code>
-/// cache.GetProjectionMatrix().SetToOrtho2D(0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height);
+/// cache.GetProjectionMatrix().SetToOrtho2D(0, 0, GdxApi.Graphics.Width, GdxApi.Graphics.Height);
 /// </code>
 /// <para>
 /// Note that SpriteCache does not manage blending. You will need to enable blending
-/// (<tt>Gdx.GL.GLEnable(IGL.GL_Blend);</tt>) and set the blend func as needed before
+/// (<tt>GdxApi.GL.GLEnable(IGL.GL_Blend);</tt>) and set the blend func as needed before
 /// or between calls to <see cref="Draw(int)"/>.
 /// </para>
 /// <para>
@@ -175,7 +175,7 @@ public class SpriteCache
             _mesh.SetIndices( indices );
         }
 
-        ProjectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
+        ProjectionMatrix.SetToOrtho2D( 0, 0, GdxApi.Graphics.Width, GdxApi.Graphics.Height );
     }
 
     // ========================================================================
@@ -1115,7 +1115,7 @@ public class SpriteCache
         RenderCallsSinceBegin = 0;
         _combinedMatrix.Set( ProjectionMatrix ).Mul( TransformMatrix );
 
-        Gdx.GL.DepthMask( false );
+        GdxApi.Bindings.DepthMask( false );
 
         if ( CustomShader != null )
         {
@@ -1153,7 +1153,7 @@ public class SpriteCache
 
         IsDrawing = false;
 
-        Gdx.GL.DepthMask( true );
+        GdxApi.Bindings.DepthMask( true );
 
         _mesh.Unbind( CustomShader ?? _shader );
     }

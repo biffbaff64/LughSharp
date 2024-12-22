@@ -30,6 +30,6 @@ public class ClasspathFileHandleResolver : IFileHandleResolver
     /// <inheritdoc />
     public FileInfo Resolve( string fileName )
     {
-        return Gdx.Files.Classpath( fileName ).File;
+        return GdxApi.Files.Classpath( fileName ).File;
     }
 }

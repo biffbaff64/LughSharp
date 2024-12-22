@@ -67,7 +67,7 @@ public interface ITextureProvider
 
         public Texture Load( string fileName )
         {
-            var result = new Texture( Gdx.Files.Internal( fileName ).File, _useMipMaps );
+            var result = new Texture( GdxApi.Files.Internal( fileName ).File, _useMipMaps );
             result.SetFilter( _minFilter, _magFilter );
             result.SetWrap( _uWrap, _vWrap );
 

@@ -45,7 +45,7 @@ public class DesktopGLClipboard : IClipboard
     /// </summary>
     public unsafe string? Contents
     {
-        get => Glfw.GetClipboardString( ( ( DesktopGLGraphics ) Gdx.Graphics ).GLWindow!.GlfwWindow );
-        set => Glfw.SetClipboardString( ( ( DesktopGLGraphics ) Gdx.Graphics ).GLWindow!.GlfwWindow, value );
+        get => Glfw.GetClipboardString( ( ( DesktopGLGraphics ) GdxApi.Graphics ).GLWindow!.GlfwWindow );
+        set => Glfw.SetClipboardString( ( ( DesktopGLGraphics ) GdxApi.Graphics ).GLWindow!.GlfwWindow, value );
     }
 }

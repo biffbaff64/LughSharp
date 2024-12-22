@@ -53,7 +53,7 @@ public abstract class Game : IApplicationListener
             {
                 _screen.Show();
 
-                _screen.Resize( Gdx.Graphics.Width, Gdx.Graphics.Height );
+                _screen.Resize( GdxApi.Graphics.Width, GdxApi.Graphics.Height );
             }
         }
     }
@@ -70,7 +70,7 @@ public abstract class Game : IApplicationListener
     /// </summary>
     public virtual void Update()
     {
-        Screen?.Update( Gdx.Graphics.DeltaTime );
+        Screen?.Update( GdxApi.Graphics.DeltaTime );
     }
 
     /// <summary>
@@ -78,7 +78,7 @@ public abstract class Game : IApplicationListener
     /// </summary>
     public virtual void Render()
     {
-        Screen?.Render( Gdx.Graphics.DeltaTime );
+        Screen?.Render( GdxApi.Graphics.DeltaTime );
     }
 
     /// <summary>

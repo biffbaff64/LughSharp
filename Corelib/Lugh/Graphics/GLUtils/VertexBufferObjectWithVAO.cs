@@ -53,7 +53,7 @@ public class VertexBufferObjectWithVAO : IVertexData
 
     // ========================================================================
     // ========================================================================
-    
+
     /// <summary>
     /// Constructs a new interleaved VertexBufferObjectWithVAO.
     /// </summary>
@@ -76,21 +76,33 @@ public class VertexBufferObjectWithVAO : IVertexData
         _isStatic  = isStatic;
         Attributes = attributes;
 
+        Logger.Checkpoint();
+
         _byteBuffer = BufferUtils.NewByteBuffer( Attributes.VertexSize * numVertices, false );
         _buffer     = _byteBuffer.AsFloatBuffer();
         _ownsBuffer = true;
 
+        Logger.Checkpoint();
+
         _buffer.Flip();
         _byteBuffer.Flip();
 
-        _bufferHandle = ( int ) Gdx.GL.GenBuffer();
+        Logger.Checkpoint();
+
+        _bufferHandle = ( int )GdxApi.Bindings.GenBuffer();
         _usage        = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
 
+        Logger.Checkpoint();
+
         CreateVAO();
+        
+        Logger.Checkpoint();
     }
 
     public VertexBufferObjectWithVAO( bool isStatic, ByteBuffer unmanagedBuffer, VertexAttributes attributes )
     {
+        Logger.Checkpoint();
+
         _isStatic  = isStatic;
         Attributes = attributes;
 
@@ -98,13 +110,24 @@ public class VertexBufferObjectWithVAO : IVertexData
         _ownsBuffer = false;
         _buffer     = _byteBuffer.AsFloatBuffer();
 
+        Logger.Checkpoint();
+
         _buffer.Flip();
         _byteBuffer.Flip();
 
-        _bufferHandle = ( int ) Gdx.GL.GenBuffer();
-        _usage        = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
+        Logger.Checkpoint();
+
+        _bufferHandle = ( int )GdxApi.Bindings.GenBuffer();
+
+        Logger.Checkpoint();
+
+        _usage = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
+
+        Logger.Checkpoint();
 
         CreateVAO();
+
+        Logger.Checkpoint();
     }
 
     /// <summary>
@@ -185,7 +208,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// <param name="locations"> array containing the attribute locations.  </param>
     public void Bind( ShaderProgram shader, int[]? locations = null )
     {
-        Gdx.GL.BindVertexArray( ( uint ) _vaoHandle );
+        GdxApi.Bindings.BindVertexArray( ( uint )_vaoHandle );
 
         BindAttributes( shader, locations );
 
@@ -202,7 +225,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// <param name="locations"> array containing the attribute locations.  </param>
     public void Unbind( ShaderProgram? shader, int[]? locations = null )
     {
-        Gdx.GL.BindVertexArray( 0 );
+        GdxApi.Bindings.BindVertexArray( 0 );
         _isBound = false;
     }
 
@@ -211,7 +234,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// </summary>
     public void Invalidate()
     {
-        _bufferHandle = ( int ) Gdx.GL.GenBuffer();
+        _bufferHandle = ( int )GdxApi.Bindings.GenBuffer();
 
         CreateVAO();
 
@@ -224,8 +247,8 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// </summary>
     public void Dispose()
     {
-        Gdx.GL.BindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
-        Gdx.GL.DeleteBuffers( ( uint ) _bufferHandle );
+        GdxApi.Bindings.BindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
+        GdxApi.Bindings.DeleteBuffers( ( uint )_bufferHandle );
 
         _bufferHandle = 0;
 
@@ -241,11 +264,11 @@ public class VertexBufferObjectWithVAO : IVertexData
     {
         if ( _isBound )
         {
-            Gdx.GL.BindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
+            GdxApi.Bindings.BindBuffer( IGL.GL_ARRAY_BUFFER, ( uint )_bufferHandle );
 
             fixed ( void* ptr = &_byteBuffer.BackingArray()[ 0 ] )
             {
-                Gdx.GL.BufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, ptr, _usage );
+                GdxApi.Bindings.BufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, ptr, _usage );
             }
 
             _isDirty = false;
@@ -283,7 +306,7 @@ public class VertexBufferObjectWithVAO : IVertexData
 
         if ( !stillValid )
         {
-            Gdx.GL.BindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
+            GdxApi.Bindings.BindBuffer( IGL.GL_ARRAY_BUFFER, ( uint )_bufferHandle );
 
             UnbindAttributes( shader );
 
@@ -342,13 +365,13 @@ public class VertexBufferObjectWithVAO : IVertexData
     {
         if ( _isDirty )
         {
-            Gdx.GL.BindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
+            GdxApi.Bindings.BindBuffer( IGL.GL_ARRAY_BUFFER, ( uint )_bufferHandle );
 
             _byteBuffer.Limit = _buffer.Limit * 4;
 
             fixed ( void* ptr = &_byteBuffer.BackingArray()[ 0 ] )
             {
-                Gdx.GL.BufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, ptr, _usage );
+                GdxApi.Bindings.BufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, ptr, _usage );
             }
 
             _isDirty = false;
@@ -361,7 +384,7 @@ public class VertexBufferObjectWithVAO : IVertexData
 
         fixed ( int* intptr = &_tmpHandle.BackingArray()[ 0 ] )
         {
-            Gdx.GL.GenVertexArrays( 1, ( uint* ) intptr );
+            GdxApi.Bindings.GenVertexArrays( 1, ( uint* )intptr );
         }
 
         _vaoHandle = _tmpHandle.Get();
@@ -378,7 +401,7 @@ public class VertexBufferObjectWithVAO : IVertexData
 
             fixed ( int* intptr = &_tmpHandle.BackingArray()[ 0 ] )
             {
-                Gdx.GL.DeleteVertexArrays( 1, ( uint* ) intptr );
+                GdxApi.Bindings.DeleteVertexArrays( 1, ( uint* )intptr );
             }
 
             _vaoHandle = -1;

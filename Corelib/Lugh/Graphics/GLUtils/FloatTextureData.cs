@@ -75,7 +75,7 @@ public class FloatTextureData : ITextureData
         {
             var amountOfFloats = 4;
 
-            if ( Gdx.Graphics.GLVersion!.BackendType.Equals( GraphicsBackend.BackendType.OpenGL ) )
+            if ( GdxApi.Graphics.GLVersion!.BackendType.Equals( GraphicsBackend.BackendType.OpenGL ) )
             {
                 if ( _internalFormat is IGL.GL_RGBA16_F or IGL.GL_RGBA32_F )
                 {
@@ -106,11 +106,11 @@ public class FloatTextureData : ITextureData
 
     public void ConsumeCustomData( int target )
     {
-        if ( ( Gdx.App.AppType == Platform.ApplicationType.Android )
-          || ( Gdx.App.AppType == Platform.ApplicationType.IOS )
-          || ( Gdx.App.AppType == Platform.ApplicationType.WebGL ) )
+        if ( ( GdxApi.App.AppType == Platform.ApplicationType.Android )
+          || ( GdxApi.App.AppType == Platform.ApplicationType.IOS )
+          || ( GdxApi.App.AppType == Platform.ApplicationType.WebGL ) )
         {
-            if ( !Gdx.Graphics.SupportsExtension( "OES_texture_float" ) )
+            if ( !GdxApi.Graphics.SupportsExtension( "OES_texture_float" ) )
             {
                 throw new GdxRuntimeException( "Extension OES_texture_float not supported!" );
             }
@@ -121,7 +121,7 @@ public class FloatTextureData : ITextureData
             {
                 fixed ( void* ptr = &( ( Buffer ) Buffer ).BackingArray()[ 0 ] )
                 {
-                    Gdx.GL.TexImage2D( target,
+                    GdxApi.Bindings.TexImage2D( target,
                                          0,
                                          IGL.GL_RGBA,
                                          Width,
@@ -135,7 +135,7 @@ public class FloatTextureData : ITextureData
         }
         else
         {
-            if ( !Gdx.Graphics.SupportsExtension( "GL_ARB_texture_float" ) )
+            if ( !GdxApi.Graphics.SupportsExtension( "GL_ARB_texture_float" ) )
             {
                 throw new GdxRuntimeException( "Extension GL_ARB_texture_float not supported!" );
             }
@@ -146,7 +146,7 @@ public class FloatTextureData : ITextureData
             {
                 fixed ( void* ptr = &( ( Buffer ) Buffer ).BackingArray()[ 0 ] )
                 {
-                    Gdx.GL.TexImage2D( target,
+                    GdxApi.Bindings.TexImage2D( target,
                                          0,
                                          _internalFormat,
                                          Width,

@@ -66,7 +66,7 @@ public class Cubemap : GLTexture, IManaged
 
         if ( data.IsManaged )
         {
-            AddManagedCubemap( Gdx.App, this );
+            AddManagedCubemap( GdxApi.App, this );
         }
     }
 
@@ -139,7 +139,7 @@ public class Cubemap : GLTexture, IManaged
     /// <summary>
     /// return the number of managed cubemaps currently loaded
     /// </summary>
-    public static int NumManagedCubemaps => _managedCubemaps[ Gdx.App ]?.Count ?? 0;
+    public static int NumManagedCubemaps => _managedCubemaps[ GdxApi.App ]?.Count ?? 0;
 
     /// <summary>
     /// Sets the sides of this cubemap to the specified <see cref="ICubemapData"/>.
@@ -159,7 +159,7 @@ public class Cubemap : GLTexture, IManaged
 
         data.ConsumeCubemapData();
 
-        Gdx.GL.BindTexture( GLTarget, 0 );
+        GdxApi.Bindings.BindTexture( GLTarget, 0 );
     }
 
     /// <summary>
@@ -173,7 +173,7 @@ public class Cubemap : GLTexture, IManaged
             throw new GdxRuntimeException( "Tried to reload an unmanaged Cubemap" );
         }
 
-        GLTextureHandle = Gdx.GL.GenTexture();
+        GLTextureHandle = GdxApi.Bindings.GenTexture();
 
         Load( Data );
     }
@@ -267,7 +267,7 @@ public class Cubemap : GLTexture, IManaged
                     // unload the c, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
 
-                    cubemap.GLTextureHandle = Gdx.GL.GenTexture();
+                    cubemap.GLTextureHandle = GdxApi.Bindings.GenTexture();
                     AssetManager.AddToLoadqueue( fileName, typeof( Cubemap ), parameter );
                 }
             }
@@ -321,9 +321,9 @@ public class Cubemap : GLTexture, IManaged
 
             if ( Data.IsManaged )
             {
-                if ( _managedCubemaps[ Gdx.App ] != null )
+                if ( _managedCubemaps[ GdxApi.App ] != null )
                 {
-                    _managedCubemaps[ Gdx.App ]?.Remove( this );
+                    _managedCubemaps[ GdxApi.App ]?.Remove( this );
                 }
             }
         }

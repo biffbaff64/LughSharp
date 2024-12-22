@@ -56,16 +56,16 @@ public class RemoteSender : IInputProcessor
 //            Socket socket = new Socket( ip, port );
 
 //            _out = new DataOutputStream( socket.GetOutputStream() );
-//            _out.WriteBoolean( Gdx.Input.IsPeripheralAvailable( IInput.Peripheral.MultitouchScreen ) );
+//            _out.WriteBoolean( GdxApi.Input.IsPeripheralAvailable( IInput.Peripheral.MultitouchScreen ) );
 
 //            _out = new BinaryWriter()
 //            _connected = true;
 
-//            Gdx.Input.SetInputProcessor( this );
+//            GdxApi.Input.SetInputProcessor( this );
 //        }
 //        catch ( System.Exception )
 //        {
-//            Gdx.App.Log( "RemoteSender", "couldn't connect to " + ip + ":" + port );
+//            GdxApi.App.Log( "RemoteSender", "couldn't connect to " + ip + ":" + port );
 //        }
     }
 
@@ -275,20 +275,20 @@ public class RemoteSender : IInputProcessor
         try
         {
             _out.Write( ACCEL );
-            _out.Write( Gdx.Input.GetAccelerometerX() );
-            _out.Write( Gdx.Input.GetAccelerometerY() );
-            _out.Write( Gdx.Input.GetAccelerometerZ() );
+            _out.Write( GdxApi.Input.GetAccelerometerX() );
+            _out.Write( GdxApi.Input.GetAccelerometerY() );
+            _out.Write( GdxApi.Input.GetAccelerometerZ() );
             _out.Write( COMPASS );
-            _out.Write( Gdx.Input.GetAzimuth() );
-            _out.Write( Gdx.Input.GetPitch() );
-            _out.Write( Gdx.Input.GetRoll() );
+            _out.Write( GdxApi.Input.GetAzimuth() );
+            _out.Write( GdxApi.Input.GetPitch() );
+            _out.Write( GdxApi.Input.GetRoll() );
             _out.Write( SIZE );
-            _out.Write( Gdx.Graphics.Width );
-            _out.Write( Gdx.Graphics.Height );
+            _out.Write( GdxApi.Graphics.Width );
+            _out.Write( GdxApi.Graphics.Height );
             _out.Write( GYRO );
-            _out.Write( Gdx.Input.GetGyroscopeX() );
-            _out.Write( Gdx.Input.GetGyroscopeY() );
-            _out.Write( Gdx.Input.GetGyroscopeZ() );
+            _out.Write( GdxApi.Input.GetGyroscopeX() );
+            _out.Write( GdxApi.Input.GetGyroscopeY() );
+            _out.Write( GdxApi.Input.GetGyroscopeZ() );
         }
         catch ( Exception )
         {

@@ -65,11 +65,17 @@ public class Equalizer
         SetFromFloatArray = settings;
     }
 
+    /// <summary>
+    /// Creates a new Equalizer instance, using the supplied <see cref="EQFunction"/> function.
+    /// </summary>
     public Equalizer( EQFunction eq )
     {
         FromEQFunction = eq;
     }
 
+    /// <summary>
+    /// Modifies this Equalizer's equalizer bands using the supplied float array.
+    /// </summary>
     public float[] SetFromFloatArray
     {
         set
@@ -100,6 +106,9 @@ public class Equalizer
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public EQFunction FromEQFunction
     {
         set

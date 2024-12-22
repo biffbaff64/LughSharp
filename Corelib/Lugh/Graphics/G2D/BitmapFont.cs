@@ -92,7 +92,7 @@ public class BitmapFont
     /// a bitmap font yourself.
     /// </summary>
     public BitmapFont()
-        : this( Gdx.Files.Internal( DEFAULT_FONT ).File, Gdx.Files.Internal( DEFAULT_FONT_IMAGE ).File, false )
+        : this( GdxApi.Files.Internal( DEFAULT_FONT ).File, GdxApi.Files.Internal( DEFAULT_FONT_IMAGE ).File, false )
     {
         _fileType = PathTypes.Internal;
     }
@@ -110,7 +110,7 @@ public class BitmapFont
     /// the upper left corner.
     /// </param>
     public BitmapFont( bool flip )
-        : this( Gdx.Files.Internal( DEFAULT_FONT ).File, Gdx.Files.Internal( DEFAULT_FONT ).File, flip )
+        : this( GdxApi.Files.Internal( DEFAULT_FONT ).File, GdxApi.Files.Internal( DEFAULT_FONT ).File, flip )
     {
         _fileType = PathTypes.Internal;
     }
@@ -233,8 +233,8 @@ public class BitmapFont
             for ( var i = 0; i < n; i++ )
             {
                 var file = data.FontFile == null
-                               ? Gdx.Files.Internal( data.ImagePaths[ i ] )
-                               : Gdx.Files.GetFileHandle( data.ImagePaths[ i ], _fileType );
+                               ? GdxApi.Files.Internal( data.ImagePaths[ i ] )
+                               : GdxApi.Files.GetFileHandle( data.ImagePaths[ i ], _fileType );
 
                 _regions.Add( new TextureRegion( new Texture( file.File, false ) ) );
             }

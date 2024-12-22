@@ -49,7 +49,7 @@ public class TextureAtlas
     /// using the parent directory of the pack file to find the page images.
     /// </summary>
     public TextureAtlas( string internalPackFile )
-        : this( Gdx.Files.Internal( internalPackFile ).File )
+        : this( GdxApi.Files.Internal( internalPackFile ).File )
     {
     }
 

@@ -48,7 +48,7 @@ namespace Corelib.Lugh.Scenes.Scene2D;
 /// the stage and sets up the camera used to convert between stage coordinates and screen
 /// coordinates.
 /// A stage must receive input events so it can distribute them to actors. This is
-/// typically done by passing the stage to Gdx.Input.SetInputProcessor.
+/// typically done by passing the stage to GdxApi.Input.SetInputProcessor.
 /// An InputMultiplexer may be used to handle input events before or after the stage does.
 /// If an actor handles an event by returning true from the input method, then the stage's
 /// input method will also return true, causing subsequent InputProcessors to not receive
@@ -96,8 +96,8 @@ public class Stage : InputAdapter, IDisposable
     /// </summary>
     public Stage()
         : this( new ScalingViewport( Scaling.Stretch,
-                                     Gdx.Graphics.Width,
-                                     Gdx.Graphics.Height,
+                                     GdxApi.Graphics.Width,
+                                     GdxApi.Graphics.Height,
                                      new OrthographicCamera() ), new SpriteBatch() )
     {
         _ownsBatch = true;
@@ -130,7 +130,7 @@ public class Stage : InputAdapter, IDisposable
         Root = new Group();
         Root.SetStage( this );
 
-        viewport.Update( Gdx.Graphics.Width, Gdx.Graphics.Height, true );
+        viewport.Update( GdxApi.Graphics.Width, GdxApi.Graphics.Height, true );
     }
 
     public float Width  => Viewport.WorldWidth;
@@ -421,12 +421,12 @@ public class Stage : InputAdapter, IDisposable
     }
 
     /// <summary>
-    /// Calls <see cref="Act(float)"/> with Gdx.Graphics.GetDeltaTime(),
+    /// Calls <see cref="Act(float)"/> with GdxApi.Graphics.GetDeltaTime(),
     /// limited to a minimum of 30fps.
     /// </summary>
     public virtual void Act()
     {
-        Act( Math.Min( Gdx.Graphics.DeltaTime, 1 / 30f ) );
+        Act( Math.Min( GdxApi.Graphics.DeltaTime, 1 / 30f ) );
     }
 
     /// <summary>
@@ -484,7 +484,7 @@ public class Stage : InputAdapter, IDisposable
         }
 
         // Update over actor for the mouse on the desktop.
-        var type = Gdx.App.AppType;
+        var type = GdxApi.App.AppType;
 
         if ( type is Platform.ApplicationType.WindowsGL or Platform.ApplicationType.WebGL )
         {
@@ -1209,7 +1209,7 @@ public class Stage : InputAdapter, IDisposable
     public virtual Vector2 StageToScreenCoordinates( Vector2 stageCoords )
     {
         Viewport.Project( stageCoords );
-        stageCoords.Y = Gdx.Graphics.Height - stageCoords.Y;
+        stageCoords.Y = GdxApi.Graphics.Height - stageCoords.Y;
 
         return stageCoords;
     }
@@ -1300,7 +1300,7 @@ public class Stage : InputAdapter, IDisposable
 
         if ( _debugUnderMouse || _debugParentUnderMouse || ( _debugTableUnderMouse != Table.DebugType.None ) )
         {
-            ScreenToStageCoordinates( _tempCoords.Set( Gdx.Input.GetX(), Gdx.Input.GetY() ) );
+            ScreenToStageCoordinates( _tempCoords.Set( GdxApi.Input.GetX(), GdxApi.Input.GetY() ) );
 
             var actor = Hit( _tempCoords.X, _tempCoords.Y, true );
 
@@ -1354,7 +1354,7 @@ public class Stage : InputAdapter, IDisposable
             }
         }
 
-        Gdx.GL.Enable( IGL.GL_BLEND );
+        GdxApi.Bindings.Enable( IGL.GL_BLEND );
 
         _debugShapes.ProjectionMatrix = Camera!.Combined;
         _debugShapes.Begin();
@@ -1363,7 +1363,7 @@ public class Stage : InputAdapter, IDisposable
 
         _debugShapes.End();
 
-        Gdx.GL.Disable( IGL.GL_BLEND );
+        GdxApi.Bindings.Disable( IGL.GL_BLEND );
     }
 
     /// <summary>
@@ -1404,7 +1404,7 @@ public class Stage : InputAdapter, IDisposable
         var y0 = Viewport.ScreenY;
         var y1 = y0 + Viewport.ScreenHeight;
 
-        screenY = Gdx.Graphics.Height - 1 - screenY;
+        screenY = GdxApi.Graphics.Height - 1 - screenY;
 
         return ( screenX >= x0 ) && ( screenX < x1 )
                                  && ( screenY >= y0 ) && ( screenY < y1 );

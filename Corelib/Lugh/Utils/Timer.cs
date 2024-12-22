@@ -70,7 +70,7 @@ public class Timer
     {
         lock ( _threadLock )
         {
-            if ( ( _thread != null ) && ( _thread.Files == Gdx.Files ) )
+            if ( ( _thread != null ) && ( _thread.Files == GdxApi.Files ) )
             {
                 return _thread;
             }
@@ -329,12 +329,12 @@ public class Timer
 
         protected Task()
         {
-            if ( Gdx.App == null )
+            if ( GdxApi.App == null )
             {
-                throw new GdxRuntimeException( "Gdx.App not available!" );
+                throw new GdxRuntimeException( "GdxApi.App not available!" );
             }
 
-            App = Gdx.App;
+            App = GdxApi.App;
         }
 
         /// <summary>
@@ -418,9 +418,9 @@ public class Timer
 
         public TimerThread()
         {
-            Files = Gdx.Files;
+            Files = GdxApi.Files;
 
-            Gdx.App.AddLifecycleListener( this );
+            GdxApi.App.AddLifecycleListener( this );
 
             Resume();
 
@@ -468,7 +468,7 @@ public class Timer
         {
             lock ( _threadLock )
             {
-                if ( ( _thread != this ) || ( Files != Gdx.Files ) )
+                if ( ( _thread != this ) || ( Files != GdxApi.Files ) )
                 {
                     Dispose();
 
@@ -494,7 +494,7 @@ public class Timer
                     }
                 }
 
-                if ( ( _thread != this ) || ( Files != Gdx.Files ) )
+                if ( ( _thread != this ) || ( Files != GdxApi.Files ) )
                 {
                     Dispose();
 
@@ -533,7 +533,7 @@ public class Timer
                     Monitor.PulseAll( _threadLock );
                 }
 
-                Gdx.App.RemoveLifecycleListener( this );
+                GdxApi.App.RemoveLifecycleListener( this );
             }
         }
     }

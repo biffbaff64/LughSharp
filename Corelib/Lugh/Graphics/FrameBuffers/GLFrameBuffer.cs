@@ -163,7 +163,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
 
         if ( BufferBuilder.HasDepthRenderBuffer )
         {
-            Gdx.GL.FramebufferRenderbuffer( IGL.GL_FRAMEBUFFER,
+            GdxApi.Bindings.FramebufferRenderbuffer( IGL.GL_FRAMEBUFFER,
                                               IGL.GL_DEPTH_ATTACHMENT,
                                               IGL.GL_RENDERBUFFER,
                                               ( uint ) DepthbufferHandle );
@@ -171,7 +171,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
 
         if ( BufferBuilder.HasStencilRenderBuffer )
         {
-            Gdx.GL.FramebufferRenderbuffer( IGL.GL_FRAMEBUFFER,
+            GdxApi.Bindings.FramebufferRenderbuffer( IGL.GL_FRAMEBUFFER,
                                               IGL.GL_STENCIL_ATTACHMENT,
                                               IGL.GL_RENDERBUFFER,
                                               ( uint ) StencilbufferHandle );
@@ -179,28 +179,28 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
 
         if ( BufferBuilder.HasPackedStencilDepthRenderBuffer )
         {
-            Gdx.GL.FramebufferRenderbuffer( IGL.GL_FRAMEBUFFER,
+            GdxApi.Bindings.FramebufferRenderbuffer( IGL.GL_FRAMEBUFFER,
                                               IGL.GL_DEPTH_STENCIL_ATTACHMENT,
                                               IGL.GL_RENDERBUFFER,
                                               ( uint ) DepthStencilPackedBufferHandle );
         }
 
-        Gdx.GL.BindRenderbuffer( IGL.GL_RENDERBUFFER, 0 );
+        GdxApi.Bindings.BindRenderbuffer( IGL.GL_RENDERBUFFER, 0 );
 
         foreach ( var texture in TextureAttachments )
         {
-            Gdx.GL.BindTexture( texture.GLTarget, 0 );
+            GdxApi.Bindings.BindTexture( texture.GLTarget, 0 );
         }
 
-        var result = Gdx.GL.CheckFramebufferStatus( IGL.GL_FRAMEBUFFER );
+        var result = GdxApi.Bindings.CheckFramebufferStatus( IGL.GL_FRAMEBUFFER );
 
         result = HandleUnsupportedFrameBuffer( result, width, height );
 
-        Gdx.GL.BindFramebuffer( IGL.GL_FRAMEBUFFER, ( uint ) DefaultFramebufferHandle );
+        GdxApi.Bindings.BindFramebuffer( IGL.GL_FRAMEBUFFER, ( uint ) DefaultFramebufferHandle );
 
         HandleIncompleteFrameBuffer( result );
 
-        AddManagedFrameBuffer( Gdx.App, this );
+        AddManagedFrameBuffer( GdxApi.App, this );
     }
 
     /// <summary>
@@ -213,12 +213,12 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
         if ( BufferBuilder.HasDepthRenderBuffer )
         {
             //TODO: uint -> int -> uint ????
-            DepthbufferHandle = ( int ) Gdx.GL.GenRenderbuffer();
-            Gdx.GL.BindRenderbuffer( IGL.GL_RENDERBUFFER, ( uint ) DepthbufferHandle );
+            DepthbufferHandle = ( int ) GdxApi.Bindings.GenRenderbuffer();
+            GdxApi.Bindings.BindRenderbuffer( IGL.GL_RENDERBUFFER, ( uint ) DepthbufferHandle );
 
             if ( BufferBuilder.DepthRenderBufferSpec != null )
             {
-                Gdx.GL.RenderbufferStorage( IGL.GL_RENDERBUFFER,
+                GdxApi.Bindings.RenderbufferStorage( IGL.GL_RENDERBUFFER,
                                               BufferBuilder.DepthRenderBufferSpec.InternalFormat,
                                               width,
                                               height );
@@ -227,12 +227,12 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
 
         if ( BufferBuilder.HasStencilRenderBuffer )
         {
-            StencilbufferHandle = ( int ) Gdx.GL.GenRenderbuffer();
-            Gdx.GL.BindRenderbuffer( IGL.GL_RENDERBUFFER, ( uint ) StencilbufferHandle );
+            StencilbufferHandle = ( int ) GdxApi.Bindings.GenRenderbuffer();
+            GdxApi.Bindings.BindRenderbuffer( IGL.GL_RENDERBUFFER, ( uint ) StencilbufferHandle );
 
             if ( BufferBuilder.StencilRenderBufferSpec != null )
             {
-                Gdx.GL.RenderbufferStorage( IGL.GL_RENDERBUFFER,
+                GdxApi.Bindings.RenderbufferStorage( IGL.GL_RENDERBUFFER,
                                               BufferBuilder.StencilRenderBufferSpec.InternalFormat,
                                               width,
                                               height );
@@ -241,12 +241,12 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
 
         if ( BufferBuilder.HasPackedStencilDepthRenderBuffer )
         {
-            DepthStencilPackedBufferHandle = ( int ) Gdx.GL.GenRenderbuffer();
-            Gdx.GL.BindRenderbuffer( IGL.GL_RENDERBUFFER, ( uint ) DepthStencilPackedBufferHandle );
+            DepthStencilPackedBufferHandle = ( int ) GdxApi.Bindings.GenRenderbuffer();
+            GdxApi.Bindings.BindRenderbuffer( IGL.GL_RENDERBUFFER, ( uint ) DepthStencilPackedBufferHandle );
 
             if ( BufferBuilder.PackedStencilDepthRenderBufferSpec != null )
             {
-                Gdx.GL.RenderbufferStorage( IGL.GL_RENDERBUFFER,
+                GdxApi.Bindings.RenderbufferStorage( IGL.GL_RENDERBUFFER,
                                               BufferBuilder.PackedStencilDepthRenderBufferSpec.InternalFormat,
                                               width,
                                               height );
@@ -274,7 +274,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
                 // Attach color texture to the specified color attachment point
                 if ( attachmentSpec.IsColorTexture )
                 {
-                    Gdx.GL.FramebufferTexture2D( IGL.GL_FRAMEBUFFER,
+                    GdxApi.Bindings.FramebufferTexture2D( IGL.GL_FRAMEBUFFER,
                                                    IGL.GL_COLOR_ATTACHMENT0 + colorTextureCounter,
                                                    IGL.GL_TEXTURE_2D,
                                                    tempHandle,
@@ -286,7 +286,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
                 // Attach depth texture to the depth attachment point
                 else if ( attachmentSpec.IsDepth )
                 {
-                    Gdx.GL.FramebufferTexture2D( IGL.GL_FRAMEBUFFER,
+                    GdxApi.Bindings.FramebufferTexture2D( IGL.GL_FRAMEBUFFER,
                                                    IGL.GL_DEPTH_ATTACHMENT,
                                                    IGL.GL_TEXTURE_2D,
                                                    tempHandle,
@@ -296,7 +296,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
                 // Attach stencil texture to the stencil attachment point
                 else if ( attachmentSpec.IsStencil )
                 {
-                    Gdx.GL.FramebufferTexture2D( IGL.GL_FRAMEBUFFER,
+                    GdxApi.Bindings.FramebufferTexture2D( IGL.GL_FRAMEBUFFER,
                                                    IGL.GL_STENCIL_ATTACHMENT,
                                                    IGL.GL_TEXTURE_2D,
                                                    tempHandle,
@@ -311,7 +311,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
             var texture = CreateTexture( BufferBuilder.TextureAttachmentSpecs.First() );
             TextureAttachments.Add( texture );
 
-            Gdx.GL.BindTexture( texture.GLTarget, ( uint ) texture.GLTextureHandle );
+            GdxApi.Bindings.BindTexture( texture.GLTarget, ( uint ) texture.GLTextureHandle );
         }
 
         // Set the draw buffers for multiple color attachments
@@ -328,7 +328,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
 
             fixed ( int* ptr = &buffer.BackingArray()[ 0 ] )
             {
-                Gdx.GL.DrawBuffers( colorTextureCounter, ptr );
+                GdxApi.Bindings.DrawBuffers( colorTextureCounter, ptr );
             }
         }
 
@@ -351,41 +351,41 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
     {
         if ( ( result == IGL.GL_FRAMEBUFFER_UNSUPPORTED )
           && BufferBuilder is { HasDepthRenderBuffer: true, HasStencilRenderBuffer: true }
-          && ( Gdx.Graphics.SupportsExtension( "GL_OES_packed_depth_stencil" )
-            || Gdx.Graphics.SupportsExtension( "GL_EXT_packed_depth_stencil" ) ) )
+          && ( GdxApi.Graphics.SupportsExtension( "GL_OES_packed_depth_stencil" )
+            || GdxApi.Graphics.SupportsExtension( "GL_EXT_packed_depth_stencil" ) ) )
         {
             // Delete existing render buffers
             if ( BufferBuilder.HasDepthRenderBuffer )
             {
-                Gdx.GL.DeleteRenderbuffers( ( uint ) DepthbufferHandle );
+                GdxApi.Bindings.DeleteRenderbuffers( ( uint ) DepthbufferHandle );
                 DepthbufferHandle = 0;
             }
 
             if ( BufferBuilder.HasStencilRenderBuffer )
             {
-                Gdx.GL.DeleteRenderbuffers( ( uint ) StencilbufferHandle );
+                GdxApi.Bindings.DeleteRenderbuffers( ( uint ) StencilbufferHandle );
                 StencilbufferHandle = 0;
             }
 
             if ( BufferBuilder.HasPackedStencilDepthRenderBuffer )
             {
-                Gdx.GL.DeleteRenderbuffers( ( uint ) DepthStencilPackedBufferHandle );
+                GdxApi.Bindings.DeleteRenderbuffers( ( uint ) DepthStencilPackedBufferHandle );
                 DepthStencilPackedBufferHandle = 0;
             }
 
             // Create a new packed depth-stencil buffer
-            DepthStencilPackedBufferHandle = ( int ) Gdx.GL.GenRenderbuffer();
+            DepthStencilPackedBufferHandle = ( int ) GdxApi.Bindings.GenRenderbuffer();
             HasDepthStencilPackedBuffer    = true;
-            Gdx.GL.BindRenderbuffer( IGL.GL_RENDERBUFFER, ( uint ) DepthStencilPackedBufferHandle );
-            Gdx.GL.RenderbufferStorage( IGL.GL_RENDERBUFFER, GL_DEPTH24_STENCIL8_OES, width, height );
-            Gdx.GL.BindRenderbuffer( IGL.GL_RENDERBUFFER, 0 );
+            GdxApi.Bindings.BindRenderbuffer( IGL.GL_RENDERBUFFER, ( uint ) DepthStencilPackedBufferHandle );
+            GdxApi.Bindings.RenderbufferStorage( IGL.GL_RENDERBUFFER, GL_DEPTH24_STENCIL8_OES, width, height );
+            GdxApi.Bindings.BindRenderbuffer( IGL.GL_RENDERBUFFER, 0 );
 
             // Attach the new buffer to the framebuffer
-            Gdx.GL.FramebufferRenderbuffer( IGL.GL_FRAMEBUFFER, IGL.GL_DEPTH_ATTACHMENT, IGL.GL_RENDERBUFFER, ( uint ) DepthStencilPackedBufferHandle );
-            Gdx.GL.FramebufferRenderbuffer( IGL.GL_FRAMEBUFFER, IGL.GL_STENCIL_ATTACHMENT, IGL.GL_RENDERBUFFER, ( uint ) DepthStencilPackedBufferHandle );
+            GdxApi.Bindings.FramebufferRenderbuffer( IGL.GL_FRAMEBUFFER, IGL.GL_DEPTH_ATTACHMENT, IGL.GL_RENDERBUFFER, ( uint ) DepthStencilPackedBufferHandle );
+            GdxApi.Bindings.FramebufferRenderbuffer( IGL.GL_FRAMEBUFFER, IGL.GL_STENCIL_ATTACHMENT, IGL.GL_RENDERBUFFER, ( uint ) DepthStencilPackedBufferHandle );
 
             // Re-check the framebuffer status
-            result = Gdx.GL.CheckFramebufferStatus( IGL.GL_FRAMEBUFFER );
+            result = GdxApi.Bindings.CheckFramebufferStatus( IGL.GL_FRAMEBUFFER );
         }
 
         return result;
@@ -409,23 +409,23 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
             // Delete depth-stencil buffer or separate depth and stencil renderbuffers
             if ( HasDepthStencilPackedBuffer )
             {
-                Gdx.GL.DeleteBuffers( ( uint ) DepthStencilPackedBufferHandle );
+                GdxApi.Bindings.DeleteBuffers( ( uint ) DepthStencilPackedBufferHandle );
             }
             else
             {
                 if ( BufferBuilder.HasDepthRenderBuffer )
                 {
-                    Gdx.GL.DeleteRenderbuffers( ( uint ) DepthbufferHandle );
+                    GdxApi.Bindings.DeleteRenderbuffers( ( uint ) DepthbufferHandle );
                 }
 
                 if ( BufferBuilder.HasStencilRenderBuffer )
                 {
-                    Gdx.GL.DeleteRenderbuffers( ( uint ) StencilbufferHandle );
+                    GdxApi.Bindings.DeleteRenderbuffers( ( uint ) StencilbufferHandle );
                 }
             }
 
             // Delete the framebuffer
-            Gdx.GL.DeleteFramebuffers( ( uint ) FramebufferHandle );
+            GdxApi.Bindings.DeleteFramebuffers( ( uint ) FramebufferHandle );
 
             // Handle specific incomplete framebuffer scenarios
             if ( result == IGL.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT )
@@ -460,14 +460,14 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
         {
             DefaultFramebufferHandleInitialized = true;
 
-            if ( Gdx.App.AppType == Platform.ApplicationType.IOS )
+            if ( GdxApi.App.AppType == Platform.ApplicationType.IOS )
             {
                 var intbuf = ByteBuffer.Allocate
                     ( ( 16 * sizeof( int ) ) / 8 ).Order( ByteOrder.NativeOrder ).AsIntBuffer();
                 
                 fixed ( int* ptr = &intbuf.BackingArray()[ 0 ] )
                 {
-                    Gdx.GL.GetIntegerv( IGL.GL_FRAMEBUFFER_BINDING, ptr );
+                    GdxApi.Bindings.GetIntegerv( IGL.GL_FRAMEBUFFER_BINDING, ptr );
                 }
 
                 DefaultFramebufferHandle = intbuf.Get( 0 );
@@ -478,9 +478,9 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
             }
         }
 
-        FramebufferHandle = ( int ) Gdx.GL.GenFramebuffer();
+        FramebufferHandle = ( int ) GdxApi.Bindings.GenFramebuffer();
 
-        Gdx.GL.BindFramebuffer( IGL.GL_FRAMEBUFFER, ( uint ) FramebufferHandle );
+        GdxApi.Bindings.BindFramebuffer( IGL.GL_FRAMEBUFFER, ( uint ) FramebufferHandle );
     }
 
     /// <summary>
@@ -488,7 +488,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
     /// </summary>
     protected virtual void Bind()
     {
-        Gdx.GL.BindFramebuffer( IGL.GL_FRAMEBUFFER, ( uint ) FramebufferHandle );
+        GdxApi.Bindings.BindFramebuffer( IGL.GL_FRAMEBUFFER, ( uint ) FramebufferHandle );
     }
 
     /// <summary>
@@ -497,7 +497,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
     /// </summary>
     public virtual void Unbind()
     {
-        Gdx.GL.BindFramebuffer( IGL.GL_FRAMEBUFFER, ( uint ) DefaultFramebufferHandle );
+        GdxApi.Bindings.BindFramebuffer( IGL.GL_FRAMEBUFFER, ( uint ) DefaultFramebufferHandle );
     }
 
     /// <summary>
@@ -516,7 +516,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
     /// </summary>
     public void SetFrameBufferViewport()
     {
-        Gdx.GL.Viewport( 0, 0, BufferBuilder.Width, BufferBuilder.Height );
+        GdxApi.Bindings.Viewport( 0, 0, BufferBuilder.Width, BufferBuilder.Height );
     }
 
     /// <summary>
@@ -525,7 +525,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
     /// </summary>
     public virtual void End()
     {
-        End( 0, 0, Gdx.Graphics.BackBufferWidth, Gdx.Graphics.BackBufferHeight );
+        End( 0, 0, GdxApi.Graphics.BackBufferWidth, GdxApi.Graphics.BackBufferHeight );
     }
 
     /// <summary>
@@ -539,7 +539,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
     public virtual void End( int x, int y, int width, int height )
     {
         Unbind();
-        Gdx.GL.Viewport( x, y, width, height );
+        GdxApi.Bindings.Viewport( x, y, width, height );
     }
 
     /// <summary>
@@ -630,26 +630,26 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
 
         if ( HasDepthStencilPackedBuffer )
         {
-            Gdx.GL.DeleteRenderbuffers( ( uint ) DepthStencilPackedBufferHandle );
+            GdxApi.Bindings.DeleteRenderbuffers( ( uint ) DepthStencilPackedBufferHandle );
         }
         else
         {
             if ( BufferBuilder.HasDepthRenderBuffer )
             {
-                Gdx.GL.DeleteRenderbuffers( ( uint ) DepthbufferHandle );
+                GdxApi.Bindings.DeleteRenderbuffers( ( uint ) DepthbufferHandle );
             }
 
             if ( BufferBuilder.HasStencilRenderBuffer )
             {
-                Gdx.GL.DeleteRenderbuffers( ( uint ) StencilbufferHandle );
+                GdxApi.Bindings.DeleteRenderbuffers( ( uint ) StencilbufferHandle );
             }
         }
 
-        Gdx.GL.DeleteFramebuffers( ( uint ) FramebufferHandle );
+        GdxApi.Bindings.DeleteFramebuffers( ( uint ) FramebufferHandle );
 
-        if ( Buffers?[ Gdx.App ] != null )
+        if ( Buffers?[ GdxApi.App ] != null )
         {
-            Buffers[ Gdx.App ]?.Remove( this );
+            Buffers[ GdxApi.App ]?.Remove( this );
         }
     }
 }

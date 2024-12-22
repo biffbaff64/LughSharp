@@ -30,6 +30,6 @@ public class ExternalFileHandleResolver : IFileHandleResolver
     /// <inheritdoc />
     public FileInfo Resolve( string fileName )
     {
-        return Gdx.Files.External( fileName ).File;
+        return GdxApi.Files.External( fileName ).File;
     }
 }

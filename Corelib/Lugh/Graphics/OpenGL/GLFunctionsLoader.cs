@@ -35,27 +35,9 @@
 using Corelib.Lugh.Utils;
 using Corelib.Lugh.Utils.Exceptions;
 
-using GLenum = System.Int32;
-using GLfloat = System.Single;
-using GLint = System.Int32;
-using GLsizei = System.Int32;
-using GLbitfield = System.UInt32;
-using GLdouble = System.Double;
-using GLuint = System.UInt32;
-using GLboolean = System.Boolean;
-using GLubyte = System.Byte;
-using GLsizeiptr = System.Int32;
-using GLintptr = System.Int32;
-using GLshort = System.Int16;
-using GLbyte = System.SByte;
-using GLushort = System.UInt16;
-using GLchar = System.Byte;
-using GLuint64 = System.UInt64;
-using GLint64 = System.Int64;
+namespace Corelib.Lugh.Graphics.OpenGL;
 
 // ============================================================================
-
-namespace Corelib.Lugh.Graphics.OpenGL;
 
 public partial class GLBindings
 {
@@ -83,10 +65,18 @@ public partial class GLBindings
     // ========================================================================
     // ========================================================================
 
-    private unsafe void GetLanguageLevel()
+    private unsafe void SetOGL()
     {
-        var version = BytePointerToString.Convert( GetString( IGL.GL_VERSION ) );
+        Logger.Checkpoint();
 
+        if ( Glfw.GetCurrentContext() == null )
+        {
+            Logger.Debug( "NULL Current OpenGL Context!" );
+        }
+
+        LoadOpenGLFunction< glGetStringDelegate >( "glGetString", out _glGetString );
+
+        var version      = BytePointerToString.Convert( GetString( IGL.GL_VERSION ) );
         var majorVersion = ( int )char.GetNumericValue( version[ 0 ] );
         var minorVersion = ( int )char.GetNumericValue( version[ 2 ] );
 
@@ -140,26 +130,13 @@ public partial class GLBindings
 
             default:
             {
-                Logger.Debug( $"Error: {Gdx.GL.GetError()}" );
+                Logger.Debug( $"Error: {GdxApi.Bindings.GetError()}" );
 
                 throw new GdxRuntimeException( "Unable to determine OpenGL Version" );
             }
         }
 
         Logger.Debug( $"Language Version: {majorVersion}.{minorVersion}" );
-
-        return;
-
-        static GLubyte* GetString( GLenum name )
-        {
-            return _glGetString( name );
-        }
-
-        [DllImport( "opengl32.dll",
-                    EntryPoint = "glGetString",
-                    CallingConvention = CallingConvention.Cdecl,
-                    CharSet = CharSet.Ansi )]
-        static extern GLubyte* _glGetString( GLenum name );
     }
 
     // ========================================================================
@@ -167,69 +144,61 @@ public partial class GLBindings
 
     public void Import()
     {
-        Import( Glfw.GetProcAddress );
-    }
-
-    // ========================================================================
-    // ========================================================================
-
-    public void Import( IGLBindings.GetProcAddressHandler loader )
-    {
-        GetLanguageLevel();
+        SetOGL();
 
         if ( _ogl10 || _ogl11 || _ogl12 || _ogl13 || _ogl14 || _ogl15
              || _ogl20 || _ogl21
              || _ogl30 || _ogl31 || _ogl32 || _ogl33 || _ogl34
              || _ogl40 || _ogl41 || _ogl42 || _ogl43 || _ogl44 || _ogl45 || _ogl46 )
         {
-            _glCullFace               = Marshal.GetDelegateForFunctionPointer< PFNGLCULLFACEPROC >( loader.Invoke( "glCullFace" ) );
-            _glFrontFace              = Marshal.GetDelegateForFunctionPointer< PFNGLFRONTFACEPROC >( loader.Invoke( "glFrontFace" ) );
-            _glHint                   = Marshal.GetDelegateForFunctionPointer< PFNGLHINTPROC >( loader.Invoke( "glHint" ) );
-            _glLineWidth              = Marshal.GetDelegateForFunctionPointer< PFNGLLINEWIDTHPROC >( loader.Invoke( "glLineWidth" ) );
-            _glPointSize              = Marshal.GetDelegateForFunctionPointer< PFNGLPOINTSIZEPROC >( loader.Invoke( "glPointSize" ) );
-            _glPolygonMode            = Marshal.GetDelegateForFunctionPointer< PFNGLPOLYGONMODEPROC >( loader.Invoke( "glPolygonMode" ) );
-            _glScissor                = Marshal.GetDelegateForFunctionPointer< PFNGLSCISSORPROC >( loader.Invoke( "glScissor" ) );
-            _glTexParameterf          = Marshal.GetDelegateForFunctionPointer< PFNGLTEXPARAMETERFPROC >( loader.Invoke( "glTexParameterf" ) );
-            _glTexParameterfv         = Marshal.GetDelegateForFunctionPointer< PFNGLTEXPARAMETERFVPROC >( loader.Invoke( "glTexParameterfv" ) );
-            _glTexParameteri          = Marshal.GetDelegateForFunctionPointer< PFNGLTEXPARAMETERIPROC >( loader.Invoke( "glTexParameteri" ) );
-            _glTexParameteriv         = Marshal.GetDelegateForFunctionPointer< PFNGLTEXPARAMETERIVPROC >( loader.Invoke( "glTexParameteriv" ) );
-            _glTexImage1D             = Marshal.GetDelegateForFunctionPointer< PFNGLTEXIMAGE1DPROC >( loader.Invoke( "glTexImage1D" ) );
-            _glTexImage2D             = Marshal.GetDelegateForFunctionPointer< PFNGLTEXIMAGE2DPROC >( loader.Invoke( "glTexImage2D" ) );
-            _glDrawBuffer             = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWBUFFERPROC >( loader.Invoke( "glDrawBuffer" ) );
-            _glClear                  = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARPROC >( loader.Invoke( "glClear" ) );
-            _glClearColor             = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARCOLORPROC >( loader.Invoke( "glClearColor" ) );
-            _glClearStencil           = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARSTENCILPROC >( loader.Invoke( "glClearStencil" ) );
-            _glClearDepth             = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARDEPTHPROC >( loader.Invoke( "glClearDepth" ) );
-            _glStencilMask            = Marshal.GetDelegateForFunctionPointer< PFNGLSTENCILMASKPROC >( loader.Invoke( "glStencilMask" ) );
-            _glColorMask              = Marshal.GetDelegateForFunctionPointer< PFNGLCOLORMASKPROC >( loader.Invoke( "glColorMask" ) );
-            _glDepthMask              = Marshal.GetDelegateForFunctionPointer< PFNGLDEPTHMASKPROC >( loader.Invoke( "glDepthMask" ) );
-            _glDisable                = Marshal.GetDelegateForFunctionPointer< PFNGLDISABLEPROC >( loader.Invoke( "glDisable" ) );
-            _glEnable                 = Marshal.GetDelegateForFunctionPointer< PFNGLENABLEPROC >( loader.Invoke( "glEnable" ) );
-            _glFinish                 = Marshal.GetDelegateForFunctionPointer< PFNGLFINISHPROC >( loader.Invoke( "glFinish" ) );
-            _glFlush                  = Marshal.GetDelegateForFunctionPointer< PFNGLFLUSHPROC >( loader.Invoke( "glFlush" ) );
-            _glBlendFunc              = Marshal.GetDelegateForFunctionPointer< PFNGLBLENDFUNCPROC >( loader.Invoke( "glBlendFunc" ) );
-            _glLogicOp                = Marshal.GetDelegateForFunctionPointer< PFNGLLOGICOPPROC >( loader.Invoke( "glLogicOp" ) );
-            _glStencilFunc            = Marshal.GetDelegateForFunctionPointer< PFNGLSTENCILFUNCPROC >( loader.Invoke( "glStencilFunc" ) );
-            _glStencilOp              = Marshal.GetDelegateForFunctionPointer< PFNGLSTENCILOPPROC >( loader.Invoke( "glStencilOp" ) );
-            _glDepthFunc              = Marshal.GetDelegateForFunctionPointer< PFNGLDEPTHFUNCPROC >( loader.Invoke( "glDepthFunc" ) );
-            _glPixelStoref            = Marshal.GetDelegateForFunctionPointer< PFNGLPIXELSTOREFPROC >( loader.Invoke( "glPixelStoref" ) );
-            _glPixelStorei            = Marshal.GetDelegateForFunctionPointer< PFNGLPIXELSTOREIPROC >( loader.Invoke( "glPixelStorei" ) );
-            _glReadBuffer             = Marshal.GetDelegateForFunctionPointer< PFNGLREADBUFFERPROC >( loader.Invoke( "glReadBuffer" ) );
-            _glReadPixels             = Marshal.GetDelegateForFunctionPointer< PFNGLREADPIXELSPROC >( loader.Invoke( "glReadPixels" ) );
-            _glGetBooleanv            = Marshal.GetDelegateForFunctionPointer< PFNGLGETBOOLEANVPROC >( loader.Invoke( "glGetBooleanv" ) );
-            _glGetDoublev             = Marshal.GetDelegateForFunctionPointer< PFNGLGETDOUBLEVPROC >( loader.Invoke( "glGetDoublev" ) );
-            _glGetError               = Marshal.GetDelegateForFunctionPointer< PFNGLGETERRORPROC >( loader.Invoke( "glGetError" ) );
-            _glGetFloatv              = Marshal.GetDelegateForFunctionPointer< PFNGLGETFLOATVPROC >( loader.Invoke( "glGetFloatv" ) );
-            _glGetIntegerv            = Marshal.GetDelegateForFunctionPointer< PFNGLGETINTEGERVPROC >( loader.Invoke( "glGetIntegerv" ) );
-            _glGetString              = Marshal.GetDelegateForFunctionPointer< PFNGLGETSTRINGPROC >( loader.Invoke( "glGetString" ) );
-            _glGetTexImage            = Marshal.GetDelegateForFunctionPointer< PFNGLGETTEXIMAGEPROC >( loader.Invoke( "glGetTexImage" ) );
-            _glGetTexParameterfv      = Marshal.GetDelegateForFunctionPointer< PFNGLGETTEXPARAMETERFVPROC >( loader.Invoke( "glGetTexParameterfv" ) );
-            _glGetTexParameteriv      = Marshal.GetDelegateForFunctionPointer< PFNGLGETTEXPARAMETERIVPROC >( loader.Invoke( "glGetTexParameteriv" ) );
-            _glGetTexLevelParameterfv = Marshal.GetDelegateForFunctionPointer< PFNGLGETTEXLEVELPARAMETERFVPROC >( loader.Invoke( "glGetTexLevelParameterfv" ) );
-            _glGetTexLevelParameteriv = Marshal.GetDelegateForFunctionPointer< PFNGLGETTEXLEVELPARAMETERIVPROC >( loader.Invoke( "glGetTexLevelParameteriv" ) );
-            _glIsEnabled              = Marshal.GetDelegateForFunctionPointer< PFNGLISENABLEDPROC >( loader.Invoke( "glIsEnabled" ) );
-            _glDepthRange             = Marshal.GetDelegateForFunctionPointer< PFNGLDEPTHRANGEPROC >( loader.Invoke( "glDepthRange" ) );
-            _glViewport               = Marshal.GetDelegateForFunctionPointer< PFNGLVIEWPORTPROC >( loader.Invoke( "glViewport" ) );
+            LoadOpenGLFunction( "glCullFace", out _glCullFace );
+            LoadOpenGLFunction( "glFrontFace", out _glFrontFace );
+            LoadOpenGLFunction( "glHint", out _glHint );
+            LoadOpenGLFunction( "glLineWidth", out _glLineWidth );
+            LoadOpenGLFunction( "glPointSize", out _glPointSize );
+            LoadOpenGLFunction( "glPolygonMode", out _glPolygonMode );
+            LoadOpenGLFunction( "glScissor", out _glScissor );
+            LoadOpenGLFunction( "glTexParameterf", out _glTexParameterf );
+            LoadOpenGLFunction( "glTexParameterfv", out _glTexParameterfv );
+            LoadOpenGLFunction( "glTexParameteri", out _glTexParameteri );
+            LoadOpenGLFunction( "glTexParameteriv", out _glTexParameteriv );
+            LoadOpenGLFunction( "glTexImage1D", out _glTexImage1D );
+            LoadOpenGLFunction( "glTexImage2D", out _glTexImage2D );
+            LoadOpenGLFunction( "glDrawBuffer", out _glDrawBuffer );
+            LoadOpenGLFunction( "glClear", out _glClear );
+            LoadOpenGLFunction( "glClearColor", out _glClearColor );
+            LoadOpenGLFunction( "glClearStencil", out _glClearStencil );
+            LoadOpenGLFunction( "glClearDepth", out _glClearDepth );
+            LoadOpenGLFunction( "glStencilMask", out _glStencilMask );
+            LoadOpenGLFunction( "glColorMask", out _glColorMask );
+            LoadOpenGLFunction( "glDepthMask", out _glDepthMask );
+            LoadOpenGLFunction( "glDisable", out _glDisable );
+            LoadOpenGLFunction( "glEnable", out _glEnable );
+            LoadOpenGLFunction( "glFinish", out _glFinish );
+            LoadOpenGLFunction( "glFlush", out _glFlush );
+            LoadOpenGLFunction( "glBlendFunc", out _glBlendFunc );
+            LoadOpenGLFunction( "glGetString", out _glGetString );
+            LoadOpenGLFunction( "glLogicOp", out _glLogicOp );
+            LoadOpenGLFunction( "glStencilFunc", out _glStencilFunc );
+            LoadOpenGLFunction( "glStencilOp", out _glStencilOp );
+            LoadOpenGLFunction( "glDepthFunc", out _glDepthFunc );
+            LoadOpenGLFunction( "glPixelStoref", out _glPixelStoref );
+            LoadOpenGLFunction( "glPixelStorei", out _glPixelStorei );
+            LoadOpenGLFunction( "glReadBuffer", out _glReadBuffer );
+            LoadOpenGLFunction( "glReadPixels", out _glReadPixels );
+            LoadOpenGLFunction( "glGetBooleanv", out _glGetBooleanv );
+            LoadOpenGLFunction( "glGetDoublev", out _glGetDoublev );
+            LoadOpenGLFunction( "glGetError", out _glGetError );
+            LoadOpenGLFunction( "glGetFloatv", out _glGetFloatv );
+            LoadOpenGLFunction( "glGetIntegerv", out _glGetIntegerv );
+            LoadOpenGLFunction( "glGetTexImage", out _glGetTexImage );
+            LoadOpenGLFunction( "glGetTexParameterfv", out _glGetTexParameterfv );
+            LoadOpenGLFunction( "glGetTexParameteriv", out _glGetTexParameteriv );
+            LoadOpenGLFunction( "glGetTexLevelParameterfv", out _glGetTexLevelParameterfv );
+            LoadOpenGLFunction( "glGetTexLevelParameteriv", out _glGetTexLevelParameteriv );
+            LoadOpenGLFunction( "glIsEnabled", out _glIsEnabled );
+            LoadOpenGLFunction( "glDepthRange", out _glDepthRange );
+            LoadOpenGLFunction( "glViewport", out _glViewport );
         }
 
         if ( _ogl11 || _ogl12 || _ogl13 || _ogl14 || _ogl15
@@ -237,19 +206,19 @@ public partial class GLBindings
              || _ogl30 || _ogl31 || _ogl32 || _ogl33 || _ogl34
              || _ogl40 || _ogl41 || _ogl42 || _ogl43 || _ogl44 || _ogl45 || _ogl46 )
         {
-            _glDrawArrays        = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWARRAYSPROC >( loader.Invoke( "glDrawArrays" ) );
-            _glDrawElements      = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWELEMENTSPROC >( loader.Invoke( "glDrawElements" ) );
-            _glPolygonOffset     = Marshal.GetDelegateForFunctionPointer< PFNGLPOLYGONOFFSETPROC >( loader.Invoke( "glPolygonOffset" ) );
-            _glCopyTexImage1D    = Marshal.GetDelegateForFunctionPointer< PFNGLCOPYTEXIMAGE1DPROC >( loader.Invoke( "glCopyTexImage1D" ) );
-            _glCopyTexImage2D    = Marshal.GetDelegateForFunctionPointer< PFNGLCOPYTEXIMAGE2DPROC >( loader.Invoke( "glCopyTexImage2D" ) );
-            _glCopyTexSubImage1D = Marshal.GetDelegateForFunctionPointer< PFNGLCOPYTEXSUBIMAGE1DPROC >( loader.Invoke( "glCopyTexSubImage1D" ) );
-            _glCopyTexSubImage2D = Marshal.GetDelegateForFunctionPointer< PFNGLCOPYTEXSUBIMAGE2DPROC >( loader.Invoke( "glCopyTexSubImage2D" ) );
-            _glTexSubImage1D     = Marshal.GetDelegateForFunctionPointer< PFNGLTEXSUBIMAGE1DPROC >( loader.Invoke( "glTexSubImage1D" ) );
-            _glTexSubImage2D     = Marshal.GetDelegateForFunctionPointer< PFNGLTEXSUBIMAGE2DPROC >( loader.Invoke( "glTexSubImage2D" ) );
-            _glBindTexture       = Marshal.GetDelegateForFunctionPointer< PFNGLBINDTEXTUREPROC >( loader.Invoke( "glBindTexture" ) );
-            _glDeleteTextures    = Marshal.GetDelegateForFunctionPointer< PFNGLDELETETEXTURESPROC >( loader.Invoke( "glDeleteTextures" ) );
-            _glGenTextures       = Marshal.GetDelegateForFunctionPointer< PFNGLGENTEXTURESPROC >( loader.Invoke( "glGenTextures" ) );
-            _glIsTexture         = Marshal.GetDelegateForFunctionPointer< PFNGLISTEXTUREPROC >( loader.Invoke( "glIsTexture" ) );
+            LoadOpenGLFunction( "glDrawArrays", out _glDrawArrays );
+            LoadOpenGLFunction( "glDrawElements", out _glDrawElements );
+            LoadOpenGLFunction( "glPolygonOffset", out _glPolygonOffset );
+            LoadOpenGLFunction( "glCopyTexImage1D", out _glCopyTexImage1D );
+            LoadOpenGLFunction( "glCopyTexImage2D", out _glCopyTexImage2D );
+            LoadOpenGLFunction( "glCopyTexSubImage1D", out _glCopyTexSubImage1D );
+            LoadOpenGLFunction( "glCopyTexSubImage2D", out _glCopyTexSubImage2D );
+            LoadOpenGLFunction( "glTexSubImage1D", out _glTexSubImage1D );
+            LoadOpenGLFunction( "glTexSubImage2D", out _glTexSubImage2D );
+            LoadOpenGLFunction( "glBindTexture", out _glBindTexture );
+            LoadOpenGLFunction( "glDeleteTextures", out _glDeleteTextures );
+            LoadOpenGLFunction( "glGenTextures", out _glGenTextures );
+            LoadOpenGLFunction( "glIsTexture", out _glIsTexture );
         }
 
         if ( _ogl12 || _ogl13 || _ogl14 || _ogl15
@@ -257,10 +226,10 @@ public partial class GLBindings
              || _ogl30 || _ogl31 || _ogl32 || _ogl33 || _ogl34
              || _ogl40 || _ogl41 || _ogl42 || _ogl43 || _ogl44 || _ogl45 || _ogl46 )
         {
-            _glDrawRangeElements = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWRANGEELEMENTSPROC >( loader.Invoke( "glDrawRangeElements" ) );
-            _glTexImage3D        = Marshal.GetDelegateForFunctionPointer< PFNGLTEXIMAGE3DPROC >( loader.Invoke( "glTexImage3D" ) );
-            _glTexSubImage3D     = Marshal.GetDelegateForFunctionPointer< PFNGLTEXSUBIMAGE3DPROC >( loader.Invoke( "glTexSubImage3D" ) );
-            _glCopyTexSubImage3D = Marshal.GetDelegateForFunctionPointer< PFNGLCOPYTEXSUBIMAGE3DPROC >( loader.Invoke( "glCopyTexSubImage3D" ) );
+            LoadOpenGLFunction( "glDrawRangeElements", out _glDrawRangeElements );
+            LoadOpenGLFunction( "glTexImage3D", out _glTexImage3D );
+            LoadOpenGLFunction( "glTexSubImage3D", out _glTexSubImage3D );
+            LoadOpenGLFunction( "glCopyTexSubImage3D", out _glCopyTexSubImage3D );
         }
 
         if ( _ogl13 || _ogl14 || _ogl15
@@ -268,15 +237,15 @@ public partial class GLBindings
              || _ogl30 || _ogl31 || _ogl32 || _ogl33 || _ogl34
              || _ogl40 || _ogl41 || _ogl42 || _ogl43 || _ogl44 || _ogl45 || _ogl46 )
         {
-            _glActiveTexture           = Marshal.GetDelegateForFunctionPointer< PFNGLACTIVETEXTUREPROC >( loader.Invoke( "glActiveTexture" ) );
-            _glSampleCoverage          = Marshal.GetDelegateForFunctionPointer< PFNGLSAMPLECOVERAGEPROC >( loader.Invoke( "glSampleCoverage" ) );
-            _glCompressedTexImage3D    = Marshal.GetDelegateForFunctionPointer< PFNGLCOMPRESSEDTEXIMAGE3DPROC >( loader.Invoke( "glCompressedTexImage3D" ) );
-            _glCompressedTexImage2D    = Marshal.GetDelegateForFunctionPointer< PFNGLCOMPRESSEDTEXIMAGE2DPROC >( loader.Invoke( "glCompressedTexImage2D" ) );
-            _glCompressedTexImage1D    = Marshal.GetDelegateForFunctionPointer< PFNGLCOMPRESSEDTEXIMAGE1DPROC >( loader.Invoke( "glCompressedTexImage1D" ) );
-            _glCompressedTexSubImage3D = Marshal.GetDelegateForFunctionPointer< PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC >( loader.Invoke( "glCompressedTexSubImage3D" ) );
-            _glCompressedTexSubImage2D = Marshal.GetDelegateForFunctionPointer< PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC >( loader.Invoke( "glCompressedTexSubImage2D" ) );
-            _glCompressedTexSubImage1D = Marshal.GetDelegateForFunctionPointer< PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC >( loader.Invoke( "glCompressedTexSubImage1D" ) );
-            _glGetCompressedTexImage   = Marshal.GetDelegateForFunctionPointer< PFNGLGETCOMPRESSEDTEXIMAGEPROC >( loader.Invoke( "glGetCompressedTexImage" ) );
+            LoadOpenGLFunction( "glActiveTexture", out _glActiveTexture );
+            LoadOpenGLFunction( "glSampleCoverage", out _glSampleCoverage );
+            LoadOpenGLFunction( "glCompressedTexImage3D", out _glCompressedTexImage3D );
+            LoadOpenGLFunction( "glCompressedTexImage2D", out _glCompressedTexImage2D );
+            LoadOpenGLFunction( "glCompressedTexImage1D", out _glCompressedTexImage1D );
+            LoadOpenGLFunction( "glCompressedTexSubImage3D", out _glCompressedTexSubImage3D );
+            LoadOpenGLFunction( "glCompressedTexSubImage2D", out _glCompressedTexSubImage2D );
+            LoadOpenGLFunction( "glCompressedTexSubImage1D", out _glCompressedTexSubImage1D );
+            LoadOpenGLFunction( "glGetCompressedTexImage", out _glGetCompressedTexImage );
         }
 
         if ( _ogl14 || _ogl15
@@ -284,15 +253,15 @@ public partial class GLBindings
                     || _ogl30 || _ogl31 || _ogl32 || _ogl33 || _ogl34
                     || _ogl40 || _ogl41 || _ogl42 || _ogl43 || _ogl44 || _ogl45 || _ogl46 )
         {
-            _glBlendFuncSeparate = Marshal.GetDelegateForFunctionPointer< PFNGLBLENDFUNCSEPARATEPROC >( loader.Invoke( "glBlendFuncSeparate" ) );
-            _glMultiDrawArrays   = Marshal.GetDelegateForFunctionPointer< PFNGLMULTIDRAWARRAYSPROC >( loader.Invoke( "glMultiDrawArrays" ) );
-            _glMultiDrawElements = Marshal.GetDelegateForFunctionPointer< PFNGLMULTIDRAWELEMENTSPROC >( loader.Invoke( "glMultiDrawElements" ) );
-            _glPointParameterf   = Marshal.GetDelegateForFunctionPointer< PFNGLPOINTPARAMETERFPROC >( loader.Invoke( "glPointParameterf" ) );
-            _glPointParameterfv  = Marshal.GetDelegateForFunctionPointer< PFNGLPOINTPARAMETERFVPROC >( loader.Invoke( "glPointParameterfv" ) );
-            _glPointParameteri   = Marshal.GetDelegateForFunctionPointer< PFNGLPOINTPARAMETERIPROC >( loader.Invoke( "glPointParameteri" ) );
-            _glPointParameteriv  = Marshal.GetDelegateForFunctionPointer< PFNGLPOINTPARAMETERIVPROC >( loader.Invoke( "glPointParameteriv" ) );
-            _glBlendColor        = Marshal.GetDelegateForFunctionPointer< PFNGLBLENDCOLORPROC >( loader.Invoke( "glBlendColor" ) );
-            _glBlendEquation     = Marshal.GetDelegateForFunctionPointer< PFNGLBLENDEQUATIONPROC >( loader.Invoke( "glBlendEquation" ) );
+            LoadOpenGLFunction( "glBlendFuncSeparate", out _glBlendFuncSeparate );
+            LoadOpenGLFunction( "glMultiDrawArrays", out _glMultiDrawArrays );
+            LoadOpenGLFunction( "glMultiDrawElements", out _glMultiDrawElements );
+            LoadOpenGLFunction( "glPointParameterf", out _glPointParameterf );
+            LoadOpenGLFunction( "glPointParameterfv", out _glPointParameterfv );
+            LoadOpenGLFunction( "glPointParameteri", out _glPointParameteri );
+            LoadOpenGLFunction( "glPointParameteriv", out _glPointParameteriv );
+            LoadOpenGLFunction( "glBlendColor", out _glBlendColor );
+            LoadOpenGLFunction( "glBlendEquation", out _glBlendEquation );
         }
 
         if ( _ogl15
@@ -300,643 +269,703 @@ public partial class GLBindings
              || _ogl30 || _ogl31 || _ogl32 || _ogl33 || _ogl34
              || _ogl40 || _ogl41 || _ogl42 || _ogl43 || _ogl44 || _ogl45 || _ogl46 )
         {
-            _glGenQueries           = Marshal.GetDelegateForFunctionPointer< PFNGLGENQUERIESPROC >( loader.Invoke( "glGenQueries" ) );
-            _glDeleteQueries        = Marshal.GetDelegateForFunctionPointer< PFNGLDELETEQUERIESPROC >( loader.Invoke( "glDeleteQueries" ) );
-            _glIsQuery              = Marshal.GetDelegateForFunctionPointer< PFNGLISQUERYPROC >( loader.Invoke( "glIsQuery" ) );
-            _glBeginQuery           = Marshal.GetDelegateForFunctionPointer< PFNGLBEGINQUERYPROC >( loader.Invoke( "glBeginQuery" ) );
-            _glEndQuery             = Marshal.GetDelegateForFunctionPointer< PFNGLENDQUERYPROC >( loader.Invoke( "glEndQuery" ) );
-            _glGetQueryiv           = Marshal.GetDelegateForFunctionPointer< PFNGLGETQUERYIVPROC >( loader.Invoke( "glGetQueryiv" ) );
-            _glGetQueryObjectiv     = Marshal.GetDelegateForFunctionPointer< PFNGLGETQUERYOBJECTIVPROC >( loader.Invoke( "glGetQueryObjectiv" ) );
-            _glGetQueryObjectuiv    = Marshal.GetDelegateForFunctionPointer< PFNGLGETQUERYOBJECTUIVPROC >( loader.Invoke( "glGetQueryObjectuiv" ) );
-            _glBindBuffer           = Marshal.GetDelegateForFunctionPointer< PFNGLBINDBUFFERPROC >( loader.Invoke( "glBindBuffer" ) );
-            _glDeleteBuffers        = Marshal.GetDelegateForFunctionPointer< PFNGLDELETEBUFFERSPROC >( loader.Invoke( "glDeleteBuffers" ) );
-            _glGenBuffers           = Marshal.GetDelegateForFunctionPointer< PFNGLGENBUFFERSPROC >( loader.Invoke( "glGenBuffers" ) );
-            _glIsBuffer             = Marshal.GetDelegateForFunctionPointer< PFNGLISBUFFERPROC >( loader.Invoke( "glIsBuffer" ) );
-            _glBufferData           = Marshal.GetDelegateForFunctionPointer< PFNGLBUFFERDATAPROC >( loader.Invoke( "glBufferData" ) );
-            _glBufferSubData        = Marshal.GetDelegateForFunctionPointer< PFNGLBUFFERSUBDATAPROC >( loader.Invoke( "glBufferSubData" ) );
-            _glGetBufferSubData     = Marshal.GetDelegateForFunctionPointer< PFNGLGETBUFFERSUBDATAPROC >( loader.Invoke( "glGetBufferSubData" ) );
-            _glMapBuffer            = Marshal.GetDelegateForFunctionPointer< PFNGLMAPBUFFERPROC >( loader.Invoke( "glMapBuffer" ) );
-            _glUnmapBuffer          = Marshal.GetDelegateForFunctionPointer< PFNGLUNMAPBUFFERPROC >( loader.Invoke( "glUnmapBuffer" ) );
-            _glGetBufferParameteriv = Marshal.GetDelegateForFunctionPointer< PFNGLGETBUFFERPARAMETERIVPROC >( loader.Invoke( "glGetBufferParameteriv" ) );
-            _glGetBufferPointerv    = Marshal.GetDelegateForFunctionPointer< PFNGLGETBUFFERPOINTERVPROC >( loader.Invoke( "glGetBufferPointerv" ) );
+            LoadOpenGLFunction( "glGenQueries", out _glGenQueries );
+            LoadOpenGLFunction( "glDeleteQueries", out _glDeleteQueries );
+            LoadOpenGLFunction( "glIsQuery", out _glIsQuery );
+            LoadOpenGLFunction( "glBeginQuery", out _glBeginQuery );
+            LoadOpenGLFunction( "glEndQuery", out _glEndQuery );
+            LoadOpenGLFunction( "glGetQueryiv", out _glGetQueryiv );
+            LoadOpenGLFunction( "glGetQueryObjectiv", out _glGetQueryObjectiv );
+            LoadOpenGLFunction( "glGetQueryObjectuiv", out _glGetQueryObjectuiv );
+            LoadOpenGLFunction( "glBindBuffer", out _glBindBuffer );
+            LoadOpenGLFunction( "glDeleteBuffers", out _glDeleteBuffers );
+            LoadOpenGLFunction( "glGenBuffers", out _glGenBuffers );
+            LoadOpenGLFunction( "glIsBuffer", out _glIsBuffer );
+            LoadOpenGLFunction( "glBufferData", out _glBufferData );
+            LoadOpenGLFunction( "glBufferSubData", out _glBufferSubData );
+            LoadOpenGLFunction( "glGetBufferSubData", out _glGetBufferSubData );
+            LoadOpenGLFunction( "glMapBuffer", out _glMapBuffer );
+            LoadOpenGLFunction( "glUnmapBuffer", out _glUnmapBuffer );
+            LoadOpenGLFunction( "glGetBufferParameteriv", out _glGetBufferParameteriv );
+            LoadOpenGLFunction( "glGetBufferPointerv", out _glGetBufferPointerv );
         }
 
         if ( _ogl20 || _ogl21
                     || _ogl30 || _ogl31 || _ogl32 || _ogl33 || _ogl34
                     || _ogl40 || _ogl41 || _ogl42 || _ogl43 || _ogl44 || _ogl45 || _ogl46 )
         {
-            _glBlendEquationSeparate    = Marshal.GetDelegateForFunctionPointer< PFNGLBLENDEQUATIONSEPARATEPROC >( loader.Invoke( "glBlendEquationSeparate" ) );
-            _glDrawBuffers              = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWBUFFERSPROC >( loader.Invoke( "glDrawBuffers" ) );
-            _glStencilOpSeparate        = Marshal.GetDelegateForFunctionPointer< PFNGLSTENCILOPSEPARATEPROC >( loader.Invoke( "glStencilOpSeparate" ) );
-            _glStencilFuncSeparate      = Marshal.GetDelegateForFunctionPointer< PFNGLSTENCILFUNCSEPARATEPROC >( loader.Invoke( "glStencilFuncSeparate" ) );
-            _glStencilMaskSeparate      = Marshal.GetDelegateForFunctionPointer< PFNGLSTENCILMASKSEPARATEPROC >( loader.Invoke( "glStencilMaskSeparate" ) );
-            _glAttachShader             = Marshal.GetDelegateForFunctionPointer< PFNGLATTACHSHADERPROC >( loader.Invoke( "glAttachShader" ) );
-            _glBindAttribLocation       = Marshal.GetDelegateForFunctionPointer< PFNGLBINDATTRIBLOCATIONPROC >( loader.Invoke( "glBindAttribLocation" ) );
-            _glCompileShader            = Marshal.GetDelegateForFunctionPointer< PFNGLCOMPILESHADERPROC >( loader.Invoke( "glCompileShader" ) );
-            _glCreateProgram            = Marshal.GetDelegateForFunctionPointer< PFNGLCREATEPROGRAMPROC >( loader.Invoke( "glCreateProgram" ) );
-            _glCreateShader             = Marshal.GetDelegateForFunctionPointer< PFNGLCREATESHADERPROC >( loader.Invoke( "glCreateShader" ) );
-            _glDeleteProgram            = Marshal.GetDelegateForFunctionPointer< PFNGLDELETEPROGRAMPROC >( loader.Invoke( "glDeleteProgram" ) );
-            _glDeleteShader             = Marshal.GetDelegateForFunctionPointer< PFNGLDELETESHADERPROC >( loader.Invoke( "glDeleteShader" ) );
-            _glDetachShader             = Marshal.GetDelegateForFunctionPointer< PFNGLDETACHSHADERPROC >( loader.Invoke( "glDetachShader" ) );
-            _glDisableVertexAttribArray = Marshal.GetDelegateForFunctionPointer< PFNGLDISABLEVERTEXATTRIBARRAYPROC >( loader.Invoke( "glDisableVertexAttribArray" ) );
-            _glEnableVertexAttribArray  = Marshal.GetDelegateForFunctionPointer< PFNGLENABLEVERTEXATTRIBARRAYPROC >( loader.Invoke( "glEnableVertexAttribArray" ) );
-            _glGetActiveAttrib          = Marshal.GetDelegateForFunctionPointer< PFNGLGETACTIVEATTRIBPROC >( loader.Invoke( "glGetActiveAttrib" ) );
-            _glGetActiveUniform         = Marshal.GetDelegateForFunctionPointer< PFNGLGETACTIVEUNIFORMPROC >( loader.Invoke( "glGetActiveUniform" ) );
-            _glGetAttachedShaders       = Marshal.GetDelegateForFunctionPointer< PFNGLGETATTACHEDSHADERSPROC >( loader.Invoke( "glGetAttachedShaders" ) );
-            _glGetAttribLocation        = Marshal.GetDelegateForFunctionPointer< PFNGLGETATTRIBLOCATIONPROC >( loader.Invoke( "glGetAttribLocation" ) );
-            _glGetProgramiv             = Marshal.GetDelegateForFunctionPointer< PFNGLGETPROGRAMIVPROC >( loader.Invoke( "glGetProgramiv" ) );
-            _glGetProgramInfoLog        = Marshal.GetDelegateForFunctionPointer< PFNGLGETPROGRAMINFOLOGPROC >( loader.Invoke( "glGetProgramInfoLog" ) );
-            _glGetShaderiv              = Marshal.GetDelegateForFunctionPointer< PFNGLGETSHADERIVPROC >( loader.Invoke( "glGetShaderiv" ) );
-            _glGetShaderInfoLog         = Marshal.GetDelegateForFunctionPointer< PFNGLGETSHADERINFOLOGPROC >( loader.Invoke( "glGetShaderInfoLog" ) );
-            _glGetShaderSource          = Marshal.GetDelegateForFunctionPointer< PFNGLGETSHADERSOURCEPROC >( loader.Invoke( "glGetShaderSource" ) );
-            _glGetUniformLocation       = Marshal.GetDelegateForFunctionPointer< PFNGLGETUNIFORMLOCATIONPROC >( loader.Invoke( "glGetUniformLocation" ) );
-            _glGetUniformfv             = Marshal.GetDelegateForFunctionPointer< PFNGLGETUNIFORMFVPROC >( loader.Invoke( "glGetUniformfv" ) );
-            _glGetUniformiv             = Marshal.GetDelegateForFunctionPointer< PFNGLGETUNIFORMIVPROC >( loader.Invoke( "glGetUniformiv" ) );
-            _glGetVertexAttribdv        = Marshal.GetDelegateForFunctionPointer< PFNGLGETVERTEXATTRIBDVPROC >( loader.Invoke( "glGetVertexAttribdv" ) );
-            _glGetVertexAttribfv        = Marshal.GetDelegateForFunctionPointer< PFNGLGETVERTEXATTRIBFVPROC >( loader.Invoke( "glGetVertexAttribfv" ) );
-            _glGetVertexAttribiv        = Marshal.GetDelegateForFunctionPointer< PFNGLGETVERTEXATTRIBIVPROC >( loader.Invoke( "glGetVertexAttribiv" ) );
-            _glGetVertexAttribPointerv  = Marshal.GetDelegateForFunctionPointer< PFNGLGETVERTEXATTRIBPOINTERVPROC >( loader.Invoke( "glGetVertexAttribPointerv" ) );
-            _glIsProgram                = Marshal.GetDelegateForFunctionPointer< PFNGLISPROGRAMPROC >( loader.Invoke( "glIsProgram" ) );
-            _glIsShader                 = Marshal.GetDelegateForFunctionPointer< PFNGLISSHADERPROC >( loader.Invoke( "glIsShader" ) );
-            _glLinkProgram              = Marshal.GetDelegateForFunctionPointer< PFNGLLINKPROGRAMPROC >( loader.Invoke( "glLinkProgram" ) );
-            _glShaderSource             = Marshal.GetDelegateForFunctionPointer< PFNGLSHADERSOURCEPROC >( loader.Invoke( "glShaderSource" ) );
-            _glUseProgram               = Marshal.GetDelegateForFunctionPointer< PFNGLUSEPROGRAMPROC >( loader.Invoke( "glUseProgram" ) );
-            _glUniform1f                = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM1FPROC >( loader.Invoke( "glUniform1f" ) );
-            _glUniform2f                = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM2FPROC >( loader.Invoke( "glUniform2f" ) );
-            _glUniform3f                = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM3FPROC >( loader.Invoke( "glUniform3f" ) );
-            _glUniform4f                = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM4FPROC >( loader.Invoke( "glUniform4f" ) );
-            _glUniform1i                = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM1IPROC >( loader.Invoke( "glUniform1i" ) );
-            _glUniform2i                = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM2IPROC >( loader.Invoke( "glUniform2i" ) );
-            _glUniform3i                = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM3IPROC >( loader.Invoke( "glUniform3i" ) );
-            _glUniform4i                = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM4IPROC >( loader.Invoke( "glUniform4i" ) );
-            _glUniform1fv               = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM1FVPROC >( loader.Invoke( "glUniform1fv" ) );
-            _glUniform2fv               = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM2FVPROC >( loader.Invoke( "glUniform2fv" ) );
-            _glUniform3fv               = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM3FVPROC >( loader.Invoke( "glUniform3fv" ) );
-            _glUniform4fv               = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM4FVPROC >( loader.Invoke( "glUniform4fv" ) );
-            _glUniform1iv               = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM1IVPROC >( loader.Invoke( "glUniform1iv" ) );
-            _glUniform2iv               = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM2IVPROC >( loader.Invoke( "glUniform2iv" ) );
-            _glUniform3iv               = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM3IVPROC >( loader.Invoke( "glUniform3iv" ) );
-            _glUniform4iv               = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM4IVPROC >( loader.Invoke( "glUniform4iv" ) );
-            _glUniformMatrix2fv         = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX2FVPROC >( loader.Invoke( "glUniformMatrix2fv" ) );
-            _glUniformMatrix3fv         = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX3FVPROC >( loader.Invoke( "glUniformMatrix3fv" ) );
-            _glUniformMatrix4fv         = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX4FVPROC >( loader.Invoke( "glUniformMatrix4fv" ) );
-            _glValidateProgram          = Marshal.GetDelegateForFunctionPointer< PFNGLVALIDATEPROGRAMPROC >( loader.Invoke( "glValidateProgram" ) );
-            _glVertexAttrib1d           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB1DPROC >( loader.Invoke( "glVertexAttrib1d" ) );
-            _glVertexAttrib1dv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB1DVPROC >( loader.Invoke( "glVertexAttrib1dv" ) );
-            _glVertexAttrib1f           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB1FPROC >( loader.Invoke( "glVertexAttrib1f" ) );
-            _glVertexAttrib1fv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB1FVPROC >( loader.Invoke( "glVertexAttrib1fv" ) );
-            _glVertexAttrib1s           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB1SPROC >( loader.Invoke( "glVertexAttrib1s" ) );
-            _glVertexAttrib1sv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB1SVPROC >( loader.Invoke( "glVertexAttrib1sv" ) );
-            _glVertexAttrib2d           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB2DPROC >( loader.Invoke( "glVertexAttrib2d" ) );
-            _glVertexAttrib2dv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB2DVPROC >( loader.Invoke( "glVertexAttrib2dv" ) );
-            _glVertexAttrib2f           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB2FPROC >( loader.Invoke( "glVertexAttrib2f" ) );
-            _glVertexAttrib2fv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB2FVPROC >( loader.Invoke( "glVertexAttrib2fv" ) );
-            _glVertexAttrib2s           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB2SPROC >( loader.Invoke( "glVertexAttrib2s" ) );
-            _glVertexAttrib2sv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB2SVPROC >( loader.Invoke( "glVertexAttrib2sv" ) );
-            _glVertexAttrib3d           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB3DPROC >( loader.Invoke( "glVertexAttrib3d" ) );
-            _glVertexAttrib3dv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB3DVPROC >( loader.Invoke( "glVertexAttrib3dv" ) );
-            _glVertexAttrib3f           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB3FPROC >( loader.Invoke( "glVertexAttrib3f" ) );
-            _glVertexAttrib3fv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB3FVPROC >( loader.Invoke( "glVertexAttrib3fv" ) );
-            _glVertexAttrib3s           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB3SPROC >( loader.Invoke( "glVertexAttrib3s" ) );
-            _glVertexAttrib3sv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB3SVPROC >( loader.Invoke( "glVertexAttrib3sv" ) );
-            _glVertexAttrib4Nbv         = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4NBVPROC >( loader.Invoke( "glVertexAttrib4Nbv" ) );
-            _glVertexAttrib4Niv         = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4NIVPROC >( loader.Invoke( "glVertexAttrib4Niv" ) );
-            _glVertexAttrib4Nsv         = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4NSVPROC >( loader.Invoke( "glVertexAttrib4Nsv" ) );
-            _glVertexAttrib4Nub         = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4NUBPROC >( loader.Invoke( "glVertexAttrib4Nub" ) );
-            _glVertexAttrib4Nubv        = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4NUBVPROC >( loader.Invoke( "glVertexAttrib4Nubv" ) );
-            _glVertexAttrib4Nuiv        = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4NUIVPROC >( loader.Invoke( "glVertexAttrib4Nuiv" ) );
-            _glVertexAttrib4Nusv        = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4NUSVPROC >( loader.Invoke( "glVertexAttrib4Nusv" ) );
-            _glVertexAttrib4bv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4BVPROC >( loader.Invoke( "glVertexAttrib4bv" ) );
-            _glVertexAttrib4d           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4DPROC >( loader.Invoke( "glVertexAttrib4d" ) );
-            _glVertexAttrib4dv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4DVPROC >( loader.Invoke( "glVertexAttrib4dv" ) );
-            _glVertexAttrib4f           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4FPROC >( loader.Invoke( "glVertexAttrib4f" ) );
-            _glVertexAttrib4fv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4FVPROC >( loader.Invoke( "glVertexAttrib4fv" ) );
-            _glVertexAttrib4iv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4IVPROC >( loader.Invoke( "glVertexAttrib4iv" ) );
-            _glVertexAttrib4s           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4SPROC >( loader.Invoke( "glVertexAttrib4s" ) );
-            _glVertexAttrib4sv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4SVPROC >( loader.Invoke( "glVertexAttrib4sv" ) );
-            _glVertexAttrib4ubv         = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4UBVPROC >( loader.Invoke( "glVertexAttrib4ubv" ) );
-            _glVertexAttrib4uiv         = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4UIVPROC >( loader.Invoke( "glVertexAttrib4uiv" ) );
-            _glVertexAttrib4usv         = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIB4USVPROC >( loader.Invoke( "glVertexAttrib4usv" ) );
-            _glVertexAttribPointer      = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBPOINTERPROC >( loader.Invoke( "glVertexAttribPointer" ) );
+            LoadOpenGLFunction( "glBlendEquationSeparate", out _glBlendEquationSeparate );
+            LoadOpenGLFunction( "glDrawBuffers", out _glDrawBuffers );
+            LoadOpenGLFunction( "glStencilOpSeparate", out _glStencilOpSeparate );
+            LoadOpenGLFunction( "glStencilFuncSeparate", out _glStencilFuncSeparate );
+            LoadOpenGLFunction( "glStencilMaskSeparate", out _glStencilMaskSeparate );
+            LoadOpenGLFunction( "glAttachShader", out _glAttachShader );
+            LoadOpenGLFunction( "glBindAttribLocation", out _glBindAttribLocation );
+            LoadOpenGLFunction( "glCompileShader", out _glCompileShader );
+            LoadOpenGLFunction( "glCreateProgram", out _glCreateProgram );
+            LoadOpenGLFunction( "glCreateShader", out _glCreateShader );
+            LoadOpenGLFunction( "glDeleteProgram", out _glDeleteProgram );
+            LoadOpenGLFunction( "glDeleteShader", out _glDeleteShader );
+            LoadOpenGLFunction( "glDetachShader", out _glDetachShader );
+            LoadOpenGLFunction( "glDisableVertexAttribArray", out _glDisableVertexAttribArray );
+            LoadOpenGLFunction( "glEnableVertexAttribArray", out _glEnableVertexAttribArray );
+            LoadOpenGLFunction( "glGetActiveAttrib", out _glGetActiveAttrib );
+            LoadOpenGLFunction( "glGetActiveUniform", out _glGetActiveUniform );
+            LoadOpenGLFunction( "glGetAttachedShaders", out _glGetAttachedShaders );
+            LoadOpenGLFunction( "glGetAttribLocation", out _glGetAttribLocation );
+            LoadOpenGLFunction( "glGetProgramiv", out _glGetProgramiv );
+            LoadOpenGLFunction( "glGetProgramInfoLog", out _glGetProgramInfoLog );
+            LoadOpenGLFunction( "glGetShaderiv", out _glGetShaderiv );
+            LoadOpenGLFunction( "glGetShaderInfoLog", out _glGetShaderInfoLog );
+            LoadOpenGLFunction( "glGetShaderSource", out _glGetShaderSource );
+            LoadOpenGLFunction( "glGetUniformLocation", out _glGetUniformLocation );
+            LoadOpenGLFunction( "glGetUniformfv", out _glGetUniformfv );
+            LoadOpenGLFunction( "glGetUniformiv", out _glGetUniformiv );
+            LoadOpenGLFunction( "glGetVertexAttribdv", out _glGetVertexAttribdv );
+            LoadOpenGLFunction( "glGetVertexAttribfv", out _glGetVertexAttribfv );
+            LoadOpenGLFunction( "glGetVertexAttribiv", out _glGetVertexAttribiv );
+            LoadOpenGLFunction( "glGetVertexAttribPointerv", out _glGetVertexAttribPointerv );
+            LoadOpenGLFunction( "glIsProgram", out _glIsProgram );
+            LoadOpenGLFunction( "glIsShader", out _glIsShader );
+            LoadOpenGLFunction( "glLinkProgram", out _glLinkProgram );
+            LoadOpenGLFunction( "glShaderSource", out _glShaderSource );
+            LoadOpenGLFunction( "glUseProgram", out _glUseProgram );
+            LoadOpenGLFunction( "glUniform1f", out _glUniform1f );
+            LoadOpenGLFunction( "glUniform2f", out _glUniform2f );
+            LoadOpenGLFunction( "glUniform3f", out _glUniform3f );
+            LoadOpenGLFunction( "glUniform4f", out _glUniform4f );
+            LoadOpenGLFunction( "glUniform1i", out _glUniform1i );
+            LoadOpenGLFunction( "glUniform2i", out _glUniform2i );
+            LoadOpenGLFunction( "glUniform3i", out _glUniform3i );
+            LoadOpenGLFunction( "glUniform4i", out _glUniform4i );
+            LoadOpenGLFunction( "glUniform1fv", out _glUniform1fv );
+            LoadOpenGLFunction( "glUniform2fv", out _glUniform2fv );
+            LoadOpenGLFunction( "glUniform3fv", out _glUniform3fv );
+            LoadOpenGLFunction( "glUniform4fv", out _glUniform4fv );
+            LoadOpenGLFunction( "glUniform1iv", out _glUniform1iv );
+            LoadOpenGLFunction( "glUniform2iv", out _glUniform2iv );
+            LoadOpenGLFunction( "glUniform3iv", out _glUniform3iv );
+            LoadOpenGLFunction( "glUniform4iv", out _glUniform4iv );
+            LoadOpenGLFunction( "glUniformMatrix2fv", out _glUniformMatrix2fv );
+            LoadOpenGLFunction( "glUniformMatrix3fv", out _glUniformMatrix3fv );
+            LoadOpenGLFunction( "glUniformMatrix4fv", out _glUniformMatrix4fv );
+            LoadOpenGLFunction( "glValidateProgram", out _glValidateProgram );
+            LoadOpenGLFunction( "glVertexAttrib1d", out _glVertexAttrib1d );
+            LoadOpenGLFunction( "glVertexAttrib1dv", out _glVertexAttrib1dv );
+            LoadOpenGLFunction( "glVertexAttrib1f", out _glVertexAttrib1f );
+            LoadOpenGLFunction( "glVertexAttrib1fv", out _glVertexAttrib1fv );
+            LoadOpenGLFunction( "glVertexAttrib1s", out _glVertexAttrib1s );
+            LoadOpenGLFunction( "glVertexAttrib1sv", out _glVertexAttrib1sv );
+            LoadOpenGLFunction( "glVertexAttrib2d", out _glVertexAttrib2d );
+            LoadOpenGLFunction( "glVertexAttrib2dv", out _glVertexAttrib2dv );
+            LoadOpenGLFunction( "glVertexAttrib2f", out _glVertexAttrib2f );
+            LoadOpenGLFunction( "glVertexAttrib2fv", out _glVertexAttrib2fv );
+            LoadOpenGLFunction( "glVertexAttrib2s", out _glVertexAttrib2s );
+            LoadOpenGLFunction( "glVertexAttrib2sv", out _glVertexAttrib2sv );
+            LoadOpenGLFunction( "glVertexAttrib3d", out _glVertexAttrib3d );
+            LoadOpenGLFunction( "glVertexAttrib3dv", out _glVertexAttrib3dv );
+            LoadOpenGLFunction( "glVertexAttrib3f", out _glVertexAttrib3f );
+            LoadOpenGLFunction( "glVertexAttrib3fv", out _glVertexAttrib3fv );
+            LoadOpenGLFunction( "glVertexAttrib3s", out _glVertexAttrib3s );
+            LoadOpenGLFunction( "glVertexAttrib3sv", out _glVertexAttrib3sv );
+            LoadOpenGLFunction( "glVertexAttrib4Nbv", out _glVertexAttrib4Nbv );
+            LoadOpenGLFunction( "glVertexAttrib4Niv", out _glVertexAttrib4Niv );
+            LoadOpenGLFunction( "glVertexAttrib4Nsv", out _glVertexAttrib4Nsv );
+            LoadOpenGLFunction( "glVertexAttrib4Nub", out _glVertexAttrib4Nub );
+            LoadOpenGLFunction( "glVertexAttrib4Nubv", out _glVertexAttrib4Nubv );
+            LoadOpenGLFunction( "glVertexAttrib4Nuiv", out _glVertexAttrib4Nuiv );
+            LoadOpenGLFunction( "glVertexAttrib4Nusv", out _glVertexAttrib4Nusv );
+            LoadOpenGLFunction( "glVertexAttrib4bv", out _glVertexAttrib4bv );
+            LoadOpenGLFunction( "glVertexAttrib4d", out _glVertexAttrib4d );
+            LoadOpenGLFunction( "glVertexAttrib4dv", out _glVertexAttrib4dv );
+            LoadOpenGLFunction( "glVertexAttrib4f", out _glVertexAttrib4f );
+            LoadOpenGLFunction( "glVertexAttrib4fv", out _glVertexAttrib4fv );
+            LoadOpenGLFunction( "glVertexAttrib4iv", out _glVertexAttrib4iv );
+            LoadOpenGLFunction( "glVertexAttrib4s", out _glVertexAttrib4s );
+            LoadOpenGLFunction( "glVertexAttrib4sv", out _glVertexAttrib4sv );
+            LoadOpenGLFunction( "glVertexAttrib4ubv", out _glVertexAttrib4ubv );
+            LoadOpenGLFunction( "glVertexAttrib4uiv", out _glVertexAttrib4uiv );
+            LoadOpenGLFunction( "glVertexAttrib4usv", out _glVertexAttrib4usv );
+            LoadOpenGLFunction( "glVertexAttribPointer", out _glVertexAttribPointer );
         }
 
         if ( _ogl21
              || _ogl30 || _ogl31 || _ogl32 || _ogl33 || _ogl34
              || _ogl40 || _ogl41 || _ogl42 || _ogl43 || _ogl44 || _ogl45 || _ogl46 )
         {
-            _glUniformMatrix2x3fv = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX2X3FVPROC >( loader.Invoke( "glUniformMatrix2x3fv" ) );
-            _glUniformMatrix3x2fv = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX3X2FVPROC >( loader.Invoke( "glUniformMatrix3x2fv" ) );
-            _glUniformMatrix2x4fv = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX2X4FVPROC >( loader.Invoke( "glUniformMatrix2x4fv" ) );
-            _glUniformMatrix4x2fv = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX4X2FVPROC >( loader.Invoke( "glUniformMatrix4x2fv" ) );
-            _glUniformMatrix3x4fv = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX3X4FVPROC >( loader.Invoke( "glUniformMatrix3x4fv" ) );
-            _glUniformMatrix4x3fv = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX4X3FVPROC >( loader.Invoke( "glUniformMatrix4x3fv" ) );
+            LoadOpenGLFunction( "glUniformMatrix2x3fv", out _glUniformMatrix2x3fv );
+            LoadOpenGLFunction( "glUniformMatrix3x2fv", out _glUniformMatrix3x2fv );
+            LoadOpenGLFunction( "glUniformMatrix2x4fv", out _glUniformMatrix2x4fv );
+            LoadOpenGLFunction( "glUniformMatrix4x2fv", out _glUniformMatrix4x2fv );
+            LoadOpenGLFunction( "glUniformMatrix3x4fv", out _glUniformMatrix3x4fv );
+            LoadOpenGLFunction( "glUniformMatrix4x3fv", out _glUniformMatrix4x3fv );
         }
 
         if ( _ogl30 || _ogl31 || _ogl32 || _ogl33 || _ogl34
              || _ogl40 || _ogl41 || _ogl42 || _ogl43 || _ogl44 || _ogl45 || _ogl46 )
         {
-            _glColorMaski                          = Marshal.GetDelegateForFunctionPointer< PFNGLCOLORMASKIPROC >( loader.Invoke( "glColorMaski" ) );
-            _glGetBooleani_v                       = Marshal.GetDelegateForFunctionPointer< PFNGLGETBOOLEANI_VPROC >( loader.Invoke( "glGetBooleani_v" ) );
-            _glGetIntegeri_v                       = Marshal.GetDelegateForFunctionPointer< PFNGLGETINTEGERI_VPROC >( loader.Invoke( "glGetIntegeri_v" ) );
-            _glEnablei                             = Marshal.GetDelegateForFunctionPointer< PFNGLENABLEIPROC >( loader.Invoke( "glEnablei" ) );
-            _glDisablei                            = Marshal.GetDelegateForFunctionPointer< PFNGLDISABLEIPROC >( loader.Invoke( "glDisablei" ) );
-            _glIsEnabledi                          = Marshal.GetDelegateForFunctionPointer< PFNGLISENABLEDIPROC >( loader.Invoke( "glIsEnabledi" ) );
-            _glBeginTransformFeedback              = Marshal.GetDelegateForFunctionPointer< PFNGLBEGINTRANSFORMFEEDBACKPROC >( loader.Invoke( "glBeginTransformFeedback" ) );
-            _glEndTransformFeedback                = Marshal.GetDelegateForFunctionPointer< PFNGLENDTRANSFORMFEEDBACKPROC >( loader.Invoke( "glEndTransformFeedback" ) );
-            _glBindBufferRange                     = Marshal.GetDelegateForFunctionPointer< PFNGLBINDBUFFERRANGEPROC >( loader.Invoke( "glBindBufferRange" ) );
-            _glBindBufferBase                      = Marshal.GetDelegateForFunctionPointer< PFNGLBINDBUFFERBASEPROC >( loader.Invoke( "glBindBufferBase" ) );
-            _glTransformFeedbackVaryings           = Marshal.GetDelegateForFunctionPointer< PFNGLTRANSFORMFEEDBACKVARYINGSPROC >( loader.Invoke( "glTransformFeedbackVaryings" ) );
-            _glGetTransformFeedbackVarying         = Marshal.GetDelegateForFunctionPointer< PFNGLGETTRANSFORMFEEDBACKVARYINGPROC >( loader.Invoke( "glGetTransformFeedbackVarying" ) );
-            _glClampColor                          = Marshal.GetDelegateForFunctionPointer< PFNGLCLAMPCOLORPROC >( loader.Invoke( "glClampColor" ) );
-            _glBeginConditionalRender              = Marshal.GetDelegateForFunctionPointer< PFNGLBEGINCONDITIONALRENDERPROC >( loader.Invoke( "glBeginConditionalRender" ) );
-            _glEndConditionalRender                = Marshal.GetDelegateForFunctionPointer< PFNGLENDCONDITIONALRENDERPROC >( loader.Invoke( "glEndConditionalRender" ) );
-            _glVertexAttribIPointer                = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBIPOINTERPROC >( loader.Invoke( "glVertexAttribIPointer" ) );
-            _glGetVertexAttribIiv                  = Marshal.GetDelegateForFunctionPointer< PFNGLGETVERTEXATTRIBIIVPROC >( loader.Invoke( "glGetVertexAttribIiv" ) );
-            _glGetVertexAttribIuiv                 = Marshal.GetDelegateForFunctionPointer< PFNGLGETVERTEXATTRIBIUIVPROC >( loader.Invoke( "glGetVertexAttribIuiv" ) );
-            _glVertexAttribI1i                     = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI1IPROC >( loader.Invoke( "glVertexAttribI1i" ) );
-            _glVertexAttribI2i                     = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI2IPROC >( loader.Invoke( "glVertexAttribI2i" ) );
-            _glVertexAttribI3i                     = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI3IPROC >( loader.Invoke( "glVertexAttribI3i" ) );
-            _glVertexAttribI4i                     = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI4IPROC >( loader.Invoke( "glVertexAttribI4i" ) );
-            _glVertexAttribI1ui                    = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI1UIPROC >( loader.Invoke( "glVertexAttribI1ui" ) );
-            _glVertexAttribI2ui                    = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI2UIPROC >( loader.Invoke( "glVertexAttribI2ui" ) );
-            _glVertexAttribI3ui                    = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI3UIPROC >( loader.Invoke( "glVertexAttribI3ui" ) );
-            _glVertexAttribI4ui                    = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI4UIPROC >( loader.Invoke( "glVertexAttribI4ui" ) );
-            _glVertexAttribI1iv                    = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI1IVPROC >( loader.Invoke( "glVertexAttribI1iv" ) );
-            _glVertexAttribI2iv                    = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI2IVPROC >( loader.Invoke( "glVertexAttribI2iv" ) );
-            _glVertexAttribI3iv                    = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI3IVPROC >( loader.Invoke( "glVertexAttribI3iv" ) );
-            _glVertexAttribI4iv                    = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI4IVPROC >( loader.Invoke( "glVertexAttribI4iv" ) );
-            _glVertexAttribI1uiv                   = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI1UIVPROC >( loader.Invoke( "glVertexAttribI1uiv" ) );
-            _glVertexAttribI2uiv                   = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI2UIVPROC >( loader.Invoke( "glVertexAttribI2uiv" ) );
-            _glVertexAttribI3uiv                   = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI3UIVPROC >( loader.Invoke( "glVertexAttribI3uiv" ) );
-            _glVertexAttribI4uiv                   = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI4UIVPROC >( loader.Invoke( "glVertexAttribI4uiv" ) );
-            _glVertexAttribI4bv                    = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI4BVPROC >( loader.Invoke( "glVertexAttribI4bv" ) );
-            _glVertexAttribI4sv                    = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI4SVPROC >( loader.Invoke( "glVertexAttribI4sv" ) );
-            _glVertexAttribI4ubv                   = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI4UBVPROC >( loader.Invoke( "glVertexAttribI4ubv" ) );
-            _glVertexAttribI4usv                   = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBI4USVPROC >( loader.Invoke( "glVertexAttribI4usv" ) );
-            _glGetUniformuiv                       = Marshal.GetDelegateForFunctionPointer< PFNGLGETUNIFORMUIVPROC >( loader.Invoke( "glGetUniformuiv" ) );
-            _glBindFragDataLocation                = Marshal.GetDelegateForFunctionPointer< PFNGLBINDFRAGDATALOCATIONPROC >( loader.Invoke( "glBindFragDataLocation" ) );
-            _glGetFragDataLocation                 = Marshal.GetDelegateForFunctionPointer< PFNGLGETFRAGDATALOCATIONPROC >( loader.Invoke( "glGetFragDataLocation" ) );
-            _glUniform1ui                          = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM1UIPROC >( loader.Invoke( "glUniform1ui" ) );
-            _glUniform2ui                          = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM2UIPROC >( loader.Invoke( "glUniform2ui" ) );
-            _glUniform3ui                          = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM3UIPROC >( loader.Invoke( "glUniform3ui" ) );
-            _glUniform4ui                          = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM4UIPROC >( loader.Invoke( "glUniform4ui" ) );
-            _glUniform1uiv                         = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM1UIVPROC >( loader.Invoke( "glUniform1uiv" ) );
-            _glUniform2uiv                         = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM2UIVPROC >( loader.Invoke( "glUniform2uiv" ) );
-            _glUniform3uiv                         = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM3UIVPROC >( loader.Invoke( "glUniform3uiv" ) );
-            _glUniform4uiv                         = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM4UIVPROC >( loader.Invoke( "glUniform4uiv" ) );
-            _glTexParameterIiv                     = Marshal.GetDelegateForFunctionPointer< PFNGLTEXPARAMETERIIVPROC >( loader.Invoke( "glTexParameterIiv" ) );
-            _glTexParameterIuiv                    = Marshal.GetDelegateForFunctionPointer< PFNGLTEXPARAMETERIUIVPROC >( loader.Invoke( "glTexParameterIuiv" ) );
-            _glGetTexParameterIiv                  = Marshal.GetDelegateForFunctionPointer< PFNGLGETTEXPARAMETERIIVPROC >( loader.Invoke( "glGetTexParameterIiv" ) );
-            _glGetTexParameterIuiv                 = Marshal.GetDelegateForFunctionPointer< PFNGLGETTEXPARAMETERIUIVPROC >( loader.Invoke( "glGetTexParameterIuiv" ) );
-            _glClearBufferiv                       = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARBUFFERIVPROC >( loader.Invoke( "glClearBufferiv" ) );
-            _glClearBufferuiv                      = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARBUFFERUIVPROC >( loader.Invoke( "glClearBufferuiv" ) );
-            _glClearBufferfv                       = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARBUFFERFVPROC >( loader.Invoke( "glClearBufferfv" ) );
-            _glClearBufferfi                       = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARBUFFERFIPROC >( loader.Invoke( "glClearBufferfi" ) );
-            _glGetStringi                          = Marshal.GetDelegateForFunctionPointer< PFNGLGETSTRINGIPROC >( loader.Invoke( "glGetStringi" ) );
-            _glIsRenderbuffer                      = Marshal.GetDelegateForFunctionPointer< PFNGLISRENDERBUFFERPROC >( loader.Invoke( "glIsRenderbuffer" ) );
-            _glBindRenderbuffer                    = Marshal.GetDelegateForFunctionPointer< PFNGLBINDRENDERBUFFERPROC >( loader.Invoke( "glBindRenderbuffer" ) );
-            _glDeleteRenderbuffers                 = Marshal.GetDelegateForFunctionPointer< PFNGLDELETERENDERBUFFERSPROC >( loader.Invoke( "glDeleteRenderbuffers" ) );
-            _glGenRenderbuffers                    = Marshal.GetDelegateForFunctionPointer< PFNGLGENRENDERBUFFERSPROC >( loader.Invoke( "glGenRenderbuffers" ) );
-            _glRenderbufferStorage                 = Marshal.GetDelegateForFunctionPointer< PFNGLRENDERBUFFERSTORAGEPROC >( loader.Invoke( "glRenderbufferStorage" ) );
-            _glGetRenderbufferParameteriv          = Marshal.GetDelegateForFunctionPointer< PFNGLGETRENDERBUFFERPARAMETERIVPROC >( loader.Invoke( "glGetRenderbufferParameteriv" ) );
-            _glIsFramebuffer                       = Marshal.GetDelegateForFunctionPointer< PFNGLISFRAMEBUFFERPROC >( loader.Invoke( "glIsFramebuffer" ) );
-            _glBindFramebuffer                     = Marshal.GetDelegateForFunctionPointer< PFNGLBINDFRAMEBUFFERPROC >( loader.Invoke( "glBindFramebuffer" ) );
-            _glDeleteFramebuffers                  = Marshal.GetDelegateForFunctionPointer< PFNGLDELETEFRAMEBUFFERSPROC >( loader.Invoke( "glDeleteFramebuffers" ) );
-            _glGenFramebuffers                     = Marshal.GetDelegateForFunctionPointer< PFNGLGENFRAMEBUFFERSPROC >( loader.Invoke( "glGenFramebuffers" ) );
-            _glCheckFramebufferStatus              = Marshal.GetDelegateForFunctionPointer< PFNGLCHECKFRAMEBUFFERSTATUSPROC >( loader.Invoke( "glCheckFramebufferStatus" ) );
-            _glFramebufferTexture1D                = Marshal.GetDelegateForFunctionPointer< PFNGLFRAMEBUFFERTEXTURE1DPROC >( loader.Invoke( "glFramebufferTexture1D" ) );
-            _glFramebufferTexture2D                = Marshal.GetDelegateForFunctionPointer< PFNGLFRAMEBUFFERTEXTURE2DPROC >( loader.Invoke( "glFramebufferTexture2D" ) );
-            _glFramebufferTexture3D                = Marshal.GetDelegateForFunctionPointer< PFNGLFRAMEBUFFERTEXTURE3DPROC >( loader.Invoke( "glFramebufferTexture3D" ) );
-            _glFramebufferRenderbuffer             = Marshal.GetDelegateForFunctionPointer< PFNGLFRAMEBUFFERRENDERBUFFERPROC >( loader.Invoke( "glFramebufferRenderbuffer" ) );
-            _glGetFramebufferAttachmentParameteriv = Marshal.GetDelegateForFunctionPointer< PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC >( loader.Invoke( "glGetFramebufferAttachmentParameteriv" ) );
-            _glGenerateMipmap                      = Marshal.GetDelegateForFunctionPointer< PFNGLGENERATEMIPMAPPROC >( loader.Invoke( "glGenerateMipmap" ) );
-            _glBlitFramebuffer                     = Marshal.GetDelegateForFunctionPointer< PFNGLBLITFRAMEBUFFERPROC >( loader.Invoke( "glBlitFramebuffer" ) );
-            _glRenderbufferStorageMultisample      = Marshal.GetDelegateForFunctionPointer< PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC >( loader.Invoke( "glRenderbufferStorageMultisample" ) );
-            _glFramebufferTextureLayer             = Marshal.GetDelegateForFunctionPointer< PFNGLFRAMEBUFFERTEXTURELAYERPROC >( loader.Invoke( "glFramebufferTextureLayer" ) );
-            _glMapBufferRange                      = Marshal.GetDelegateForFunctionPointer< PFNGLMAPBUFFERRANGEPROC >( loader.Invoke( "glMapBufferRange" ) );
-            _glFlushMappedBufferRange              = Marshal.GetDelegateForFunctionPointer< PFNGLFLUSHMAPPEDBUFFERRANGEPROC >( loader.Invoke( "glFlushMappedBufferRange" ) );
-            _glBindVertexArray                     = Marshal.GetDelegateForFunctionPointer< PFNGLBINDVERTEXARRAYPROC >( loader.Invoke( "glBindVertexArray" ) );
-            _glDeleteVertexArrays                  = Marshal.GetDelegateForFunctionPointer< PFNGLDELETEVERTEXARRAYSPROC >( loader.Invoke( "glDeleteVertexArrays" ) );
-            _glGenVertexArrays                     = Marshal.GetDelegateForFunctionPointer< PFNGLGENVERTEXARRAYSPROC >( loader.Invoke( "glGenVertexArrays" ) );
-            _glIsVertexArray                       = Marshal.GetDelegateForFunctionPointer< PFNGLISVERTEXARRAYPROC >( loader.Invoke( "glIsVertexArray" ) );
+            LoadOpenGLFunction( "glColorMaski", out _glColorMaski );
+            LoadOpenGLFunction( "glGetBooleani_v", out _glGetBooleani_v );
+            LoadOpenGLFunction( "glGetIntegeri_v", out _glGetIntegeri_v );
+            LoadOpenGLFunction( "glEnablei", out _glEnablei );
+            LoadOpenGLFunction( "glDisablei", out _glDisablei );
+            LoadOpenGLFunction( "glIsEnabledi", out _glIsEnabledi );
+            LoadOpenGLFunction( "glBeginTransformFeedback", out _glBeginTransformFeedback );
+            LoadOpenGLFunction( "glEndTransformFeedback", out _glEndTransformFeedback );
+            LoadOpenGLFunction( "glBindBufferRange", out _glBindBufferRange );
+            LoadOpenGLFunction( "glBindBufferBase", out _glBindBufferBase );
+            LoadOpenGLFunction( "glTransformFeedbackVaryings", out _glTransformFeedbackVaryings );
+            LoadOpenGLFunction( "glGetTransformFeedbackVarying", out _glGetTransformFeedbackVarying );
+            LoadOpenGLFunction( "glClampColor", out _glClampColor );
+            LoadOpenGLFunction( "glBeginConditionalRender", out _glBeginConditionalRender );
+            LoadOpenGLFunction( "glEndConditionalRender", out _glEndConditionalRender );
+            LoadOpenGLFunction( "glVertexAttribIPointer", out _glVertexAttribIPointer );
+            LoadOpenGLFunction( "glGetVertexAttribIiv", out _glGetVertexAttribIiv );
+            LoadOpenGLFunction( "glGetVertexAttribIuiv", out _glGetVertexAttribIuiv );
+            LoadOpenGLFunction( "glVertexAttribI1i", out _glVertexAttribI1i );
+            LoadOpenGLFunction( "glVertexAttribI2i", out _glVertexAttribI2i );
+            LoadOpenGLFunction( "glVertexAttribI3i", out _glVertexAttribI3i );
+            LoadOpenGLFunction( "glVertexAttribI4i", out _glVertexAttribI4i );
+            LoadOpenGLFunction( "glVertexAttribI1ui", out _glVertexAttribI1ui );
+            LoadOpenGLFunction( "glVertexAttribI2ui", out _glVertexAttribI2ui );
+            LoadOpenGLFunction( "glVertexAttribI3ui", out _glVertexAttribI3ui );
+            LoadOpenGLFunction( "glVertexAttribI4ui", out _glVertexAttribI4ui );
+            LoadOpenGLFunction( "glVertexAttribI1iv", out _glVertexAttribI1iv );
+            LoadOpenGLFunction( "glVertexAttribI2iv", out _glVertexAttribI2iv );
+            LoadOpenGLFunction( "glVertexAttribI3iv", out _glVertexAttribI3iv );
+            LoadOpenGLFunction( "glVertexAttribI4iv", out _glVertexAttribI4iv );
+            LoadOpenGLFunction( "glVertexAttribI1uiv", out _glVertexAttribI1uiv );
+            LoadOpenGLFunction( "glVertexAttribI2uiv", out _glVertexAttribI2uiv );
+            LoadOpenGLFunction( "glVertexAttribI3uiv", out _glVertexAttribI3uiv );
+            LoadOpenGLFunction( "glVertexAttribI4uiv", out _glVertexAttribI4uiv );
+            LoadOpenGLFunction( "glVertexAttribI4bv", out _glVertexAttribI4bv );
+            LoadOpenGLFunction( "glVertexAttribI4sv", out _glVertexAttribI4sv );
+            LoadOpenGLFunction( "glVertexAttribI4ubv", out _glVertexAttribI4ubv );
+            LoadOpenGLFunction( "glVertexAttribI4usv", out _glVertexAttribI4usv );
+            LoadOpenGLFunction( "glGetUniformuiv", out _glGetUniformuiv );
+            LoadOpenGLFunction( "glBindFragDataLocation", out _glBindFragDataLocation );
+            LoadOpenGLFunction( "glGetFragDataLocation", out _glGetFragDataLocation );
+            LoadOpenGLFunction( "glUniform1ui", out _glUniform1ui );
+            LoadOpenGLFunction( "glUniform2ui", out _glUniform2ui );
+            LoadOpenGLFunction( "glUniform3ui", out _glUniform3ui );
+            LoadOpenGLFunction( "glUniform4ui", out _glUniform4ui );
+            LoadOpenGLFunction( "glUniform1uiv", out _glUniform1uiv );
+            LoadOpenGLFunction( "glUniform2uiv", out _glUniform2uiv );
+            LoadOpenGLFunction( "glUniform3uiv", out _glUniform3uiv );
+            LoadOpenGLFunction( "glUniform4uiv", out _glUniform4uiv );
+            LoadOpenGLFunction( "glTexParameterIiv", out _glTexParameterIiv );
+            LoadOpenGLFunction( "glTexParameterIuiv", out _glTexParameterIuiv );
+            LoadOpenGLFunction( "glGetTexParameterIiv", out _glGetTexParameterIiv );
+            LoadOpenGLFunction( "glGetTexParameterIuiv", out _glGetTexParameterIuiv );
+            LoadOpenGLFunction( "glClearBufferiv", out _glClearBufferiv );
+            LoadOpenGLFunction( "glClearBufferuiv", out _glClearBufferuiv );
+            LoadOpenGLFunction( "glClearBufferfv", out _glClearBufferfv );
+            LoadOpenGLFunction( "glClearBufferfi", out _glClearBufferfi );
+            LoadOpenGLFunction( "glGetStringi", out _glGetStringi );
+            LoadOpenGLFunction( "glIsRenderbuffer", out _glIsRenderbuffer );
+            LoadOpenGLFunction( "glBindRenderbuffer", out _glBindRenderbuffer );
+            LoadOpenGLFunction( "glDeleteRenderbuffers", out _glDeleteRenderbuffers );
+            LoadOpenGLFunction( "glGenRenderbuffers", out _glGenRenderbuffers );
+            LoadOpenGLFunction( "glRenderbufferStorage", out _glRenderbufferStorage );
+            LoadOpenGLFunction( "glGetRenderbufferParameteriv", out _glGetRenderbufferParameteriv );
+            LoadOpenGLFunction( "glIsFramebuffer", out _glIsFramebuffer );
+            LoadOpenGLFunction( "glBindFramebuffer", out _glBindFramebuffer );
+            LoadOpenGLFunction( "glDeleteFramebuffers", out _glDeleteFramebuffers );
+            LoadOpenGLFunction( "glGenFramebuffers", out _glGenFramebuffers );
+            LoadOpenGLFunction( "glCheckFramebufferStatus", out _glCheckFramebufferStatus );
+            LoadOpenGLFunction( "glFramebufferTexture1D", out _glFramebufferTexture1D );
+            LoadOpenGLFunction( "glFramebufferTexture2D", out _glFramebufferTexture2D );
+            LoadOpenGLFunction( "glFramebufferTexture3D", out _glFramebufferTexture3D );
+            LoadOpenGLFunction( "glFramebufferRenderbuffer", out _glFramebufferRenderbuffer );
+            LoadOpenGLFunction( "glGetFramebufferAttachmentParameteriv", out _glGetFramebufferAttachmentParameteriv );
+            LoadOpenGLFunction( "glGenerateMipmap", out _glGenerateMipmap );
+            LoadOpenGLFunction( "glBlitFramebuffer", out _glBlitFramebuffer );
+            LoadOpenGLFunction( "glRenderbufferStorageMultisample", out _glRenderbufferStorageMultisample );
+            LoadOpenGLFunction( "glFramebufferTextureLayer", out _glFramebufferTextureLayer );
+            LoadOpenGLFunction( "glMapBufferRange", out _glMapBufferRange );
+            LoadOpenGLFunction( "glFlushMappedBufferRange", out _glFlushMappedBufferRange );
+            LoadOpenGLFunction( "glBindVertexArray", out _glBindVertexArray );
+            LoadOpenGLFunction( "glDeleteVertexArrays", out _glDeleteVertexArrays );
+            LoadOpenGLFunction( "glGenVertexArrays", out _glGenVertexArrays );
+            LoadOpenGLFunction( "glIsVertexArray", out _glIsVertexArray );
         }
 
         if ( _ogl31 || _ogl32 || _ogl33 || _ogl34
              || _ogl40 || _ogl41 || _ogl42 || _ogl43 || _ogl44 || _ogl45 || _ogl46 )
         {
-            _glDrawArraysInstanced       = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWARRAYSINSTANCEDPROC >( loader.Invoke( "glDrawArraysInstanced" ) );
-            _glDrawElementsInstanced     = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWELEMENTSINSTANCEDPROC >( loader.Invoke( "glDrawElementsInstanced" ) );
-            _glTexBuffer                 = Marshal.GetDelegateForFunctionPointer< PFNGLTEXBUFFERPROC >( loader.Invoke( "glTexBuffer" ) );
-            _glPrimitiveRestartIndex     = Marshal.GetDelegateForFunctionPointer< PFNGLPRIMITIVERESTARTINDEXPROC >( loader.Invoke( "glPrimitiveRestartIndex" ) );
-            _glCopyBufferSubData         = Marshal.GetDelegateForFunctionPointer< PFNGLCOPYBUFFERSUBDATAPROC >( loader.Invoke( "glCopyBufferSubData" ) );
-            _glGetUniformIndices         = Marshal.GetDelegateForFunctionPointer< PFNGLGETUNIFORMINDICESPROC >( loader.Invoke( "glGetUniformIndices" ) );
-            _glGetActiveUniformsiv       = Marshal.GetDelegateForFunctionPointer< PFNGLGETACTIVEUNIFORMSIVPROC >( loader.Invoke( "glGetActiveUniformsiv" ) );
-            _glGetActiveUniformName      = Marshal.GetDelegateForFunctionPointer< PFNGLGETACTIVEUNIFORMNAMEPROC >( loader.Invoke( "glGetActiveUniformName" ) );
-            _glGetUniformBlockIndex      = Marshal.GetDelegateForFunctionPointer< PFNGLGETUNIFORMBLOCKINDEXPROC >( loader.Invoke( "glGetUniformBlockIndex" ) );
-            _glGetActiveUniformBlockiv   = Marshal.GetDelegateForFunctionPointer< PFNGLGETACTIVEUNIFORMBLOCKIVPROC >( loader.Invoke( "glGetActiveUniformBlockiv" ) );
-            _glGetActiveUniformBlockName = Marshal.GetDelegateForFunctionPointer< PFNGLGETACTIVEUNIFORMBLOCKNAMEPROC >( loader.Invoke( "glGetActiveUniformBlockName" ) );
-            _glUniformBlockBinding       = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMBLOCKBINDINGPROC >( loader.Invoke( "glUniformBlockBinding" ) );
+            LoadOpenGLFunction( "glDrawArraysInstanced", out _glDrawArraysInstanced );
+            LoadOpenGLFunction( "glDrawElementsInstanced", out _glDrawElementsInstanced );
+            LoadOpenGLFunction( "glTexBuffer", out _glTexBuffer );
+            LoadOpenGLFunction( "glPrimitiveRestartIndex", out _glPrimitiveRestartIndex );
+            LoadOpenGLFunction( "glCopyBufferSubData", out _glCopyBufferSubData );
+            LoadOpenGLFunction( "glGetUniformIndices", out _glGetUniformIndices );
+            LoadOpenGLFunction( "glGetActiveUniformsiv", out _glGetActiveUniformsiv );
+            LoadOpenGLFunction( "glGetActiveUniformName", out _glGetActiveUniformName );
+            LoadOpenGLFunction( "glGetUniformBlockIndex", out _glGetUniformBlockIndex );
+            LoadOpenGLFunction( "glGetActiveUniformBlockiv", out _glGetActiveUniformBlockiv );
+            LoadOpenGLFunction( "glGetActiveUniformBlockName", out _glGetActiveUniformBlockName );
+            LoadOpenGLFunction( "glUniformBlockBinding", out _glUniformBlockBinding );
         }
 
         if ( _ogl32 || _ogl33 || _ogl34
              || _ogl40 || _ogl41 || _ogl42 || _ogl43 || _ogl44 || _ogl45 || _ogl46 )
         {
-            _glDrawElementsBaseVertex          = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWELEMENTSBASEVERTEXPROC >( loader.Invoke( "glDrawElementsBaseVertex" ) );
-            _glDrawRangeElementsBaseVertex     = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWRANGEELEMENTSBASEVERTEXPROC >( loader.Invoke( "glDrawRangeElementsBaseVertex" ) );
-            _glDrawElementsInstancedBaseVertex = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWELEMENTSINSTANCEDBASEVERTEXPROC >( loader.Invoke( "glDrawElementsInstancedBaseVertex" ) );
-            _glMultiDrawElementsBaseVertex     = Marshal.GetDelegateForFunctionPointer< PFNGLMULTIDRAWELEMENTSBASEVERTEXPROC >( loader.Invoke( "glMultiDrawElementsBaseVertex" ) );
-            _glProvokingVertex                 = Marshal.GetDelegateForFunctionPointer< PFNGLPROVOKINGVERTEXPROC >( loader.Invoke( "glProvokingVertex" ) );
-            _glFenceSync                       = Marshal.GetDelegateForFunctionPointer< PFNGLFENCESYNCPROC >( loader.Invoke( "glFenceSync" ) );
-            _glIsSync                          = Marshal.GetDelegateForFunctionPointer< PFNGLISSYNCPROC >( loader.Invoke( "glIsSync" ) );
-            _glDeleteSync                      = Marshal.GetDelegateForFunctionPointer< PFNGLDELETESYNCPROC >( loader.Invoke( "glDeleteSync" ) );
-            _glClientWaitSync                  = Marshal.GetDelegateForFunctionPointer< PFNGLCLIENTWAITSYNCPROC >( loader.Invoke( "glClientWaitSync" ) );
-            _glWaitSync                        = Marshal.GetDelegateForFunctionPointer< PFNGLWAITSYNCPROC >( loader.Invoke( "glWaitSync" ) );
-            _glGetInteger64v                   = Marshal.GetDelegateForFunctionPointer< PFNGLGETINTEGER64VPROC >( loader.Invoke( "glGetInteger64v" ) );
-            _glGetSynciv                       = Marshal.GetDelegateForFunctionPointer< PFNGLGETSYNCIVPROC >( loader.Invoke( "glGetSynciv" ) );
-            _glGetInteger64i_v                 = Marshal.GetDelegateForFunctionPointer< PFNGLGETINTEGER64I_VPROC >( loader.Invoke( "glGetInteger64i_v" ) );
-            _glGetBufferParameteri64v          = Marshal.GetDelegateForFunctionPointer< PFNGLGETBUFFERPARAMETERI64VPROC >( loader.Invoke( "glGetBufferParameteri64v" ) );
-            _glFramebufferTexture              = Marshal.GetDelegateForFunctionPointer< PFNGLFRAMEBUFFERTEXTUREPROC >( loader.Invoke( "glFramebufferTexture" ) );
-            _glTexImage2DMultisample           = Marshal.GetDelegateForFunctionPointer< PFNGLTEXIMAGE2DMULTISAMPLEPROC >( loader.Invoke( "glTexImage2DMultisample" ) );
-            _glTexImage3DMultisample           = Marshal.GetDelegateForFunctionPointer< PFNGLTEXIMAGE3DMULTISAMPLEPROC >( loader.Invoke( "glTexImage3DMultisample" ) );
-            _glGetMultisamplefv                = Marshal.GetDelegateForFunctionPointer< PFNGLGETMULTISAMPLEFVPROC >( loader.Invoke( "glGetMultisamplefv" ) );
-            _glSampleMaski                     = Marshal.GetDelegateForFunctionPointer< PFNGLSAMPLEMASKIPROC >( loader.Invoke( "glSampleMaski" ) );
+            LoadOpenGLFunction( "glDrawElementsBaseVertex", out _glDrawElementsBaseVertex );
+            LoadOpenGLFunction( "glDrawRangeElementsBaseVertex", out _glDrawRangeElementsBaseVertex );
+            LoadOpenGLFunction( "glDrawElementsInstancedBaseVertex", out _glDrawElementsInstancedBaseVertex );
+            LoadOpenGLFunction( "glMultiDrawElementsBaseVertex", out _glMultiDrawElementsBaseVertex );
+            LoadOpenGLFunction( "glProvokingVertex", out _glProvokingVertex );
+            LoadOpenGLFunction( "glFenceSync", out _glFenceSync );
+            LoadOpenGLFunction( "glIsSync", out _glIsSync );
+            LoadOpenGLFunction( "glDeleteSync", out _glDeleteSync );
+            LoadOpenGLFunction( "glClientWaitSync", out _glClientWaitSync );
+            LoadOpenGLFunction( "glWaitSync", out _glWaitSync );
+            LoadOpenGLFunction( "glGetInteger64v", out _glGetInteger64v );
+            LoadOpenGLFunction( "glGetSynciv", out _glGetSynciv );
+            LoadOpenGLFunction( "glGetInteger64i_v", out _glGetInteger64i_v );
+            LoadOpenGLFunction( "glGetBufferParameteri64v", out _glGetBufferParameteri64v );
+            LoadOpenGLFunction( "glFramebufferTexture", out _glFramebufferTexture );
+            LoadOpenGLFunction( "glTexImage2DMultisample", out _glTexImage2DMultisample );
+            LoadOpenGLFunction( "glTexImage3DMultisample", out _glTexImage3DMultisample );
+            LoadOpenGLFunction( "glGetMultisamplefv", out _glGetMultisamplefv );
+            LoadOpenGLFunction( "glSampleMaski", out _glSampleMaski );
         }
 
         if ( _ogl33 || _ogl34
                     || _ogl40 || _ogl41 || _ogl42 || _ogl43 || _ogl44 || _ogl45 || _ogl46 )
         {
-            _glBindFragDataLocationIndexed = Marshal.GetDelegateForFunctionPointer< PFNGLBINDFRAGDATALOCATIONINDEXEDPROC >( loader.Invoke( "glBindFragDataLocationIndexed" ) );
-            _glGetFragDataIndex            = Marshal.GetDelegateForFunctionPointer< PFNGLGETFRAGDATAINDEXPROC >( loader.Invoke( "glGetFragDataIndex" ) );
-            _glGenSamplers                 = Marshal.GetDelegateForFunctionPointer< PFNGLGENSAMPLERSPROC >( loader.Invoke( "glGenSamplers" ) );
-            _glDeleteSamplers              = Marshal.GetDelegateForFunctionPointer< PFNGLDELETESAMPLERSPROC >( loader.Invoke( "glDeleteSamplers" ) );
-            _glIsSampler                   = Marshal.GetDelegateForFunctionPointer< PFNGLISSAMPLERPROC >( loader.Invoke( "glIsSampler" ) );
-            _glBindSampler                 = Marshal.GetDelegateForFunctionPointer< PFNGLBINDSAMPLERPROC >( loader.Invoke( "glBindSampler" ) );
-            _glSamplerParameteri           = Marshal.GetDelegateForFunctionPointer< PFNGLSAMPLERPARAMETERIPROC >( loader.Invoke( "glSamplerParameteri" ) );
-            _glSamplerParameteriv          = Marshal.GetDelegateForFunctionPointer< PFNGLSAMPLERPARAMETERIVPROC >( loader.Invoke( "glSamplerParameteriv" ) );
-            _glSamplerParameterf           = Marshal.GetDelegateForFunctionPointer< PFNGLSAMPLERPARAMETERFPROC >( loader.Invoke( "glSamplerParameterf" ) );
-            _glSamplerParameterfv          = Marshal.GetDelegateForFunctionPointer< PFNGLSAMPLERPARAMETERFVPROC >( loader.Invoke( "glSamplerParameterfv" ) );
-            _glSamplerParameterIiv         = Marshal.GetDelegateForFunctionPointer< PFNGLSAMPLERPARAMETERIIVPROC >( loader.Invoke( "glSamplerParameterIiv" ) );
-            _glSamplerParameterIuiv        = Marshal.GetDelegateForFunctionPointer< PFNGLSAMPLERPARAMETERIUIVPROC >( loader.Invoke( "glSamplerParameterIuiv" ) );
-            _glGetSamplerParameteriv       = Marshal.GetDelegateForFunctionPointer< PFNGLGETSAMPLERPARAMETERIVPROC >( loader.Invoke( "glGetSamplerParameteriv" ) );
-            _glGetSamplerParameterIiv      = Marshal.GetDelegateForFunctionPointer< PFNGLGETSAMPLERPARAMETERIIVPROC >( loader.Invoke( "glGetSamplerParameterIiv" ) );
-            _glGetSamplerParameterfv       = Marshal.GetDelegateForFunctionPointer< PFNGLGETSAMPLERPARAMETERFVPROC >( loader.Invoke( "glGetSamplerParameterfv" ) );
-            _glGetSamplerParameterIuiv     = Marshal.GetDelegateForFunctionPointer< PFNGLGETSAMPLERPARAMETERIUIVPROC >( loader.Invoke( "glGetSamplerParameterIuiv" ) );
-            _glQueryCounter                = Marshal.GetDelegateForFunctionPointer< PFNGLQUERYCOUNTERPROC >( loader.Invoke( "glQueryCounter" ) );
-            _glGetQueryObjecti64v          = Marshal.GetDelegateForFunctionPointer< PFNGLGETQUERYOBJECTI64VPROC >( loader.Invoke( "glGetQueryObjecti64v" ) );
-            _glGetQueryObjectui64v         = Marshal.GetDelegateForFunctionPointer< PFNGLGETQUERYOBJECTUI64VPROC >( loader.Invoke( "glGetQueryObjectui64v" ) );
-            _glVertexAttribDivisor         = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBDIVISORPROC >( loader.Invoke( "glVertexAttribDivisor" ) );
-            _glVertexAttribP1ui            = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBP1UIPROC >( loader.Invoke( "glVertexAttribP1ui" ) );
-            _glVertexAttribP1uiv           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBP1UIVPROC >( loader.Invoke( "glVertexAttribP1uiv" ) );
-            _glVertexAttribP2ui            = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBP2UIPROC >( loader.Invoke( "glVertexAttribP2ui" ) );
-            _glVertexAttribP2uiv           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBP2UIVPROC >( loader.Invoke( "glVertexAttribP2uiv" ) );
-            _glVertexAttribP3ui            = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBP3UIPROC >( loader.Invoke( "glVertexAttribP3ui" ) );
-            _glVertexAttribP3uiv           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBP3UIVPROC >( loader.Invoke( "glVertexAttribP3uiv" ) );
-            _glVertexAttribP4ui            = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBP4UIPROC >( loader.Invoke( "glVertexAttribP4ui" ) );
-            _glVertexAttribP4uiv           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBP4UIVPROC >( loader.Invoke( "glVertexAttribP4uiv" ) );
+            LoadOpenGLFunction( "glBindFragDataLocationIndexed", out _glBindFragDataLocationIndexed );
+            LoadOpenGLFunction( "glGetFragDataIndex", out _glGetFragDataIndex );
+            LoadOpenGLFunction( "glGenSamplers", out _glGenSamplers );
+            LoadOpenGLFunction( "glDeleteSamplers", out _glDeleteSamplers );
+            LoadOpenGLFunction( "glIsSampler", out _glIsSampler );
+            LoadOpenGLFunction( "glBindSampler", out _glBindSampler );
+            LoadOpenGLFunction( "glSamplerParameteri", out _glSamplerParameteri );
+            LoadOpenGLFunction( "glSamplerParameteriv", out _glSamplerParameteriv );
+            LoadOpenGLFunction( "glSamplerParameterf", out _glSamplerParameterf );
+            LoadOpenGLFunction( "glSamplerParameterfv", out _glSamplerParameterfv );
+            LoadOpenGLFunction( "glSamplerParameterIiv", out _glSamplerParameterIiv );
+            LoadOpenGLFunction( "glSamplerParameterIuiv", out _glSamplerParameterIuiv );
+            LoadOpenGLFunction( "glGetSamplerParameteriv", out _glGetSamplerParameteriv );
+            LoadOpenGLFunction( "glGetSamplerParameterIiv", out _glGetSamplerParameterIiv );
+            LoadOpenGLFunction( "glGetSamplerParameterfv", out _glGetSamplerParameterfv );
+            LoadOpenGLFunction( "glGetSamplerParameterIuiv", out _glGetSamplerParameterIuiv );
+            LoadOpenGLFunction( "glQueryCounter", out _glQueryCounter );
+            LoadOpenGLFunction( "glGetQueryObjecti64v", out _glGetQueryObjecti64v );
+            LoadOpenGLFunction( "glGetQueryObjectui64v", out _glGetQueryObjectui64v );
+            LoadOpenGLFunction( "glVertexAttribDivisor", out _glVertexAttribDivisor );
+            LoadOpenGLFunction( "glVertexAttribP1ui", out _glVertexAttribP1ui );
+            LoadOpenGLFunction( "glVertexAttribP1uiv", out _glVertexAttribP1uiv );
+            LoadOpenGLFunction( "glVertexAttribP2ui", out _glVertexAttribP2ui );
+            LoadOpenGLFunction( "glVertexAttribP2uiv", out _glVertexAttribP2uiv );
+            LoadOpenGLFunction( "glVertexAttribP3ui", out _glVertexAttribP3ui );
+            LoadOpenGLFunction( "glVertexAttribP3uiv", out _glVertexAttribP3uiv );
+            LoadOpenGLFunction( "glVertexAttribP4ui", out _glVertexAttribP4ui );
+            LoadOpenGLFunction( "glVertexAttribP4uiv", out _glVertexAttribP4uiv );
         }
 
         if ( _ogl40 || _ogl41 || _ogl42 || _ogl43 || _ogl44 || _ogl45 || _ogl46 )
         {
-            _glMinSampleShading               = Marshal.GetDelegateForFunctionPointer< PFNGLMINSAMPLESHADINGPROC >( loader.Invoke( "glMinSampleShading" ) );
-            _glBlendEquationi                 = Marshal.GetDelegateForFunctionPointer< PFNGLBLENDEQUATIONIPROC >( loader.Invoke( "glBlendEquationi" ) );
-            _glBlendEquationSeparatei         = Marshal.GetDelegateForFunctionPointer< PFNGLBLENDEQUATIONSEPARATEIPROC >( loader.Invoke( "glBlendEquationSeparatei" ) );
-            _glBlendFunci                     = Marshal.GetDelegateForFunctionPointer< PFNGLBLENDFUNCIPROC >( loader.Invoke( "glBlendFunci" ) );
-            _glBlendFuncSeparatei             = Marshal.GetDelegateForFunctionPointer< PFNGLBLENDFUNCSEPARATEIPROC >( loader.Invoke( "glBlendFuncSeparatei" ) );
-            _glDrawArraysIndirect             = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWARRAYSINDIRECTPROC >( loader.Invoke( "glDrawArraysIndirect" ) );
-            _glDrawElementsIndirect           = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWELEMENTSINDIRECTPROC >( loader.Invoke( "glDrawElementsIndirect" ) );
-            _glUniform1d                      = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM1DPROC >( loader.Invoke( "glUniform1d" ) );
-            _glUniform2d                      = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM2DPROC >( loader.Invoke( "glUniform2d" ) );
-            _glUniform3d                      = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM3DPROC >( loader.Invoke( "glUniform3d" ) );
-            _glUniform4d                      = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM4DPROC >( loader.Invoke( "glUniform4d" ) );
-            _glUniform1dv                     = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM1DVPROC >( loader.Invoke( "glUniform1dv" ) );
-            _glUniform2dv                     = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM2DVPROC >( loader.Invoke( "glUniform2dv" ) );
-            _glUniform3dv                     = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM3DVPROC >( loader.Invoke( "glUniform3dv" ) );
-            _glUniform4dv                     = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORM4DVPROC >( loader.Invoke( "glUniform4dv" ) );
-            _glUniformMatrix2dv               = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX2DVPROC >( loader.Invoke( "glUniformMatrix2dv" ) );
-            _glUniformMatrix3dv               = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX3DVPROC >( loader.Invoke( "glUniformMatrix3dv" ) );
-            _glUniformMatrix4dv               = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX4DVPROC >( loader.Invoke( "glUniformMatrix4dv" ) );
-            _glUniformMatrix2x3dv             = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX2X3DVPROC >( loader.Invoke( "glUniformMatrix2x3dv" ) );
-            _glUniformMatrix2x4dv             = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX2X4DVPROC >( loader.Invoke( "glUniformMatrix2x4dv" ) );
-            _glUniformMatrix3x2dv             = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX3X2DVPROC >( loader.Invoke( "glUniformMatrix3x2dv" ) );
-            _glUniformMatrix3x4dv             = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX3X4DVPROC >( loader.Invoke( "glUniformMatrix3x4dv" ) );
-            _glUniformMatrix4x2dv             = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX4X2DVPROC >( loader.Invoke( "glUniformMatrix4x2dv" ) );
-            _glUniformMatrix4x3dv             = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMMATRIX4X3DVPROC >( loader.Invoke( "glUniformMatrix4x3dv" ) );
-            _glGetUniformdv                   = Marshal.GetDelegateForFunctionPointer< PFNGLGETUNIFORMDVPROC >( loader.Invoke( "glGetUniformdv" ) );
-            _glGetSubroutineUniformLocation   = Marshal.GetDelegateForFunctionPointer< PFNGLGETSUBROUTINEUNIFORMLOCATIONPROC >( loader.Invoke( "glGetSubroutineUniformLocation" ) );
-            _glGetSubroutineIndex             = Marshal.GetDelegateForFunctionPointer< PFNGLGETSUBROUTINEINDEXPROC >( loader.Invoke( "glGetSubroutineIndex" ) );
-            _glGetActiveSubroutineUniformiv   = Marshal.GetDelegateForFunctionPointer< PFNGLGETACTIVESUBROUTINEUNIFORMIVPROC >( loader.Invoke( "glGetActiveSubroutineUniformiv" ) );
-            _glGetActiveSubroutineUniformName = Marshal.GetDelegateForFunctionPointer< PFNGLGETACTIVESUBROUTINEUNIFORMNAMEPROC >( loader.Invoke( "glGetActiveSubroutineUniformName" ) );
-            _glGetActiveSubroutineName        = Marshal.GetDelegateForFunctionPointer< PFNGLGETACTIVESUBROUTINENAMEPROC >( loader.Invoke( "glGetActiveSubroutineName" ) );
-            _glUniformSubroutinesuiv          = Marshal.GetDelegateForFunctionPointer< PFNGLUNIFORMSUBROUTINESUIVPROC >( loader.Invoke( "glUniformSubroutinesuiv" ) );
-            _glGetUniformSubroutineuiv        = Marshal.GetDelegateForFunctionPointer< PFNGLGETUNIFORMSUBROUTINEUIVPROC >( loader.Invoke( "glGetUniformSubroutineuiv" ) );
-            _glGetProgramStageiv              = Marshal.GetDelegateForFunctionPointer< PFNGLGETPROGRAMSTAGEIVPROC >( loader.Invoke( "glGetProgramStageiv" ) );
-            _glPatchParameteri                = Marshal.GetDelegateForFunctionPointer< PFNGLPATCHPARAMETERIPROC >( loader.Invoke( "glPatchParameteri" ) );
-            _glPatchParameterfv               = Marshal.GetDelegateForFunctionPointer< PFNGLPATCHPARAMETERFVPROC >( loader.Invoke( "glPatchParameterfv" ) );
-            _glBindTransformFeedback          = Marshal.GetDelegateForFunctionPointer< PFNGLBINDTRANSFORMFEEDBACKPROC >( loader.Invoke( "glBindTransformFeedback" ) );
-            _glDeleteTransformFeedbacks       = Marshal.GetDelegateForFunctionPointer< PFNGLDELETETRANSFORMFEEDBACKSPROC >( loader.Invoke( "glDeleteTransformFeedbacks" ) );
-            _glGenTransformFeedbacks          = Marshal.GetDelegateForFunctionPointer< PFNGLGENTRANSFORMFEEDBACKSPROC >( loader.Invoke( "glGenTransformFeedbacks" ) );
-            _glIsTransformFeedback            = Marshal.GetDelegateForFunctionPointer< PFNGLISTRANSFORMFEEDBACKPROC >( loader.Invoke( "glIsTransformFeedback" ) );
-            _glPauseTransformFeedback         = Marshal.GetDelegateForFunctionPointer< PFNGLPAUSETRANSFORMFEEDBACKPROC >( loader.Invoke( "glPauseTransformFeedback" ) );
-            _glResumeTransformFeedback        = Marshal.GetDelegateForFunctionPointer< PFNGLRESUMETRANSFORMFEEDBACKPROC >( loader.Invoke( "glResumeTransformFeedback" ) );
-            _glDrawTransformFeedback          = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWTRANSFORMFEEDBACKPROC >( loader.Invoke( "glDrawTransformFeedback" ) );
-            _glDrawTransformFeedbackStream    = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWTRANSFORMFEEDBACKSTREAMPROC >( loader.Invoke( "glDrawTransformFeedbackStream" ) );
-            _glBeginQueryIndexed              = Marshal.GetDelegateForFunctionPointer< PFNGLBEGINQUERYINDEXEDPROC >( loader.Invoke( "glBeginQueryIndexed" ) );
-            _glEndQueryIndexed                = Marshal.GetDelegateForFunctionPointer< PFNGLENDQUERYINDEXEDPROC >( loader.Invoke( "glEndQueryIndexed" ) );
-            _glGetQueryIndexediv              = Marshal.GetDelegateForFunctionPointer< PFNGLGETQUERYINDEXEDIVPROC >( loader.Invoke( "glGetQueryIndexediv" ) );
+            LoadOpenGLFunction( "glMinSampleShading", out _glMinSampleShading );
+            LoadOpenGLFunction( "glBlendEquationi", out _glBlendEquationi );
+            LoadOpenGLFunction( "glBlendEquationSeparatei", out _glBlendEquationSeparatei );
+            LoadOpenGLFunction( "glBlendFunci", out _glBlendFunci );
+            LoadOpenGLFunction( "glBlendFuncSeparatei", out _glBlendFuncSeparatei );
+            LoadOpenGLFunction( "glDrawArraysIndirect", out _glDrawArraysIndirect );
+            LoadOpenGLFunction( "glDrawElementsIndirect", out _glDrawElementsIndirect );
+            LoadOpenGLFunction( "glUniform1d", out _glUniform1d );
+            LoadOpenGLFunction( "glUniform2d", out _glUniform2d );
+            LoadOpenGLFunction( "glUniform3d", out _glUniform3d );
+            LoadOpenGLFunction( "glUniform4d", out _glUniform4d );
+            LoadOpenGLFunction( "glUniform1dv", out _glUniform1dv );
+            LoadOpenGLFunction( "glUniform2dv", out _glUniform2dv );
+            LoadOpenGLFunction( "glUniform3dv", out _glUniform3dv );
+            LoadOpenGLFunction( "glUniform4dv", out _glUniform4dv );
+            LoadOpenGLFunction( "glUniformMatrix2dv", out _glUniformMatrix2dv );
+            LoadOpenGLFunction( "glUniformMatrix3dv", out _glUniformMatrix3dv );
+            LoadOpenGLFunction( "glUniformMatrix4dv", out _glUniformMatrix4dv );
+            LoadOpenGLFunction( "glUniformMatrix2x3dv", out _glUniformMatrix2x3dv );
+            LoadOpenGLFunction( "glUniformMatrix2x4dv", out _glUniformMatrix2x4dv );
+            LoadOpenGLFunction( "glUniformMatrix3x2dv", out _glUniformMatrix3x2dv );
+            LoadOpenGLFunction( "glUniformMatrix3x4dv", out _glUniformMatrix3x4dv );
+            LoadOpenGLFunction( "glUniformMatrix4x2dv", out _glUniformMatrix4x2dv );
+            LoadOpenGLFunction( "glUniformMatrix4x3dv", out _glUniformMatrix4x3dv );
+            LoadOpenGLFunction( "glGetUniformdv", out _glGetUniformdv );
+            LoadOpenGLFunction( "glGetSubroutineUniformLocation", out _glGetSubroutineUniformLocation );
+            LoadOpenGLFunction( "glGetSubroutineIndex", out _glGetSubroutineIndex );
+            LoadOpenGLFunction( "glGetActiveSubroutineUniformiv", out _glGetActiveSubroutineUniformiv );
+            LoadOpenGLFunction( "glGetActiveSubroutineUniformName", out _glGetActiveSubroutineUniformName );
+            LoadOpenGLFunction( "glGetActiveSubroutineName", out _glGetActiveSubroutineName );
+            LoadOpenGLFunction( "glUniformSubroutinesuiv", out _glUniformSubroutinesuiv );
+            LoadOpenGLFunction( "glGetUniformSubroutineuiv", out _glGetUniformSubroutineuiv );
+            LoadOpenGLFunction( "glGetProgramStageiv", out _glGetProgramStageiv );
+            LoadOpenGLFunction( "glPatchParameteri", out _glPatchParameteri );
+            LoadOpenGLFunction( "glPatchParameterfv", out _glPatchParameterfv );
+            LoadOpenGLFunction( "glBindTransformFeedback", out _glBindTransformFeedback );
+            LoadOpenGLFunction( "glDeleteTransformFeedbacks", out _glDeleteTransformFeedbacks );
+            LoadOpenGLFunction( "glGenTransformFeedbacks", out _glGenTransformFeedbacks );
+            LoadOpenGLFunction( "glIsTransformFeedback", out _glIsTransformFeedback );
+            LoadOpenGLFunction( "glPauseTransformFeedback", out _glPauseTransformFeedback );
+            LoadOpenGLFunction( "glResumeTransformFeedback", out _glResumeTransformFeedback );
+            LoadOpenGLFunction( "glDrawTransformFeedback", out _glDrawTransformFeedback );
+            LoadOpenGLFunction( "glDrawTransformFeedbackStream", out _glDrawTransformFeedbackStream );
+            LoadOpenGLFunction( "glBeginQueryIndexed", out _glBeginQueryIndexed );
+            LoadOpenGLFunction( "glEndQueryIndexed", out _glEndQueryIndexed );
+            LoadOpenGLFunction( "glGetQueryIndexediv", out _glGetQueryIndexediv );
         }
 
         if ( _ogl41 || _ogl42 || _ogl43 || _ogl44 || _ogl45 || _ogl46 )
         {
-            _glReleaseShaderCompiler     = Marshal.GetDelegateForFunctionPointer< PFNGLRELEASESHADERCOMPILERPROC >( loader.Invoke( "glReleaseShaderCompiler" ) );
-            _glShaderBinary              = Marshal.GetDelegateForFunctionPointer< PFNGLSHADERBINARYPROC >( loader.Invoke( "glShaderBinary" ) );
-            _glGetShaderPrecisionFormat  = Marshal.GetDelegateForFunctionPointer< PFNGLGETSHADERPRECISIONFORMATPROC >( loader.Invoke( "glGetShaderPrecisionFormat" ) );
-            _glDepthRangef               = Marshal.GetDelegateForFunctionPointer< PFNGLDEPTHRANGEFPROC >( loader.Invoke( "glDepthRangef" ) );
-            _glClearDepthf               = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARDEPTHFPROC >( loader.Invoke( "glClearDepthf" ) );
-            _glGetProgramBinary          = Marshal.GetDelegateForFunctionPointer< PFNGLGETPROGRAMBINARYPROC >( loader.Invoke( "glGetProgramBinary" ) );
-            _glProgramBinary             = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMBINARYPROC >( loader.Invoke( "glProgramBinary" ) );
-            _glProgramParameteri         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMPARAMETERIPROC >( loader.Invoke( "glProgramParameteri" ) );
-            _glUseProgramStages          = Marshal.GetDelegateForFunctionPointer< PFNGLUSEPROGRAMSTAGESPROC >( loader.Invoke( "glUseProgramStages" ) );
-            _glActiveShaderProgram       = Marshal.GetDelegateForFunctionPointer< PFNGLACTIVESHADERPROGRAMPROC >( loader.Invoke( "glActiveShaderProgram" ) );
-            _glCreateShaderProgramv      = Marshal.GetDelegateForFunctionPointer< PFNGLCREATESHADERPROGRAMVPROC >( loader.Invoke( "glCreateShaderProgramv" ) );
-            _glBindProgramPipeline       = Marshal.GetDelegateForFunctionPointer< PFNGLBINDPROGRAMPIPELINEPROC >( loader.Invoke( "glBindProgramPipeline" ) );
-            _glDeleteProgramPipelines    = Marshal.GetDelegateForFunctionPointer< PFNGLDELETEPROGRAMPIPELINESPROC >( loader.Invoke( "glDeleteProgramPipelines" ) );
-            _glGenProgramPipelines       = Marshal.GetDelegateForFunctionPointer< PFNGLGENPROGRAMPIPELINESPROC >( loader.Invoke( "glGenProgramPipelines" ) );
-            _glIsProgramPipeline         = Marshal.GetDelegateForFunctionPointer< PFNGLISPROGRAMPIPELINEPROC >( loader.Invoke( "glIsProgramPipeline" ) );
-            _glGetProgramPipelineiv      = Marshal.GetDelegateForFunctionPointer< PFNGLGETPROGRAMPIPELINEIVPROC >( loader.Invoke( "glGetProgramPipelineiv" ) );
-            _glProgramUniform1i          = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM1IPROC >( loader.Invoke( "glProgramUniform1i" ) );
-            _glProgramUniform1iv         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM1IVPROC >( loader.Invoke( "glProgramUniform1iv" ) );
-            _glProgramUniform1f          = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM1FPROC >( loader.Invoke( "glProgramUniform1f" ) );
-            _glProgramUniform1fv         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM1FVPROC >( loader.Invoke( "glProgramUniform1fv" ) );
-            _glProgramUniform1d          = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM1DPROC >( loader.Invoke( "glProgramUniform1d" ) );
-            _glProgramUniform1dv         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM1DVPROC >( loader.Invoke( "glProgramUniform1dv" ) );
-            _glProgramUniform1ui         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM1UIPROC >( loader.Invoke( "glProgramUniform1ui" ) );
-            _glProgramUniform1uiv        = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM1UIVPROC >( loader.Invoke( "glProgramUniform1uiv" ) );
-            _glProgramUniform2i          = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM2IPROC >( loader.Invoke( "glProgramUniform2i" ) );
-            _glProgramUniform2iv         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM2IVPROC >( loader.Invoke( "glProgramUniform2iv" ) );
-            _glProgramUniform2f          = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM2FPROC >( loader.Invoke( "glProgramUniform2f" ) );
-            _glProgramUniform2fv         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM2FVPROC >( loader.Invoke( "glProgramUniform2fv" ) );
-            _glProgramUniform2d          = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM2DPROC >( loader.Invoke( "glProgramUniform2d" ) );
-            _glProgramUniform2dv         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM2DVPROC >( loader.Invoke( "glProgramUniform2dv" ) );
-            _glProgramUniform2ui         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM2UIPROC >( loader.Invoke( "glProgramUniform2ui" ) );
-            _glProgramUniform2uiv        = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM2UIVPROC >( loader.Invoke( "glProgramUniform2uiv" ) );
-            _glProgramUniform3i          = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM3IPROC >( loader.Invoke( "glProgramUniform3i" ) );
-            _glProgramUniform3iv         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM3IVPROC >( loader.Invoke( "glProgramUniform3iv" ) );
-            _glProgramUniform3f          = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM3FPROC >( loader.Invoke( "glProgramUniform3f" ) );
-            _glProgramUniform3fv         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM3FVPROC >( loader.Invoke( "glProgramUniform3fv" ) );
-            _glProgramUniform3d          = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM3DPROC >( loader.Invoke( "glProgramUniform3d" ) );
-            _glProgramUniform3dv         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM3DVPROC >( loader.Invoke( "glProgramUniform3dv" ) );
-            _glProgramUniform3ui         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM3UIPROC >( loader.Invoke( "glProgramUniform3ui" ) );
-            _glProgramUniform3uiv        = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM3UIVPROC >( loader.Invoke( "glProgramUniform3uiv" ) );
-            _glProgramUniform4i          = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM4IPROC >( loader.Invoke( "glProgramUniform4i" ) );
-            _glProgramUniform4iv         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM4IVPROC >( loader.Invoke( "glProgramUniform4iv" ) );
-            _glProgramUniform4f          = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM4FPROC >( loader.Invoke( "glProgramUniform4f" ) );
-            _glProgramUniform4fv         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM4FVPROC >( loader.Invoke( "glProgramUniform4fv" ) );
-            _glProgramUniform4d          = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM4DPROC >( loader.Invoke( "glProgramUniform4d" ) );
-            _glProgramUniform4dv         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM4DVPROC >( loader.Invoke( "glProgramUniform4dv" ) );
-            _glProgramUniform4ui         = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM4UIPROC >( loader.Invoke( "glProgramUniform4ui" ) );
-            _glProgramUniform4uiv        = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORM4UIVPROC >( loader.Invoke( "glProgramUniform4uiv" ) );
-            _glProgramUniformMatrix2fv   = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX2FVPROC >( loader.Invoke( "glProgramUniformMatrix2fv" ) );
-            _glProgramUniformMatrix3fv   = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX3FVPROC >( loader.Invoke( "glProgramUniformMatrix3fv" ) );
-            _glProgramUniformMatrix4fv   = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX4FVPROC >( loader.Invoke( "glProgramUniformMatrix4fv" ) );
-            _glProgramUniformMatrix2dv   = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX2DVPROC >( loader.Invoke( "glProgramUniformMatrix2dv" ) );
-            _glProgramUniformMatrix3dv   = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX3DVPROC >( loader.Invoke( "glProgramUniformMatrix3dv" ) );
-            _glProgramUniformMatrix4dv   = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX4DVPROC >( loader.Invoke( "glProgramUniformMatrix4dv" ) );
-            _glProgramUniformMatrix2x3fv = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX2X3FVPROC >( loader.Invoke( "glProgramUniformMatrix2x3fv" ) );
-            _glProgramUniformMatrix3x2fv = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX3X2FVPROC >( loader.Invoke( "glProgramUniformMatrix3x2fv" ) );
-            _glProgramUniformMatrix2x4fv = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX2X4FVPROC >( loader.Invoke( "glProgramUniformMatrix2x4fv" ) );
-            _glProgramUniformMatrix4x2fv = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX4X2FVPROC >( loader.Invoke( "glProgramUniformMatrix4x2fv" ) );
-            _glProgramUniformMatrix3x4fv = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX3X4FVPROC >( loader.Invoke( "glProgramUniformMatrix3x4fv" ) );
-            _glProgramUniformMatrix4x3fv = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX4X3FVPROC >( loader.Invoke( "glProgramUniformMatrix4x3fv" ) );
-            _glProgramUniformMatrix2x3dv = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX2X3DVPROC >( loader.Invoke( "glProgramUniformMatrix2x3dv" ) );
-            _glProgramUniformMatrix3x2dv = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX3X2DVPROC >( loader.Invoke( "glProgramUniformMatrix3x2dv" ) );
-            _glProgramUniformMatrix2x4dv = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX2X4DVPROC >( loader.Invoke( "glProgramUniformMatrix2x4dv" ) );
-            _glProgramUniformMatrix4x2dv = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX4X2DVPROC >( loader.Invoke( "glProgramUniformMatrix4x2dv" ) );
-            _glProgramUniformMatrix3x4dv = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX3X4DVPROC >( loader.Invoke( "glProgramUniformMatrix3x4dv" ) );
-            _glProgramUniformMatrix4x3dv = Marshal.GetDelegateForFunctionPointer< PFNGLPROGRAMUNIFORMMATRIX4X3DVPROC >( loader.Invoke( "glProgramUniformMatrix4x3dv" ) );
-            _glValidateProgramPipeline   = Marshal.GetDelegateForFunctionPointer< PFNGLVALIDATEPROGRAMPIPELINEPROC >( loader.Invoke( "glValidateProgramPipeline" ) );
-            _glGetProgramPipelineInfoLog = Marshal.GetDelegateForFunctionPointer< PFNGLGETPROGRAMPIPELINEINFOLOGPROC >( loader.Invoke( "glGetProgramPipelineInfoLog" ) );
-            _glVertexAttribL1d           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBL1DPROC >( loader.Invoke( "glVertexAttribL1d" ) );
-            _glVertexAttribL2d           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBL2DPROC >( loader.Invoke( "glVertexAttribL2d" ) );
-            _glVertexAttribL3d           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBL3DPROC >( loader.Invoke( "glVertexAttribL3d" ) );
-            _glVertexAttribL4d           = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBL4DPROC >( loader.Invoke( "glVertexAttribL4d" ) );
-            _glVertexAttribL1dv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBL1DVPROC >( loader.Invoke( "glVertexAttribL1dv" ) );
-            _glVertexAttribL2dv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBL2DVPROC >( loader.Invoke( "glVertexAttribL2dv" ) );
-            _glVertexAttribL3dv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBL3DVPROC >( loader.Invoke( "glVertexAttribL3dv" ) );
-            _glVertexAttribL4dv          = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBL4DVPROC >( loader.Invoke( "glVertexAttribL4dv" ) );
-            _glVertexAttribLPointer      = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBLPOINTERPROC >( loader.Invoke( "glVertexAttribLPointer" ) );
-            _glGetVertexAttribLdv        = Marshal.GetDelegateForFunctionPointer< PFNGLGETVERTEXATTRIBLDVPROC >( loader.Invoke( "glGetVertexAttribLdv" ) );
-            _glViewportArrayv            = Marshal.GetDelegateForFunctionPointer< PFNGLVIEWPORTARRAYVPROC >( loader.Invoke( "glViewportArrayv" ) );
-            _glViewportIndexedf          = Marshal.GetDelegateForFunctionPointer< PFNGLVIEWPORTINDEXEDFPROC >( loader.Invoke( "glViewportIndexedf" ) );
-            _glViewportIndexedfv         = Marshal.GetDelegateForFunctionPointer< PFNGLVIEWPORTINDEXEDFVPROC >( loader.Invoke( "glViewportIndexedfv" ) );
-            _glScissorArrayv             = Marshal.GetDelegateForFunctionPointer< PFNGLSCISSORARRAYVPROC >( loader.Invoke( "glScissorArrayv" ) );
-            _glScissorIndexed            = Marshal.GetDelegateForFunctionPointer< PFNGLSCISSORINDEXEDPROC >( loader.Invoke( "glScissorIndexed" ) );
-            _glScissorIndexedv           = Marshal.GetDelegateForFunctionPointer< PFNGLSCISSORINDEXEDVPROC >( loader.Invoke( "glScissorIndexedv" ) );
-            _glDepthRangeArrayv          = Marshal.GetDelegateForFunctionPointer< PFNGLDEPTHRANGEARRAYVPROC >( loader.Invoke( "glDepthRangeArrayv" ) );
-            _glDepthRangeIndexed         = Marshal.GetDelegateForFunctionPointer< PFNGLDEPTHRANGEINDEXEDPROC >( loader.Invoke( "glDepthRangeIndexed" ) );
-            _glGetFloati_v               = Marshal.GetDelegateForFunctionPointer< PFNGLGETFLOATI_VPROC >( loader.Invoke( "glGetFloati_v" ) );
-            _glGetDoublei_v              = Marshal.GetDelegateForFunctionPointer< PFNGLGETDOUBLEI_VPROC >( loader.Invoke( "glGetDoublei_v" ) );
+            LoadOpenGLFunction( "glReleaseShaderCompiler", out _glReleaseShaderCompiler );
+            LoadOpenGLFunction( "glShaderBinary", out _glShaderBinary );
+            LoadOpenGLFunction( "glGetShaderPrecisionFormat", out _glGetShaderPrecisionFormat );
+            LoadOpenGLFunction( "glDepthRangef", out _glDepthRangef );
+            LoadOpenGLFunction( "glClearDepthf", out _glClearDepthf );
+            LoadOpenGLFunction( "glGetProgramBinary", out _glGetProgramBinary );
+            LoadOpenGLFunction( "glProgramBinary", out _glProgramBinary );
+            LoadOpenGLFunction( "glProgramParameteri", out _glProgramParameteri );
+            LoadOpenGLFunction( "glUseProgramStages", out _glUseProgramStages );
+            LoadOpenGLFunction( "glActiveShaderProgram", out _glActiveShaderProgram );
+            LoadOpenGLFunction( "glCreateShaderProgramv", out _glCreateShaderProgramv );
+            LoadOpenGLFunction( "glBindProgramPipeline", out _glBindProgramPipeline );
+            LoadOpenGLFunction( "glDeleteProgramPipelines", out _glDeleteProgramPipelines );
+            LoadOpenGLFunction( "glGenProgramPipelines", out _glGenProgramPipelines );
+            LoadOpenGLFunction( "glIsProgramPipeline", out _glIsProgramPipeline );
+            LoadOpenGLFunction( "glGetProgramPipelineiv", out _glGetProgramPipelineiv );
+            LoadOpenGLFunction( "glProgramUniform1i", out _glProgramUniform1i );
+            LoadOpenGLFunction( "glProgramUniform1iv", out _glProgramUniform1iv );
+            LoadOpenGLFunction( "glProgramUniform1f", out _glProgramUniform1f );
+            LoadOpenGLFunction( "glProgramUniform1fv", out _glProgramUniform1fv );
+            LoadOpenGLFunction( "glProgramUniform1d", out _glProgramUniform1d );
+            LoadOpenGLFunction( "glProgramUniform1dv", out _glProgramUniform1dv );
+            LoadOpenGLFunction( "glProgramUniform1ui", out _glProgramUniform1ui );
+            LoadOpenGLFunction( "glProgramUniform1uiv", out _glProgramUniform1uiv );
+            LoadOpenGLFunction( "glProgramUniform2i", out _glProgramUniform2i );
+            LoadOpenGLFunction( "glProgramUniform2iv", out _glProgramUniform2iv );
+            LoadOpenGLFunction( "glProgramUniform2f", out _glProgramUniform2f );
+            LoadOpenGLFunction( "glProgramUniform2fv", out _glProgramUniform2fv );
+            LoadOpenGLFunction( "glProgramUniform2d", out _glProgramUniform2d );
+            LoadOpenGLFunction( "glProgramUniform2dv", out _glProgramUniform2dv );
+            LoadOpenGLFunction( "glProgramUniform2ui", out _glProgramUniform2ui );
+            LoadOpenGLFunction( "glProgramUniform2uiv", out _glProgramUniform2uiv );
+            LoadOpenGLFunction( "glProgramUniform3i", out _glProgramUniform3i );
+            LoadOpenGLFunction( "glProgramUniform3iv", out _glProgramUniform3iv );
+            LoadOpenGLFunction( "glProgramUniform3f", out _glProgramUniform3f );
+            LoadOpenGLFunction( "glProgramUniform3fv", out _glProgramUniform3fv );
+            LoadOpenGLFunction( "glProgramUniform3d", out _glProgramUniform3d );
+            LoadOpenGLFunction( "glProgramUniform3dv", out _glProgramUniform3dv );
+            LoadOpenGLFunction( "glProgramUniform3ui", out _glProgramUniform3ui );
+            LoadOpenGLFunction( "glProgramUniform3uiv", out _glProgramUniform3uiv );
+            LoadOpenGLFunction( "glProgramUniform4i", out _glProgramUniform4i );
+            LoadOpenGLFunction( "glProgramUniform4iv", out _glProgramUniform4iv );
+            LoadOpenGLFunction( "glProgramUniform4f", out _glProgramUniform4f );
+            LoadOpenGLFunction( "glProgramUniform4fv", out _glProgramUniform4fv );
+            LoadOpenGLFunction( "glProgramUniform4d", out _glProgramUniform4d );
+            LoadOpenGLFunction( "glProgramUniform4dv", out _glProgramUniform4dv );
+            LoadOpenGLFunction( "glProgramUniform4ui", out _glProgramUniform4ui );
+            LoadOpenGLFunction( "glProgramUniform4uiv", out _glProgramUniform4uiv );
+            LoadOpenGLFunction( "glProgramUniformMatrix2fv", out _glProgramUniformMatrix2fv );
+            LoadOpenGLFunction( "glProgramUniformMatrix3fv", out _glProgramUniformMatrix3fv );
+            LoadOpenGLFunction( "glProgramUniformMatrix4fv", out _glProgramUniformMatrix4fv );
+            LoadOpenGLFunction( "glProgramUniformMatrix2dv", out _glProgramUniformMatrix2dv );
+            LoadOpenGLFunction( "glProgramUniformMatrix3dv", out _glProgramUniformMatrix3dv );
+            LoadOpenGLFunction( "glProgramUniformMatrix4dv", out _glProgramUniformMatrix4dv );
+            LoadOpenGLFunction( "glProgramUniformMatrix2x3fv", out _glProgramUniformMatrix2x3fv );
+            LoadOpenGLFunction( "glProgramUniformMatrix3x2fv", out _glProgramUniformMatrix3x2fv );
+            LoadOpenGLFunction( "glProgramUniformMatrix2x4fv", out _glProgramUniformMatrix2x4fv );
+            LoadOpenGLFunction( "glProgramUniformMatrix4x2fv", out _glProgramUniformMatrix4x2fv );
+            LoadOpenGLFunction( "glProgramUniformMatrix3x4fv", out _glProgramUniformMatrix3x4fv );
+            LoadOpenGLFunction( "glProgramUniformMatrix4x3fv", out _glProgramUniformMatrix4x3fv );
+            LoadOpenGLFunction( "glProgramUniformMatrix2x3dv", out _glProgramUniformMatrix2x3dv );
+            LoadOpenGLFunction( "glProgramUniformMatrix3x2dv", out _glProgramUniformMatrix3x2dv );
+            LoadOpenGLFunction( "glProgramUniformMatrix2x4dv", out _glProgramUniformMatrix2x4dv );
+            LoadOpenGLFunction( "glProgramUniformMatrix4x2dv", out _glProgramUniformMatrix4x2dv );
+            LoadOpenGLFunction( "glProgramUniformMatrix3x4dv", out _glProgramUniformMatrix3x4dv );
+            LoadOpenGLFunction( "glProgramUniformMatrix4x3dv", out _glProgramUniformMatrix4x3dv );
+            LoadOpenGLFunction( "glValidateProgramPipeline", out _glValidateProgramPipeline );
+            LoadOpenGLFunction( "glGetProgramPipelineInfoLog", out _glGetProgramPipelineInfoLog );
+            LoadOpenGLFunction( "glVertexAttribL1d", out _glVertexAttribL1d );
+            LoadOpenGLFunction( "glVertexAttribL2d", out _glVertexAttribL2d );
+            LoadOpenGLFunction( "glVertexAttribL3d", out _glVertexAttribL3d );
+            LoadOpenGLFunction( "glVertexAttribL4d", out _glVertexAttribL4d );
+            LoadOpenGLFunction( "glVertexAttribL1dv", out _glVertexAttribL1dv );
+            LoadOpenGLFunction( "glVertexAttribL2dv", out _glVertexAttribL2dv );
+            LoadOpenGLFunction( "glVertexAttribL3dv", out _glVertexAttribL3dv );
+            LoadOpenGLFunction( "glVertexAttribL4dv", out _glVertexAttribL4dv );
+            LoadOpenGLFunction( "glVertexAttribLPointer", out _glVertexAttribLPointer );
+            LoadOpenGLFunction( "glGetVertexAttribLdv", out _glGetVertexAttribLdv );
+            LoadOpenGLFunction( "glViewportArrayv", out _glViewportArrayv );
+            LoadOpenGLFunction( "glViewportIndexedf", out _glViewportIndexedf );
+            LoadOpenGLFunction( "glViewportIndexedfv", out _glViewportIndexedfv );
+            LoadOpenGLFunction( "glScissorArrayv", out _glScissorArrayv );
+            LoadOpenGLFunction( "glScissorIndexed", out _glScissorIndexed );
+            LoadOpenGLFunction( "glScissorIndexedv", out _glScissorIndexedv );
+            LoadOpenGLFunction( "glDepthRangeArrayv", out _glDepthRangeArrayv );
+            LoadOpenGLFunction( "glDepthRangeIndexed", out _glDepthRangeIndexed );
+            LoadOpenGLFunction( "glGetFloati_v", out _glGetFloati_v );
+            LoadOpenGLFunction( "glGetDoublei_v", out _glGetDoublei_v );
         }
 
         if ( _ogl42 || _ogl43 || _ogl44 || _ogl45 || _ogl46 )
         {
-            _glDrawArraysInstancedBaseInstance             = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWARRAYSINSTANCEDBASEINSTANCEPROC >( loader.Invoke( "glDrawArraysInstancedBaseInstance" ) );
-            _glDrawElementsInstancedBaseInstance           = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWELEMENTSINSTANCEDBASEINSTANCEPROC >( loader.Invoke( "glDrawElementsInstancedBaseInstance" ) );
-            _glDrawElementsInstancedBaseVertexBaseInstance = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWELEMENTSINSTANCEDBASEVERTEXBASEINSTANCEPROC >( loader.Invoke( "glDrawElementsInstancedBaseVertexBaseInstance" ) );
-            _glGetInternalformativ                         = Marshal.GetDelegateForFunctionPointer< PFNGLGETINTERNALFORMATIVPROC >( loader.Invoke( "glGetInternalformativ" ) );
-            _glGetActiveAtomicCounterBufferiv              = Marshal.GetDelegateForFunctionPointer< PFNGLGETACTIVEATOMICCOUNTERBUFFERIVPROC >( loader.Invoke( "glGetActiveAtomicCounterBufferiv" ) );
-            _glBindImageTexture                            = Marshal.GetDelegateForFunctionPointer< PFNGLBINDIMAGETEXTUREPROC >( loader.Invoke( "glBindImageTexture" ) );
-            _glMemoryBarrier                               = Marshal.GetDelegateForFunctionPointer< PFNGLMEMORYBARRIERPROC >( loader.Invoke( "glMemoryBarrier" ) );
-            _glTexStorage1D                                = Marshal.GetDelegateForFunctionPointer< PFNGLTEXSTORAGE1DPROC >( loader.Invoke( "glTexStorage1D" ) );
-            _glTexStorage2D                                = Marshal.GetDelegateForFunctionPointer< PFNGLTEXSTORAGE2DPROC >( loader.Invoke( "glTexStorage2D" ) );
-            _glTexStorage3D                                = Marshal.GetDelegateForFunctionPointer< PFNGLTEXSTORAGE3DPROC >( loader.Invoke( "glTexStorage3D" ) );
-            _glDrawTransformFeedbackInstanced              = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWTRANSFORMFEEDBACKINSTANCEDPROC >( loader.Invoke( "glDrawTransformFeedbackInstanced" ) );
-            _glDrawTransformFeedbackStreamInstanced        = Marshal.GetDelegateForFunctionPointer< PFNGLDRAWTRANSFORMFEEDBACKSTREAMINSTANCEDPROC >( loader.Invoke( "glDrawTransformFeedbackStreamInstanced" ) );
+            LoadOpenGLFunction( "glDrawArraysInstancedBaseInstance", out _glDrawArraysInstancedBaseInstance );
+            LoadOpenGLFunction( "glDrawElementsInstancedBaseInstance", out _glDrawElementsInstancedBaseInstance );
+            LoadOpenGLFunction( "glDrawElementsInstancedBaseVertexBaseInstance", out _glDrawElementsInstancedBaseVertexBaseInstance );
+            LoadOpenGLFunction( "glGetInternalformativ", out _glGetInternalformativ );
+            LoadOpenGLFunction( "glGetActiveAtomicCounterBufferiv", out _glGetActiveAtomicCounterBufferiv );
+            LoadOpenGLFunction( "glBindImageTexture", out _glBindImageTexture );
+            LoadOpenGLFunction( "glMemoryBarrier", out _glMemoryBarrier );
+            LoadOpenGLFunction( "glTexStorage1D", out _glTexStorage1D );
+            LoadOpenGLFunction( "glTexStorage2D", out _glTexStorage2D );
+            LoadOpenGLFunction( "glTexStorage3D", out _glTexStorage3D );
+            LoadOpenGLFunction( "glDrawTransformFeedbackInstanced", out _glDrawTransformFeedbackInstanced );
+            LoadOpenGLFunction( "glDrawTransformFeedbackStreamInstanced", out _glDrawTransformFeedbackStreamInstanced );
         }
 
         if ( _ogl43 || _ogl44 || _ogl45 || _ogl46 )
         {
-            _glGetPointerv                     = Marshal.GetDelegateForFunctionPointer< PFNGLGETPOINTERVPROC >( loader.Invoke( "glGetPointerv" ) );
-            _glClearBufferData                 = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARBUFFERDATAPROC >( loader.Invoke( "glClearBufferData" ) );
-            _glClearBufferSubData              = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARBUFFERSUBDATAPROC >( loader.Invoke( "glClearBufferSubData" ) );
-            _glDispatchCompute                 = Marshal.GetDelegateForFunctionPointer< PFNGLDISPATCHCOMPUTEPROC >( loader.Invoke( "glDispatchCompute" ) );
-            _glDispatchComputeIndirect         = Marshal.GetDelegateForFunctionPointer< PFNGLDISPATCHCOMPUTEINDIRECTPROC >( loader.Invoke( "glDispatchComputeIndirect" ) );
-            _glCopyImageSubData                = Marshal.GetDelegateForFunctionPointer< PFNGLCOPYIMAGESUBDATAPROC >( loader.Invoke( "glCopyImageSubData" ) );
-            _glFramebufferParameteri           = Marshal.GetDelegateForFunctionPointer< PFNGLFRAMEBUFFERPARAMETERIPROC >( loader.Invoke( "glFramebufferParameteri" ) );
-            _glGetFramebufferParameteriv       = Marshal.GetDelegateForFunctionPointer< PFNGLGETFRAMEBUFFERPARAMETERIVPROC >( loader.Invoke( "glGetFramebufferParameteriv" ) );
-            _glGetInternalformati64v           = Marshal.GetDelegateForFunctionPointer< PFNGLGETINTERNALFORMATI64VPROC >( loader.Invoke( "glGetInternalformati64v" ) );
-            _glInvalidateTexSubImage           = Marshal.GetDelegateForFunctionPointer< PFNGLINVALIDATETEXSUBIMAGEPROC >( loader.Invoke( "glInvalidateTexSubImage" ) );
-            _glInvalidateTexImage              = Marshal.GetDelegateForFunctionPointer< PFNGLINVALIDATETEXIMAGEPROC >( loader.Invoke( "glInvalidateTexImage" ) );
-            _glInvalidateBufferSubData         = Marshal.GetDelegateForFunctionPointer< PFNGLINVALIDATEBUFFERSUBDATAPROC >( loader.Invoke( "glInvalidateBufferSubData" ) );
-            _glInvalidateBufferData            = Marshal.GetDelegateForFunctionPointer< PFNGLINVALIDATEBUFFERDATAPROC >( loader.Invoke( "glInvalidateBufferData" ) );
-            _glInvalidateFramebuffer           = Marshal.GetDelegateForFunctionPointer< PFNGLINVALIDATEFRAMEBUFFERPROC >( loader.Invoke( "glInvalidateFramebuffer" ) );
-            _glInvalidateSubFramebuffer        = Marshal.GetDelegateForFunctionPointer< PFNGLINVALIDATESUBFRAMEBUFFERPROC >( loader.Invoke( "glInvalidateSubFramebuffer" ) );
-            _glMultiDrawArraysIndirect         = Marshal.GetDelegateForFunctionPointer< PFNGLMULTIDRAWARRAYSINDIRECTPROC >( loader.Invoke( "glMultiDrawArraysIndirect" ) );
-            _glMultiDrawElementsIndirect       = Marshal.GetDelegateForFunctionPointer< PFNGLMULTIDRAWELEMENTSINDIRECTPROC >( loader.Invoke( "glMultiDrawElementsIndirect" ) );
-            _glGetProgramInterfaceiv           = Marshal.GetDelegateForFunctionPointer< PFNGLGETPROGRAMINTERFACEIVPROC >( loader.Invoke( "glGetProgramInterfaceiv" ) );
-            _glGetProgramResourceIndex         = Marshal.GetDelegateForFunctionPointer< PFNGLGETPROGRAMRESOURCEINDEXPROC >( loader.Invoke( "glGetProgramResourceIndex" ) );
-            _glGetProgramResourceName          = Marshal.GetDelegateForFunctionPointer< PFNGLGETPROGRAMRESOURCENAMEPROC >( loader.Invoke( "glGetProgramResourceName" ) );
-            _glGetProgramResourceiv            = Marshal.GetDelegateForFunctionPointer< PFNGLGETPROGRAMRESOURCEIVPROC >( loader.Invoke( "glGetProgramResourceiv" ) );
-            _glGetProgramResourceLocation      = Marshal.GetDelegateForFunctionPointer< PFNGLGETPROGRAMRESOURCELOCATIONPROC >( loader.Invoke( "glGetProgramResourceLocation" ) );
-            _glGetProgramResourceLocationIndex = Marshal.GetDelegateForFunctionPointer< PFNGLGETPROGRAMRESOURCELOCATIONINDEXPROC >( loader.Invoke( "glGetProgramResourceLocationIndex" ) );
-            _glShaderStorageBlockBinding       = Marshal.GetDelegateForFunctionPointer< PFNGLSHADERSTORAGEBLOCKBINDINGPROC >( loader.Invoke( "glShaderStorageBlockBinding" ) );
-            _glTexBufferRange                  = Marshal.GetDelegateForFunctionPointer< PFNGLTEXBUFFERRANGEPROC >( loader.Invoke( "glTexBufferRange" ) );
-            _glTexStorage2DMultisample         = Marshal.GetDelegateForFunctionPointer< PFNGLTEXSTORAGE2DMULTISAMPLEPROC >( loader.Invoke( "glTexStorage2DMultisample" ) );
-            _glTexStorage3DMultisample         = Marshal.GetDelegateForFunctionPointer< PFNGLTEXSTORAGE3DMULTISAMPLEPROC >( loader.Invoke( "glTexStorage3DMultisample" ) );
-            _glTextureView                     = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTUREVIEWPROC >( loader.Invoke( "glTextureView" ) );
-            _glBindVertexBuffer                = Marshal.GetDelegateForFunctionPointer< PFNGLBINDVERTEXBUFFERPROC >( loader.Invoke( "glBindVertexBuffer" ) );
-            _glVertexAttribFormat              = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBFORMATPROC >( loader.Invoke( "glVertexAttribFormat" ) );
-            _glVertexAttribIFormat             = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBIFORMATPROC >( loader.Invoke( "glVertexAttribIFormat" ) );
-            _glVertexAttribLFormat             = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBLFORMATPROC >( loader.Invoke( "glVertexAttribLFormat" ) );
-            _glVertexAttribBinding             = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXATTRIBBINDINGPROC >( loader.Invoke( "glVertexAttribBinding" ) );
-            _glVertexBindingDivisor            = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXBINDINGDIVISORPROC >( loader.Invoke( "glVertexBindingDivisor" ) );
-            _glDebugMessageControl             = Marshal.GetDelegateForFunctionPointer< PFNGLDEBUGMESSAGECONTROLPROC >( loader.Invoke( "glDebugMessageControl" ) );
-            _glDebugMessageInsert              = Marshal.GetDelegateForFunctionPointer< PFNGLDEBUGMESSAGEINSERTPROC >( loader.Invoke( "glDebugMessageInsert" ) );
-            _glDebugMessageCallback            = Marshal.GetDelegateForFunctionPointer< PFNGLDEBUGMESSAGECALLBACKPROC >( loader.Invoke( "glDebugMessageCallback" ) );
-            _glGetDebugMessageLog              = Marshal.GetDelegateForFunctionPointer< PFNGLGETDEBUGMESSAGELOGPROC >( loader.Invoke( "glGetDebugMessageLog" ) );
-            _glPushDebugGroup                  = Marshal.GetDelegateForFunctionPointer< PFNGLPUSHDEBUGGROUPPROC >( loader.Invoke( "glPushDebugGroup" ) );
-            _glPopDebugGroup                   = Marshal.GetDelegateForFunctionPointer< PFNGLPOPDEBUGGROUPPROC >( loader.Invoke( "glPopDebugGroup" ) );
-            _glObjectLabel                     = Marshal.GetDelegateForFunctionPointer< PFNGLOBJECTLABELPROC >( loader.Invoke( "glObjectLabel" ) );
-            _glGetObjectLabel                  = Marshal.GetDelegateForFunctionPointer< PFNGLGETOBJECTLABELPROC >( loader.Invoke( "glGetObjectLabel" ) );
-            _glObjectPtrLabel                  = Marshal.GetDelegateForFunctionPointer< PFNGLOBJECTPTRLABELPROC >( loader.Invoke( "glObjectPtrLabel" ) );
-            _glGetObjectPtrLabel               = Marshal.GetDelegateForFunctionPointer< PFNGLGETOBJECTPTRLABELPROC >( loader.Invoke( "glGetObjectPtrLabel" ) );
+            LoadOpenGLFunction( "glGetPointerv", out _glGetPointerv );
+            LoadOpenGLFunction( "glClearBufferData", out _glClearBufferData );
+            LoadOpenGLFunction( "glClearBufferSubData", out _glClearBufferSubData );
+            LoadOpenGLFunction( "glDispatchCompute", out _glDispatchCompute );
+            LoadOpenGLFunction( "glDispatchComputeIndirect", out _glDispatchComputeIndirect );
+            LoadOpenGLFunction( "glCopyImageSubData", out _glCopyImageSubData );
+            LoadOpenGLFunction( "glFramebufferParameteri", out _glFramebufferParameteri );
+            LoadOpenGLFunction( "glGetFramebufferParameteriv", out _glGetFramebufferParameteriv );
+            LoadOpenGLFunction( "glGetInternalformati64v", out _glGetInternalformati64v );
+            LoadOpenGLFunction( "glInvalidateTexSubImage", out _glInvalidateTexSubImage );
+            LoadOpenGLFunction( "glInvalidateTexImage", out _glInvalidateTexImage );
+            LoadOpenGLFunction( "glInvalidateBufferSubData", out _glInvalidateBufferSubData );
+            LoadOpenGLFunction( "glInvalidateBufferData", out _glInvalidateBufferData );
+            LoadOpenGLFunction( "glInvalidateFramebuffer", out _glInvalidateFramebuffer );
+            LoadOpenGLFunction( "glInvalidateSubFramebuffer", out _glInvalidateSubFramebuffer );
+            LoadOpenGLFunction( "glMultiDrawArraysIndirect", out _glMultiDrawArraysIndirect );
+            LoadOpenGLFunction( "glMultiDrawElementsIndirect", out _glMultiDrawElementsIndirect );
+            LoadOpenGLFunction( "glGetProgramInterfaceiv", out _glGetProgramInterfaceiv );
+            LoadOpenGLFunction( "glGetProgramResourceIndex", out _glGetProgramResourceIndex );
+            LoadOpenGLFunction( "glGetProgramResourceName", out _glGetProgramResourceName );
+            LoadOpenGLFunction( "glGetProgramResourceiv", out _glGetProgramResourceiv );
+            LoadOpenGLFunction( "glGetProgramResourceLocation", out _glGetProgramResourceLocation );
+            LoadOpenGLFunction( "glGetProgramResourceLocationIndex", out _glGetProgramResourceLocationIndex );
+            LoadOpenGLFunction( "glShaderStorageBlockBinding", out _glShaderStorageBlockBinding );
+            LoadOpenGLFunction( "glTexBufferRange", out _glTexBufferRange );
+            LoadOpenGLFunction( "glTexStorage2DMultisample", out _glTexStorage2DMultisample );
+            LoadOpenGLFunction( "glTexStorage3DMultisample", out _glTexStorage3DMultisample );
+            LoadOpenGLFunction( "glTextureView", out _glTextureView );
+            LoadOpenGLFunction( "glBindVertexBuffer", out _glBindVertexBuffer );
+            LoadOpenGLFunction( "glVertexAttribFormat", out _glVertexAttribFormat );
+            LoadOpenGLFunction( "glVertexAttribIFormat", out _glVertexAttribIFormat );
+            LoadOpenGLFunction( "glVertexAttribLFormat", out _glVertexAttribLFormat );
+            LoadOpenGLFunction( "glVertexAttribBinding", out _glVertexAttribBinding );
+            LoadOpenGLFunction( "glVertexBindingDivisor", out _glVertexBindingDivisor );
+            LoadOpenGLFunction( "glDebugMessageControl", out _glDebugMessageControl );
+            LoadOpenGLFunction( "glDebugMessageInsert", out _glDebugMessageInsert );
+            LoadOpenGLFunction( "glDebugMessageCallback", out _glDebugMessageCallback );
+            LoadOpenGLFunction( "glGetDebugMessageLog", out _glGetDebugMessageLog );
+            LoadOpenGLFunction( "glPushDebugGroup", out _glPushDebugGroup );
+            LoadOpenGLFunction( "glPopDebugGroup", out _glPopDebugGroup );
+            LoadOpenGLFunction( "glObjectLabel", out _glObjectLabel );
+            LoadOpenGLFunction( "glGetObjectLabel", out _glGetObjectLabel );
+            LoadOpenGLFunction( "glObjectPtrLabel", out _glObjectPtrLabel );
+            LoadOpenGLFunction( "glGetObjectPtrLabel", out _glGetObjectPtrLabel );
         }
 
         if ( _ogl44 || _ogl45 || _ogl46 )
         {
-            _glBufferStorage     = Marshal.GetDelegateForFunctionPointer< PFNGLBUFFERSTORAGEPROC >( loader.Invoke( "glBufferStorage" ) );
-            _glClearTexImage     = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARTEXIMAGEPROC >( loader.Invoke( "glClearTexImage" ) );
-            _glClearTexSubImage  = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARTEXSUBIMAGEPROC >( loader.Invoke( "glClearTexSubImage" ) );
-            _glBindBuffersBase   = Marshal.GetDelegateForFunctionPointer< PFNGLBINDBUFFERSBASEPROC >( loader.Invoke( "glBindBuffersBase" ) );
-            _glBindBuffersRange  = Marshal.GetDelegateForFunctionPointer< PFNGLBINDBUFFERSRANGEPROC >( loader.Invoke( "glBindBuffersRange" ) );
-            _glBindTextures      = Marshal.GetDelegateForFunctionPointer< PFNGLBINDTEXTURESPROC >( loader.Invoke( "glBindTextures" ) );
-            _glBindSamplers      = Marshal.GetDelegateForFunctionPointer< PFNGLBINDSAMPLERSPROC >( loader.Invoke( "glBindSamplers" ) );
-            _glBindImageTextures = Marshal.GetDelegateForFunctionPointer< PFNGLBINDIMAGETEXTURESPROC >( loader.Invoke( "glBindImageTextures" ) );
-            _glBindVertexBuffers = Marshal.GetDelegateForFunctionPointer< PFNGLBINDVERTEXBUFFERSPROC >( loader.Invoke( "glBindVertexBuffers" ) );
+            LoadOpenGLFunction( "glBufferStorage", out _glBufferStorage );
+            LoadOpenGLFunction( "glClearTexImage", out _glClearTexImage );
+            LoadOpenGLFunction( "glClearTexSubImage", out _glClearTexSubImage );
+            LoadOpenGLFunction( "glBindBuffersBase", out _glBindBuffersBase );
+            LoadOpenGLFunction( "glBindBuffersRange", out _glBindBuffersRange );
+            LoadOpenGLFunction( "glBindTextures", out _glBindTextures );
+            LoadOpenGLFunction( "glBindSamplers", out _glBindSamplers );
+            LoadOpenGLFunction( "glBindImageTextures", out _glBindImageTextures );
+            LoadOpenGLFunction( "glBindVertexBuffers", out _glBindVertexBuffers );
         }
 
         if ( _ogl45 || _ogl46 )
         {
-            _glClipControl                              = Marshal.GetDelegateForFunctionPointer< PFNGLCLIPCONTROLPROC >( loader.Invoke( "glClipControl" ) );
-            _glCreateTransformFeedbacks                 = Marshal.GetDelegateForFunctionPointer< PFNGLCREATETRANSFORMFEEDBACKSPROC >( loader.Invoke( "glCreateTransformFeedbacks" ) );
-            _glTransformFeedbackBufferBase              = Marshal.GetDelegateForFunctionPointer< PFNGLTRANSFORMFEEDBACKBUFFERBASEPROC >( loader.Invoke( "glTransformFeedbackBufferBase" ) );
-            _glTransformFeedbackBufferRange             = Marshal.GetDelegateForFunctionPointer< PFNGLTRANSFORMFEEDBACKBUFFERRANGEPROC >( loader.Invoke( "glTransformFeedbackBufferRange" ) );
-            _glGetTransformFeedbackiv                   = Marshal.GetDelegateForFunctionPointer< PFNGLGETTRANSFORMFEEDBACKIVPROC >( loader.Invoke( "glGetTransformFeedbackiv" ) );
-            _glGetTransformFeedbacki_v                  = Marshal.GetDelegateForFunctionPointer< PFNGLGETTRANSFORMFEEDBACKI_VPROC >( loader.Invoke( "glGetTransformFeedbacki_v" ) );
-            _glGetTransformFeedbacki64_v                = Marshal.GetDelegateForFunctionPointer< PFNGLGETTRANSFORMFEEDBACKI64_VPROC >( loader.Invoke( "glGetTransformFeedbacki64_v" ) );
-            _glCreateBuffers                            = Marshal.GetDelegateForFunctionPointer< PFNGLCREATEBUFFERSPROC >( loader.Invoke( "glCreateBuffers" ) );
-            _glNamedBufferStorage                       = Marshal.GetDelegateForFunctionPointer< PFNGLNAMEDBUFFERSTORAGEPROC >( loader.Invoke( "glNamedBufferStorage" ) );
-            _glNamedBufferData                          = Marshal.GetDelegateForFunctionPointer< PFNGLNAMEDBUFFERDATAPROC >( loader.Invoke( "glNamedBufferData" ) );
-            _glNamedBufferSubData                       = Marshal.GetDelegateForFunctionPointer< PFNGLNAMEDBUFFERSUBDATAPROC >( loader.Invoke( "glNamedBufferSubData" ) );
-            _glCopyNamedBufferSubData                   = Marshal.GetDelegateForFunctionPointer< PFNGLCOPYNAMEDBUFFERSUBDATAPROC >( loader.Invoke( "glCopyNamedBufferSubData" ) );
-            _glClearNamedBufferData                     = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARNAMEDBUFFERDATAPROC >( loader.Invoke( "glClearNamedBufferData" ) );
-            _glClearNamedBufferSubData                  = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARNAMEDBUFFERSUBDATAPROC >( loader.Invoke( "glClearNamedBufferSubData" ) );
-            _glMapNamedBuffer                           = Marshal.GetDelegateForFunctionPointer< PFNGLMAPNAMEDBUFFERPROC >( loader.Invoke( "glMapNamedBuffer" ) );
-            _glMapNamedBufferRange                      = Marshal.GetDelegateForFunctionPointer< PFNGLMAPNAMEDBUFFERRANGEPROC >( loader.Invoke( "glMapNamedBufferRange" ) );
-            _glUnmapNamedBuffer                         = Marshal.GetDelegateForFunctionPointer< PFNGLUNMAPNAMEDBUFFERPROC >( loader.Invoke( "glUnmapNamedBuffer" ) );
-            _glFlushMappedNamedBufferRange              = Marshal.GetDelegateForFunctionPointer< PFNGLFLUSHMAPPEDNAMEDBUFFERRANGEPROC >( loader.Invoke( "glFlushMappedNamedBufferRange" ) );
-            _glGetNamedBufferParameteriv                = Marshal.GetDelegateForFunctionPointer< PFNGLGETNAMEDBUFFERPARAMETERIVPROC >( loader.Invoke( "glGetNamedBufferParameteriv" ) );
-            _glGetNamedBufferParameteri64v              = Marshal.GetDelegateForFunctionPointer< PFNGLGETNAMEDBUFFERPARAMETERI64VPROC >( loader.Invoke( "glGetNamedBufferParameteri64v" ) );
-            _glGetNamedBufferPointerv                   = Marshal.GetDelegateForFunctionPointer< PFNGLGETNAMEDBUFFERPOINTERVPROC >( loader.Invoke( "glGetNamedBufferPointerv" ) );
-            _glGetNamedBufferSubData                    = Marshal.GetDelegateForFunctionPointer< PFNGLGETNAMEDBUFFERSUBDATAPROC >( loader.Invoke( "glGetNamedBufferSubData" ) );
-            _glCreateFramebuffers                       = Marshal.GetDelegateForFunctionPointer< PFNGLCREATEFRAMEBUFFERSPROC >( loader.Invoke( "glCreateFramebuffers" ) );
-            _glNamedFramebufferRenderbuffer             = Marshal.GetDelegateForFunctionPointer< PFNGLNAMEDFRAMEBUFFERRENDERBUFFERPROC >( loader.Invoke( "glNamedFramebufferRenderbuffer" ) );
-            _glNamedFramebufferParameteri               = Marshal.GetDelegateForFunctionPointer< PFNGLNAMEDFRAMEBUFFERPARAMETERIPROC >( loader.Invoke( "glNamedFramebufferParameteri" ) );
-            _glNamedFramebufferTexture                  = Marshal.GetDelegateForFunctionPointer< PFNGLNAMEDFRAMEBUFFERTEXTUREPROC >( loader.Invoke( "glNamedFramebufferTexture" ) );
-            _glNamedFramebufferTextureLayer             = Marshal.GetDelegateForFunctionPointer< PFNGLNAMEDFRAMEBUFFERTEXTURELAYERPROC >( loader.Invoke( "glNamedFramebufferTextureLayer" ) );
-            _glNamedFramebufferDrawBuffer               = Marshal.GetDelegateForFunctionPointer< PFNGLNAMEDFRAMEBUFFERDRAWBUFFERPROC >( loader.Invoke( "glNamedFramebufferDrawBuffer" ) );
-            _glNamedFramebufferDrawBuffers              = Marshal.GetDelegateForFunctionPointer< PFNGLNAMEDFRAMEBUFFERDRAWBUFFERSPROC >( loader.Invoke( "glNamedFramebufferDrawBuffers" ) );
-            _glNamedFramebufferReadBuffer               = Marshal.GetDelegateForFunctionPointer< PFNGLNAMEDFRAMEBUFFERREADBUFFERPROC >( loader.Invoke( "glNamedFramebufferReadBuffer" ) );
-            _glInvalidateNamedFramebufferData           = Marshal.GetDelegateForFunctionPointer< PFNGLINVALIDATENAMEDFRAMEBUFFERDATAPROC >( loader.Invoke( "glInvalidateNamedFramebufferData" ) );
-            _glInvalidateNamedFramebufferSubData        = Marshal.GetDelegateForFunctionPointer< PFNGLINVALIDATENAMEDFRAMEBUFFERSUBDATAPROC >( loader.Invoke( "glInvalidateNamedFramebufferSubData" ) );
-            _glClearNamedFramebufferiv                  = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARNAMEDFRAMEBUFFERIVPROC >( loader.Invoke( "glClearNamedFramebufferiv" ) );
-            _glClearNamedFramebufferuiv                 = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARNAMEDFRAMEBUFFERUIVPROC >( loader.Invoke( "glClearNamedFramebufferuiv" ) );
-            _glClearNamedFramebufferfv                  = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARNAMEDFRAMEBUFFERFVPROC >( loader.Invoke( "glClearNamedFramebufferfv" ) );
-            _glClearNamedFramebufferfi                  = Marshal.GetDelegateForFunctionPointer< PFNGLCLEARNAMEDFRAMEBUFFERFIPROC >( loader.Invoke( "glClearNamedFramebufferfi" ) );
-            _glBlitNamedFramebuffer                     = Marshal.GetDelegateForFunctionPointer< PFNGLBLITNAMEDFRAMEBUFFERPROC >( loader.Invoke( "glBlitNamedFramebuffer" ) );
-            _glCheckNamedFramebufferStatus              = Marshal.GetDelegateForFunctionPointer< PFNGLCHECKNAMEDFRAMEBUFFERSTATUSPROC >( loader.Invoke( "glCheckNamedFramebufferStatus" ) );
-            _glGetNamedFramebufferParameteriv           = Marshal.GetDelegateForFunctionPointer< PFNGLGETNAMEDFRAMEBUFFERPARAMETERIVPROC >( loader.Invoke( "glGetNamedFramebufferParameteriv" ) );
-            _glGetNamedFramebufferAttachmentParameteriv = Marshal.GetDelegateForFunctionPointer< PFNGLGETNAMEDFRAMEBUFFERATTACHMENTPARAMETERIVPROC >( loader.Invoke( "glGetNamedFramebufferAttachmentParameteriv" ) );
-            _glCreateRenderbuffers                      = Marshal.GetDelegateForFunctionPointer< PFNGLCREATERENDERBUFFERSPROC >( loader.Invoke( "glCreateRenderbuffers" ) );
-            _glNamedRenderbufferStorage                 = Marshal.GetDelegateForFunctionPointer< PFNGLNAMEDRENDERBUFFERSTORAGEPROC >( loader.Invoke( "glNamedRenderbufferStorage" ) );
-            _glNamedRenderbufferStorageMultisample      = Marshal.GetDelegateForFunctionPointer< PFNGLNAMEDRENDERBUFFERSTORAGEMULTISAMPLEPROC >( loader.Invoke( "glNamedRenderbufferStorageMultisample" ) );
-            _glGetNamedRenderbufferParameteriv          = Marshal.GetDelegateForFunctionPointer< PFNGLGETNAMEDRENDERBUFFERPARAMETERIVPROC >( loader.Invoke( "glGetNamedRenderbufferParameteriv" ) );
-            _glCreateTextures                           = Marshal.GetDelegateForFunctionPointer< PFNGLCREATETEXTURESPROC >( loader.Invoke( "glCreateTextures" ) );
-            _glTextureBuffer                            = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTUREBUFFERPROC >( loader.Invoke( "glTextureBuffer" ) );
-            _glTextureBufferRange                       = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTUREBUFFERRANGEPROC >( loader.Invoke( "glTextureBufferRange" ) );
-            _glTextureStorage1D                         = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTURESTORAGE1DPROC >( loader.Invoke( "glTextureStorage1D" ) );
-            _glTextureStorage2D                         = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTURESTORAGE2DPROC >( loader.Invoke( "glTextureStorage2D" ) );
-            _glTextureStorage3D                         = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTURESTORAGE3DPROC >( loader.Invoke( "glTextureStorage3D" ) );
-            _glTextureStorage2DMultisample              = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTURESTORAGE2DMULTISAMPLEPROC >( loader.Invoke( "glTextureStorage2DMultisample" ) );
-            _glTextureStorage3DMultisample              = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTURESTORAGE3DMULTISAMPLEPROC >( loader.Invoke( "glTextureStorage3DMultisample" ) );
-            _glTextureSubImage1D                        = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTURESUBIMAGE1DPROC >( loader.Invoke( "glTextureSubImage1D" ) );
-            _glTextureSubImage2D                        = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTURESUBIMAGE2DPROC >( loader.Invoke( "glTextureSubImage2D" ) );
-            _glTextureSubImage3D                        = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTURESUBIMAGE3DPROC >( loader.Invoke( "glTextureSubImage3D" ) );
-            _glCompressedTextureSubImage1D              = Marshal.GetDelegateForFunctionPointer< PFNGLCOMPRESSEDTEXTURESUBIMAGE1DPROC >( loader.Invoke( "glCompressedTextureSubImage1D" ) );
-            _glCompressedTextureSubImage2D              = Marshal.GetDelegateForFunctionPointer< PFNGLCOMPRESSEDTEXTURESUBIMAGE2DPROC >( loader.Invoke( "glCompressedTextureSubImage2D" ) );
-            _glCompressedTextureSubImage3D              = Marshal.GetDelegateForFunctionPointer< PFNGLCOMPRESSEDTEXTURESUBIMAGE3DPROC >( loader.Invoke( "glCompressedTextureSubImage3D" ) );
-            _glCopyTextureSubImage1D                    = Marshal.GetDelegateForFunctionPointer< PFNGLCOPYTEXTURESUBIMAGE1DPROC >( loader.Invoke( "glCopyTextureSubImage1D" ) );
-            _glCopyTextureSubImage2D                    = Marshal.GetDelegateForFunctionPointer< PFNGLCOPYTEXTURESUBIMAGE2DPROC >( loader.Invoke( "glCopyTextureSubImage2D" ) );
-            _glCopyTextureSubImage3D                    = Marshal.GetDelegateForFunctionPointer< PFNGLCOPYTEXTURESUBIMAGE3DPROC >( loader.Invoke( "glCopyTextureSubImage3D" ) );
-            _glTextureParameterf                        = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTUREPARAMETERFPROC >( loader.Invoke( "glTextureParameterf" ) );
-            _glTextureParameterfv                       = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTUREPARAMETERFVPROC >( loader.Invoke( "glTextureParameterfv" ) );
-            _glTextureParameteri                        = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTUREPARAMETERIPROC >( loader.Invoke( "glTextureParameteri" ) );
-            _glTextureParameterIiv                      = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTUREPARAMETERIIVPROC >( loader.Invoke( "glTextureParameterIiv" ) );
-            _glTextureParameterIuiv                     = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTUREPARAMETERIUIVPROC >( loader.Invoke( "glTextureParameterIuiv" ) );
-            _glTextureParameteriv                       = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTUREPARAMETERIVPROC >( loader.Invoke( "glTextureParameteriv" ) );
-            _glGenerateTextureMipmap                    = Marshal.GetDelegateForFunctionPointer< PFNGLGENERATETEXTUREMIPMAPPROC >( loader.Invoke( "glGenerateTextureMipmap" ) );
-            _glBindTextureUnit                          = Marshal.GetDelegateForFunctionPointer< PFNGLBINDTEXTUREUNITPROC >( loader.Invoke( "glBindTextureUnit" ) );
-            _glGetTextureImage                          = Marshal.GetDelegateForFunctionPointer< PFNGLGETTEXTUREIMAGEPROC >( loader.Invoke( "glGetTextureImage" ) );
-            _glGetCompressedTextureImage                = Marshal.GetDelegateForFunctionPointer< PFNGLGETCOMPRESSEDTEXTUREIMAGEPROC >( loader.Invoke( "glGetCompressedTextureImage" ) );
-            _glGetTextureLevelParameterfv               = Marshal.GetDelegateForFunctionPointer< PFNGLGETTEXTURELEVELPARAMETERFVPROC >( loader.Invoke( "glGetTextureLevelParameterfv" ) );
-            _glGetTextureLevelParameteriv               = Marshal.GetDelegateForFunctionPointer< PFNGLGETTEXTURELEVELPARAMETERIVPROC >( loader.Invoke( "glGetTextureLevelParameteriv" ) );
-            _glGetTextureParameterfv                    = Marshal.GetDelegateForFunctionPointer< PFNGLGETTEXTUREPARAMETERFVPROC >( loader.Invoke( "glGetTextureParameterfv" ) );
-            _glGetTextureParameterIiv                   = Marshal.GetDelegateForFunctionPointer< PFNGLGETTEXTUREPARAMETERIIVPROC >( loader.Invoke( "glGetTextureParameterIiv" ) );
-            _glGetTextureParameterIuiv                  = Marshal.GetDelegateForFunctionPointer< PFNGLGETTEXTUREPARAMETERIUIVPROC >( loader.Invoke( "glGetTextureParameterIuiv" ) );
-            _glGetTextureParameteriv                    = Marshal.GetDelegateForFunctionPointer< PFNGLGETTEXTUREPARAMETERIVPROC >( loader.Invoke( "glGetTextureParameteriv" ) );
-            _glCreateVertexArrays                       = Marshal.GetDelegateForFunctionPointer< PFNGLCREATEVERTEXARRAYSPROC >( loader.Invoke( "glCreateVertexArrays" ) );
-            _glDisableVertexArrayAttrib                 = Marshal.GetDelegateForFunctionPointer< PFNGLDISABLEVERTEXARRAYATTRIBPROC >( loader.Invoke( "glDisableVertexArrayAttrib" ) );
-            _glEnableVertexArrayAttrib                  = Marshal.GetDelegateForFunctionPointer< PFNGLENABLEVERTEXARRAYATTRIBPROC >( loader.Invoke( "glEnableVertexArrayAttrib" ) );
-            _glVertexArrayElementBuffer                 = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXARRAYELEMENTBUFFERPROC >( loader.Invoke( "glVertexArrayElementBuffer" ) );
-            _glVertexArrayVertexBuffer                  = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXARRAYVERTEXBUFFERPROC >( loader.Invoke( "glVertexArrayVertexBuffer" ) );
-            _glVertexArrayVertexBuffers                 = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXARRAYVERTEXBUFFERSPROC >( loader.Invoke( "glVertexArrayVertexBuffers" ) );
-            _glVertexArrayAttribBinding                 = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXARRAYATTRIBBINDINGPROC >( loader.Invoke( "glVertexArrayAttribBinding" ) );
-            _glVertexArrayAttribFormat                  = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXARRAYATTRIBFORMATPROC >( loader.Invoke( "glVertexArrayAttribFormat" ) );
-            _glVertexArrayAttribIFormat                 = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXARRAYATTRIBIFORMATPROC >( loader.Invoke( "glVertexArrayAttribIFormat" ) );
-            _glVertexArrayAttribLFormat                 = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXARRAYATTRIBLFORMATPROC >( loader.Invoke( "glVertexArrayAttribLFormat" ) );
-            _glVertexArrayBindingDivisor                = Marshal.GetDelegateForFunctionPointer< PFNGLVERTEXARRAYBINDINGDIVISORPROC >( loader.Invoke( "glVertexArrayBindingDivisor" ) );
-            _glGetVertexArrayiv                         = Marshal.GetDelegateForFunctionPointer< PFNGLGETVERTEXARRAYIVPROC >( loader.Invoke( "glGetVertexArrayiv" ) );
-            _glGetVertexArrayIndexediv                  = Marshal.GetDelegateForFunctionPointer< PFNGLGETVERTEXARRAYINDEXEDIVPROC >( loader.Invoke( "glGetVertexArrayIndexediv" ) );
-            _glGetVertexArrayIndexed64iv                = Marshal.GetDelegateForFunctionPointer< PFNGLGETVERTEXARRAYINDEXED64IVPROC >( loader.Invoke( "glGetVertexArrayIndexed64iv" ) );
-            _glCreateSamplers                           = Marshal.GetDelegateForFunctionPointer< PFNGLCREATESAMPLERSPROC >( loader.Invoke( "glCreateSamplers" ) );
-            _glCreateProgramPipelines                   = Marshal.GetDelegateForFunctionPointer< PFNGLCREATEPROGRAMPIPELINESPROC >( loader.Invoke( "glCreateProgramPipelines" ) );
-            _glCreateQueries                            = Marshal.GetDelegateForFunctionPointer< PFNGLCREATEQUERIESPROC >( loader.Invoke( "glCreateQueries" ) );
-            _glGetQueryBufferObjecti64v                 = Marshal.GetDelegateForFunctionPointer< PFNGLGETQUERYBUFFEROBJECTI64VPROC >( loader.Invoke( "glGetQueryBufferObjecti64v" ) );
-            _glGetQueryBufferObjectiv                   = Marshal.GetDelegateForFunctionPointer< PFNGLGETQUERYBUFFEROBJECTIVPROC >( loader.Invoke( "glGetQueryBufferObjectiv" ) );
-            _glGetQueryBufferObjectui64v                = Marshal.GetDelegateForFunctionPointer< PFNGLGETQUERYBUFFEROBJECTUI64VPROC >( loader.Invoke( "glGetQueryBufferObjectui64v" ) );
-            _glGetQueryBufferObjectuiv                  = Marshal.GetDelegateForFunctionPointer< PFNGLGETQUERYBUFFEROBJECTUIVPROC >( loader.Invoke( "glGetQueryBufferObjectuiv" ) );
-            _glMemoryBarrierByRegion                    = Marshal.GetDelegateForFunctionPointer< PFNGLMEMORYBARRIERBYREGIONPROC >( loader.Invoke( "glMemoryBarrierByRegion" ) );
-            _glGetTextureSubImage                       = Marshal.GetDelegateForFunctionPointer< PFNGLGETTEXTURESUBIMAGEPROC >( loader.Invoke( "glGetTextureSubImage" ) );
-            _glGetCompressedTextureSubImage             = Marshal.GetDelegateForFunctionPointer< PFNGLGETCOMPRESSEDTEXTURESUBIMAGEPROC >( loader.Invoke( "glGetCompressedTextureSubImage" ) );
-            _glGetGraphicsResetStatus                   = Marshal.GetDelegateForFunctionPointer< PFNGLGETGRAPHICSRESETSTATUSPROC >( loader.Invoke( "glGetGraphicsResetStatus" ) );
-            _glGetnCompressedTexImage                   = Marshal.GetDelegateForFunctionPointer< PFNGLGETNCOMPRESSEDTEXIMAGEPROC >( loader.Invoke( "glGetnCompressedTexImage" ) );
-            _glGetnUniformfv                            = Marshal.GetDelegateForFunctionPointer< PFNGLGETNUNIFORMFVPROC >( loader.Invoke( "glGetnUniformfv" ) );
-            _glGetnUniformiv                            = Marshal.GetDelegateForFunctionPointer< PFNGLGETNUNIFORMIVPROC >( loader.Invoke( "glGetnUniformiv" ) );
-            _glGetnUniformuiv                           = Marshal.GetDelegateForFunctionPointer< PFNGLGETNUNIFORMUIVPROC >( loader.Invoke( "glGetnUniformuiv" ) );
-            _glReadnPixels                              = Marshal.GetDelegateForFunctionPointer< PFNGLREADNPIXELSPROC >( loader.Invoke( "glReadnPixels" ) );
-            _glTextureBarrier                           = Marshal.GetDelegateForFunctionPointer< PFNGLTEXTUREBARRIERPROC >( loader.Invoke( "glTextureBarrier" ) );
+            LoadOpenGLFunction( "glClipControl", out _glClipControl );
+            LoadOpenGLFunction( "glCreateTransformFeedbacks", out _glCreateTransformFeedbacks );
+            LoadOpenGLFunction( "glTransformFeedbackBufferBase", out _glTransformFeedbackBufferBase );
+            LoadOpenGLFunction( "glTransformFeedbackBufferRange", out _glTransformFeedbackBufferRange );
+            LoadOpenGLFunction( "glGetTransformFeedbackiv", out _glGetTransformFeedbackiv );
+            LoadOpenGLFunction( "glGetTransformFeedbacki_v", out _glGetTransformFeedbacki_v );
+            LoadOpenGLFunction( "glGetTransformFeedbacki64_v", out _glGetTransformFeedbacki64_v );
 
-//            _glGetnTexImage                             = Marshal.GetDelegateForFunctionPointer< PFNGLGETNTEXIMAGEPROC >( loader.Invoke( "glGetnTexImage" ) );
-//            _glGetnUniformdv                            = Marshal.GetDelegateForFunctionPointer< PFNGLGETNUNIFORMDVPROC >( loader.Invoke( "glGetnUniformdv" ) );
+            LoadOpenGLFunction( "glCreateBuffers", out _glCreateBuffers );
+            LoadOpenGLFunction( "glNamedBufferStorage", out _glNamedBufferStorage );
+            LoadOpenGLFunction( "glNamedBufferData", out _glNamedBufferData );
+            LoadOpenGLFunction( "glNamedBufferSubData", out _glNamedBufferSubData );
+            LoadOpenGLFunction( "glCopyNamedBufferSubData", out _glCopyNamedBufferSubData );
+            LoadOpenGLFunction( "glClearNamedBufferData", out _glClearNamedBufferData );
+            LoadOpenGLFunction( "glClearNamedBufferSubData", out _glClearNamedBufferSubData );
+            LoadOpenGLFunction( "glMapNamedBuffer", out _glMapNamedBuffer );
+            LoadOpenGLFunction( "glMapNamedBufferRange", out _glMapNamedBufferRange );
+            LoadOpenGLFunction( "glUnmapNamedBuffer", out _glUnmapNamedBuffer );
+            LoadOpenGLFunction( "glFlushMappedNamedBufferRange", out _glFlushMappedNamedBufferRange );
+            LoadOpenGLFunction( "glGetNamedBufferParameteriv", out _glGetNamedBufferParameteriv );
+            LoadOpenGLFunction( "glGetNamedBufferParameteri64v", out _glGetNamedBufferParameteri64v );
+            LoadOpenGLFunction( "glGetNamedBufferPointerv", out _glGetNamedBufferPointerv );
+            LoadOpenGLFunction( "glGetNamedBufferSubData", out _glGetNamedBufferSubData );
+            LoadOpenGLFunction( "glCreateFramebuffers", out _glCreateFramebuffers );
+            LoadOpenGLFunction( "glNamedFramebufferRenderbuffer", out _glNamedFramebufferRenderbuffer );
+            LoadOpenGLFunction( "glNamedFramebufferParameteri", out _glNamedFramebufferParameteri );
+            LoadOpenGLFunction( "glNamedFramebufferTexture", out _glNamedFramebufferTexture );
+            LoadOpenGLFunction( "glNamedFramebufferTextureLayer", out _glNamedFramebufferTextureLayer );
+            LoadOpenGLFunction( "glNamedFramebufferDrawBuffer", out _glNamedFramebufferDrawBuffer );
+            LoadOpenGLFunction( "glNamedFramebufferDrawBuffers", out _glNamedFramebufferDrawBuffers );
+            LoadOpenGLFunction( "glNamedFramebufferReadBuffer", out _glNamedFramebufferReadBuffer );
+            LoadOpenGLFunction( "glInvalidateNamedFramebufferData", out _glInvalidateNamedFramebufferData );
+            LoadOpenGLFunction( "glInvalidateNamedFramebufferSubData", out _glInvalidateNamedFramebufferSubData );
+            LoadOpenGLFunction( "glClearNamedFramebufferiv", out _glClearNamedFramebufferiv );
+            LoadOpenGLFunction( "glClearNamedFramebufferuiv", out _glClearNamedFramebufferuiv );
+            LoadOpenGLFunction( "glClearNamedFramebufferfv", out _glClearNamedFramebufferfv );
+            LoadOpenGLFunction( "glClearNamedFramebufferfi", out _glClearNamedFramebufferfi );
+            LoadOpenGLFunction( "glBlitNamedFramebuffer", out _glBlitNamedFramebuffer );
+            LoadOpenGLFunction( "glCheckNamedFramebufferStatus", out _glCheckNamedFramebufferStatus );
+            LoadOpenGLFunction( "glGetNamedFramebufferParameteriv", out _glGetNamedFramebufferParameteriv );
+            LoadOpenGLFunction( "glGetNamedFramebufferAttachmentParameteriv", out _glGetNamedFramebufferAttachmentParameteriv );
+            LoadOpenGLFunction( "glCreateRenderbuffers", out _glCreateRenderbuffers );
+            LoadOpenGLFunction( "glNamedRenderbufferStorage", out _glNamedRenderbufferStorage );
+            LoadOpenGLFunction( "glNamedRenderbufferStorageMultisample", out _glNamedRenderbufferStorageMultisample );
+            LoadOpenGLFunction( "glGetNamedRenderbufferParameteriv", out _glGetNamedRenderbufferParameteriv );
+            LoadOpenGLFunction( "glCreateTextures", out _glCreateTextures );
+            LoadOpenGLFunction( "glTextureBuffer", out _glTextureBuffer );
+            LoadOpenGLFunction( "glTextureBufferRange", out _glTextureBufferRange );
+            LoadOpenGLFunction( "glTextureStorage1D", out _glTextureStorage1D );
+            LoadOpenGLFunction( "glTextureStorage2D", out _glTextureStorage2D );
+            LoadOpenGLFunction( "glTextureStorage3D", out _glTextureStorage3D );
+            LoadOpenGLFunction( "glTextureStorage2DMultisample", out _glTextureStorage2DMultisample );
+            LoadOpenGLFunction( "glTextureStorage3DMultisample", out _glTextureStorage3DMultisample );
+            LoadOpenGLFunction( "glTextureSubImage1D", out _glTextureSubImage1D );
+            LoadOpenGLFunction( "glTextureSubImage2D", out _glTextureSubImage2D );
+            LoadOpenGLFunction( "glTextureSubImage3D", out _glTextureSubImage3D );
+            LoadOpenGLFunction( "glCompressedTextureSubImage1D", out _glCompressedTextureSubImage1D );
+            LoadOpenGLFunction( "glCompressedTextureSubImage2D", out _glCompressedTextureSubImage2D );
+            LoadOpenGLFunction( "glCompressedTextureSubImage3D", out _glCompressedTextureSubImage3D );
+            LoadOpenGLFunction( "glCopyTextureSubImage1D", out _glCopyTextureSubImage1D );
+            LoadOpenGLFunction( "glCopyTextureSubImage2D", out _glCopyTextureSubImage2D );
+            LoadOpenGLFunction( "glCopyTextureSubImage3D", out _glCopyTextureSubImage3D );
+            LoadOpenGLFunction( "glTextureParameterf", out _glTextureParameterf );
+            LoadOpenGLFunction( "glTextureParameterfv", out _glTextureParameterfv );
+            LoadOpenGLFunction( "glTextureParameteri", out _glTextureParameteri );
+            LoadOpenGLFunction( "glTextureParameterIiv", out _glTextureParameterIiv );
+            LoadOpenGLFunction( "glTextureParameterIuiv", out _glTextureParameterIuiv );
+            LoadOpenGLFunction( "glTextureParameteriv", out _glTextureParameteriv );
+            LoadOpenGLFunction( "glGenerateTextureMipmap", out _glGenerateTextureMipmap );
+            LoadOpenGLFunction( "glBindTextureUnit", out _glBindTextureUnit );
+            LoadOpenGLFunction( "glGetTextureImage", out _glGetTextureImage );
+            LoadOpenGLFunction( "glGetCompressedTextureImage", out _glGetCompressedTextureImage );
+            LoadOpenGLFunction( "glGetTextureLevelParameterfv", out _glGetTextureLevelParameterfv );
+            LoadOpenGLFunction( "glGetTextureLevelParameteriv", out _glGetTextureLevelParameteriv );
+            LoadOpenGLFunction( "glGetTextureParameterfv", out _glGetTextureParameterfv );
+            LoadOpenGLFunction( "glGetTextureParameterIiv", out _glGetTextureParameterIiv );
+            LoadOpenGLFunction( "glGetTextureParameterIuiv", out _glGetTextureParameterIuiv );
+            LoadOpenGLFunction( "glGetTextureParameteriv", out _glGetTextureParameteriv );
+            LoadOpenGLFunction( "glCreateVertexArrays", out _glCreateVertexArrays );
+            LoadOpenGLFunction( "glDisableVertexArrayAttrib", out _glDisableVertexArrayAttrib );
+            LoadOpenGLFunction( "glEnableVertexArrayAttrib", out _glEnableVertexArrayAttrib );
+            LoadOpenGLFunction( "glVertexArrayElementBuffer", out _glVertexArrayElementBuffer );
+            LoadOpenGLFunction( "glVertexArrayVertexBuffer", out _glVertexArrayVertexBuffer );
+            LoadOpenGLFunction( "glVertexArrayVertexBuffers", out _glVertexArrayVertexBuffers );
+            LoadOpenGLFunction( "glVertexArrayAttribBinding", out _glVertexArrayAttribBinding );
+            LoadOpenGLFunction( "glVertexArrayAttribFormat", out _glVertexArrayAttribFormat );
+            LoadOpenGLFunction( "glVertexArrayAttribIFormat", out _glVertexArrayAttribIFormat );
+            LoadOpenGLFunction( "glVertexArrayAttribLFormat", out _glVertexArrayAttribLFormat );
+            LoadOpenGLFunction( "glVertexArrayBindingDivisor", out _glVertexArrayBindingDivisor );
+            LoadOpenGLFunction( "glGetVertexArrayiv", out _glGetVertexArrayiv );
+            LoadOpenGLFunction( "glGetVertexArrayIndexediv", out _glGetVertexArrayIndexediv );
+            LoadOpenGLFunction( "glGetVertexArrayIndexed64iv", out _glGetVertexArrayIndexed64iv );
+            LoadOpenGLFunction( "glCreateSamplers", out _glCreateSamplers );
+            LoadOpenGLFunction( "glCreateProgramPipelines", out _glCreateProgramPipelines );
+            LoadOpenGLFunction( "glCreateQueries", out _glCreateQueries );
+            LoadOpenGLFunction( "glGetQueryBufferObjecti64v", out _glGetQueryBufferObjecti64v );
+            LoadOpenGLFunction( "glGetQueryBufferObjectiv", out _glGetQueryBufferObjectiv );
+            LoadOpenGLFunction( "glGetQueryBufferObjectui64v", out _glGetQueryBufferObjectui64v );
+            LoadOpenGLFunction( "glGetQueryBufferObjectuiv", out _glGetQueryBufferObjectuiv );
+            LoadOpenGLFunction( "glMemoryBarrierByRegion", out _glMemoryBarrierByRegion );
+            LoadOpenGLFunction( "glGetTextureSubImage", out _glGetTextureSubImage );
+            LoadOpenGLFunction( "glGetCompressedTextureSubImage", out _glGetCompressedTextureSubImage );
+            LoadOpenGLFunction( "glGetGraphicsResetStatus", out _glGetGraphicsResetStatus );
+            LoadOpenGLFunction( "glGetnCompressedTexImage", out _glGetnCompressedTexImage );
+            LoadOpenGLFunction( "glGetnUniformfv", out _glGetnUniformfv );
+            LoadOpenGLFunction( "glGetnUniformiv", out _glGetnUniformiv );
+            LoadOpenGLFunction( "glGetnUniformuiv", out _glGetnUniformuiv );
+            LoadOpenGLFunction( "glReadnPixels", out _glReadnPixels );
+            LoadOpenGLFunction( "glTextureBarrier", out _glTextureBarrier );
+
+//            _glGetnTexImage                             = Marshal.GetDelegateForFunctionPointer< PFNGLGETNTEXIMAGEPROC                                         >( "glGetnTexImage", out 
+//            _glGetnUniformdv                            = Marshal.GetDelegateForFunctionPointer< PFNGLGETNUNIFORMDVPROC                                         >( "glGetnUniformdv", out 
         }
 
         if ( _ogl46 )
         {
-            _glSpecializeShader   = Marshal.GetDelegateForFunctionPointer< PFNGLSPECIALIZESHADERPROC >( loader.Invoke( "glSpecializeShader" ) );
-            _glPolygonOffsetClamp = Marshal.GetDelegateForFunctionPointer< PFNGLPOLYGONOFFSETCLAMPPROC >( loader.Invoke( "glPolygonOffsetClamp" ) );
+            LoadOpenGLFunction( "glSpecializeShader", out _glSpecializeShader );
+            LoadOpenGLFunction( "glPolygonOffsetClamp", out _glPolygonOffsetClamp );
 
-//            _glMultiDrawArraysIndirectCount   = Marshal.GetDelegateForFunctionPointer< PFNGLMULTIDRAWARRAYSINDIRECTCOUNTPROC >( loader.Invoke( "glMultiDrawArraysIndirectCount" ) );
-//            _glMultiDrawElementsIndirectCount = Marshal.GetDelegateForFunctionPointer< PFNGLMULTIDRAWELEMENTSINDIRECTCOUNTPROC >( loader.Invoke( "glMultiDrawElementsIndirectCount" ) );
+//            _glMultiDrawArraysIndirectCount   = Marshal.GetDelegateForFunctionPointer< PFNGLMULTIDRAWARRAYSINDIRECTCOUNTPROC                                         >( "glMultiDrawArraysIndirectCount", out 
+//            _glMultiDrawElementsIndirectCount = Marshal.GetDelegateForFunctionPointer< PFNGLMULTIDRAWELEMENTSINDIRECTCOUNTPROC                                         >( "glMultiDrawElementsIndirectCount", out 
         }
+    }
+
+    // ========================================================================
+    // ========================================================================
+
+    // Import wglGetProcAddress
+    [DllImport( "opengl32.dll", EntryPoint = "wglGetProcAddress", CallingConvention = CallingConvention.StdCall )]
+    private static extern IntPtr wglGetProcAddress( string procname );
+
+    // ========================================================================
+    // ========================================================================
+
+    private static readonly Dictionary< string, Delegate > _loadedFunctions = new();
+
+    public static bool LoadOpenGLFunction< T >( string functionName, out T functionDelegate ) where T : Delegate
+    {
+        Logger.Debug( $"Loading OGL Function: {functionName}" );
+        
+        if ( _loadedFunctions.TryGetValue( functionName, out var existingDelegate ) )
+        {
+            functionDelegate = ( T )existingDelegate; // Cast to the requested delegate type
+
+            return true; // Already loaded
+        }
+
+        var functionPtr = wglGetProcAddress( functionName );
+
+        if ( functionPtr == IntPtr.Zero )
+        {
+            functionPtr = Glfw.GetProcAddress( functionName );
+        }
+
+        if ( functionPtr != IntPtr.Zero )
+        {
+            try
+            {
+                var del = Marshal.GetDelegateForFunctionPointer< T >( functionPtr );
+
+                _loadedFunctions.Add( functionName, del ); // Cache the loaded function
+
+                functionDelegate = del;
+
+                return true;
+            }
+            catch ( Exception ex )
+            {
+                Logger.Debug( $"Error creating delegate for {functionName}: {ex.Message}" );
+
+                functionDelegate = null!;
+
+                return false;
+            }
+        }
+
+        Logger.Debug( $"Failed to load {functionName}" );
+
+        functionDelegate = null!;
+
+        return false;
     }
 }
 

@@ -42,10 +42,6 @@ public abstract class BaseGLInterceptor
     // ========================================================================
     // ========================================================================
 
-    protected BaseGLInterceptor() : this( new GLProfiler( Gdx.Graphics ) )
-    {
-    }
-    
     /// <summary>
     /// Constructs a new BaseGLInterceptor instance, setting the <see cref="GLProfiler"/>
     /// to the supplied instance.
@@ -99,13 +95,15 @@ public abstract class BaseGLInterceptor
     /// </summary>
     protected void CheckErrors()
     {
-        var error = Gdx.GL.GetError();
+        var error = GdxApi.Bindings.GetError();
 
         while ( error != IGL.GL_NO_ERROR )
         {
             Logger.Checkpoint();
-            GLProfiler.Listener.OnError( error );
-            error = Gdx.GL.GetError();
+
+            GLProfiler?.Listener.OnError( error );
+
+            error = GdxApi.Bindings.GetError();
         }
     }
 }

@@ -132,7 +132,7 @@ public class Tooltip< T > : InputListener where T : Actor
 
     public override void Enter( InputEvent? ev, float x, float y, int pointer, Actor? fromActor )
     {
-        if ( ( pointer != -1 ) || Gdx.Input.IsTouched() )
+        if ( ( pointer != -1 ) || GdxApi.Input.IsTouched() )
         {
             return;
         }

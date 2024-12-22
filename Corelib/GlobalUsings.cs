@@ -64,6 +64,8 @@ global using GLFW = DotGLFW;
 // LughSharp
 global using Corelib.Lugh.Core;
 
+global using static Corelib.Lugh.Core.Gdx;
+
 // ====================================================================--------
 global using Vector2 = Corelib.Lugh.Maths.Vector2;
 global using Vector3 = Corelib.Lugh.Maths.Vector3;

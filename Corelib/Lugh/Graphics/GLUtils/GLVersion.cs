@@ -67,10 +67,10 @@ public class GLVersion
             var _ => throw new GdxRuntimeException( $"Unknown Platform ApplicationType: {appType}" ),
         };
 
-        VendorString   ??= BytePointerToString.Convert( Gdx.GL.GetString( IGL.GL_VENDOR ) );
-        RendererString ??= BytePointerToString.Convert( Gdx.GL.GetString( IGL.GL_RENDERER ) );
+        VendorString   ??= BytePointerToString.Convert( GdxApi.Bindings.GetString( IGL.GL_VENDOR ) );
+        RendererString ??= BytePointerToString.Convert( GdxApi.Bindings.GetString( IGL.GL_RENDERER ) );
 
-        var version = BytePointerToString.Convert( Gdx.GL.GetString( IGL.GL_VERSION ) );
+        var version = BytePointerToString.Convert( GdxApi.Bindings.GetString( IGL.GL_VERSION ) );
 
         _majorVersion    = ( int )char.GetNumericValue( version[ 0 ] );
         _minorVersion    = ( int )char.GetNumericValue( version[ 2 ] );

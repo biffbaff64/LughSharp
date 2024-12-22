@@ -252,7 +252,7 @@ public abstract class Camera
                               float viewportHeight )
     {
         var x = screenCoords.X - viewportX;
-        var y = Gdx.Graphics.Height - screenCoords.Y - viewportY;
+        var y = GdxApi.Graphics.Height - screenCoords.Y - viewportY;
 
         screenCoords.X = ( ( 2 * x ) / viewportWidth ) - 1;
         screenCoords.Y = ( ( 2 * y ) / viewportHeight ) - 1;
@@ -276,7 +276,7 @@ public abstract class Camera
     /// <returns> the mutated and unprojected screenCoords <see cref="Vector3"/></returns>
     public Vector3 Unproject( Vector3 screenCoords )
     {
-        Unproject( screenCoords, 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
+        Unproject( screenCoords, 0, 0, GdxApi.Graphics.Width, GdxApi.Graphics.Height );
 
         return screenCoords;
     }
@@ -292,7 +292,7 @@ public abstract class Camera
     /// <returns>The mutated and projected worldCoords <see cref="Vector3"/>.</returns>
     public Vector3? Project( Vector3? worldCoords )
     {
-        Project( worldCoords, 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
+        Project( worldCoords, 0, 0, GdxApi.Graphics.Width, GdxApi.Graphics.Height );
 
         return worldCoords;
     }
@@ -384,6 +384,6 @@ public abstract class Camera
     /// <returns>The picking Ray.</returns>
     public Ray GetPickRay( float screenX, float screenY )
     {
-        return GetPickRay( screenX, screenY, 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
+        return GetPickRay( screenX, screenY, 0, 0, GdxApi.Graphics.Width, GdxApi.Graphics.Height );
     }
 }

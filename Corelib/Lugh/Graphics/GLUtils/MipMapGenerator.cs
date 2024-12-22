@@ -68,9 +68,9 @@ public class MipMapGenerator
             return;
         }
 
-        if ( ( Gdx.App.AppType == Platform.ApplicationType.Android )
-          || ( Gdx.App.AppType == Platform.ApplicationType.WebGL )
-          || ( Gdx.App.AppType == Platform.ApplicationType.IOS ) )
+        if ( ( GdxApi.App.AppType == Platform.ApplicationType.Android )
+          || ( GdxApi.App.AppType == Platform.ApplicationType.WebGL )
+          || ( GdxApi.App.AppType == Platform.ApplicationType.IOS ) )
         {
             GenerateMipMapGLES20( target, pixmap );
         }
@@ -86,7 +86,7 @@ public class MipMapGenerator
         {
             fixed ( void* ptr = &pixmap.PixelData[ 0 ] )
             {
-                Gdx.GL.TexImage2D( target,
+                GdxApi.Bindings.TexImage2D( target,
                                      0,
                                      pixmap.GLInternalFormat,
                                      pixmap.Width,
@@ -98,17 +98,17 @@ public class MipMapGenerator
             }
         }
 
-        Gdx.GL.GenerateMipmap( target );
+        GdxApi.Bindings.GenerateMipmap( target );
     }
 
     private static unsafe void GenerateMipMapDesktop( int target, Pixmap pixmap, int textureWidth, int textureHeight )
     {
-        if ( Gdx.Graphics.SupportsExtension( "GL_ARB_framebuffer_object" )
-          || Gdx.Graphics.SupportsExtension( "GL_EXT_framebuffer_object" ) )
+        if ( GdxApi.Graphics.SupportsExtension( "GL_ARB_framebuffer_object" )
+          || GdxApi.Graphics.SupportsExtension( "GL_EXT_framebuffer_object" ) )
         {
             fixed ( void* ptr = &pixmap.PixelData[ 0 ] )
             {
-                Gdx.GL.TexImage2D( target,
+                GdxApi.Bindings.TexImage2D( target,
                                      0,
                                      pixmap.GLInternalFormat,
                                      pixmap.Width,
@@ -119,7 +119,7 @@ public class MipMapGenerator
                                      ptr );
             }
 
-            Gdx.GL.GenerateMipmap( target );
+            GdxApi.Bindings.GenerateMipmap( target );
         }
         else
         {
@@ -131,7 +131,7 @@ public class MipMapGenerator
     {
         fixed ( void* ptr = &pixmap.PixelData[ 0 ] )
         {
-            Gdx.GL.TexImage2D( target,
+            GdxApi.Bindings.TexImage2D( target,
                                  0,
                                  pixmap.GLInternalFormat,
                                  pixmap.Width,
@@ -167,7 +167,7 @@ public class MipMapGenerator
 
             fixed ( void* ptr = &pixmap.PixelData[ 0 ] )
             {
-                Gdx.GL.TexImage2D( target,
+                GdxApi.Bindings.TexImage2D( target,
                                      level,
                                      pixmap.GLInternalFormat,
                                      pixmap.Width,

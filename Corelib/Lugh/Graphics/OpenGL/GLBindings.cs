@@ -34,6 +34,7 @@
 
 using System.Numerics;
 
+using Corelib.Lugh.Utils;
 using Corelib.Lugh.Utils.Exceptions;
 
 using GLenum = System.Int32;
@@ -107,7 +108,7 @@ public unsafe partial class GLBindings : IGLBindings
                                  string message,
                                  void* userParam )
     {
-        Corelib.Lugh.Utils.Logger.Error( $"GL CALLBACK: {( type == IGL.GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" )} type = {type}, severity = {severity}, message = {message}\n" );
+        Logger.Error( $"GL CALLBACK: {( type == IGL.GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" )} type = {type}, severity = {severity}, message = {message}\n" );
     }
 
     // ========================================================================
@@ -539,6 +540,8 @@ public unsafe partial class GLBindings : IGLBindings
     /// <inheritdoc/>
     public GLubyte* GetString( GLenum name )
     {
+        LoadOpenGLFunction( "glGetString", out _glGetString );
+
         return _glGetString( name );
     }
 
@@ -1424,12 +1427,16 @@ public unsafe partial class GLBindings : IGLBindings
     /// <inheritdoc/>
     public void GenBuffers( GLsizei n, GLuint* buffers )
     {
+        LoadOpenGLFunction( "glGenBuffers", out _glGenBuffers );
+
         _glGenBuffers( n, buffers );
     }
 
     /// <inheritdoc/>
     public GLuint[] GenBuffers( GLsizei n )
     {
+        LoadOpenGLFunction( "glGenBuffers", out _glGenBuffers );
+
         var ret = new GLuint[ n ];
 
         fixed ( GLuint* p = &ret[ 0 ] )
@@ -8626,6 +8633,8 @@ public unsafe partial class GLBindings : IGLBindings
 
     public void GenVertexArrays( GLsizei n, GLuint* arrays )
     {
+        LoadOpenGLFunction( "glGenVertexArrays", out _glGenVertexArrays );
+        
         _glGenVertexArrays( n, arrays );
     }
 

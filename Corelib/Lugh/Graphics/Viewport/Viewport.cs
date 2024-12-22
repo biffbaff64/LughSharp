@@ -67,7 +67,7 @@ public abstract class Viewport
     /// <summary>
     /// Returns the right gutter (black bar) width in screen coordinates.
     /// </summary>
-    public virtual int RightGutterWidth => Gdx.Graphics.Width - ( ScreenX + ScreenWidth );
+    public virtual int RightGutterWidth => GdxApi.Graphics.Width - ( ScreenX + ScreenWidth );
 
     /// <summary>
     /// Returns the bottom gutter (black bar) height in screen coordinates.
@@ -82,7 +82,7 @@ public abstract class Viewport
     /// <summary>
     /// Returns the top gutter (black bar) height in screen coordinates.
     /// </summary>
-    public virtual int TopGutterHeight => Gdx.Graphics.Height - ( ScreenY + ScreenHeight );
+    public virtual int TopGutterHeight => GdxApi.Graphics.Height - ( ScreenY + ScreenHeight );
 
     /// <summary>
     /// Applies the viewport to the camera and sets the glViewport.
@@ -252,9 +252,9 @@ public abstract class Viewport
 
         Camera.Project( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
-        Debug.Assert( Gdx.Graphics != null );
+        Debug.Assert( GdxApi.Graphics != null );
 
-        _tmp.Y = Gdx.Graphics.Height - _tmp.Y;
+        _tmp.Y = GdxApi.Graphics.Height - _tmp.Y;
 
         worldCoords.X = _tmp.X;
         worldCoords.Y = _tmp.Y;

@@ -224,8 +224,8 @@ public class Slider : ProgressBar
 
         var oldValue = value;
 
-        if ( !Gdx.Input.IsKeyPressed( IInput.Keys.SHIFT_LEFT )
-          && !Gdx.Input.IsKeyPressed( IInput.Keys.SHIFT_RIGHT ) )
+        if ( !GdxApi.Input.IsKeyPressed( IInput.Keys.SHIFT_LEFT )
+          && !GdxApi.Input.IsKeyPressed( IInput.Keys.SHIFT_RIGHT ) )
         {
             value = GetSnapped( value );
         }

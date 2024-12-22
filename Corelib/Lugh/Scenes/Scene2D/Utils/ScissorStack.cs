@@ -72,7 +72,7 @@ public class ScissorStack
                 return false;
             }
 
-            Gdx.GL.Enable( IGL.GL_SCISSOR_TEST );
+            GdxApi.Bindings.Enable( IGL.GL_SCISSOR_TEST );
         }
         else
         {
@@ -125,7 +125,7 @@ public class ScissorStack
 
         if ( _scissors.Count == 0 )
         {
-            Gdx.GL.Disable( IGL.GL_SCISSOR_TEST );
+            GdxApi.Bindings.Disable( IGL.GL_SCISSOR_TEST );
         }
         else
         {
@@ -166,15 +166,15 @@ public class ScissorStack
     }
 
     /// <summary>
-    /// Calculates a scissor rectangle using 0, 0, Gdx.graphics.getWidth(),
-    /// and Gdx.graphics.getHeight() as the viewport.
+    /// Calculates a scissor rectangle using 0, 0, GdxApi.graphics.getWidth(),
+    /// and GdxApi.graphics.getHeight() as the viewport.
     /// </summary>
     public static void CalculateScissors( Camera camera,
                                           Matrix4 batchTransform,
                                           RectangleShape area,
                                           RectangleShape scissor )
     {
-        CalculateScissors( camera, 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height, batchTransform, area, scissor );
+        CalculateScissors( camera, 0, 0, GdxApi.Graphics.Width, GdxApi.Graphics.Height, batchTransform, area, scissor );
     }
 
     /// <summary>
@@ -226,7 +226,7 @@ public class ScissorStack
     {
         if ( _scissors.Count == 0 )
         {
-            _viewport.Set( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
+            _viewport.Set( 0, 0, GdxApi.Graphics.Width, GdxApi.Graphics.Height );
 
             return _viewport;
         }

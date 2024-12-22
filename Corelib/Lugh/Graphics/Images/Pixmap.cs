@@ -485,13 +485,13 @@ public class Pixmap : IDisposable
     /// <returns> The new Pixmap. </returns>
     public static unsafe Pixmap CreateFromFrameBuffer( int x, int y, int width, int height )
     {
-        Gdx.GL.PixelStorei( IGL.GL_PACK_ALIGNMENT, 1 );
+        GdxApi.Bindings.PixelStorei( IGL.GL_PACK_ALIGNMENT, 1 );
 
         Pixmap pixmap = new( width, height, Pixmap.ColorFormat.RGBA8888 );
 
         fixed ( void* ptr = &pixmap.PixelData[ 0 ] )
         {
-            Gdx.GL.ReadPixels( x, y, width, height, IGL.GL_RGBA, IGL.GL_UNSIGNED_BYTE, ptr );
+            GdxApi.Bindings.ReadPixels( x, y, width, height, IGL.GL_RGBA, IGL.GL_UNSIGNED_BYTE, ptr );
         }
 
         return pixmap;
@@ -565,7 +565,7 @@ public class Pixmap : IDisposable
     /// </summary>
     public void Debug()
     {
-        if ( Gdx.DevMode )
+        if ( GdxApi.DevMode )
         {
             Logger.Debug( $"Width : {Width}, Height: {Height}" );
             Logger.Debug( $"Format: {Format}, size : {Width * Height}" +

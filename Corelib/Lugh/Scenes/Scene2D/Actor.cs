@@ -267,7 +267,7 @@ public class Actor : IActor, IComparable< Actor >
 
         if ( Stage is { ActionsRequestRendering: true } )
         {
-            Gdx.Graphics.RequestRendering();
+            GdxApi.Graphics.RequestRendering();
         }
 
         try
@@ -574,7 +574,7 @@ public class Actor : IActor, IComparable< Actor >
 
             if ( Stage is { ActionsRequestRendering: true } )
             {
-                Gdx.Graphics.RequestRendering();
+                GdxApi.Graphics.RequestRendering();
             }
         }
     }

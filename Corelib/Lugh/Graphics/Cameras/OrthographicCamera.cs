@@ -22,6 +22,8 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using Corelib.Lugh.Utils;
+
 using Matrix4 = Corelib.Lugh.Maths.Matrix4;
 
 namespace Corelib.Lugh.Graphics.Cameras;
@@ -64,6 +66,8 @@ public class OrthographicCamera : Camera
     /// <param name="viewportHeight"> Height, in pixels, of this cameras viewport. </param>
     public OrthographicCamera( float viewportWidth, float viewportHeight )
     {
+        Logger.Checkpoint();
+
         ViewportWidth  = viewportWidth;
         ViewportHeight = viewportHeight;
         Near           = 0;
@@ -101,14 +105,14 @@ public class OrthographicCamera : Camera
     /// Sets this camera to an orthographic projection using a viewport fitting
     /// the screen resolution, centered at:-
     /// <para>
-    /// <tt>(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2)</tt>
+    /// <tt>(GdxApi.graphics.getWidth()/2, GdxApi.graphics.getHeight()/2)</tt>
     /// </para>
     /// with the y-axis pointing up or down.
     /// </summary>
     /// <param name="yDown">whether y should be pointing down.</param>
     public void SetToOrtho( bool yDown )
     {
-        SetToOrtho( Gdx.Graphics.Width, Gdx.Graphics.Height, yDown );
+        SetToOrtho( GdxApi.Graphics.Width, GdxApi.Graphics.Height, yDown );
     }
 
     /// <summary>

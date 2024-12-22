@@ -29,7 +29,7 @@ namespace Corelib.Lugh.Graphics.Profiling;
 
 /// <summary>
 /// When enabled, collects statistics about GL calls and checks for GL errors.
-/// Enabling will wrap Gdx.GL* instances with delegate classes which provide
+/// Enabling will wrap GdxApi.GL* instances with delegate classes which provide
 /// described functionality and route GL calls to the actual GL instances.
 /// </summary>
 [PublicAPI]
@@ -37,8 +37,9 @@ public class GLProfiler
 {
     public IGLErrorListener  Listener    { get; set; }
     public bool              Enabled     { get; set; } = false;
-    public IGraphics         Graphics    { get; set; }
     public BaseGLInterceptor Interceptor { get; set; }
+
+    private IGLBindings _glBindingsStore;
 
     // ========================================================================
 
@@ -46,12 +47,12 @@ public class GLProfiler
     /// Create a new instance of GLProfiler to monitor a <see cref="IGraphics"/>
     /// instance's gl calls
     /// </summary>
-    /// <param name="graphics"> instance to monitor with this instance.</param>
-    public GLProfiler( IGraphics graphics )
+    public GLProfiler()
     {
-        Graphics    = graphics;
         Interceptor = new GLInterceptor( this );
         Listener    = new GLLoggingListener();
+
+        _glBindingsStore = GdxApi.Bindings;
     }
 
     // ========================================================================
@@ -76,7 +77,7 @@ public class GLProfiler
             return;
         }
 
-        Gdx.Graphics.GL = ( IGLBindings ) Interceptor;
+        GdxApi.Graphics.GL = ( IGLBindings ) Interceptor;
 
         Enabled = true;
     }
@@ -91,7 +92,7 @@ public class GLProfiler
             return;
         }
 
-        Gdx.Graphics.GL = ( IGLBindings ) Graphics.GL;
+        GdxApi.Graphics.GL = _glBindingsStore;
 
         Enabled = false;
     }

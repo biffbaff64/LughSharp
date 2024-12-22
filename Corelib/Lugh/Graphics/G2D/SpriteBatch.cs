@@ -117,10 +117,14 @@ public class SpriteBatch : IBatch
         }
 
         IsDrawing = false;
+        
+        Logger.Checkpoint();
 
-        var vertexDataType = ( Gdx.GL.GetOpenGLVersion().major >= 3 ) //TODO:
+        var vertexDataType = ( GdxApi.Bindings.GetOpenGLVersion().major >= 3 ) //TODO:
             ? Mesh.VertexDataType.VertexBufferObjectWithVAO
             : Mesh.VertexDataType.VertexArray;
+
+        Logger.Checkpoint();
 
         _mesh = new Mesh( vertexDataType,
                           false,
@@ -130,7 +134,7 @@ public class SpriteBatch : IBatch
                           new VertexAttribute( VertexAttributes.Usage.COLOR_PACKED, 4, ShaderProgram.COLOR_ATTRIBUTE ),
                           new VertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES, 2, $"{ShaderProgram.TEXCOORD_ATTRIBUTE}0" ) );
 
-        ProjectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
+        ProjectionMatrix.SetToOrtho2D( 0, 0, GdxApi.Graphics.Width, GdxApi.Graphics.Height );
 
         Vertices = new float[ size * Sprite.SPRITE_SIZE ];
 
@@ -175,8 +179,8 @@ public class SpriteBatch : IBatch
 
         RenderCalls = 0;
 
-        Gdx.GL.Enable( IGL.GL_TEXTURE_2D );
-        Gdx.GL.DepthMask( false );
+        GdxApi.Bindings.Enable( IGL.GL_TEXTURE_2D );
+        GdxApi.Bindings.DepthMask( false );
 
         if ( _customShader != null )
         {
@@ -213,11 +217,11 @@ public class SpriteBatch : IBatch
         LastTexture = null;
         IsDrawing   = false;
 
-        Gdx.GL.DepthMask( true );
+        GdxApi.Bindings.DepthMask( true );
 
         if ( IsBlendingEnabled )
         {
-            Gdx.GL.Disable( IGL.GL_BLEND );
+            GdxApi.Bindings.Disable( IGL.GL_BLEND );
         }
     }
 
@@ -1207,15 +1211,15 @@ public class SpriteBatch : IBatch
 
         if ( BlendingDisabled )
         {
-            Gdx.GL.Disable( IGL.GL_BLEND );
+            GdxApi.Bindings.Disable( IGL.GL_BLEND );
         }
         else
         {
-            Gdx.GL.Enable( IGL.GL_BLEND );
+            GdxApi.Bindings.Enable( IGL.GL_BLEND );
 
             if ( BlendSrcFunc != -1 )
             {
-                Gdx.GL.BlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
+                GdxApi.Bindings.BlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
             }
         }
 
