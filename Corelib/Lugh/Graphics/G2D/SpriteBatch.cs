@@ -134,7 +134,11 @@ public class SpriteBatch : IBatch
                           new VertexAttribute( VertexAttributes.Usage.COLOR_PACKED, 4, ShaderProgram.COLOR_ATTRIBUTE ),
                           new VertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES, 2, $"{ShaderProgram.TEXCOORD_ATTRIBUTE}0" ) );
 
+        Logger.Checkpoint();
+        
         ProjectionMatrix.SetToOrtho2D( 0, 0, GdxApi.Graphics.Width, GdxApi.Graphics.Height );
+
+        Logger.Checkpoint();
 
         Vertices = new float[ size * Sprite.SPRITE_SIZE ];
 
@@ -151,10 +155,13 @@ public class SpriteBatch : IBatch
             indices[ i + 5 ] = j;
         }
 
+        Logger.Checkpoint();
+
         _mesh.SetIndices( indices );
 
         if ( defaultShader == null )
         {
+            Logger.Checkpoint();
             _shader     = CreateDefaultShader();
             _ownsShader = true;
         }
@@ -162,6 +169,8 @@ public class SpriteBatch : IBatch
         {
             _shader = defaultShader;
         }
+        
+        Logger.Checkpoint();
     }
 
     /// <summary>

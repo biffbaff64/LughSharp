@@ -76,33 +76,21 @@ public class VertexBufferObjectWithVAO : IVertexData
         _isStatic  = isStatic;
         Attributes = attributes;
 
-        Logger.Checkpoint();
-
         _byteBuffer = BufferUtils.NewByteBuffer( Attributes.VertexSize * numVertices, false );
         _buffer     = _byteBuffer.AsFloatBuffer();
         _ownsBuffer = true;
 
-        Logger.Checkpoint();
-
         _buffer.Flip();
         _byteBuffer.Flip();
-
-        Logger.Checkpoint();
 
         _bufferHandle = ( int )GdxApi.Bindings.GenBuffer();
         _usage        = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
 
-        Logger.Checkpoint();
-
         CreateVAO();
-        
-        Logger.Checkpoint();
     }
 
     public VertexBufferObjectWithVAO( bool isStatic, ByteBuffer unmanagedBuffer, VertexAttributes attributes )
     {
-        Logger.Checkpoint();
-
         _isStatic  = isStatic;
         Attributes = attributes;
 
@@ -110,24 +98,14 @@ public class VertexBufferObjectWithVAO : IVertexData
         _ownsBuffer = false;
         _buffer     = _byteBuffer.AsFloatBuffer();
 
-        Logger.Checkpoint();
-
         _buffer.Flip();
         _byteBuffer.Flip();
 
-        Logger.Checkpoint();
-
         _bufferHandle = ( int )GdxApi.Bindings.GenBuffer();
-
-        Logger.Checkpoint();
 
         _usage = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
 
-        Logger.Checkpoint();
-
         CreateVAO();
-
-        Logger.Checkpoint();
     }
 
     /// <summary>
@@ -396,7 +374,6 @@ public class VertexBufferObjectWithVAO : IVertexData
         {
             _tmpHandle.Clear();
             _tmpHandle.Put( _vaoHandle );
-
             _tmpHandle.Flip();
 
             fixed ( int* intptr = &_tmpHandle.BackingArray()[ 0 ] )

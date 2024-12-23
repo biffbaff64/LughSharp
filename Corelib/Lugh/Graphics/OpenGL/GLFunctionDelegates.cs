@@ -87,8 +87,8 @@ public unsafe partial class GLBindings
     private glScissorDelegate _glScissor;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void glTexParameterDelegate( GLenum target, GLenum pname, GLfloat param );
-    private glTexParameterDelegate _glTexParameterf;
+    private delegate void glTexParameterfDelegate( GLenum target, GLenum pname, GLfloat param );
+    private glTexParameterfDelegate _glTexParameterf;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void glTexParameterfvDelegate( GLenum target, GLenum pname, GLfloat* @params );
@@ -549,12 +549,12 @@ public unsafe partial class GLBindings
     private PFNGLDELETEBUFFERSPROC _glDeleteBuffers;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void PFNGLGENBUFFERSPROC( GLsizei n, GLuint* buffers );
-    private PFNGLGENBUFFERSPROC _glGenBuffers;
+    private delegate void glGenBuffersDelegate( GLsizei n, GLuint* buffers );
+    private glGenBuffersDelegate _glGenBuffers;
     
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate GLboolean PFNGLISBUFFERPROC( GLuint buffer );
-    private PFNGLISBUFFERPROC _glIsBuffer;
+    private delegate GLboolean glIsBufferDelegate( GLuint buffer );
+    private glIsBufferDelegate _glIsBuffer;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBUFFERDATAPROC( GLenum target, GLsizeiptr size, void* data, GLenum usage );

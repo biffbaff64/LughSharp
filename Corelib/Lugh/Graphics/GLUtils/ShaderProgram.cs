@@ -137,6 +137,8 @@ public class ShaderProgram
         ArgumentNullException.ThrowIfNull( vertexShader );
         ArgumentNullException.ThrowIfNull( fragmentShader );
 
+        Logger.Checkpoint();
+
         if ( !string.IsNullOrEmpty( PrependVertexCode ) )
         {
             vertexShader = PrependVertexCode + vertexShader;
@@ -150,7 +152,11 @@ public class ShaderProgram
         VertexShaderSource   = vertexShader;
         FragmentShaderSource = fragmentShader;
 
+        Logger.Checkpoint();
+
         CompileShaders( vertexShader, fragmentShader );
+
+        Logger.Checkpoint();
 
         if ( !IsCompiled )
         {
@@ -158,11 +164,15 @@ public class ShaderProgram
         }
         else
         {
+            Logger.Checkpoint();
             FetchAttributes();
+            Logger.Checkpoint();
             FetchUniforms();
+            Logger.Checkpoint();
 
             AddManagedShader( GdxApi.App, this );
         }
+        Logger.Checkpoint();
     }
 
     /// <summary>
@@ -202,8 +212,11 @@ public class ShaderProgram
     /// <param name="fragmentShader">  </param>
     private void CompileShaders( string vertexShader, string fragmentShader )
     {
+        Logger.Checkpoint();
         _vertexShaderHandle   = LoadShader( IGL.GL_VERTEX_SHADER, vertexShader );
+        Logger.Checkpoint();
         _fragmentShaderHandle = LoadShader( IGL.GL_FRAGMENT_SHADER, fragmentShader );
+        Logger.Checkpoint();
 
         if ( ( _vertexShaderHandle == -1 ) || ( _fragmentShaderHandle == -1 ) )
         {
@@ -212,7 +225,9 @@ public class ShaderProgram
             return;
         }
 
+        Logger.Checkpoint();
         Handle = LinkProgram( CreateProgram() );
+        Logger.Checkpoint();
 
         IsCompiled = ( Handle != -1 );
     }
@@ -976,6 +991,7 @@ public class ShaderProgram
             _attributes[ name ]     = location;
             _attributeSizes[ name ] = size;
             _attributeTypes[ name ] = type;
+            
             Attributes[ index ]     = name;
         }
     }

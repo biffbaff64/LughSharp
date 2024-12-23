@@ -3297,7 +3297,7 @@ public partial interface IGLBindings
     /// Specifies the object parameter to query. Refer to <see href="https://docs.gl/gl4/glGetProgram"/>
     /// for a list of possible values.
     /// </param>
-    /// <param name="params">Returns the requested object parameter.</param>
+    /// <param name="parameters">Returns the requested object parameter.</param>
     unsafe void GetProgramiv( uint program, int pname, int* parameters );
 
     /// <summary>
@@ -3308,7 +3308,7 @@ public partial interface IGLBindings
     /// Specifies the object parameter to query. Refer to <see href="https://docs.gl/gl4/glGetProgram"/>
     /// for a list of possible values.
     /// </param>
-    /// <param name="params">A <see langword="ref"/> to an integer array where the returned value(s) will be placed.</param>
+    /// <param name="parameters">A <see langword="ref"/> to an integer array where the returned value(s) will be placed.</param>
     unsafe void GetProgramiv( uint program, int pname, ref int[] parameters );
 
     /// <summary>
