@@ -9,14 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="37b16c66-7b00-439c-a185-d98ba849df85" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/G2D/SpriteBatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/G2D/SpriteBatch.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/IndexBufferObjectSubData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/IndexBufferObjectSubData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/ShaderProgram.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/ShaderProgram.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/VertexBufferObjectWithVAO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/VertexBufferObjectWithVAO.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLBindings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLBindings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLFunctionDelegates.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLFunctionDelegates.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLFunctionsLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLFunctionsLoader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/IGLBindings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/IGLBindings.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -231,7 +224,11 @@
       <workItem from="1734732872251" duration="834000" />
       <workItem from="1734734192788" duration="43246000" />
       <workItem from="1734957937432" duration="1216000" />
-      <workItem from="1734974081694" duration="14932000" />
+      <workItem from="1734974081694" duration="14989000" />
+      <workItem from="1735078253383" duration="1539000" />
+      <workItem from="1735111412832" duration="3385000" />
+      <workItem from="1735243010328" duration="5683000" />
+      <workItem from="1735314895785" duration="22841000" />
     </task>
     <task id="LOCAL-00001" summary="Major Restructuring">
       <option name="closed" value="true" />
@@ -561,7 +558,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734911236322</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="GL Bindings updates">
+      <option name="closed" value="true" />
+      <created>1734992623569</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1734992623570</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -593,7 +598,8 @@
     <MESSAGE value="Essential Update" />
     <MESSAGE value="GL Profiler updated" />
     <MESSAGE value="Essential backup" />
-    <option name="LAST_COMMIT_MESSAGE" value="Essential backup" />
+    <MESSAGE value="GL Bindings updates" />
+    <option name="LAST_COMMIT_MESSAGE" value="GL Bindings updates" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
@@ -716,6 +722,12 @@
           <option name="totalLines" value="222510" />
           <option name="info" value="" />
         </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1734992625192" />
+          <option name="linesCode" value="113817" />
+          <option name="totalLines" value="222789" />
+          <option name="info" value="" />
+        </TimePoint>
       </list>
     </option>
     <option name="genericTimePoints">
@@ -821,6 +833,12 @@
           <option name="linesCode" value="114365" />
           <option name="totalLines" value="222510" />
           <option name="info" value="22 Dec 2024" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1734992625192" />
+          <option name="linesCode" value="113817" />
+          <option name="totalLines" value="222789" />
+          <option name="info" value="23 Dec 2024" />
         </TimePoint>
       </list>
     </option>
