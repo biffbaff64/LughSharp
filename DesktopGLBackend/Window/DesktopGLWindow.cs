@@ -177,7 +177,7 @@ public partial class DesktopGLWindow : IDisposable
 
     /// <summary>
     /// Post a <see cref="IRunnable.Runnable"/> to this window's event queue. Use this if
-    /// you access statics like <see cref="GdxApi.Graphics"/> in your runnable instead
+    /// you access statics like <see cref="Gdx.Graphics"/> in your runnable instead
     /// of <see cref="DesktopGLApplication.PostRunnable(IRunnable.Runnable)"/>".
     /// </summary>
     public void PostRunnable( IRunnable.Runnable runnable )
@@ -194,13 +194,10 @@ public partial class DesktopGLWindow : IDisposable
     public void MakeCurrent()
     {
         GdxApi.Graphics = Graphics;
-        GdxApi.Bindings       = Graphics.GL;
+        GdxApi.Bindings = Graphics.GL;
         GdxApi.Input    = Input;
 
         Glfw.MakeContextCurrent( GlfwWindow );
-        
-        Logger.Debug( $"Context is {( Glfw.GetCurrentContext() == null ? "NULL" : "Set" )}" );
-        Logger.Debug( $"Current Thread ID: {Environment.CurrentManagedThreadId}" );
     }
 
     /// <summary>
@@ -326,7 +323,7 @@ public partial class DesktopGLWindow : IDisposable
     /// <param name="minHeight"> The minimum window height. </param>
     /// <param name="maxWidth"> The maximum window width. </param>
     /// <param name="maxHeight"> The maximum window height. </param>
-    public static void SetSizeLimits( GLFW.Window handle, int minWidth, int minHeight, int maxWidth, int maxHeight )
+    public static void SetSizeLimits( GLFW.Window? handle, int minWidth, int minHeight, int maxWidth, int maxHeight )
     {
         Glfw.SetWindowSizeLimits( handle,
                                   minWidth > -1 ? minWidth : -1,

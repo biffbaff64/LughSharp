@@ -9877,14 +9877,14 @@ public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler 
         CheckErrors();
     }
 
-    /// <inheritdoc />
-    public void Import()
-    {
-        Logger.Checkpoint();
-        Calls++;
-        GdxApi.Bindings.Import();
-        CheckErrors();
-    }
+//    /// <inheritdoc />
+//    public void Import()
+//    {
+//        Logger.Checkpoint();
+//        Calls++;
+//        GdxApi.Bindings.Import();
+//        CheckErrors();
+//    }
 
 //TODO: Unsupported method    
 //    /// <inheritdoc />

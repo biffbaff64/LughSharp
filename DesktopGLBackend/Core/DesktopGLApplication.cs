@@ -523,8 +523,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         Glfw.MakeContextCurrent( windowHandle );
 
-        GdxApi.Bindings.Import();
-
         Logger.Debug( $"OGLVersion: {GdxApi.Bindings.GetOpenGLVersion().major}.{GdxApi.Bindings.GetOpenGLVersion().minor}" );
 
         GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL );

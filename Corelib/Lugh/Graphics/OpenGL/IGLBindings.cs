@@ -7381,6 +7381,4 @@ public partial interface IGLBindings
     /// Loads OpenGL functions using the specified loader delegate.
     /// </summary>
     public delegate IntPtr GetProcAddressDelegate( string funcName );
-
-    void Import();
 }

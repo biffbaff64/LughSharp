@@ -59,51 +59,51 @@ using GLint64 = System.Int64;
 public unsafe partial class GLBindings
 {
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void glCullFaceDelegate( GLenum mode );
-    private glCullFaceDelegate _glCullFace;
+    private delegate void PFNGLCULLFACEPROC( GLenum mode );
+    private PFNGLCULLFACEPROC _glCullFace;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void glFrontFaceDelegate( GLenum mode );
-    private glFrontFaceDelegate _glFrontFace;
+    private delegate void PFNGLFRONTFACEPROC( GLenum mode );
+    private PFNGLFRONTFACEPROC _glFrontFace;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void glHintDelegate( GLenum target, GLenum mode );
-    private glHintDelegate _glHint;
+    private delegate void PFNGLHINTPROC( GLenum target, GLenum mode );
+    private PFNGLHINTPROC _glHint;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void glLineWidthDelegate( GLfloat width );
-    private glLineWidthDelegate _glLineWidth;
+    private delegate void PFNGLLINEWIDTHPROC( GLfloat width );
+    private PFNGLLINEWIDTHPROC _glLineWidth;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void glPointSizeDelegate( GLfloat size );
-    private glPointSizeDelegate _glPointSize;
+    private delegate void PFNGLPOINTSIZEPROC( GLfloat size );
+    private PFNGLPOINTSIZEPROC _glPointSize;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void glPolygonModeDelegate( GLenum face, GLenum mode );
-    private glPolygonModeDelegate _glPolygonMode;
+    private delegate void PFNGLPOLYGONMODEPROC( GLenum face, GLenum mode );
+    private PFNGLPOLYGONMODEPROC _glPolygonMode;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void glScissorDelegate( GLint x, GLint y, GLsizei width, GLsizei height );
-    private glScissorDelegate _glScissor;
+    private delegate void PFNGLSCISSORPROC( GLint x, GLint y, GLsizei width, GLsizei height );
+    private PFNGLSCISSORPROC _glScissor;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void glTexParameterfDelegate( GLenum target, GLenum pname, GLfloat param );
-    private glTexParameterfDelegate _glTexParameterf;
+    private delegate void PFNGLTEXPARAMETERFPROC( GLenum target, GLenum pname, GLfloat param );
+    private PFNGLTEXPARAMETERFPROC _glTexParameterf;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void glTexParameterfvDelegate( GLenum target, GLenum pname, GLfloat* @params );
-    private glTexParameterfvDelegate _glTexParameterfv;
+    private delegate void PFNGLTEXPARAMETERFVPROC( GLenum target, GLenum pname, GLfloat* @params );
+    private PFNGLTEXPARAMETERFVPROC _glTexParameterfv;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void glTexParameteriDelegate( GLenum target, GLenum pname, GLint param );
-    private glTexParameteriDelegate _glTexParameteri;
+    private delegate void PFNGLTEXPARAMETERIPROC( GLenum target, GLenum pname, GLint param );
+    private PFNGLTEXPARAMETERIPROC _glTexParameteri;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void glTexParameterivDelegate( GLenum target, GLenum pname, GLint* @params );
-    private glTexParameterivDelegate _glTexParameteriv;
+    private delegate void PFNGLTEXPARAMETERIVPROC( GLenum target, GLenum pname, GLint* @params );
+    private PFNGLTEXPARAMETERIVPROC _glTexParameteriv;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void glTexImage1dDelegate( GLenum target,
+    private delegate void PFNGLTEXIMAGE1DPROC( GLenum target,
                                                GLint level,
                                                GLenum internalformat,
                                                GLsizei width,
@@ -111,7 +111,7 @@ public unsafe partial class GLBindings
                                                GLenum format,
                                                GLenum type,
                                                void* pixels );
-    private glTexImage1dDelegate _glTexImage1D;
+    private PFNGLTEXIMAGE1DPROC _glTexImage1D;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLTEXIMAGE2DPROC( GLenum target,
@@ -230,12 +230,9 @@ public unsafe partial class GLBindings
     private PFNGLGETINTEGERVPROC _glGetIntegerv;
 
     [UnmanagedFunctionPointer( CallingConvention.StdCall )]
-    private delegate GLubyte* glGetStringDelegate( GLenum name );
-    private glGetStringDelegate _glGetString;
+    private delegate GLubyte* PFNGLGETSTRINGPROC( GLenum name );
+    private PFNGLGETSTRINGPROC _glGetString;
 
-//    [DllImport( "OpenGL32.dll", EntryPoint = "glGetString", CallingConvention = CallingConvention.Cdecl )]
-//    private static extern GLubyte* _glGetString( GLenum name );
-    
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETTEXIMAGEPROC( GLenum target, GLint level, GLenum format, GLenum type, void* pixels );
     private PFNGLGETTEXIMAGEPROC _glGetTexImage;
@@ -549,12 +546,12 @@ public unsafe partial class GLBindings
     private PFNGLDELETEBUFFERSPROC _glDeleteBuffers;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate void glGenBuffersDelegate( GLsizei n, GLuint* buffers );
-    private glGenBuffersDelegate _glGenBuffers;
+    private delegate void PFNGLGENBUFFERSPROC( GLsizei n, GLuint* buffers );
+    private PFNGLGENBUFFERSPROC _glGenBuffers;
     
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
-    private delegate GLboolean glIsBufferDelegate( GLuint buffer );
-    private glIsBufferDelegate _glIsBuffer;
+    private delegate GLboolean PFNGLISBUFFERPROC( GLuint buffer );
+    private PFNGLISBUFFERPROC _glIsBuffer;
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBUFFERDATAPROC( GLenum target, GLsizeiptr size, void* data, GLenum usage );
@@ -2431,8 +2428,8 @@ public unsafe partial class GLBindings
     private PFNGLGETTRANSFORMFEEDBACKI64_VPROC _glGetTransformFeedbacki64_v;
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void glCreateBuffersDelegate(GLsizei n, GLuint* buffers);
-    private glCreateBuffersDelegate _glCreateBuffers;
+    private delegate void PFNGLCREATEBUFFERSPROC(GLsizei n, GLuint* buffers);
+    private PFNGLCREATEBUFFERSPROC _glCreateBuffers;
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLNAMEDBUFFERSTORAGEPROC(GLuint buffer, GLsizeiptr size, void* data, GLbitfield flags);
