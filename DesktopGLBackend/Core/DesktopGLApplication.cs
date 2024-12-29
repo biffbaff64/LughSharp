@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
 
 using Corelib.Lugh.Core;
 using Corelib.Lugh.Graphics.GLUtils;
@@ -36,7 +35,6 @@ using Corelib.Lugh.Utils.Exceptions;
 using DesktopGLBackend.Audio;
 using DesktopGLBackend.Audio.Mock;
 using DesktopGLBackend.Files;
-using DesktopGLBackend.Graphics;
 using DesktopGLBackend.Input;
 using DesktopGLBackend.Utils;
 using DesktopGLBackend.Window;
@@ -55,7 +53,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     #region public properties
 
     public DesktopGLApplicationConfiguration? Config             { get; set; }
-    public Dictionary< string, IPreferences > Preferences        { get; set; }
+    public Dictionary< string, IPreferences > Preferences        { get; set; } = [ ];
     public List< DesktopGLWindow >            Windows            { get; set; } = [ ];
     public List< IRunnable.Runnable >         Runnables          { get; set; } = [ ];
     public List< IRunnable.Runnable >         ExecutedRunnables  { get; set; } = [ ];
@@ -82,6 +80,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     private          IntPtr             _currentContext;
     private          bool               _running         = true;
     private          bool               _glfwInitialised = false;
+    private          IPreferences       _prefs;
 
     // ========================================================================
     // ========================================================================
@@ -98,8 +97,22 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         // initialised correctly.
         GdxApi.Initialise( this );
 
+        _prefs = GetPreferences( "desktopgl.lugh.engine.preferences" );
+        
+        _prefs.PutBool( "profiling", config.GLProfilingEnabled );
+        _prefs.Flush();
+
         // This is set very early in this constructor to avoid any null references.
-        GdxApi.Bindings = new GLBindings();
+        if ( _prefs.GetBool( "profiling" ) )
+        {
+            Logger.Debug( "Profiling enabled" );
+            GdxApi.Bindings = new GLInterceptor( new GLProfiler() );
+        }
+        else
+        {
+            Logger.Debug( "Profiling disabled" );
+            GdxApi.Bindings = new GLBindings();
+        }
 
         // Config.Title becomes the name of the ApplicationListener if
         // it has no value at this point.
@@ -109,9 +122,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         Config.SetOpenGLEmulation( DesktopGLApplicationConfiguration.GLEmulationType.GL30,
                                    GLData.DEFAULT_GL_MAJOR,
                                    GLData.DEFAULT_GL_MINOR );
-
-        // Initialise the persistant data manager
-        Preferences = new Dictionary< string, IPreferences >();
 
         // Initialise the global environment shortcuts. 'GdxApi.Audio', 'GdxApi.Files', and 'GdxApi.Net' are instances
         // of classes implementing IAudio, IFiles, and INet resprectively, and are used to access LughSharp
@@ -480,8 +490,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
             throw new GdxRuntimeException( $"GLFW MakeContextCurrent error: {description}" ); // Print the error
         }
 
-        Logger.Checkpoint();
-
         Glfw.SwapInterval( config.VSyncEnabled ? 1 : 0 );
 
         GLData.CreateCapabilities(); // Needed??
@@ -644,6 +652,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
             return Preferences.Get( name )!;
         }
 
+        Logger.Debug( $"Creating new Preferences file: {name}" );
+        
         IPreferences prefs = new DesktopGLPreferences( name );
 
         Preferences.Put( name, prefs );

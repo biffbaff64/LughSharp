@@ -76,6 +76,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     public PathTypes       PreferencesFileType            { get; set; } = PathTypes.External;
     public bool            PauseWhenLostFocus             { get; set; }
     public bool            PauseWhenMinimized             { get; set; } = true;
+    public bool            GLProfilingEnabled             { get; set; } = true;
 
     /// <summary>
     /// The maximum number of threads to use for network requests. Default is <see cref="int.MaxValue"/>.

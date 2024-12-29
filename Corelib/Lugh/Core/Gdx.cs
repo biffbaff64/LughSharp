@@ -203,12 +203,15 @@ public class Gdx
     /// This is here, in line with my faith.
     /// </summary>
     private const string A_PRAYER_TO_THE_GODDESS =
-        "Mother Earth, enlighten what's dark in me. " +
-        "Strengthen what's weak in me. " +
-        "Mend what's broken in me. " +
-        "Bind what's bruised in me. " +
-        "Heal what's sick in me. " +
-        "Revive whatever peace & love has died in me.";
+        "Mother Earth, enlighten what's dark in me. "
+        + "Strengthen what's weak in me. "
+        + "Mend what's broken in me. "
+        + "Bind what's bruised in me. "
+        + "Heal what's sick in me. "
+        + "Revive whatever peace & love has died in me.";
 
     // ========================================================================
+    // ========================================================================
 }
+
+

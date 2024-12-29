@@ -230,17 +230,11 @@ public class IndexBufferObjectSubData : IIndexData
 
     private unsafe int CreateBufferObject()
     {
-        Logger.Checkpoint();
-        
         var result = GdxApi.Bindings.GenBuffer();
 
-        Logger.Checkpoint();
         GdxApi.Bindings.BindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, result );
-        Logger.Checkpoint();
         GdxApi.Bindings.BufferData( IGL.GL_ELEMENT_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
-        Logger.Checkpoint();
         GdxApi.Bindings.BindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, 0 );
-        Logger.Checkpoint();
 
         return ( int ) result;
     }

@@ -35,9 +35,9 @@ namespace Corelib.Lugh.Graphics.Profiling;
 [PublicAPI]
 public class GLProfiler
 {
-    public IGLErrorListener  Listener    { get; set; }
-    public bool              Enabled     { get; set; } = false;
-    public BaseGLInterceptor Interceptor { get; set; }
+    public IGLErrorListener  ErrorListener     { get; set; }
+    public bool              Enabled           { get; set; } = false;
+    public BaseGLInterceptor BaseGLInterceptor { get; set; }
 
     private IGLBindings _glBindingsStore;
 
@@ -49,8 +49,8 @@ public class GLProfiler
     /// </summary>
     public GLProfiler()
     {
-        Interceptor = new GLInterceptor( this );
-        Listener    = new GLLoggingListener();
+        BaseGLInterceptor = new GLInterceptor( this );
+        ErrorListener     = new GLLoggingListener();
 
         _glBindingsStore = GdxApi.Bindings;
     }
@@ -64,7 +64,7 @@ public class GLProfiler
     /// </summary>
     public void Reset()
     {
-        Interceptor.Reset();
+        BaseGLInterceptor.Reset();
     }
 
     /// <summary>
@@ -77,7 +77,7 @@ public class GLProfiler
             return;
         }
 
-        GdxApi.Graphics.GL = ( IGLBindings ) Interceptor;
+        GdxApi.Graphics.GL = ( IGLBindings )BaseGLInterceptor;
 
         Enabled = true;
     }
@@ -96,34 +96,34 @@ public class GLProfiler
 
         Enabled = false;
     }
-    
+
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// Returns the total gl calls made since the last reset
     /// </summary>
-    public int Calls => Interceptor.Calls;
+    public int Calls => BaseGLInterceptor.Calls;
 
     /// <summary>
     /// Returns the total amount of texture bindings made since the last reset
     /// </summary>
-    public int TextureBindings => Interceptor.TextureBindings;
+    public int TextureBindings => BaseGLInterceptor.TextureBindings;
 
     /// <summary>
     /// Returns the total amount of draw calls made since the last reset
     /// </summary>
-    public int DrawCalls => Interceptor.DrawCalls;
+    public int DrawCalls => BaseGLInterceptor.DrawCalls;
 
     /// <summary>
     /// </summary>
     /// <returns>
     /// the total amount of shader switches made since the last reset
     /// </returns>
-    public int ShaderSwitches => Interceptor.ShaderSwitches;
+    public int ShaderSwitches => BaseGLInterceptor.ShaderSwitches;
 
     /// <summary>
     /// Returns <see cref="FloatCounter"/> containing information about rendered
     /// vertices since the last reset.
     /// </summary>
-    public FloatCounter VertexCount => Interceptor.VertexCount;
+    public FloatCounter VertexCount => BaseGLInterceptor.VertexCount;
 }

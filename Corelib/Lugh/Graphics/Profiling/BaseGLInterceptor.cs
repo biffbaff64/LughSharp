@@ -38,7 +38,8 @@ public abstract class BaseGLInterceptor
     public FloatCounter VertexCount     { get; set; } = new( 0 );
 
     protected readonly GLProfiler GLProfiler;
-
+    protected GLBindings Bindings = new();
+    
     // ========================================================================
     // ========================================================================
 
@@ -95,15 +96,13 @@ public abstract class BaseGLInterceptor
     /// </summary>
     protected void CheckErrors()
     {
-        var error = GdxApi.Bindings.GetError();
+        var error = Bindings.GetError();
 
         while ( error != IGL.GL_NO_ERROR )
         {
-            Logger.Checkpoint();
+            GLProfiler?.ErrorListener.OnError( error );
 
-            GLProfiler?.Listener.OnError( error );
-
-            error = GdxApi.Bindings.GetError();
+            error = Bindings.GetError();
         }
     }
 }

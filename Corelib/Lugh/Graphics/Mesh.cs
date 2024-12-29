@@ -189,7 +189,6 @@ public class Mesh
         switch ( type )
         {
             case VertexDataType.VertexBufferObject:
-                Logger.Checkpoint();
                 _vertices      = new VertexBufferObject( isStatic, maxVertices, attributes );
                 _indices       = new IndexBufferObject( isStatic, maxIndices );
                 _isVertexArray = false;
@@ -197,7 +196,6 @@ public class Mesh
                 break;
 
             case VertexDataType.VertexBufferObjectSubData:
-                Logger.Checkpoint();
                 _vertices      = new VertexBufferObjectSubData( isStatic, maxVertices, attributes );
                 _indices       = new IndexBufferObjectSubData( isStatic, maxIndices );
                 _isVertexArray = false;
@@ -205,18 +203,14 @@ public class Mesh
                 break;
 
             case VertexDataType.VertexBufferObjectWithVAO:
-                Logger.Checkpoint();
                 _vertices      = new VertexBufferObjectWithVAO( isStatic, maxVertices, attributes );
-                Logger.Checkpoint();
                 _indices       = new IndexBufferObjectSubData( isStatic, maxIndices );
-                Logger.Checkpoint();
                 _isVertexArray = false;
 
                 break;
 
             case VertexDataType.VertexArray:
             default:
-                Logger.Checkpoint();
                 _vertices      = new VertexArray( maxVertices, attributes );
                 _indices       = new IndexArray( maxIndices );
                 _isVertexArray = true;
@@ -225,8 +219,6 @@ public class Mesh
         }
 
         AddManagedMesh( GdxApi.App, this );
-        
-        Logger.Debug( "Mesh created");
     }
 
     #endregion constructors

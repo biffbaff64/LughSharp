@@ -22,10 +22,14 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Globalization;
+using System.Xml;
 using System.Xml.Linq;
+
 using Corelib.Lugh.Core;
+using Corelib.Lugh.Utils;
 using Corelib.Lugh.Utils.Exceptions;
-using JetBrains.Annotations;
+
 using Environment = System.Environment;
 
 namespace DesktopGLBackend.Utils;
@@ -37,51 +41,71 @@ namespace DesktopGLBackend.Utils;
 [PublicAPI]
 public class DesktopGLPreferences : IPreferences
 {
-    private readonly string                        _filePath;
-    private readonly Dictionary< string, object >? _properties;
-    private readonly string                        _propertiesFile;
-    private readonly XDocument?                    _xDocument;
+    private readonly string                       _filePath;
+    private readonly Dictionary< string, object > _properties = [ ];
+    private readonly string                       _propertiesFile;
+    private          XDocument?                   _xDocument;
 
     // ========================================================================
     // ========================================================================
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="DesktopGLPreferences"/> class.
     /// </summary>
     /// <param name="filename"> The name of the preferences file. </param>
     public DesktopGLPreferences( string filename )
     {
-        _filePath       = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile ) + "//.prefs//";
+        _filePath       = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile ) + @"\.prefs\";
         _propertiesFile = filename;
 
-        if ( !Path.Exists( _filePath + _propertiesFile ) )
+        if ( !File.Exists( _filePath + _propertiesFile ) ) return;
+
+        try
         {
-            return;
+            _xDocument = XDocument.Load( _filePath + _propertiesFile );
+
+            if ( _xDocument.Root?.Name == "properties" )
+            {
+                foreach ( var entryElement in _xDocument.Root.Elements( "entry" ) )
+                {
+                    var key   = entryElement.Attribute( "key" )?.Value;
+                    var value = entryElement.Value;
+
+                    if ( key != null )
+                    {
+                        _properties[ key ] = value;
+                    }
+                }
+            }
+            else
+            {
+                Logger.Error( "Invalid root element in preferences file." );
+            }
+        }
+        catch ( Exception e )
+        {
+            Logger.Error( e.Message );
         }
 
-        _properties = new Dictionary< string, object >();
-        _xDocument  = new XDocument();
-        _xDocument.Save( _filePath + _propertiesFile );
+        Flush();
     }
 
-    /// <summary>
-    /// Adds or updates an entry in the preferences.
-    /// </summary>
-    /// <param name="key"> The key of the preference entry. </param>
-    /// <param name="val"> The value of the preference entry. </param>
-    /// <returns> The current <see cref="IPreferences"/> instance. </returns>
-    /// <exception cref="NullReferenceException"> Thrown when the properties dictionary is null. </exception>
-    public IPreferences PutEntry( string key, object? val )
-    {
-        if ( _properties == null )
-        {
-            throw new NullReferenceException();
-        }
+    // ------------------------------------------------------------------------
 
-        _properties[ key ] = val ?? throw new NullReferenceException();
+    /// <inheritdoc />
+    public IPreferences PutBool( string key, bool val ) => _put( key, val.ToString() );
 
-        return this;
-    }
+    /// <inheritdoc />
+    public IPreferences PutInteger( string key, int val ) => _put( key, val.ToString() );
+
+    /// <inheritdoc />
+    public IPreferences PutLong( string key, long val ) => _put( key, val.ToString() );
+
+    /// <inheritdoc />
+    public IPreferences PutFloat( string key, float val ) => _put( key, val.ToString( CultureInfo.InvariantCulture ) );
+
+    /// <inheritdoc />
+    public IPreferences PutString( string key, string val ) => _put( key, val );
 
     /// <summary>
     /// Adds or updates multiple entries in the preferences.
@@ -90,10 +114,43 @@ public class DesktopGLPreferences : IPreferences
     /// <returns> The current <see cref="IPreferences"/> instance. </returns>
     public IPreferences PutAll( Dictionary< string, object > vals )
     {
-        foreach ( KeyValuePair< string, object > entry in vals )
+        foreach ( var entry in vals )
         {
-            PutEntry( entry.Key, entry.Value );
+            switch ( entry.Value )
+            {
+                case bool b:
+                    PutBool( entry.Key, b );
+
+                    break;
+
+                case int i:
+                    PutInteger( entry.Key, i );
+
+                    break;
+
+                case long l:
+                    PutLong( entry.Key, l );
+
+                    break;
+
+                case float f:
+                    PutFloat( entry.Key, f );
+
+                    break;
+
+                case string s:
+                    PutString( entry.Key, s );
+
+                    break;
+            }
         }
+
+        return this;
+    }
+
+    private IPreferences _put( string key, string value )
+    {
+        _properties[ key ] = value.ToLower();
 
         return this;
     }
@@ -134,9 +191,8 @@ public class DesktopGLPreferences : IPreferences
     /// <returns> The boolean value. </returns>
     public bool GetBool( string key, bool defValue )
     {
-        var value = _properties?[ key ];
-
-        if ( ( value == null ) || ( ( value.ToString() != "true" ) && ( value.ToString() != "false" ) ) )
+        if ( !_properties.TryGetValue( key, out var value )
+            || ( ( value.ToString() != "true" ) && ( value.ToString() != "false" ) ) )
         {
             return defValue;
         }
@@ -152,9 +208,12 @@ public class DesktopGLPreferences : IPreferences
     /// <returns> The integer value. </returns>
     public int GetInteger( string key, int defValue )
     {
-        var value = _properties?[ key ];
+        if ( !_properties.TryGetValue( key, out var value ) )
+        {
+            return defValue;
+        }
 
-        return value == null ? defValue : Convert.ToInt16( value );
+        return Convert.ToInt16( value );
     }
 
     /// <summary>
@@ -165,9 +224,12 @@ public class DesktopGLPreferences : IPreferences
     /// <returns> The long value. </returns>
     public long GetLong( string key, long defValue )
     {
-        var value = _properties?[ key ];
+        if ( !_properties.TryGetValue( key, out var value ) )
+        {
+            return defValue;
+        }
 
-        return value == null ? defValue : Convert.ToInt32( value );
+        return Convert.ToInt32( value );
     }
 
     /// <summary>
@@ -178,9 +240,12 @@ public class DesktopGLPreferences : IPreferences
     /// <returns> The float value. </returns>
     public float GetFloat( string key, float defValue )
     {
-        var value = _properties?[ key ];
+        if ( !_properties.TryGetValue( key, out var value ) )
+        {
+            return defValue;
+        }
 
-        return value == null ? defValue : Convert.ToSingle( value );
+        return Convert.ToSingle( value );
     }
 
     /// <summary>
@@ -193,34 +258,37 @@ public class DesktopGLPreferences : IPreferences
     /// <returns> The string value. </returns>
     public string GetString( string key, string defValue = "" )
     {
-        var value = _properties?[ key ];
+        if ( !_properties.TryGetValue( key, out var value ) )
+        {
+            return defValue;
+        }
 
-        return value == null ? defValue : ( string ) value;
+        return ( string )value;
     }
 
     /// <summary>
     /// Gets all properties in the preferences.
     /// </summary>
     /// <returns> A dictionary of all properties. </returns>
-    public Dictionary< string, object > Get() => _properties!;
+    public Dictionary< string, object > Get() => _properties;
 
     /// <summary>
     /// Checks if a key exists in the preferences.
     /// </summary>
     /// <param name="key">The key to check.</param>
     /// <returns> True if the key exists; otherwise, false. </returns>
-    public bool Contains( string key ) => ( _properties != null ) && _properties.ContainsKey( key );
+    public bool Contains( string key ) => _properties.ContainsKey( key );
 
     /// <summary>
     /// Clears all entries in the preferences.
     /// </summary>
-    public void Clear() => _properties?.Clear();
+    public void Clear() => _properties.Clear();
 
     /// <summary>
     /// Removes a specific entry from the preferences.
     /// </summary>
     /// <param name="key"> The key of the entry to remove. </param>
-    public void Remove( string key ) => _properties?.Remove( key );
+    public void Remove( string key ) => _properties.Remove( key );
 
     /// <summary>
     /// Saves the preferences to the file.
@@ -230,16 +298,20 @@ public class DesktopGLPreferences : IPreferences
     /// </exception>
     public void Flush()
     {
+        if ( ( _xDocument == null ) || ( _xDocument.Root == null ) || ( _xDocument.Root.Name != "properties" ) )
+        {
+            _xDocument = new XDocument( new XDeclaration( "1.0", "UTF-8", "no" ), new XElement( "properties" ) );
+        }
+        else
+        {
+            _xDocument.Root.RemoveNodes();
+        }
+
         try
         {
-            var rootElement = new XElement( "properties" );
-            _xDocument!.Add( rootElement );
-
-            foreach ( KeyValuePair< string, object > entry in _properties! )
+            foreach ( var entry in _properties )
             {
-                _xDocument.Add( new XElement( "entry" ) );
-                _xDocument.Add( new XAttribute( "key", entry.Key ) );
-                _xDocument.Add( new XAttribute( "value", entry.Value ) );
+                _xDocument.Root?.Add( new XElement( "entry", new XAttribute( "key", entry.Key ), entry.Value ) );
             }
 
             _xDocument.Save( _filePath + _propertiesFile );

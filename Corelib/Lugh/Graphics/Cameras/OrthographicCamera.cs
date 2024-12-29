@@ -58,9 +58,6 @@ public class OrthographicCamera : Camera
     /// For pixel perfect 2D rendering just supply the screen size, for other unit scales
     /// (e.g. meters for box2d) proceed accordingly. The camera will show the region
     /// [-viewportWidth/2, -(viewportHeight/2-1)] - [(viewportWidth/2-1), viewportHeight/2].
-    /// <para>
-    /// IMPORTANT: <see cref="Update"/> MUST be called after the call to this constructor.
-    /// </para>
     /// </summary>
     /// <param name="viewportWidth"> Width, in pixels, of this cameras viewport. </param>
     /// <param name="viewportHeight"> Height, in pixels, of this cameras viewport. </param>
@@ -72,8 +69,19 @@ public class OrthographicCamera : Camera
         ViewportHeight = viewportHeight;
         Near           = 0;
         Zoom           = 1;
+
+        SafeUpdate();
     }
 
+    /// <summary>
+    /// This method is here because <see cref="Update"/> is a <b>virtual method</b> and
+    /// should not be called from a constructor.
+    /// </summary>
+    private void SafeUpdate()
+    {
+        Update();
+    }
+    
     /// <summary>
     /// Updates the camera.
     /// Also updates the frustrum if <paramref name="updateFrustrum"/> is true.
@@ -104,9 +112,7 @@ public class OrthographicCamera : Camera
     /// <summary>
     /// Sets this camera to an orthographic projection using a viewport fitting
     /// the screen resolution, centered at:-
-    /// <para>
-    /// <tt>(GdxApi.graphics.getWidth()/2, GdxApi.graphics.getHeight()/2)</tt>
-    /// </para>
+    /// <code>(GdxApi.graphics.getWidth()/2, GdxApi.graphics.getHeight()/2)</code>
     /// with the y-axis pointing up or down.
     /// </summary>
     /// <param name="yDown">whether y should be pointing down.</param>
@@ -124,17 +130,9 @@ public class OrthographicCamera : Camera
     /// <param name="yDown">whether y should be pointing down.</param>
     public void SetToOrtho( float viewportWidth, float viewportHeight, bool yDown )
     {
-        if ( yDown )
-        {
-            Up.Set( 0, -1, 0 );
-            Direction.Set( 0, 0, 1 );
-        }
-        else
-        {
-            Up.Set( 0, 1, 0 );
-            Direction.Set( 0, 0, -1 );
-        }
-
+        Up.Set( 0, ( yDown ? -1 : 1 ), 0 );
+        Direction.Set( 0, 0, ( yDown ? 1 : -1 ) );        
+        
         Position.Set( ( Zoom * viewportWidth ) / 2.0f, ( Zoom * viewportHeight ) / 2.0f, 0 );
         
         ViewportWidth  = viewportWidth;
@@ -160,17 +158,11 @@ public class OrthographicCamera : Camera
     /// the displacement on the x-axis
     /// <param name="y"/>
     /// the displacement on the y-axis
-    public void Translate( float x, float y )
-    {
-        Translate( x, y, 0 );
-    }
+    public void Translate( float x, float y ) => Translate( x, y, 0 );
 
     /// <summary>
     /// Moves the camera by the given vector.
     /// </summary>
     /// <param name="vec">the displacement vector</param>
-    public void Translate( Vector2 vec )
-    {
-        Translate( vec.X, vec.Y, 0 );
-    }
+    public void Translate( Vector2 vec ) => Translate( vec.X, vec.Y, 0 );
 }

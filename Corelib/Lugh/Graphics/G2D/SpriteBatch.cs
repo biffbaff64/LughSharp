@@ -110,21 +110,17 @@ public class SpriteBatch : IBatch
     /// </param>
     protected SpriteBatch( int size, ShaderProgram? defaultShader = null )
     {
-        // 32767 is max vertex index, so 32767 / 4 vertices per sprite = 8191 sprites max.
         if ( size > MAX_SPRITES )
         {
-            throw new ArgumentException( "Can't have more than 8191 sprites per batch: " + size );
+            // 32767 is max vertex index, so 32767 / 4 vertices per sprite = 8191 sprites max.
+            throw new ArgumentException( $"Can't have more than 8191 sprites per batch: {size}" );
         }
 
         IsDrawing = false;
         
-        Logger.Checkpoint();
-
         var vertexDataType = ( GdxApi.Bindings.GetOpenGLVersion().major >= 3 ) //TODO:
             ? Mesh.VertexDataType.VertexBufferObjectWithVAO
             : Mesh.VertexDataType.VertexArray;
-
-        Logger.Checkpoint();
 
         _mesh = new Mesh( vertexDataType,
                           false,
@@ -134,11 +130,7 @@ public class SpriteBatch : IBatch
                           new VertexAttribute( VertexAttributes.Usage.COLOR_PACKED, 4, ShaderProgram.COLOR_ATTRIBUTE ),
                           new VertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES, 2, $"{ShaderProgram.TEXCOORD_ATTRIBUTE}0" ) );
 
-        Logger.Checkpoint();
-        
         ProjectionMatrix.SetToOrtho2D( 0, 0, GdxApi.Graphics.Width, GdxApi.Graphics.Height );
-
-        Logger.Checkpoint();
 
         Vertices = new float[ size * Sprite.SPRITE_SIZE ];
 
@@ -155,13 +147,10 @@ public class SpriteBatch : IBatch
             indices[ i + 5 ] = j;
         }
 
-        Logger.Checkpoint();
-
         _mesh.SetIndices( indices );
 
         if ( defaultShader == null )
         {
-            Logger.Checkpoint();
             _shader     = CreateDefaultShader();
             _ownsShader = true;
         }
@@ -169,8 +158,6 @@ public class SpriteBatch : IBatch
         {
             _shader = defaultShader;
         }
-        
-        Logger.Checkpoint();
     }
 
     /// <summary>
@@ -436,7 +423,7 @@ public class SpriteBatch : IBatch
     /// <param name="src"></param>
     /// <param name="flipX"></param>
     /// <param name="flipY"></param>
-    public virtual void Draw( Texture? texture, GRect region, GRect src, bool flipX, bool flipY )
+    public virtual void Draw( Texture texture, GRect region, GRect src, bool flipX, bool flipY )
     {
         Validate( texture );
 
@@ -500,7 +487,7 @@ public class SpriteBatch : IBatch
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="src"></param>
-    public virtual void Draw( Texture? texture, float x, float y, GRect src )
+    public virtual void Draw( Texture texture, float x, float y, GRect src )
     {
         Validate( texture );
 
@@ -556,7 +543,7 @@ public class SpriteBatch : IBatch
     /// <param name="v"></param>
     /// <param name="u2"></param>
     /// <param name="v2"></param>
-    public virtual void Draw( Texture? texture,
+    public virtual void Draw( Texture texture,
                               GRect region,
                               float u,
                               float v,
@@ -672,8 +659,8 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = U2;
         Vertices[ Idx + 19 ] = V;
 
-//        //TODO: Remove when drawing is fixed
-//        DebugVertices();
+        //TODO: Remove when drawing is fixed
+        DebugVertices();
 
         Idx += Sprite.SPRITE_SIZE;
     }
@@ -945,7 +932,7 @@ public class SpriteBatch : IBatch
     /// <param name="scale"></param>
     /// <param name="rotation"></param>
     /// <param name="clockwise"></param>
-    public virtual void Draw( TextureRegion? textureRegion,
+    public virtual void Draw( TextureRegion textureRegion,
                               GRect region,
                               Point2D origin,
                               Point2D scale,
@@ -954,7 +941,7 @@ public class SpriteBatch : IBatch
     {
         Validate( textureRegion );
 
-        var texture = textureRegion?.Texture;
+        var texture = textureRegion.Texture;
 
         if ( texture != LastTexture )
         {
@@ -1056,7 +1043,7 @@ public class SpriteBatch : IBatch
 
         if ( clockwise )
         {
-            u1 = textureRegion!.U2;
+            u1 = textureRegion.U2;
             v1 = textureRegion.V2;
             u2 = textureRegion.U;
             v2 = textureRegion.V2;
@@ -1067,7 +1054,7 @@ public class SpriteBatch : IBatch
         }
         else
         {
-            u1 = textureRegion!.U;
+            u1 = textureRegion.U;
             v1 = textureRegion.V;
             u2 = textureRegion.U2;
             v2 = textureRegion.V;
@@ -1111,13 +1098,13 @@ public class SpriteBatch : IBatch
     /// <param name="width"></param>
     /// <param name="height"></param>
     /// <param name="transform"></param>
-    public virtual void Draw( TextureRegion? region, float width, float height, Affine2 transform )
+    public virtual void Draw( TextureRegion region, float width, float height, Affine2 transform )
     {
         Validate( region );
 
-        if ( region?.Texture != LastTexture )
+        if ( region.Texture != LastTexture )
         {
-            SwitchTexture( region?.Texture );
+            SwitchTexture( region.Texture );
         }
         else if ( Idx == Vertices.Length )
         {
@@ -1134,7 +1121,7 @@ public class SpriteBatch : IBatch
         var x4 = ( transform.M00 * width ) + transform.M02;
         var y4 = ( transform.M10 * width ) + transform.M12;
 
-        var u  = region!.U;
+        var u  = region.U;
         var v  = region.V2;
         var u2 = region.U2;
         var v2 = region.V;
@@ -1404,9 +1391,10 @@ public class SpriteBatch : IBatch
           
         var shader = new ShaderProgram( VERTEX_SHADER, FRAGMENT_SHADER );
 
+        Logger.Debug( shader.ShaderLog );
+
         if ( !shader.IsCompiled )
         {
-            Logger.Debug( shader.ShaderLog );
             throw new GdxRuntimeException( "Error compiling shader: " + shader.ShaderLog );
         }
 

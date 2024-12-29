@@ -37,7 +37,7 @@ using DesktopGLBackend.Window;
 namespace DesktopGLBackend.Graphics;
 
 [PublicAPI]
-public unsafe class DesktopGLGraphics : AbstractGraphics, IDisposable
+public class DesktopGLGraphics : AbstractGraphics, IDisposable
 {
     public DesktopGLWindow? GLWindow { get; set; }
 
@@ -114,20 +114,7 @@ public unsafe class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <param name="height"></param>
     public void ResizeCallback( GLFW.Window windowHandle, int width, int height )
     {
-        UpdateFramebufferInfo();
-
-        if ( !GLWindow!.ListenerInitialised )
-        {
-            return;
-        }
-
-        GLWindow.MakeCurrent();
-
-        GdxApi.Bindings.Viewport( 0, 0, width, height );
-
-        GLWindow.ApplicationListener.Update();
-        GLWindow.ApplicationListener.Resize( Width, Height );
-        GLWindow.ApplicationListener.Render();
+        RenderWindow( windowHandle, width, height );
     }
 
     /// <summary>
@@ -351,7 +338,7 @@ public unsafe class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <param name="systemCursor">The system cursor to use.</param>
     public override void SetSystemCursor( ICursor.SystemCursor systemCursor )
     {
-        DesktopGLCursor.SetSystemCursor( GLWindow!.GlfwWindow, systemCursor );
+        DesktopGLCursor.SetSystemCursor( GLWindow!.GlfwWindow!, systemCursor );
     }
 
     // ========================================================================
@@ -451,6 +438,26 @@ public unsafe class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     // ========================================================================
     // ========================================================================
+
+    private void RenderWindow( GLFW.Window windowHandle, int width, int height )
+    {
+        UpdateFramebufferInfo();
+
+        if ( !GLWindow!.ListenerInitialised )
+        {
+            return;
+        }
+
+        GLWindow.MakeCurrent();
+        
+        GdxApi.Bindings.Viewport( 0, 0, BackBufferWidth, BackBufferHeight );
+
+        GLWindow.ApplicationListener.Resize( Width, Height );
+        GLWindow.ApplicationListener.Update();
+        GLWindow.ApplicationListener.Render();
+        
+        Glfw.SwapBuffers( windowHandle );
+    }
 
     /// <summary>
     /// Makes a backup of the current windows position and display mode.

@@ -7,15 +7,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37b16c66-7b00-439c-a185-d98ba849df85" name="Changes" comment="">
+    <list default="true" id="37b16c66-7b00-439c-a185-d98ba849df85" name="Changes" comment="GLBindings update finished ( for now )">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLBindings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLBindings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLFunctionDelegates.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLFunctionDelegates.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLFunctionsLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/GLFunctionsLoader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/IGLBindings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/OpenGL/IGLBindings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Core/Gdx.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Core/Gdx.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Core/IPreferences.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Core/IPreferences.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Cameras/Camera.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Cameras/Camera.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Cameras/OrthographicCamera.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Cameras/OrthographicCamera.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/G2D/SpriteBatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/G2D/SpriteBatch.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/IndexBufferObjectSubData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/IndexBufferObjectSubData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/ShaderProgram.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/GLUtils/ShaderProgram.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Mesh.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Mesh.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Profiling/BaseGLInterceptor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Profiling/BaseGLInterceptor.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Profiling/GLInterceptor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Profiling/GLInterceptor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Profiling/GLProfiler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Lugh/Graphics/Profiling/GLProfiler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Window/DesktopGLWindow.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplicationConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Graphics/DesktopGLGraphics.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Graphics/DesktopGLGraphics.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Utils/DesktopGLPreferences.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Utils/DesktopGLPreferences.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -238,7 +246,7 @@
       <workItem from="1735314895785" duration="22882000" />
       <workItem from="1735341666983" duration="3000" />
       <workItem from="1735393066612" duration="9532000" />
-      <workItem from="1735410669573" duration="9593000" />
+      <workItem from="1735410669573" duration="45227000" />
     </task>
     <task id="LOCAL-00001" summary="Major Restructuring">
       <option name="closed" value="true" />
@@ -584,7 +592,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735341401751</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="GLBindings update finished ( for now )">
+      <option name="closed" value="true" />
+      <created>1735421550585</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1735421550585</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -617,7 +633,8 @@
     <MESSAGE value="GL Profiler updated" />
     <MESSAGE value="Essential backup" />
     <MESSAGE value="GL Bindings updates" />
-    <option name="LAST_COMMIT_MESSAGE" value="GL Bindings updates" />
+    <MESSAGE value="GLBindings update finished ( for now )" />
+    <option name="LAST_COMMIT_MESSAGE" value="GLBindings update finished ( for now )" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
@@ -752,6 +769,12 @@
           <option name="totalLines" value="224420" />
           <option name="info" value="" />
         </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1735421551138" />
+          <option name="linesCode" value="114587" />
+          <option name="totalLines" value="223688" />
+          <option name="info" value="" />
+        </TimePoint>
       </list>
     </option>
     <option name="genericTimePoints">
@@ -869,6 +892,12 @@
           <option name="linesCode" value="114677" />
           <option name="totalLines" value="224420" />
           <option name="info" value="27 Dec 2024" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1735421551138" />
+          <option name="linesCode" value="114587" />
+          <option name="totalLines" value="223688" />
+          <option name="info" value="28 Dec 2024" />
         </TimePoint>
       </list>
     </option>
