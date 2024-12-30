@@ -128,15 +128,12 @@ public class ShaderProgram
     // ========================================================================
 
     /// <summary>
+    /// Constructs a new ShaderProgram from the supplied shaders and immediately compiles it.
     /// </summary>
-    /// <param name="vertexShader"></param>
-    /// <param name="fragmentShader"></param>
-    /// <exception cref="ArgumentException"></exception>
+    /// <param name="vertexShader"> the vertex shader </param>
+    /// <param name="fragmentShader"> the fragment shader </param>
     public ShaderProgram( string vertexShader, string fragmentShader )
     {
-        ArgumentNullException.ThrowIfNull( vertexShader );
-        ArgumentNullException.ThrowIfNull( fragmentShader );
-
         if ( !string.IsNullOrEmpty( PrependVertexCode ) )
         {
             vertexShader = PrependVertexCode + vertexShader;
@@ -155,29 +152,30 @@ public class ShaderProgram
         if ( !IsCompiled )
         {
             Logger.Debug( $"Shader program {vertexShader} has not been compiled." );
-        }
-        else
-        {
-            FetchAttributes();
-            FetchUniforms();
 
-            AddManagedShader( GdxApi.App, this );
+            return;
         }
+
+        FetchAttributes();
+        FetchUniforms();
+
+        AddManagedShader( GdxApi.App, this );
     }
 
     /// <summary>
+    /// Constructs a new shaderprgram.
     /// </summary>
-    /// <param name="vertexShader"></param>
-    /// <param name="fragmentShader"></param>
+    /// <param name="vertexShader"> the vertex shader </param>
+    /// <param name="fragmentShader"> the fragment shader </param>
     public ShaderProgram( FileSystemInfo vertexShader, FileSystemInfo fragmentShader )
         : this( File.ReadAllText( vertexShader.Name ), File.ReadAllText( fragmentShader.Name ) )
     {
     }
 
-    /// <returns>
+    /// <summary>
     /// the log info for the shader compilation and program linking stage.
     /// The shader needs to be bound for this method to have an effect.
-    /// </returns>
+    /// </summary>
     public unsafe string ShaderLog
     {
         get
@@ -198,8 +196,8 @@ public class ShaderProgram
     /// <summary>
     /// Loads and compiles the shaders, creates a new program and links the shaders.
     /// </summary>
-    /// <param name="vertexShader"> </param>
-    /// <param name="fragmentShader">  </param>
+    /// <param name="vertexShader"> the vertex shader </param>
+    /// <param name="fragmentShader"> the fragment shader </param>
     private void CompileShaders( string vertexShader, string fragmentShader )
     {
         _vertexShaderHandle   = LoadShader( IGL.GL_VERTEX_SHADER, vertexShader );
@@ -217,6 +215,13 @@ public class ShaderProgram
         IsCompiled = ( Handle != -1 );
     }
 
+    /// <summary>
+    /// Loads the supplied shader into the relvant shader type.
+    /// </summary>
+    /// <param name="shaderType"></param>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     private unsafe int LoadShader( int shaderType, string source )
     {
         var shader = GdxApi.Bindings.CreateShader( shaderType );
@@ -291,6 +296,11 @@ public class ShaderProgram
         return program;
     }
 
+    private int FetchUniformLocation( string name )
+    {
+        return FetchUniformLocation( name, Pedantic );
+    }
+
     private int FetchAttributeLocation( string name )
     {
         // -2 == not yet cached
@@ -304,11 +314,6 @@ public class ShaderProgram
         }
 
         return location;
-    }
-
-    private int FetchUniformLocation( string name )
-    {
-        return FetchUniformLocation( name, Pedantic );
     }
 
     public int FetchUniformLocation( string name, bool pedant )

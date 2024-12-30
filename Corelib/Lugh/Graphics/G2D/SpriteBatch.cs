@@ -117,7 +117,7 @@ public class SpriteBatch : IBatch
         }
 
         IsDrawing = false;
-        
+
         var vertexDataType = ( GdxApi.Bindings.GetOpenGLVersion().major >= 3 ) //TODO:
             ? Mesh.VertexDataType.VertexBufferObjectWithVAO
             : Mesh.VertexDataType.VertexArray;
@@ -151,6 +151,7 @@ public class SpriteBatch : IBatch
 
         if ( defaultShader == null )
         {
+//            _shader     = CreateMinimalShader();
             _shader     = CreateDefaultShader();
             _ownsShader = true;
         }
@@ -1188,6 +1189,7 @@ public class SpriteBatch : IBatch
                           $"Last successful texture: {_lastSuccessfulTexture?.ToString() ?? "None"}" );
 
             Idx = 0;
+
             return;
         }
 
@@ -1198,6 +1200,7 @@ public class SpriteBatch : IBatch
             Logger.Error( "Mesh is NULL" );
 
             Idx = 0;
+
             return;
         }
 
@@ -1353,8 +1356,37 @@ public class SpriteBatch : IBatch
     }
 
     /// <summary>
-    /// Returns a new instance of the default shader used by SpriteBatch
-    /// for GL2 when no shader is specified.
+    /// Returns a new instance of a minimal shader used by SpriteBatch for GL2 when testing.
+    /// </summary>
+    public static ShaderProgram CreateMinimalShader()
+    {
+        const string VERTEX_SHADER_SOURCE = "layout (location = 0) in vec3 aPosition;" +
+                                            "layout (location = 1) in vec2 aTexCoord;" +
+                                            "out vec2 TexCoord;" +
+                                            "void main() {" +
+                                            "    gl_Position = vec4(aPosition, 1.0);" +
+                                            "    TexCoord    = aTexCoord;" +
+                                            "}";
+
+        const string FRAGMENT_SHADER_SOURCE = "out vec4 FragColor;" +
+                                              "in vec2 TexCoord;" +
+                                              "uniform sampler2D ourTexture;" +
+                                              "void main() {" +
+                                              "    FragColor = texture(ourTexture, TexCoord);" +
+                                              "}";
+        
+        var shader = new ShaderProgram( VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE );
+
+        if ( !shader.IsCompiled )
+        {
+            throw new GdxRuntimeException( "Error compiling shader: " + shader.ShaderLog );
+        }
+
+        return shader;
+    }
+
+    /// <summary>
+    /// Returns a new instance of the default shader used by SpriteBatch for GL2 when no shader is specified.
     /// </summary>
     public static ShaderProgram CreateDefaultShader()
     {
@@ -1388,10 +1420,8 @@ public class SpriteBatch : IBatch
                                        + "  vec4 fragColor = v_color * texture(u_texture, v_texCoords);\n"
                                        + "}";
         //@formatter:on
-          
-        var shader = new ShaderProgram( VERTEX_SHADER, FRAGMENT_SHADER );
 
-        Logger.Debug( shader.ShaderLog );
+        var shader = new ShaderProgram( VERTEX_SHADER, FRAGMENT_SHADER );
 
         if ( !shader.IsCompiled )
         {
@@ -1482,10 +1512,10 @@ public class SpriteBatch : IBatch
         if ( texture is not Texture or TextureRegion )
         {
             Logger.Debug( $"Supplied texture is not a valid Texture or TextureRegion" );
-            
+
             throw new GdxRuntimeException( "Invalid Texture or TextureRegion" );
         }
-        
+
         if ( texture == null )
         {
             Logger.Debug( $"Texture is null: {texture}" );
@@ -1505,7 +1535,7 @@ public class SpriteBatch : IBatch
     // ========================================================================
 
     private bool _once = true;
-    
+
     private void DebugVertices()
     {
         if ( _once )
@@ -1524,7 +1554,7 @@ public class SpriteBatch : IBatch
             }
 
             Logger.Debug( "End DebugVertices()" );
-            
+
             _once = false;
         }
     }

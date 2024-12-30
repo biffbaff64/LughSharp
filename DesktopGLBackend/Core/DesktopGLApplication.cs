@@ -77,7 +77,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     private static   GlfwErrorCallback? _errorCallback;
     private readonly Sync?              _sync;
     private          DesktopGLWindow?   _currentWindow;
-    private          IntPtr             _currentContext;
     private          bool               _running         = true;
     private          bool               _glfwInitialised = false;
     private          IPreferences       _prefs;
@@ -98,7 +97,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         GdxApi.Initialise( this );
 
         _prefs = GetPreferences( "desktopgl.lugh.engine.preferences" );
-        
+
         _prefs.PutBool( "profiling", config.GLProfilingEnabled );
         _prefs.Flush();
 
@@ -184,7 +183,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         while ( _running && ( Windows.Count > 0 ) )
         {
-            Glfw.WaitEvents();
+            Glfw.PollEvents();
 
             var haveWindowsRendered = false;
             var targetFramerate     = FR_UNINITIALISED;
@@ -548,11 +547,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
             {
                 DesktopGLNativesLoader.Load();
 
-                _errorCallback = ( error, description ) =>
-                {
-                    Logger.Checkpoint();
-                    Logger.Error( $"ErrorCode: {error}, {description}" );
-                };
+                ErrorCallback();
 
                 Glfw.SetErrorCallback( _errorCallback );
                 Glfw.InitHint( InitHint.JoystickHatButtons, false );
@@ -577,6 +572,19 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         }
     }
 
+    private static void ErrorCallback()
+    {
+        _errorCallback = ( error, description ) =>
+        {
+            Logger.Error( $"ErrorCode: {error}, {description}" );
+
+            if ( error == ErrorCode.InvalidEnum )
+            {
+                
+            }
+        };
+    }
+    
     // ========================================================================
 
     /// <inheritdoc />
@@ -653,7 +661,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         }
 
         Logger.Debug( $"Creating new Preferences file: {name}" );
-        
+
         IPreferences prefs = new DesktopGLPreferences( name );
 
         Preferences.Put( name, prefs );

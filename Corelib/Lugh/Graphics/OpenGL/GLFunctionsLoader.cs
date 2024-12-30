@@ -51,8 +51,17 @@ public partial class GLBindings
     // ========================================================================
     // ========================================================================
 
+    private static readonly Dictionary< string, Delegate > _loadedFunctions = new();
+
     public static bool GetDelegateForFunction< T >( string functionName, out T functionDelegate ) where T : Delegate
     {
+        if ( _loadedFunctions.TryGetValue( functionName, out var existingDelegate ) )
+        {
+            functionDelegate = ( T )existingDelegate;
+
+            return true; // Already loaded
+        }
+
         var functionPtr = wglGetProcAddress( functionName );
 
         if ( functionPtr == IntPtr.Zero )
@@ -66,6 +75,8 @@ public partial class GLBindings
             {
                 functionDelegate = Marshal.GetDelegateForFunctionPointer< T >( functionPtr );
 
+                _loadedFunctions.Add( functionName, functionDelegate );
+                
                 return true;
             }
             catch ( Exception ex )

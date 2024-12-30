@@ -26,10 +26,6 @@ using Corelib.Lugh.Files;
 using Corelib.Lugh.Graphics;
 using Corelib.Lugh.Graphics.Images;
 using Corelib.Lugh.Utils.Buffers;
-using Corelib.Lugh.Utils.Collections;
-using Corelib.Lugh.Utils.Exceptions;
-
-using ICSharpCode.SharpZipLib.Core;
 
 using JetBrains.Annotations;
 
@@ -138,7 +134,7 @@ public class FreeType
     // ========================================================================
     // ========================================================================
 
-    private static extern int _getLastErrorCode();
+//    private static extern int _getLastErrorCode();
 
     // ========================================================================
     // ========================================================================
@@ -159,23 +155,25 @@ public class FreeType
 
         public void Dispose()
         {
-            _doneFreeType( Address );
+            throw new NotImplementedException();
 
-            foreach ( var buffer in FontData.Values )
-            {
-                if ( BufferUtils.IsUnsafeByteBuffer( buffer ) )
-                {
-                    BufferUtils.DisposeUnsafeByteBuffer( buffer );
-                }
-            }
-
-            GC.SuppressFinalize( this );
+//            _doneFreeType( Address );
+//
+//            foreach ( var buffer in FontData.Values )
+//            {
+//                if ( BufferUtils.IsUnsafeByteBuffer( buffer ) )
+//                {
+//                    BufferUtils.DisposeUnsafeByteBuffer( buffer );
+//                }
+//            }
+//
+//            GC.SuppressFinalize( this );
         }
 
         public Face NewFace( FileHandle fontFile, int faceIndex )
         {
             throw new NotImplementedException();
-            
+
 //            ByteBuffer? buffer = null;
 //
 //            try
@@ -233,38 +231,42 @@ public class FreeType
 
         public Face NewMemoryFace( ByteBuffer buffer, int faceIndex )
         {
-            var face = _newMemoryFace( Address, buffer, buffer.Remaining(), faceIndex );
+            throw new NotImplementedException();
 
-            if ( face == 0 )
-            {
-                if ( BufferUtils.IsUnsafeByteBuffer( buffer ) )
-                {
-                    BufferUtils.DisposeUnsafeByteBuffer( buffer );
-                }
-
-                throw new GdxRuntimeException( $"Couldn't load font, FreeType error code: {_getLastErrorCode()}" );
-            }
-
-            FontData.Put( face, buffer );
-
-            return new Face( face, this );
+//            var face = _newMemoryFace( Address, buffer, buffer.Remaining(), faceIndex );
+//
+//            if ( face == 0 )
+//            {
+//                if ( BufferUtils.IsUnsafeByteBuffer( buffer ) )
+//                {
+//                    BufferUtils.DisposeUnsafeByteBuffer( buffer );
+//                }
+//
+//                throw new GdxRuntimeException( $"Couldn't load font, FreeType error code: {_getLastErrorCode()}" );
+//            }
+//
+//            FontData.Put( face, buffer );
+//
+//            return new Face( face, this );
         }
 
         public Stroker CreateStroker()
         {
-            var stroker = _strokerNew( Address );
+            throw new NotImplementedException();
 
-            if ( stroker == 0 )
-            {
-                throw new GdxRuntimeException( $"Couldn't create FreeType stroker, FreeType error code: {_getLastErrorCode()}" );
-            }
-
-            return new Stroker( stroker );
+//            var stroker = _strokerNew( Address );
+//
+//            if ( stroker == 0 )
+//            {
+//                throw new GdxRuntimeException( $"Couldn't create FreeType stroker, FreeType error code: {_getLastErrorCode()}" );
+//            }
+//
+//            return new Stroker( stroker );
         }
 
-        private static extern void _doneFreeType( long library );
-        private static extern long _newMemoryFace( long library, ByteBuffer data, int dataSize, int faceIndex );
-        private static extern long _strokerNew( long library );
+//        private static extern void _doneFreeType( long library );
+//        private static extern long _newMemoryFace( long library, ByteBuffer data, int dataSize, int faceIndex );
+//        private static extern long _strokerNew( long library );
     }
 
     // ========================================================================
@@ -277,7 +279,9 @@ public class FreeType
 
         public Size GetSize()
         {
-            return new Size( _getSize( Address ) );
+            throw new NotImplementedException();
+
+//            return new Size( _getSize( Address ) );
         }
 
         public int GetCharIndex( int i )
@@ -290,7 +294,7 @@ public class FreeType
             throw new NotImplementedException();
         }
 
-        private static extern long _getSize( long face );
+//        private static extern long _getSize( long face );
 
         public bool SetPixelSizes( int pixelWidth, int pixelHeight )
         {
@@ -339,13 +343,18 @@ public class FreeType
     [PublicAPI]
     public class Size( long address ) : Pointer( address )
     {
-        public SizeMetrics Metrics => new( _getMetrics( base.Address ) );
+        public SizeMetrics? Metrics;
+//        {
+//            get { return new( _getMetrics( base.Address ) ); }
+//        }
 
-        private static extern long _getMetrics( long address );
+        //        private static extern long _getMetrics( long address );
 
         public SizeMetrics GetMetrics()
         {
-            return new SizeMetrics( _getMetrics( base.Address ) );
+            throw new NotImplementedException();
+
+//            return new SizeMetrics( _getMetrics( base.Address ) );
         }
     }
 
@@ -357,7 +366,7 @@ public class FreeType
     {
         public int GetAscender()
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         public int GetDescender()
@@ -471,17 +480,17 @@ public class FreeType
             throw new NotImplementedException();
         }
 
+        public int GetPitch()
+        {
+            throw new NotImplementedException();
+        }
+
         public Pixmap GetPixmap( Pixmap.ColorFormat rgba8888, Color parameterColor, float parameterGamma )
         {
             throw new NotImplementedException();
         }
 
         public ByteBuffer GetBuffer()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetPitch()
         {
             throw new NotImplementedException();
         }
@@ -493,32 +502,72 @@ public class FreeType
     [PublicAPI]
     public class GlyphMetrics( long address ) : Pointer( address )
     {
-        public int GetWidth() => _getWidth( Address );
+        public int GetWidth()
+        {
+            throw new NotImplementedException();
 
-        public int GetHeight() => _getHeight( Address );
+//            return _getWidth( Address );
+        }
 
-        public int GetHoriBearingX() => _getHoriBearingX( Address );
+        public int GetHeight()
+        {
+            throw new NotImplementedException();
 
-        public int GetHoriBearingY() => _getHoriBearingY( Address );
+//            return _getHeight( Address );
+        }
 
-        public int GetHoriAdvance() => _getHoriAdvance( Address );
+        public int GetHoriBearingX()
+        {
+            throw new NotImplementedException();
 
-        public int GetVertBearingX() => _getVertBearingX( Address );
+//            return _getHoriBearingX( Address );
+        }
 
-        public int GetVertBearingY() => _getVertBearingY( Address );
+        public int GetHoriBearingY()
+        {
+            throw new NotImplementedException();
 
-        public int GetVertAdvance() => _getVertAdvance( Address );
+//            return _getHoriBearingY( Address );
+        }
+
+        public int GetHoriAdvance()
+        {
+            throw new NotImplementedException();
+
+//            return _getHoriAdvance( Address );
+        }
+
+        public int GetVertBearingX()
+        {
+            throw new NotImplementedException();
+
+//            return _getVertBearingX( Address );
+        }
+
+        public int GetVertBearingY()
+        {
+            throw new NotImplementedException();
+
+//            return _getVertBearingY( Address );
+        }
+
+        public int GetVertAdvance()
+        {
+            throw new NotImplementedException();
+
+//            return _getVertAdvance( Address );
+        }
 
         // ====================================================================
 
-        private static extern int _getWidth( long metrics );
-        private static extern int _getHeight( long metrics );
-        private static extern int _getHoriBearingX( long metrics );
-        private static extern int _getHoriBearingY( long metrics );
-        private static extern int _getHoriAdvance( long metrics );
-        private static extern int _getVertBearingX( long metrics );
-        private static extern int _getVertBearingY( long metrics );
-        private static extern int _getVertAdvance( long metrics );
+//        private static extern int _getWidth( long metrics );
+//        private static extern int _getHeight( long metrics );
+//        private static extern int _getHoriBearingX( long metrics );
+//        private static extern int _getHoriBearingY( long metrics );
+//        private static extern int _getHoriAdvance( long metrics );
+//        private static extern int _getVertBearingX( long metrics );
+//        private static extern int _getVertBearingY( long metrics );
+//        private static extern int _getVertAdvance( long metrics );
     }
 
     // ========================================================================
@@ -529,7 +578,9 @@ public class FreeType
     {
         public void Set( int radius, int lineCap, int lineJoin, int miterLimit )
         {
-            _set( Address, radius, lineCap, lineJoin, miterLimit );
+            throw new NotImplementedException();
+
+            //            _set( Address, radius, lineCap, lineJoin, miterLimit );
         }
 
         public void Dispose()
@@ -537,7 +588,10 @@ public class FreeType
             throw new NotImplementedException();
         }
 
-        private static extern void _set( long stroker, int radius, int lineCap, int lineJoin, int miterLimit );
-        private static extern void _done( long stroker );
+//        private static extern void _set( long stroker, int radius, int lineCap, int lineJoin, int miterLimit );
+//        private static extern void _done( long stroker );
     }
+
+    // ========================================================================
+    // ========================================================================
 }
