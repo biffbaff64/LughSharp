@@ -24,9 +24,9 @@
 
 using System.Text;
 
-using Corelib.Lugh.Core;
-using Corelib.Lugh.Graphics.GLUtils;
-using Corelib.Lugh.Graphics.OpenGL;
+using LughSharp.Lugh.Core;
+using LughSharp.Lugh.Graphics.GLUtils;
+using LughSharp.Lugh.Graphics.OpenGL;
 
 using DesktopGLBackend.Graphics;
 using DesktopGLBackend.Window;

@@ -1,0 +1,111 @@
+﻿
+Debug.Assert( Style.Font != null, "Style.Font != null" );
+
+T?[] - Array of nullable Ts
+T[]? - Nullable array of Ts
+
+string - keyword
+String - Class
+
+virtual method - can be redefined in child class
+
+new - HIDES an accessible base class method
+override - Extends a base class virtual method.
+
+ref (method parameters) - pass by reference. Variable passed must be initialised first. (check other uses of ref)
+                        - parameter MAY be modified by the method.
+out (method parameters) - Like ref but variable does not need to be initialised.
+                        - parameter MUST be modified by the method.
+in  (method parameters) - pass by reference but disable modification.
+                        - parameter CANNOT be modified by the method.
+
+Dispose Pattern
+---------------
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="disposing"></param>
+    protected virtual void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+        }
+    }
+
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing,
+    /// releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
+        GC.SuppressFinalize( this );
+    }
+
+Record vs Struct vs Class
+-------------------------
+
+Does your data type respect all of these rules:
+
+It logically represents a single value, similar to primitive types (int, double, etc.).
+It has an instance size under 16 bytes.
+It is immutable.
+It will not have to be boxed frequently.
+
+Yes? It should be a struct.
+No? It should be some reference type.
+
+Does your data type encapsulate some sort of a complex value?
+Is the value immutable?
+Do you use it in unidirectional (one way) flow?
+
+Yes? Go with record.
+No? Go with class.
+
+Reference Types
+---------------
+    - Classes
+    - Interfaces
+    - delegates
+    - records
+    - string
+    - Object
+    - dynamic
+
+Value Types
+-----------
+    - Structs
+    - Enums
+    - Simple Types (int, float, bool, char, ...)
+    
+Value Types can't be null. By definition, Value Types must have a value.
+
+Swap via deconstruction
+-----------------------
+        ( first, second ) = ( second, first );
+
+        instead of:-    var temp = first;
+                        first = second;
+                        second = temp;
+                        
+    -------------------------------------------------------------------------------------------
+
+ArgumentException           - Raised when a non-null argument that is passed to a method is invalid.
+ArgumentNullException	    - Raised when null argument is passed to a method.
+ArgumentOutOfRangeException	- Raised when the value of an argument is outside the range of valid values.
+DivideByZeroException	    - Raised when an integer value is divide by zero.
+FileNotFoundException	    - Raised when a physical file does not exist at the specified location.
+FormatException	            - Raised when a value is not in an appropriate format to be converted from a string by a conversion method such as Parse.
+IndexOutOfRangeException	- Raised when an array index is outside the lower or upper bounds of an array or collection.
+InvalidOperationException	- Raised when a method call is invalid in an object's current state.
+KeyNotFoundException	    - Raised when the specified key for accessing a member in a collection is not exists.
+NotSupportedException	    - Raised when a method or operation is not supported.
+NullReferenceException	    - Raised when program access members of null object.
+OverflowException	        - Raised when an arithmetic, casting, or conversion operation results in an overflow.
+OutOfMemoryException	    - Raised when a program does not get enough memory to execute the code.
+StackOverflowException	    - Raised when a stack in memory overflows.
+TimeoutException	        - The time interval allotted to an operation has expired.
+
+    -------------------------------------------------------------------------------------------
+

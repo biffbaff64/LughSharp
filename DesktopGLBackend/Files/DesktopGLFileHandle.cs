@@ -22,9 +22,9 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.Lugh.Core;
-using Corelib.Lugh.Files;
-using Corelib.Lugh.Utils.Exceptions;
+using LughSharp.Lugh.Core;
+using LughSharp.Lugh.Files;
+using LughSharp.Lugh.Utils.Exceptions;
 using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Files;

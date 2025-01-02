@@ -22,8 +22,8 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.Lugh.Core;
-using Corelib.Lugh.Graphics.GLUtils;
+using LughSharp.Lugh.Core;
+using LughSharp.Lugh.Graphics.GLUtils;
 
 using DesktopGLBackend.Audio;
 using DesktopGLBackend.Input;

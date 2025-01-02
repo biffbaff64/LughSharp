@@ -26,9 +26,9 @@ using System.Globalization;
 using System.Xml;
 using System.Xml.Linq;
 
-using Corelib.Lugh.Core;
-using Corelib.Lugh.Utils;
-using Corelib.Lugh.Utils.Exceptions;
+using LughSharp.Lugh.Core;
+using LughSharp.Lugh.Utils;
+using LughSharp.Lugh.Utils.Exceptions;
 
 using Environment = System.Environment;
 

@@ -22,13 +22,13 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.Lugh.Core;
-using Corelib.Lugh.Graphics;
-using Corelib.Lugh.Graphics.GLUtils;
-using Corelib.Lugh.Graphics.Images;
-using Corelib.Lugh.Graphics.OpenGL;
-using Corelib.Lugh.Utils;
-using Corelib.Lugh.Utils.Exceptions;
+using LughSharp.Lugh.Core;
+using LughSharp.Lugh.Graphics;
+using LughSharp.Lugh.Graphics.GLUtils;
+using LughSharp.Lugh.Graphics.Images;
+using LughSharp.Lugh.Graphics.OpenGL;
+using LughSharp.Lugh.Utils;
+using LughSharp.Lugh.Utils.Exceptions;
 
 using DesktopGLBackend.Core;
 using DesktopGLBackend.Utils;

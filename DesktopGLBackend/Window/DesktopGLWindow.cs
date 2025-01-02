@@ -22,17 +22,18 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.Lugh.Core;
-using Corelib.Lugh.Graphics.Images;
-using Corelib.Lugh.Maths;
-using Corelib.Lugh.Utils;
+using LughSharp.Lugh.Core;
+using LughSharp.Lugh.Graphics.Images;
+using LughSharp.Lugh.Maths;
+using LughSharp.Lugh.Utils;
+using LughSharp.Lugh.Utils.Exceptions;
 
 using DesktopGLBackend.Core;
 using DesktopGLBackend.Graphics;
 using DesktopGLBackend.Input;
 using DesktopGLBackend.Utils;
 
-using Platform = Corelib.Lugh.Core.Platform;
+using Platform = LughSharp.Lugh.Core.Platform;
 
 namespace DesktopGLBackend.Window;
 
@@ -198,6 +199,18 @@ public partial class DesktopGLWindow : IDisposable
         GdxApi.Input    = Input;
 
         Glfw.MakeContextCurrent( GlfwWindow );
+
+        if ( Glfw.GetCurrentContext() == null )
+        {
+            Logger.Debug( $"Context is NULL" );
+        }
+
+        ErrorCode errCode;
+        
+        if ( ( errCode = Glfw.GetError( out var description ) ) != ErrorCode.NoError )
+        {
+            throw new GdxRuntimeException( $"GLFW MakeContextCurrent error: {errCode}:{description}" ); // Print the error
+        }
     }
 
     /// <summary>

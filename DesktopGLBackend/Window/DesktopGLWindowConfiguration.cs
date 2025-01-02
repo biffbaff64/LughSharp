@@ -22,8 +22,8 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.Lugh.Core;
-using Corelib.Lugh.Graphics;
+using LughSharp.Lugh.Core;
+using LughSharp.Lugh.Graphics;
 using DesktopGLBackend.Core;
 using DesktopGLBackend.Graphics;
 using JetBrains.Annotations;

@@ -22,7 +22,7 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.Lugh.Utils;
+using LughSharp.Lugh.Utils;
 
 namespace DesktopGLBackend.Core;
 

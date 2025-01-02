@@ -24,13 +24,13 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-using Corelib.Lugh.Core;
-using Corelib.Lugh.Graphics.GLUtils;
-using Corelib.Lugh.Graphics.OpenGL;
-using Corelib.Lugh.Graphics.Profiling;
-using Corelib.Lugh.Utils;
-using Corelib.Lugh.Utils.Collections;
-using Corelib.Lugh.Utils.Exceptions;
+using LughSharp.Lugh.Core;
+using LughSharp.Lugh.Graphics.GLUtils;
+using LughSharp.Lugh.Graphics.OpenGL;
+using LughSharp.Lugh.Graphics.Profiling;
+using LughSharp.Lugh.Utils;
+using LughSharp.Lugh.Utils.Collections;
+using LughSharp.Lugh.Utils.Exceptions;
 
 using DesktopGLBackend.Audio;
 using DesktopGLBackend.Audio.Mock;
@@ -40,7 +40,7 @@ using DesktopGLBackend.Utils;
 using DesktopGLBackend.Window;
 
 using Exception = System.Exception;
-using Platform = Corelib.Lugh.Core.Platform;
+using Platform = LughSharp.Lugh.Core.Platform;
 
 namespace DesktopGLBackend.Core;
 

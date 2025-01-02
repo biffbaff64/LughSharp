@@ -22,11 +22,11 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.Lugh.Audio;
-using Corelib.Lugh.Audio.OpenAL;
-using Corelib.Lugh.Maths;
-using Corelib.Lugh.Utils.Collections;
-using Corelib.Lugh.Utils.Exceptions;
+using LughSharp.Lugh.Audio;
+using LughSharp.Lugh.Audio.OpenAL;
+using LughSharp.Lugh.Maths;
+using LughSharp.Lugh.Utils.Collections;
+using LughSharp.Lugh.Utils.Exceptions;
 
 using Exception = System.Exception;
 

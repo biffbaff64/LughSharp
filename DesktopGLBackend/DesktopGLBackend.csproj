@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Corelib\Corelib.csproj" />
+        <ProjectReference Include="..\LughSharp\LughSharp.csproj" />
         <ProjectReference Include="..\Extensions\Extensions.csproj" />
     </ItemGroup>
 

@@ -24,7 +24,7 @@
 
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using Corelib.Lugh.Utils.Collections;
+using LughSharp.Lugh.Utils.Collections;
 using JetBrains.Annotations;
 
 namespace Extensions.Source.Tools;

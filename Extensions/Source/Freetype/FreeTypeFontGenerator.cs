@@ -22,17 +22,17 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using Corelib.Lugh.Files;
-using Corelib.Lugh.Graphics;
-using Corelib.Lugh.Graphics.G2D;
-using Corelib.Lugh.Graphics.Images;
-using Corelib.Lugh.Maths;
-using Corelib.Lugh.Utils;
-using Corelib.Lugh.Utils.Exceptions;
+using LughSharp.Lugh.Files;
+using LughSharp.Lugh.Graphics;
+using LughSharp.Lugh.Graphics.G2D;
+using LughSharp.Lugh.Graphics.Images;
+using LughSharp.Lugh.Maths;
+using LughSharp.Lugh.Utils;
+using LughSharp.Lugh.Utils.Exceptions;
 
 using JetBrains.Annotations;
 
-using Color = Corelib.Lugh.Graphics.Color;
+using Color = LughSharp.Lugh.Graphics.Color;
 
 namespace Extensions.Source.Freetype;
 

@@ -22,7 +22,7 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.Lugh.Audio;
+using LughSharp.Lugh.Audio;
 using JetBrains.Annotations;
 
 namespace DesktopGLBackend.Audio.Mock;

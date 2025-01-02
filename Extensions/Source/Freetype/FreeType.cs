@@ -22,10 +22,10 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using Corelib.Lugh.Files;
-using Corelib.Lugh.Graphics;
-using Corelib.Lugh.Graphics.Images;
-using Corelib.Lugh.Utils.Buffers;
+using LughSharp.Lugh.Files;
+using LughSharp.Lugh.Graphics;
+using LughSharp.Lugh.Graphics.Images;
+using LughSharp.Lugh.Utils.Buffers;
 
 using JetBrains.Annotations;
 

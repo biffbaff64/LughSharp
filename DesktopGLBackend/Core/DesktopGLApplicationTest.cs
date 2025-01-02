@@ -22,11 +22,11 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using Corelib.Lugh.Core;
-using Corelib.Lugh.Graphics.OpenGL;
-using Corelib.Lugh.Utils;
+using LughSharp.Lugh.Core;
+using LughSharp.Lugh.Graphics.OpenGL;
+using LughSharp.Lugh.Utils;
 
-using Platform = Corelib.Lugh.Core.Platform;
+using Platform = LughSharp.Lugh.Core.Platform;
 
 namespace DesktopGLBackend.Core;
 
