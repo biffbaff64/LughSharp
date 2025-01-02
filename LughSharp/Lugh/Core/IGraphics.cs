@@ -44,7 +44,6 @@ public interface IGraphics
     int                         BackBufferWidth       { get; set; }
     int                         BackBufferHeight      { get; set; }
     bool                        IsFullscreen          { get; }
-    Color                       WindowBackgroundColor { get; set; }
 
     #endregion properties
 

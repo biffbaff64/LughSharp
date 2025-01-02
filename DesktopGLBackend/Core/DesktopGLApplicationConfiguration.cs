@@ -64,8 +64,8 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     public int             Samples                        { get; set; } = 0;
     public int             IdleFPS                        { get; set; } = 60;
     public int             ForegroundFPS                  { get; set; } = 0;
-    public int             GLContextMajorVersion          { get; set; } = GLData.DEFAULT_GL_MAJOR;
-    public int             GLContextMinorVersion          { get; set; } = GLData.DEFAULT_GL_MINOR;
+    public int             GLContextMajorVersion          { get; set; } = GLUtils.DEFAULT_GL_MAJOR;
+    public int             GLContextMinorVersion          { get; set; } = GLUtils.DEFAULT_GL_MINOR;
     public int             GLContextRevision              { get; set; } = 0;
     public GLEmulationType GLEmulation                    { get; set; } = GLEmulationType.GL20;
     public int             Red                            { get; set; } = 8;

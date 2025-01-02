@@ -39,9 +39,6 @@ using DesktopGLBackend.Input;
 using DesktopGLBackend.Utils;
 using DesktopGLBackend.Window;
 
-using Exception = System.Exception;
-using Platform = LughSharp.Lugh.Core.Platform;
-
 namespace DesktopGLBackend.Core;
 
 /// <summary>
@@ -97,7 +94,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         GdxApi.Initialise( this );
 
         _prefs = GetPreferences( "desktopgl.lugh.engine.preferences" );
-
         _prefs.PutBool( "profiling", config.GLProfilingEnabled );
         _prefs.Flush();
 
@@ -113,19 +109,18 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
             GdxApi.Bindings = new GLBindings();
         }
 
-        // Config.Title becomes the name of the ApplicationListener if
-        // it has no value at this point.
+        // Config.Title becomes the name of the ApplicationListener if it has no value at this point.
         Config       =   DesktopGLApplicationConfiguration.Copy( config );
         Config.Title ??= listener.GetType().Name;
 
         Config.SetOpenGLEmulation( DesktopGLApplicationConfiguration.GLEmulationType.GL30,
-                                   GLData.DEFAULT_GL_MAJOR,
-                                   GLData.DEFAULT_GL_MINOR );
+                                   GLUtils.DEFAULT_GL_MAJOR,
+                                   GLUtils.DEFAULT_GL_MINOR );
 
-        // Initialise the global environment shortcuts. 'GdxApi.Audio', 'GdxApi.Files', and 'GdxApi.Net' are instances
-        // of classes implementing IAudio, IFiles, and INet resprectively, and are used to access LughSharp
-        // members 'Audio', 'Files', and 'Network' are instances of classes which extend the aforementioned
-        // classes, and are used in backend code only.
+        // Initialise the global environment shortcuts. 'GdxApi.Audio', 'GdxApi.Files', and 'GdxApi.Net'
+        // are instances of classes implementing IAudio, IFiles, and INet resprectively, and are used to
+        // access LughSharp members 'Audio', 'Files', and 'Network' are instances of classes which extend
+        // the aforementioned// classes, and are used in backend code only.
         // Note: GdxApi.Graphics is set later, during window creation.
         Audio     = CreateAudio( Config );
         Files     = new DesktopGLFiles();
@@ -147,11 +142,11 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     // ========================================================================
 
     /// <summary>
-    /// The entry point for running code using this framework. At this point at least one window will have been
-    /// created, Glfw will have been set up, and the framework properly initialised.
+    /// The entry point for running code using this framework. At this point at least one window
+    /// will have been created, Glfw will have been set up, and the framework properly initialised.
     /// <para>
-    /// This passes control to <see cref="Loop()"/> and stays there until the app is finished. At this point
-    /// <see cref="CleanupWindows"/> is called, followed by <see cref="Cleanup"/>.
+    /// This passes control to <see cref="Loop()"/> and stays there until the app is finished. At
+    /// this point <see cref="CleanupWindows"/> is called, followed by <see cref="Cleanup"/>.
     /// </para>
     /// </summary>
     public void Run()
@@ -161,7 +156,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
             Loop();
             CleanupWindows();
         }
-        catch ( Exception e )
+        catch ( System.Exception e )
         {
             throw ( e is SystemException ) ? e : new GdxRuntimeException( e );
         }
@@ -176,23 +171,25 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     /// </summary>
     protected void Loop()
     {
-        Logger.Debug( $"_running: {_running}, Number of windows: {Windows.Count}" );
         Logger.Debug( "Entering framework loop" );
 
         List< DesktopGLWindow > closedWindows = [ ];
 
         while ( _running && ( Windows.Count > 0 ) )
         {
+            Logger.Checkpoint();
             Glfw.PollEvents();
+            Logger.Checkpoint();
 
             var haveWindowsRendered = false;
             var targetFramerate     = FR_UNINITIALISED;
 
             closedWindows.Clear();
 
-            // Update active windows
+            // Update active windows. SwapBuffers is called in window.Update().
             foreach ( var window in Windows )
             {
+                Logger.Checkpoint();
                 window.MakeCurrent();
 
                 _currentWindow = window;
@@ -202,15 +199,18 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
                     targetFramerate = window.AppConfig.ForegroundFPS;
                 }
 
+                Logger.Checkpoint();
                 lock ( LifecycleListeners )
                 {
                     haveWindowsRendered |= window.Update();
                 }
+                Logger.Checkpoint();
 
                 if ( window.ShouldClose() )
                 {
                     closedWindows.Add( window );
                 }
+                Logger.Checkpoint();
             }
 
             bool shouldRequestRendering;
@@ -482,16 +482,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         Glfw.MakeContextCurrent( windowHandle );
 
-        Logger.Debug( $"Context is {( Glfw.GetCurrentContext() == null ? "NULL" : "Initialised" )}" );
-
-        if ( Glfw.GetError( out var description ) != ErrorCode.NoError )
-        {
-            throw new GdxRuntimeException( $"GLFW MakeContextCurrent error: {description}" ); // Print the error
-        }
-
         Glfw.SwapInterval( config.VSyncEnabled ? 1 : 0 );
 
-        GLData.CreateCapabilities(); // Needed??
+        GLUtils.CreateCapabilities(); // Needed??
 
         InitGLVersion( windowHandle );
 
@@ -499,13 +492,18 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         {
             GdxApi.Bindings.Enable( IGL.GL_DEBUG_OUTPUT );
 
+            unsafe
+            {
+                GdxApi.Bindings.DebugMessageCallback( GdxApi.Bindings.MessageCallback, null );
+            }
+            
 //            GlDebugCallback = Glfw.DebugMessageCallback( config.debugStream );
 //            SetGLDebugMessageControl( GLDebugMessageSeverity.Notification, false );
         }
 
         return windowHandle;
     }
-
+    
     #endregion window creation handlers
 
     // ========================================================================
@@ -517,11 +515,11 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     /// <param name="windowHandle"></param>
     private void InitGLVersion( GLFW.Window windowHandle )
     {
-        OGLProfile = GLData.DEFAULT_OPENGL_PROFILE;
+        OGLProfile = GLUtils.DEFAULT_OPENGL_PROFILE;
 
         Glfw.GetVersion( out var glMajor, out var glMinor, out var revision );
 
-        Glfw.WindowHint( WindowHint.ClientAPI, GLData.DEFAULT_CLIENT_API );
+        Glfw.WindowHint( WindowHint.ClientAPI, GLUtils.DEFAULT_CLIENT_API );
         Glfw.WindowHint( WindowHint.OpenGLProfile, OGLProfile );
         Glfw.WindowHint( WindowHint.ContextVersionMajor, glMajor );
         Glfw.WindowHint( WindowHint.ContextVersionMinor, glMinor );
@@ -532,7 +530,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         Logger.Debug( $"OGLVersion: {GdxApi.Bindings.GetOpenGLVersion().major}.{GdxApi.Bindings.GetOpenGLVersion().minor}" );
 
-        GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL );
+        GLVersion = new GLVersion( LughSharp.Lugh.Core.Platform.ApplicationType.WindowsGL );
     }
 
     /// <summary>
@@ -566,7 +564,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
                 _glfwInitialised = true;
             }
         }
-        catch ( Exception e )
+        catch ( System.Exception e )
         {
             throw new ApplicationException( $"Failure in InitialiseGLFW() : {e}" );
         }
@@ -600,7 +598,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
                                          config.AudioDeviceBufferCount,
                                          config.AudioDeviceBufferSize );
             }
-            catch ( Exception e )
+            catch ( System.Exception e )
             {
                 Logger.Debug( $"Couldn't initialize audio, disabling audio: {e}" );
                 audio = new MockAudio();
@@ -670,9 +668,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     }
 
     /// <inheritdoc />
-    public Platform.ApplicationType AppType
+    public LughSharp.Lugh.Core.Platform.ApplicationType AppType
     {
-        get => Platform.ApplicationType.WindowsGL;
+        get => LughSharp.Lugh.Core.Platform.ApplicationType.WindowsGL;
         set { }
     }
 
@@ -698,9 +696,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     public virtual int GetVersion() => 0;
 
     /// <summary>
-    /// Schedule an exit from the application. On android, this will cause a call to Pause()
-    /// and Dispose() some time in the future. It will not immediately finish your application.
-    /// On iOS this should be avoided in production as it breaks Apples guidelines
+    /// Schedule an exit from the application. On android, this will cause a call to
+    /// Pause() and Dispose() at the next opportunity. It will not immediately finish
+    /// your application. On iOS this should be avoided in production as it breaks
+    /// Apples guidelines
     /// </summary>
     public virtual void Exit()
     {
@@ -763,7 +762,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
                 // WGL_ARB_create_context extension is not available
                 // see: http://www.glfw.org/docs/latest/compat.html
                 Glfw.WindowHint( WindowHint.OpenGLForwardCompat, true );
-                Glfw.WindowHint( WindowHint.OpenGLProfile, GLData.DEFAULT_OPENGL_PROFILE );
+                Glfw.WindowHint( WindowHint.OpenGLProfile, GLUtils.DEFAULT_OPENGL_PROFILE );
             }
         }
 

@@ -44,5 +44,46 @@ public static class BytePointerToString
         // Convert byte array to string
         return System.Text.Encoding.UTF8.GetString( byteArray );
     }
-}
 
+    /// <summary>
+    /// Converts a GLchar* (pointer to a null-terminated or length-specified C-style string)
+    /// to a C# string.
+    /// </summary>
+    /// <param name="glCharPtr">The pointer to the GLchar array.</param>
+    /// <param name="length">The length of the string, or -1 if null-terminated.</param>
+    /// <returns>The C# string, or null if the input pointer is null.</returns>
+    public static string? GlCharPointerToString( IntPtr glCharPtr, int length = -1 )
+    {
+        if ( glCharPtr == IntPtr.Zero )
+        {
+            return null;
+        }
+
+        if ( length == -1 ) // Null-terminated string
+        {
+            // Find the null terminator
+            var len = 0;
+
+            while ( Marshal.ReadByte( glCharPtr, len ) != 0 )
+            {
+                len++;
+            }
+
+            if ( len == 0 ) return string.Empty; // Handle the case of an empty string
+
+            var bytes = new byte[ len ];
+            Marshal.Copy( glCharPtr, bytes, 0, len );
+
+            return Encoding.UTF8.GetString( bytes ); // Or appropriate encoding
+        }
+        else // Length-specified string
+        {
+            if ( length == 0 ) return string.Empty; //Handle the case of an empty string
+
+            var bytes = new byte[ length ];
+            Marshal.Copy( glCharPtr, bytes, 0, length );
+
+            return Encoding.UTF8.GetString( bytes ); // Or appropriate encoding
+        }
+    }
+}

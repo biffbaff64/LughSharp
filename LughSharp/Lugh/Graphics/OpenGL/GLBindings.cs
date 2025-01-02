@@ -99,16 +99,19 @@ public unsafe partial class GLBindings : IGLBindings
 
     // ========================================================================
     // ========================================================================
-
     public void MessageCallback( int source,
                                  int type,
                                  uint id,
                                  int severity,
                                  int length,
-                                 string message,
+                                 byte* message,
                                  void* userParam )
     {
-        Logger.Error( $"GL CALLBACK: {( type == IGL.GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" )} type = {type}, severity = {severity}, message = {message}\n" );
+        Logger.Error( $"GL CALLBACK: " +
+                      $"{( type == IGL.GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" )} " +
+                      $"type = {type}, " +
+                      $"severity = {severity}, " +
+                      $"message = {BytePointerToString.Convert( message )}\n" );
     }
 
     // ========================================================================

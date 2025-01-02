@@ -33,6 +33,8 @@ using DesktopGLBackend.Graphics;
 using DesktopGLBackend.Input;
 using DesktopGLBackend.Utils;
 
+using LughSharp.Lugh.Graphics.OpenGL;
+
 using Platform = LughSharp.Lugh.Core.Platform;
 
 namespace DesktopGLBackend.Window;
@@ -200,16 +202,18 @@ public partial class DesktopGLWindow : IDisposable
 
         Glfw.MakeContextCurrent( GlfwWindow );
 
-        if ( Glfw.GetCurrentContext() == null )
+        var error = GdxApi.Bindings.GetError();
+
+        if ( error != IGL.GL_NO_ERROR )
         {
-            Logger.Debug( $"Context is NULL" );
+            Logger.Debug( $"{error} - {GLUtils.GetErrorString( error )}" );
         }
 
         ErrorCode errCode;
         
         if ( ( errCode = Glfw.GetError( out var description ) ) != ErrorCode.NoError )
         {
-            throw new GdxRuntimeException( $"GLFW MakeContextCurrent error: {errCode}:{description}" ); // Print the error
+            throw new GdxRuntimeException( $"GLFW MakeContextCurrent error: {errCode}:{description}" );
         }
     }
 

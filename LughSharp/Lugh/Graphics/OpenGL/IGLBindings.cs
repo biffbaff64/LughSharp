@@ -42,7 +42,7 @@ public partial interface IGLBindings
                                  uint id,
                                  int severity,
                                  int length,
-                                 string message,
+                                 byte* message,
                                  void* userParam );
 
     /// <summary>

@@ -4263,7 +4263,7 @@ public class GLInterceptor( GLProfiler profiler ) : BaseGLInterceptor( profiler 
     }
 
     /// <inheritdoc />
-    public unsafe void MessageCallback( int source, int type, uint id, int severity, int length, string message, void* userParam )
+    public unsafe void MessageCallback( int source, int type, uint id, int severity, int length, byte* message, void* userParam )
     {
         Calls++;
         Bindings.MessageCallback( source, type, id, severity, length, message, userParam );

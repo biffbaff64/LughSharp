@@ -25,7 +25,7 @@
 namespace LughSharp.Lugh.Graphics.OpenGL;
 
 [PublicAPI]
-public class GLData
+public class GLUtils
 {
     public const int           DEFAULT_GL_MAJOR       = 3;
     public const int           DEFAULT_GL_MINOR       = 3;
@@ -52,6 +52,22 @@ public class GLData
 
     // ========================================================================
     // ========================================================================
+
+    public static string GetErrorString( int errorCode )
+    {
+        return errorCode switch
+        {
+            IGL.GL_INVALID_ENUM                  => "Invalid Enum",
+            IGL.GL_INVALID_OPERATION             => "Invalid Operation",
+            IGL.GL_INVALID_VALUE                 => "Invalid Value",
+            IGL.GL_OUT_OF_MEMORY                 => "Out of memory",
+            IGL.GL_INVALID_FRAMEBUFFER_OPERATION => "Invalid Framebuffer operation",
+            IGL.GL_STACK_OVERFLOW                => "Stack Overflow",
+            IGL.GL_STACK_UNDERFLOW               => "Stack Underflow",
+            IGL.GL_CONTEXT_LOST                  => "Context Lost",
+            var _                                => $"Unknown GL Error Code: {errorCode}",
+        };
+    }
 
     public static void CreateCapabilities()
     {
