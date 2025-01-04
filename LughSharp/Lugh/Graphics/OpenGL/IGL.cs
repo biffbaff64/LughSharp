@@ -156,17 +156,26 @@ public interface IGL
 
     // ========================================================================
     const int GL_POINT_SIZE                    = 0x0B11;
-    const int GL_POINT_SIZE_RANGE              = 0x0B12;
-    const int GL_POINT_SIZE_GRANULARITY        = 0x0B13;
+    const int GL_SMOOTH_POINT_SIZE_RANGE       = 0x0B12;
+    const int GL_SMOOTH_POINT_SIZE_GRANULARITY = 0x0B13;
+    const int GL_LINE_SMOOTH                   = 0x0B20;
     const int GL_LINE_WIDTH                    = 0x0B21;
+    const int GL_SMOOTH_LINE_WIDTH_RANGE       = 0x0B22;
+    const int GL_SMOOTH_LINE_WIDTH_GRANULARITY = 0x0B23;
+    const int GL_POLYGON_MODE                  = 0x0B40;
+    const int GL_POLYGON_SMOOTH                = 0x0B41;
     const int GL_CULL_FACE                     = 0x0B44;
     const int GL_CULL_FACE_MODE                = 0x0B45;
     const int GL_FRONT_FACE                    = 0x0B46;
+    const int GL_LIGHTING                      = 0x0B50;
+    const int GL_COLOR_MATERIAL                = 0x0B57;
+    const int GL_FOG                           = 0x0B60;
     const int GL_DEPTH_RANGE                   = 0x0B70;
     const int GL_DEPTH_TEST                    = 0x0B71;
     const int GL_DEPTH_WRITEMASK               = 0x0B72;
     const int GL_DEPTH_CLEAR_VALUE             = 0x0B73;
     const int GL_DEPTH_FUNC                    = 0x0B74;
+    const int GL_TEXTURE_COORD_ARRAY           = 0x0B78;
     const int GL_STENCIL_TEST                  = 0x0B90;
     const int GL_STENCIL_CLEAR_VALUE           = 0x0B91;
     const int GL_STENCIL_FUNC                  = 0x0B92;
@@ -179,19 +188,13 @@ public interface IGL
     const int GL_VIEWPORT                      = 0x0BA2;
     const int GL_DITHER                        = 0x0BD0;
     const int GL_BLEND                         = 0x0BE2;
-    const int GL_LINE_SMOOTH                   = 0x0B20;
-    const int GL_LINE_WIDTH_RANGE              = 0x0B22;
-    const int GL_LINE_WIDTH_GRANULARITY        = 0x0B23;
-    const int GL_POLYGON_MODE                  = 0x0B40;
-    const int GL_POLYGON_SMOOTH                = 0x0B41;
     const int GL_BLEND_DST                     = 0x0BE0;
     const int GL_BLEND_SRC                     = 0x0BE1;
     const int GL_LOGIC_OP_MODE                 = 0x0BF0;
     const int GL_COLOR_LOGIC_OP                = 0x0BF2;
-    const int GL_SMOOTH_POINT_SIZE_RANGE       = 0x0B12;
-    const int GL_SMOOTH_POINT_SIZE_GRANULARITY = 0x0B13;
-    const int GL_SMOOTH_LINE_WIDTH_RANGE       = 0x0B22;
-    const int GL_SMOOTH_LINE_WIDTH_GRANULARITY = 0x0B23;
+
+    const int GL_NORMAL_ARRAY = 0x8075;
+    const int GL_NORMALIZE    = 0x0BA1;
 
     // ========================================================================
     const int GL_DRAW_BUFFER         = 0x0C01;
@@ -375,6 +378,7 @@ public interface IGL
     const int GL_TEXTURE_3D                                         = 0x806F;
     const int GL_TEXTURE_WRAP_R                                     = 0x8072;
     const int GL_MAX_3D_TEXTURE_SIZE                                = 0x8073;
+    const int GL_COLOR_ARRAY                                        = 0x8076;
     const int GL_SAMPLE_ALPHA_TO_COVERAGE                           = 0x809E;
     const int GL_SAMPLE_COVERAGE                                    = 0x80A0;
     const int GL_SAMPLE_BUFFERS                                     = 0x80A8;

@@ -438,14 +438,14 @@ public abstract class GLTexture : IDisposable
             DebugUploadImageData( target, miplevel, pixmap );
 
             GdxApi.Bindings.TexImage2D( target,
-                                 miplevel,
-                                 pixmap.GLInternalFormat,
-                                 pixmap.Width,
-                                 pixmap.Height,
-                                 border: 0,
-                                 pixmap.GLFormat,
-                                 pixmap.GLType,
-                                 pixmap.PixelData );
+                                        miplevel,
+                                        pixmap.GLInternalFormat,
+                                        pixmap.Width,
+                                        pixmap.Height,
+                                        border: 0,
+                                        pixmap.GLFormat,
+                                        pixmap.GLType,
+                                        pixmap.PixelData );
         }
 
         if ( disposePixmap )
@@ -471,16 +471,16 @@ public abstract class GLTexture : IDisposable
             var sb = new StringBuilder();
 
             const int BLOCK_SIZE = 20;
-            
+
             for ( var i = 0; i < 100; i += BLOCK_SIZE )
             {
                 sb.Clear();
-                
+
                 for ( var j = 0; j < BLOCK_SIZE; j++ )
                 {
-                    sb.Append( $"{a[i + j]}," );
+                    sb.Append( $"{a[ i + j ]}," );
                 }
-                
+
                 Logger.Debug( sb.ToString() );
             }
         }
@@ -507,7 +507,7 @@ public abstract class GLTexture : IDisposable
     public virtual void Dispose()
     {
         Dispose( true );
-        
+
         GC.SuppressFinalize( this );
     }
 

@@ -48,6 +48,8 @@ public class AssetLoadingTask
     private readonly long         _startTime;
     private readonly object       _lock = new();
 
+    private bool _asyncDone = false;
+    
     // ========================================================================
     // ========================================================================
 
@@ -64,6 +66,125 @@ public class AssetLoadingTask
         _loader   = loader;
     }
 
+    /// <summary>
+    /// Loads parts of the asset asynchronously if the loader is an AsynchronousAssetLoader.
+    /// </summary>
+    public void Call()
+    {
+        if ( Cancel )
+        {
+            return;
+        }
+        
+        var asyncLoader = _loader as AsynchronousAssetLoader ?? throw new GdxRuntimeException( "asyncLoader cannot be null!" );
+
+        var fileInfo = Resolve( _loader, AssetDesc ) ?? throw new GdxRuntimeException( "Resolve() returned null!" );
+            
+        if ( !DependenciesLoaded )
+        {
+            Dependencies = asyncLoader.GetDependencies( AssetDesc.AssetName, fileInfo, AssetDesc.Parameters );
+
+            if ( Dependencies != null )
+            {
+                RemoveDuplicates( Dependencies );
+                
+                _manager.InjectDependencies( AssetDesc.AssetName, Dependencies );
+
+                return;
+            }
+        }
+
+        // No dependencies, so load the async part of the task immediately.
+        asyncLoader.LoadAsync( _manager, fileInfo, AssetDesc.Parameters );
+        _asyncDone = true;
+    }
+
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Updates the loading of the asset. In case the asset is loaded with an <see cref="AsynchronousAssetLoader"/>,
+    /// the loaders <see cref="AsynchronousAssetLoader.LoadAsync{TP}(AssetManager, FileInfo, TP?)"/> method is
+    /// first called on a worker thread. Once this method returns, the rest of the asset is loaded on the rendering
+    /// thread via <see cref="AsynchronousAssetLoader.LoadSync{TP}(AssetManager, FileInfo, TP?)"/>.
+    /// </summary>
+    /// <returns> true if the asset was fully loaded, false otherwise </returns>
+    public bool Update()
+    {
+        if ( _loader is SynchronousAssetLoader< Type, AssetLoaderParameters > )
+        {
+            HandleSyncLoader();
+        }
+        else
+        {
+            HandleAsyncLoader();
+        }
+
+        return Asset != null;
+    }
+    
+    private void HandleSyncLoader()
+    {
+    }
+
+    private void HandleAsyncLoader()
+    {
+    }
+
+    /// <summary>
+    /// Unloads the current asset using the associated asynchronous asset loader,
+    /// if applicable.
+    /// </summary>
+    public void Unload()
+    {
+        if ( _loader is AsynchronousAssetLoader asyncLoader )
+        {
+            asyncLoader.UnloadAsync( _manager, Resolve( _loader, AssetDesc )!, AssetDesc.Parameters! );
+        }
+    }
+
+    /// <summary>
+    /// Resolves the file information for the given asset descriptor using the
+    /// provided asset loader, if needed.
+    /// </summary>
+    /// <param name="loader">The asset loader to use for resolving the file information.</param>
+    /// <param name="assetDesc">The asset descriptor containing the asset details to resolve.</param>
+    /// <returns>The resolved file information, or null if it cannot be resolved.</returns>
+    private static FileInfo? Resolve( AssetLoader? loader, AssetDescriptor? assetDesc )
+    {
+        if ( assetDesc == null )
+        {
+            throw new GdxRuntimeException( "AssetDescriptor is empty" );
+        }
+        
+        if ( ( assetDesc.File == null ) && ( loader != null ) )
+        {
+            assetDesc.File = loader.Resolve( assetDesc.AssetName );
+        }
+
+        return assetDesc.File;
+    }
+
+    /// <summary>
+    /// Removes duplicate asset descriptors from the given list. Duplicates are identified
+    /// based on the asset name and asset type.
+    /// </summary>
+    /// <param name="array">The list of asset descriptors to process for duplicates.</param>
+    private static void RemoveDuplicates( List< AssetDescriptor > array )
+    {
+        var uniqueAssets = array.GroupBy( a => new
+                                {
+                                    a.AssetName, a.AssetType
+                                } )
+                                .Select( g => g.First() )
+                                .ToList();
+
+        array.Clear();
+        array.AddRange( uniqueAssets );
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// Asynchronously loads an asset along with its dependencies based on the type of asset loader
     /// provided. Can handle both asynchronous and synchronous asset loaders, ensuring dependencies
@@ -184,52 +305,5 @@ public class AssetLoadingTask
 
             return loader.Load( _manager, Resolve( loader, AssetDesc )!, AssetDesc.Parameters! );
         }
-    }
-
-    /// <summary>
-    /// Unloads the current asset using the associated asynchronous asset loader,
-    /// if applicable.
-    /// </summary>
-    public void Unload()
-    {
-        if ( _loader is AsynchronousAssetLoader asyncLoader )
-        {
-            asyncLoader.UnloadAsync( _manager, Resolve( _loader, AssetDesc )!, AssetDesc.Parameters! );
-        }
-    }
-
-    /// <summary>
-    /// Resolves the file information for the given asset descriptor using the
-    /// provided asset loader, if needed.
-    /// </summary>
-    /// <param name="loader">The asset loader to use for resolving the file information.</param>
-    /// <param name="assetDesc">The asset descriptor containing the asset details to resolve.</param>
-    /// <returns>The resolved file information, or null if it cannot be resolved.</returns>
-    private static FileInfo? Resolve( AssetLoader? loader, AssetDescriptor? assetDesc )
-    {
-        if ( assetDesc?.File == null && loader != null )
-        {
-            assetDesc!.File = loader.Resolve( assetDesc.AssetName );
-        }
-
-        return assetDesc?.File;
-    }
-
-    /// <summary>
-    /// Removes duplicate asset descriptors from the given list. Duplicates are identified
-    /// based on the asset name and asset type.
-    /// </summary>
-    /// <param name="array">The list of asset descriptors to process for duplicates.</param>
-    private static void RemoveDuplicates( List< AssetDescriptor > array )
-    {
-        var uniqueAssets = array.GroupBy( a => new
-                                {
-                                    a.AssetName, a.AssetType
-                                } )
-                                .Select( g => g.First() )
-                                .ToList();
-
-        array.Clear();
-        array.AddRange( uniqueAssets );
     }
 }

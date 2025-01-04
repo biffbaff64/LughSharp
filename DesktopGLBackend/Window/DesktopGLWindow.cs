@@ -201,20 +201,6 @@ public partial class DesktopGLWindow : IDisposable
         GdxApi.Input    = Input;
 
         Glfw.MakeContextCurrent( GlfwWindow );
-
-        var error = GdxApi.Bindings.GetError();
-
-        if ( error != IGL.GL_NO_ERROR )
-        {
-            Logger.Debug( $"{error} - {GLUtils.GetErrorString( error )}" );
-        }
-
-        ErrorCode errCode;
-        
-        if ( ( errCode = Glfw.GetError( out var description ) ) != ErrorCode.NoError )
-        {
-            throw new GdxRuntimeException( $"GLFW MakeContextCurrent error: {errCode}:{description}" );
-        }
     }
 
     /// <summary>

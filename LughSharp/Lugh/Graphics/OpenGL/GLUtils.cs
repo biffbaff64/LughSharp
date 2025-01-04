@@ -22,6 +22,8 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
+using LughSharp.Lugh.Utils;
+
 namespace LughSharp.Lugh.Graphics.OpenGL;
 
 [PublicAPI]
@@ -71,5 +73,37 @@ public class GLUtils
 
     public static void CreateCapabilities()
     {
+    }
+
+    public static void SetupGLDebug()
+    {
+        Logger.Debug( "Setting up GL Debug" );
+            
+        unsafe
+        {
+            Glfw.WindowHint( WindowHint.OpenGLDebugContext, true );
+
+            var debugProc = new GLBindings.GLDEBUGPROC( ( source, type, id, severity, length, message, userParam ) =>
+            {
+                var msg = Marshal.PtrToStringAnsi( ( IntPtr )message, length );
+
+                Logger.Debug( $"OpenGL Debug Message:\n" +
+                              $"Source: {source}\n" +
+                              $"Type: {type}\n" +
+                              $"ID: {id}\n" +
+                              $"Severity: {severity}\n" +
+                              $"Message: {msg}" );
+
+                if ( severity == DebugSeverity.DEBUG_SEVERITY_HIGH )
+                {
+                    //Break on high severity errors
+                    System.Diagnostics.Debugger.Break();
+                }
+            } );
+
+            GdxApi.Bindings.DebugMessageCallback( debugProc, null );
+            GdxApi.Bindings.Enable( IGL.GL_DEBUG_OUTPUT );
+            GdxApi.Bindings.Enable( IGL.GL_DEBUG_OUTPUT_SYNCHRONOUS );
+        }
     }
 }

@@ -158,15 +158,15 @@ public class TextureArray : GLTexture, IManaged
         Bind();
 
         GdxApi.Bindings.TexImage3D( IGL.GL_TEXTURE_2D_ARRAY,
-                             0,
-                             data.InternalFormat,
-                             data.Width,
-                             data.Height,
-                             data.Depth,
-                             0,
-                             data.InternalFormat,
-                             data.GLType,
-                             null );
+                                    0,
+                                    data.InternalFormat,
+                                    data.Width,
+                                    data.Height,
+                                    data.Depth,
+                                    0,
+                                    data.InternalFormat,
+                                    data.GLType,
+                                    null );
 
         if ( !data.Prepared )
         {
@@ -177,7 +177,7 @@ public class TextureArray : GLTexture, IManaged
 
         SetFilter( MinFilter, MagFilter );
         SetWrap( UWrap, VWrap );
-        
+
         GdxApi.Bindings.BindTexture( GLTarget, 0 );
     }
 
@@ -208,9 +208,9 @@ public class TextureArray : GLTexture, IManaged
         _managedTextureArrays[ app ].Add( texture );
         _managedTextureArrays[ app ] = managedTextureArray;
     }
-    
+
     // ========================================================================
-    
+
     #region aliases
 
     public override int Width  => _data.Width;

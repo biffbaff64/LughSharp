@@ -154,6 +154,10 @@
         <Content Include="runtimes\win-x64\native\glfw3.dll">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <None Remove="Assets\rover_wheel.png" />
+        <Content Include="Assets\rover_wheel.png">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>

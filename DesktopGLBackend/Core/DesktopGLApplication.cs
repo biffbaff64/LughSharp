@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 
 using LughSharp.Lugh.Core;
 using LughSharp.Lugh.Graphics.GLUtils;
@@ -177,40 +178,37 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         while ( _running && ( Windows.Count > 0 ) )
         {
-            Logger.Checkpoint();
             Glfw.PollEvents();
-            Logger.Checkpoint();
 
             var haveWindowsRendered = false;
             var targetFramerate     = FR_UNINITIALISED;
 
             closedWindows.Clear();
 
-            // Update active windows. SwapBuffers is called in window.Update().
-            foreach ( var window in Windows )
+            lock ( this )
             {
-                Logger.Checkpoint();
-                window.MakeCurrent();
-
-                _currentWindow = window;
-
-                if ( targetFramerate == FR_UNINITIALISED )
+                // Update active windows. SwapBuffers is called in window.Update().
+                foreach ( var window in Windows )
                 {
-                    targetFramerate = window.AppConfig.ForegroundFPS;
-                }
+                    window.MakeCurrent();
 
-                Logger.Checkpoint();
-                lock ( LifecycleListeners )
-                {
-                    haveWindowsRendered |= window.Update();
-                }
-                Logger.Checkpoint();
+                    _currentWindow = window;
 
-                if ( window.ShouldClose() )
-                {
-                    closedWindows.Add( window );
+                    if ( targetFramerate == FR_UNINITIALISED )
+                    {
+                        targetFramerate = window.AppConfig.ForegroundFPS;
+                    }
+
+                    lock ( LifecycleListeners )
+                    {
+                        haveWindowsRendered |= window.Update();
+                    }
+
+                    if ( window.ShouldClose() )
+                    {
+                        closedWindows.Add( window );
+                    }
                 }
-                Logger.Checkpoint();
             }
 
             bool shouldRequestRendering;
@@ -254,7 +252,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
                 if ( Windows.Count == 1 )
                 {
                     // Lifecycle listener methods have to be called before ApplicationListener
-                    // methods. The application will be disposed when _all_ windows have been
+                    // methods. The application will be disposed when ALL windows have been
                     // disposed, which is the case, when there is only 1 window left, which is
                     // in the process of being disposed.
                     for ( var i = LifecycleListeners.Count - 1; i >= 0; i-- )
@@ -490,20 +488,12 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         if ( config.Debug )
         {
-            GdxApi.Bindings.Enable( IGL.GL_DEBUG_OUTPUT );
-
-            unsafe
-            {
-                GdxApi.Bindings.DebugMessageCallback( GdxApi.Bindings.MessageCallback, null );
-            }
-            
-//            GlDebugCallback = Glfw.DebugMessageCallback( config.debugStream );
-//            SetGLDebugMessageControl( GLDebugMessageSeverity.Notification, false );
+            GLUtils.SetupGLDebug();
         }
 
         return windowHandle;
     }
-    
+
     #endregion window creation handlers
 
     // ========================================================================
@@ -578,11 +568,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
             if ( error == ErrorCode.InvalidEnum )
             {
-                
             }
         };
     }
-    
+
     // ========================================================================
 
     /// <inheritdoc />
@@ -780,88 +769,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
             Glfw.WindowHint( WindowHint.OpenGLDebugContext, true );
         }
     }
-
-    // ========================================================================
-    // ========================================================================
-    // ========================================================================
-    // ========================================================================
-
-    #region GLDebug specific
-
-    [PublicAPI]
-    public struct Gldms( int gl43, int khr, int arb, int amd )
-    {
-        public int GL43 = gl43;
-        public int Khr  = khr;
-        public int Arb  = arb;
-        public int Amd  = amd;
-    }
-
-    [PublicAPI]
-    public record GLDebugMessageSeverity
-    {
-        public Gldms High = new( IGL.GL_DEBUG_SEVERITY_HIGH,
-                                 -1,   //KHRDebug.GL_DEBUG_SEVERITY_HIGH,
-                                 -1,   //ARBDebugOutput.GL_DEBUG_SEVERITY_HIGH_ARB,
-                                 -1 ); //AMDDebugOutput.GL_DEBUG_SEVERITY_HIGH_AMD );
-
-        public Gldms Medium = new( IGL.GL_DEBUG_SEVERITY_MEDIUM,
-                                   -1,   //KHRDebug.GL_DEBUG_SEVERITY_MEDIUM,
-                                   -1,   //ARBDebugOutput.GL_DEBUG_SEVERITY_MEDIUM_ARB,
-                                   -1 ); //AMDDebugOutput.GL_DEBUG_SEVERITY_MEDIUM_AMD );
-
-        public Gldms Low = new( IGL.GL_DEBUG_SEVERITY_LOW,
-                                -1,   //KHRDebug.GL_DEBUG_SEVERITY_LOW,
-                                -1,   //ARBDebugOutput.GL_DEBUG_SEVERITY_LOW_ARB,
-                                -1 ); //AMDDebugOutput.GL_DEBUG_SEVERITY_LOW_AMD );
-
-        public Gldms Notification = new( IGL.GL_DEBUG_SEVERITY_NOTIFICATION,
-                                         -1, //KHRDebug.GL_DEBUG_SEVERITY_NOTIFICATION,
-                                         -1,
-                                         -1 );
-    }
-
-//    /// <summary>
-//    /// Enables or disables GL debug messages for the specified severity level.
-//    /// Returns false if the severity level could not be set (e.g. the NOTIFICATION
-//    /// level is not supported by the ARB and AMD extensions).
-//    /// </summary>
-    public static bool SetGLDebugMessageControl( GLDebugMessageSeverity severity, bool enabled )
-    {
-//        GLCapabilities caps = GL.GetCapabilities();
-//
-//        if ( caps.OpenGL43 )
-//        {
-//            GL43.glDebugMessageControl( GL_DONT_CARE, GL_DONT_CARE, severity.gl43, ( IntBuffer )null, enabled );
-//
-//            return true;
-//        }
-//
-//        if ( caps.GL_KHR_debug )
-//        {
-//            KHRDebug.glDebugMessageControl( GL_DONT_CARE, GL_DONT_CARE, severity.khr, ( IntBuffer )null, enabled );
-//
-//            return true;
-//        }
-//
-//        if ( caps.GL_ARB_debug_output && severity.arb != -1 )
-//        {
-//            ARBDebugOutput.glDebugMessageControlARB( GL_DONT_CARE, GL_DONT_CARE, severity.arb, ( IntBuffer )null, enabled );
-//
-//            return true;
-//        }
-//
-//        if ( caps.GL_AMD_debug_output && severity.amd != -1 )
-//        {
-//            AMDDebugOutput.glDebugMessageEnableAMD( GL_DONT_CARE, severity.amd, ( IntBuffer )null, enabled );
-//
-//            return true;
-//        }
-
-        return false;
-    }
-
-    #endregion GLDebug specific
 
     // ========================================================================
     // ========================================================================

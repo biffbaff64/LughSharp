@@ -309,9 +309,24 @@ public unsafe partial class GLBindings : IGLBindings
                                  GLint border,
                                  GLenum format,
                                  GLenum type,
-                                 T[] pixels ) where T : unmanaged
+                                 T[]? pixels ) where T : unmanaged
     {
+        Logger.Checkpoint();
+        
         GetDelegateForFunction< PFNGLTEXIMAGE2DPROC >( "glTexImage2D", out _glTexImage2D );
+
+        if ( ( pixels == null ) || ( pixels.Length == 0 ) )
+        {
+            throw new ArgumentNullException( nameof( pixels ), "Pixel data cannot be null or empty" );
+        }
+
+        //Check if the size of the pixel data matches the expected size
+        var expectedSize = width * height * Marshal.SizeOf<T>();
+        
+        if (( ( pixels.Length * Marshal.SizeOf<T>() ) != expectedSize ) && ( format != IGL.GL_DEPTH_COMPONENT ))
+        {
+            throw new ArgumentException("Pixel data size does not match image dimensions and format.", nameof(pixels));
+        }
 
         fixed ( void* p = &pixels[ 0 ] )
         {

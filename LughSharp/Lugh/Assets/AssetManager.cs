@@ -59,10 +59,9 @@ public class AssetManager
     private readonly Dictionary< string, Type >                                     _assetTypes        = [ ];
     private readonly Dictionary< Type, Dictionary< string, AssetLoader > >          _loaders           = [ ];
 
-    private readonly List< string >          _injected  = [ ];
-    private readonly List< AssetDescriptor > _loadQueue = [ ];
-
-    private readonly Queue< AssetLoadingTask > _tasks = [ ];
+    private readonly List< string >            _injected  = [ ];
+    private readonly List< AssetDescriptor >   _loadQueue = [ ];
+    private readonly Queue< AssetLoadingTask > _tasks     = [ ];
 
     private IAssetErrorListener? _listener;
 
@@ -133,8 +132,8 @@ public class AssetManager
         {
             if ( _tasks.Count == 0 )
             {
-                // Load next task if there are no active tasks running.
-                while ( _loadQueue.Count != 0 && _tasks.Count == 0 )
+                // Load next task if there are tasks available and no active tasks running.
+                while ( ( _loadQueue.Count != 0 ) && ( _tasks.Count == 0 ) )
                 {
                     if ( LoadNextTask() )
                     {
@@ -146,9 +145,11 @@ public class AssetManager
                 if ( _tasks.Count == 0 ) return true;
             }
 
-            ProcessNextTask();
+//            ProcessNextTask();
 
-            return IsFinished();
+//            return IsFinished();
+
+            return UpdateTask() && ( _loadQueue.Count == 0 ) && ( _tasks.Count == 0 );
         }
         catch ( System.Exception t )
         {
@@ -195,7 +196,7 @@ public class AssetManager
                 if ( _tasks.Count == 0 )
                 {
                     // Load next task if there are no active tasks
-                    while ( _loadQueue.Count != 0 && _tasks.Count == 0 )
+                    while ( ( _loadQueue.Count != 0 ) && ( _tasks.Count == 0 ) )
                     {
                         LoadNextTask();
                     }
@@ -208,7 +209,7 @@ public class AssetManager
                 }
 
                 // Process the next task
-                ProcessNextTask();
+                UpdateTask();
 
                 // If we're still in time, go for another round
                 if ( TimeUtils.NanoTime() < endTime )
@@ -878,12 +879,18 @@ public class AssetManager
     /// <returns>
     /// A task that represents the asynchronous operation of processing the next asset loading task.
     /// </returns>
-    private void ProcessNextTask()
+    private bool UpdateTask()
     {
-        if ( _tasks.TryPeek( out var task ) )
+        var task      = _tasks.Peek();
+        var completed = true;
+
+//        if ( _tasks.TryPeek( out var task ) )
         {
             try
             {
+                completed = task.Cancel || task.Update();
+                
+                
                 var asset = task.LoadAsync();
 
                 if ( !task.Cancel )
@@ -911,6 +918,8 @@ public class AssetManager
         {
             Logger.Debug( $"No task to load: {task?.AssetDesc.AssetName}" );
         }
+
+        return completed;
     }
 
     /// <summary>
@@ -1091,7 +1100,7 @@ public class AssetManager
             }
 
             // Check ths potential asset against assets currently in the preload
-            // queue and the loaded assets dictionary, to make sure its has not
+            // queue and the loaded assets dictionary, to make sure it has not
             // already been loaded.
             ValidatePreloadQueue( fileName, type );
 

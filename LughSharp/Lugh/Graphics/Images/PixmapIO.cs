@@ -137,7 +137,7 @@ public static class PixmapIO
                 var pixelBuf = pixmap.ByteBuffer;
 
                 pixelBuf.Position = 0;
-                pixelBuf.Limit     = pixelBuf.Capacity;
+                pixelBuf.Limit    = pixelBuf.Capacity;
 
                 var remainingBytes = pixelBuf.Capacity % BUFFER_SIZE;
                 var iterations     = pixelBuf.Capacity / BUFFER_SIZE;
@@ -180,7 +180,7 @@ public static class PixmapIO
                 var pixelBuf = pixmap.ByteBuffer;
 
                 pixelBuf.Position = 0;
-                pixelBuf.Limit     = pixelBuf.Capacity;
+                pixelBuf.Limit    = pixelBuf.Capacity;
 
                 lock ( _readBuffer )
                 {
@@ -354,17 +354,17 @@ public static class PixmapIO
                     {
                         var pixel = pixmap.GetPixel( px, py );
 
-                        curLine[ x++ ] = ( byte ) ( ( pixel >> 24 ) & 0xff );
-                        curLine[ x++ ] = ( byte ) ( ( pixel >> 16 ) & 0xff );
-                        curLine[ x++ ] = ( byte ) ( ( pixel >> 8 ) & 0xff );
-                        curLine[ x++ ] = ( byte ) ( pixel & 0xff );
+                        curLine[ x++ ] = ( byte )( ( pixel >> 24 ) & 0xff );
+                        curLine[ x++ ] = ( byte )( ( pixel >> 16 ) & 0xff );
+                        curLine[ x++ ] = ( byte )( ( pixel >> 8 ) & 0xff );
+                        curLine[ x++ ] = ( byte )( pixel & 0xff );
                     }
                 }
 
-                lineOut[ 0 ] = ( byte ) ( curLine[ 0 ] - prevLine[ 0 ] );
-                lineOut[ 1 ] = ( byte ) ( curLine[ 1 ] - prevLine[ 1 ] );
-                lineOut[ 2 ] = ( byte ) ( curLine[ 2 ] - prevLine[ 2 ] );
-                lineOut[ 3 ] = ( byte ) ( curLine[ 3 ] - prevLine[ 3 ] );
+                lineOut[ 0 ] = ( byte )( curLine[ 0 ] - prevLine[ 0 ] );
+                lineOut[ 1 ] = ( byte )( curLine[ 1 ] - prevLine[ 1 ] );
+                lineOut[ 2 ] = ( byte )( curLine[ 2 ] - prevLine[ 2 ] );
+                lineOut[ 3 ] = ( byte )( curLine[ 3 ] - prevLine[ 3 ] );
 
                 for ( var x = 4; x < lineLen; x++ )
                 {
@@ -402,7 +402,7 @@ public static class PixmapIO
                         c = b;
                     }
 
-                    lineOut[ x ] = ( byte ) ( curLine[ x ] - c );
+                    lineOut[ x ] = ( byte )( curLine[ x ] - c );
                 }
 
                 deflaterOutput.WriteByte( PAETH_FILTER );

@@ -22,16 +22,63 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using JetBrains.Annotations;
-
 namespace DesktopGLBackend.Core;
+
+using System;
+using System.Diagnostics; // Use Stopwatch for high-resolution timing
+using System.Threading;
+
+public class Sync
+{
+    private const    long      NANOS_IN_SECOND = 1000L * 1000L * 1000L;
+    private readonly Stopwatch _stopwatch      = new Stopwatch();
+    private          long      _nextFrame      = 0;
+    private          bool      _initialised    = false;
+
+    public void SyncFrameRate( int fps )
+    {
+        if ( fps <= 0 ) return;
+
+        if ( !_initialised )
+        {
+            Initialise();
+        }
+
+        var targetTime  = _nextFrame;
+        var currentTime = _stopwatch.ElapsedTicks * ( NANOS_IN_SECOND / Stopwatch.Frequency );
+
+        var sleepTime = targetTime - currentTime;
+
+        if ( sleepTime > 1000000 ) // Sleep for longer periods (1ms)
+        {
+            Thread.Sleep( ( int )( sleepTime / 1000000 ) );
+        }
+        else if ( sleepTime > 0 ) //Yield if sleep time is less than 1ms
+        {
+            Thread.Yield();
+        }
+
+        currentTime = _stopwatch.ElapsedTicks * ( NANOS_IN_SECOND / Stopwatch.Frequency );
+        _nextFrame  = Math.Max( targetTime + ( NANOS_IN_SECOND / fps ), currentTime );
+    }
+
+    private void Initialise()
+    {
+        _initialised = true;
+        _stopwatch.Start();
+        _nextFrame = _stopwatch.ElapsedTicks * ( NANOS_IN_SECOND / Stopwatch.Frequency );
+    }
+}
+
+// ============================================================================
+// ============================================================================
 
 /// <summary>
 /// A highly accurate sync method that continually adapts to the system
 /// it runs on to provide reliable results.
 /// </summary>
 [PublicAPI]
-public class Sync
+public class OldSync
 {
     // number of nano seconds in a second.
     private const long NANOS_IN_SECOND = 1000L * 1000L * 1000L;
@@ -106,8 +153,7 @@ public class Sync
         _initialised = true;
 
         _sleepDurations.Init( 1000 * 1000 );
-
-        _yieldDurations.Init( ( int ) ( -( GetTime() - GetTime() ) * 1.333 ) );
+        _yieldDurations.Init( ( int )( -( GetTime() - GetTime() ) * 1.333 ) );
 
         _nextFrame = GetTime();
 
@@ -137,9 +183,9 @@ public class Sync
     /// <summary>
     /// Get the system time in nano seconds.
     /// </summary>
-    private long GetTime()
+    private static long GetTime()
     {
-        return ( long ) Glfw.GetTime() * NANOS_IN_SECOND;
+        return ( long )Glfw.GetTime() * NANOS_IN_SECOND;
     }
 
     // ========================================================================
@@ -187,7 +233,7 @@ public class Sync
             {
                 for ( var i = 0; i < _slots.Length; i++ )
                 {
-                    _slots[ i ] = ( long ) ( _slots[ i ] * DAMPEN_FACTOR );
+                    _slots[ i ] = ( long )( _slots[ i ] * DAMPEN_FACTOR );
                 }
             }
         }

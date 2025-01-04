@@ -235,12 +235,12 @@ public class Texture : GLTexture, IManaged
         Bind();
 
         GdxApi.Bindings.TexSubImage2D( GLTarget,
-                                0, x, y,
-                                pixmap.Width,
-                                pixmap.Height,
-                                pixmap.GLFormat,
-                                pixmap.GLType,
-                                pixmap.PixelData );
+                                       0, x, y,
+                                       pixmap.Width,
+                                       pixmap.Height,
+                                       pixmap.GLFormat,
+                                       pixmap.GLType,
+                                       pixmap.PixelData );
     }
 
     /// <summary>

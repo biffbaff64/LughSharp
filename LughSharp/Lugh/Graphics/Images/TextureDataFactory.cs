@@ -72,7 +72,7 @@ public static class TextureDataFactory
             // Unsure about JPG/JPEG and TGA
             var _ => new FileTextureData( file, new Pixmap( file ), format, useMipMaps )
         };
-        
+
         return data;
     }
 }

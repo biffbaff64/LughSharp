@@ -208,7 +208,7 @@ public class Pixmap : IDisposable
             {
                 throw new GdxRuntimeException( "Unsupported GLInternalFormat" );
             }
-            
+
             return format;
         }
     }

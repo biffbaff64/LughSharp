@@ -46,7 +46,7 @@ public class AssetDescriptor
     /// <summary>
     /// The file information for the asset.
     /// </summary>
-    public FileInfo File { get; set; }
+    public FileInfo? File { get; set; }
 
     // ========================================================================
     // ========================================================================
